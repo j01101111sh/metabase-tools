@@ -1,0 +1,2 @@
+class MetabaseApiException(Exception):
+    pass
