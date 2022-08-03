@@ -186,6 +186,14 @@ secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "cer
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
+name = "versioneer"
+version = "0.22"
+description = "Easy VCS-based management of project version strings"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "wcwidth"
 version = "0.2.5"
 description = "Measures the displayed width of unicode strings in a terminal"
@@ -196,7 +204,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "62060ccf9f34df55d77e8201f86cceace94625ad1c4de84e1b920c55c9e16507"
+content-hash = "7b14da8d05854f5e90477355b4117ff32de25b4c77c5976f38e99ce905c53274"
 
 [metadata.files]
 atomicwrites = [
@@ -265,6 +273,10 @@ toml = [
 urllib3 = [
     {file = "urllib3-1.26.11-py2.py3-none-any.whl", hash = "sha256:c33ccba33c819596124764c23a97d25f32b28433ba0dedeb77d873a38722c9bc"},
     {file = "urllib3-1.26.11.tar.gz", hash = "sha256:ea6e8fb210b19d950fab93b60c9009226c63a28808bc8386e05301e25883ac0a"},
+]
+versioneer = [
+    {file = "versioneer-0.22-py3-none-any.whl", hash = "sha256:dee243f8f084351a1d79eabefc2e55d58aa8a2af086a7e41602a6aafbd972a34"},
+    {file = "versioneer-0.22.tar.gz", hash = "sha256:9f0e9a2cb5ef521cbfd104d43a208dd9124dfb4accfa72d694e0d0430a0142bc"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
