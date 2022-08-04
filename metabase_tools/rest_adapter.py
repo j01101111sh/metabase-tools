@@ -1,0 +1,169 @@
+import logging
+from json import JSONDecodeError
+from typing import Optional
+
+import requests
+
+from .exceptions import MetabaseApiException
+from .models import Result
+
+
+class RestAdapter:
+    def __init__(self, metabase_url: str, credentials: dict):
+        self._logger = logging.getLogger(__name__)
+        self.metabase_url = f'{metabase_url}/api'
+
+        self._session = requests.Session()
+        if 'token' in credentials:
+            self._logger.debug('Using supplied token for requests.')
+            self._token = credentials['token']
+        elif 'username' in credentials and 'password' in credentials:
+            self._logger.debug(
+                'Token not present, using username and password')
+            self._authenticate(credentials=credentials)
+        else:
+            raise MetabaseApiException(
+                'Credentials provided do not contain either [username and password] or [token]')
+
+    def _authenticate(self, credentials: dict):
+        """Private method for authenticating a session with the API
+        """
+        self._logger.debug('Starting authentication - RestAdapter member')
+        try:
+            post_request = self._session.post(
+                f'{self.metabase_url}/session', json=credentials)
+        except requests.exceptions.RequestException as e:
+            self._logger.error(str(e))
+            raise MetabaseApiException('Request failed') from e
+
+        try:
+            headers = {
+                'Content-Type': 'application/json',
+                'X-Metabase-Session': post_request.json()['id']
+            }
+            self._session.headers.update(headers)
+        except KeyError:
+            raise MetabaseApiException(
+                'Authentication failed. {status_code} - {reason}'.format(**post_request.json()))
+        self._logger.debug('Authentication successful')
+
+    def _make_request(self, method: str, url: str, params: Optional[dict] = None, json: Optional[dict] = None) -> requests.Response:
+        """Log HTTP params and perform an HTTP request, catching and re-raising any exceptions
+        Args:
+            method (str): GET or POST
+            url (str): URL endpoint
+            params (dict): Endpoint parameters
+            json (dict): Data payload
+        Returns:
+            request result
+        """
+        log_line_pre = f'{method=}, {url=}, {params=}'
+        try:
+            self._logger.debug(log_line_pre)
+            return self._session.request(method=method, url=url, params=params, json=json)
+        except requests.exceptions.RequestException as e:
+            self._logger.error(str(e))
+            raise MetabaseApiException('Request failed') from e
+
+    def _do(self, http_method: str, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Result:
+        """Private method for get and post methods
+        Args:
+            http_method (str): GET or POST
+            endpoint (str): URL endpoint
+            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
+            data (Dict, optional): Data payload. Defaults to None.
+        Returns:
+            Result: a Result object
+        """
+        full_api_url = self.metabase_url + endpoint
+
+        log_line_post = ('success={}, status_code={}, message={}')
+        data_out = {}
+        while True:
+            response = self._make_request(method=http_method,
+                                          url=full_api_url, params=params, json=json)
+            # Deserialize JSON output to Python object, or return failed Result on exception
+            try:
+                new_data = response.json()
+            except (ValueError, JSONDecodeError) as e:
+                if response.status_code == 204:
+                    new_data = None
+                else:
+                    self._logger.error(log_line_post.format(False, None, e))
+                    raise MetabaseApiException('Bad JSON in response') from e
+
+            # If there are additional pages, merge the dictionaries, extending any lists found in the result
+            if new_data and '_links' in new_data and 'next' in new_data['_links']:
+                for key, value in new_data.items():
+                    if key in data_out and isinstance(data_out[key], list):
+                        if isinstance(value, list) and len(value) == 0:
+                            new_data['_links']['next'] = None
+                        else:
+                            data_out[key].extend(value)
+                    else:
+                        data_out[key] = value
+                if new_data['_links']['next']:
+                    full_api_url = new_data['_links']['next'].replace(
+                        'http://', 'https://')
+                    params = None
+                else:
+                    break
+            else:
+                if len(data_out) == 0:
+                    data_out = new_data
+                break
+
+        # If status_code in 200-299 range, return success Result with data, otherwise raise exception
+        is_success = 299 >= response.status_code >= 200
+        log_line = log_line_post.format(
+            is_success, response.status_code, response.reason)
+
+        if is_success:
+            self._logger.debug(log_line)
+            return Result(status_code=response.status_code, message=response.reason, data=data_out)
+
+        self._logger.error(log_line)
+        raise MetabaseApiException(
+            f'{response.status_code} - {response.reason}')
+
+    def get(self, endpoint: str, params: Optional[dict] = None) -> Result:
+        """HTTP GET request
+        Args:
+            endpoint (str): URL endpoint
+            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
+        Returns:
+            Result: a Result object
+        """
+        return self._do(http_method='GET', endpoint=endpoint, params=params)
+
+    def post(self, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Result:
+        """HTTP POST request
+        Args:
+            endpoint (str): URL endpoint
+            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
+            json (Dict, optional): Data payload. Defaults to None.
+        Returns:
+            Result: a Result object
+        """
+        return self._do(http_method='POST', endpoint=endpoint, params=params, json=json)
+
+    def delete(self, endpoint: str, params: Optional[dict] = None) -> Result:
+        """HTTP DELETE request
+        Args:
+            endpoint (str): URL endpoint
+            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
+        Returns:
+            Result: a Result object
+        """
+        return self._do(http_method='DELETE', endpoint=endpoint, params=params)
+
+    def put(self, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Result:
+        """HTTP PUT request
+        Args:
+            endpoint (str): URL endpoint
+            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
+            json (Dict, optional): Data payload. Defaults to None.
+        Returns:
+            Result: a Result object
+        """
+        return self._do(http_method='PUT', endpoint=endpoint, params=params, json=json)
