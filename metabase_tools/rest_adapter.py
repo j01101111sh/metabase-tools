@@ -10,10 +10,20 @@ from .models import Result
 
 class RestAdapter:
     def __init__(self, metabase_url: str, credentials: dict):
+        # Initialize logging
         self._logger = logging.getLogger(__name__)
+
+        # Validate Metabase URL
+        if metabase_url[-1] == '/':
+            metabase_url = metabase_url[:-1]
+        if metabase_url[-4:] == '/api':
+            metabase_url = metabase_url[:-4]
         self.metabase_url = f'{metabase_url}/api'
 
+        # Starts session to be reused by the adapter so that the auth token is cached
         self._session = requests.Session()
+
+        # Determines what was supplied in credentials and authenticates accordingly
         if 'token' in credentials:
             self._logger.debug('Using supplied token for requests.')
             self._token = credentials['token']
