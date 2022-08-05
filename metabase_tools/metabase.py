@@ -1,12 +1,12 @@
 from datetime import datetime
 from typing import Optional
 
-from .models.generic_models import Result
-from .rest_adapter import RestAdapter
+from .models.result import Result
+from .rest import RestAdapter
 
 
 class MetabaseApi:
-    # TODO: Add tools here
+    # TODO: Add option for caching of token
     def __init__(self, metabase_url: str, credentials: dict):
         self._rest_adapter = RestAdapter(
             metabase_url=metabase_url, credentials=credentials)

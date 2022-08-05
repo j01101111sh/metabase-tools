@@ -4,10 +4,10 @@ from pydantic import BaseModel
 from typing_extensions import Self
 
 from ..exceptions import MetabaseApiException
-from ..metabase_api import MetabaseApi
+from ..metabase import MetabaseApi
 
 
-class MetabaseObject(BaseModel):
+class MetabaseGeneric(BaseModel):
     @classmethod
     def get(cls, adapter: MetabaseApi, endpoint: str, targets: Optional[int | list[int]]) -> list[Self] | Self:
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):

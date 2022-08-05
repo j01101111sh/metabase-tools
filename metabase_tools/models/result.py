@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel  # TODO: Remove
 from pydantic.fields import Field
 
 

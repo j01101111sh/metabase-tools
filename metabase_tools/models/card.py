@@ -2,17 +2,16 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
-from pydantic import BaseModel
 from pydantic.fields import Field
 from typing_extensions import Self
 
-from ..metabase_api import MetabaseApi
+from ..metabase import MetabaseApi
 from .collection import Collection
-from .metabase_objects import MetabaseObject
+from .generic import MetabaseGeneric
 from .user import User
 
 
-class Card(MetabaseObject):
+class Card(MetabaseGeneric):
     description: None
     archived: bool
     collection_position: None

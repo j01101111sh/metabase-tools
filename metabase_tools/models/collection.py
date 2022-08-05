@@ -1,7 +1,7 @@
-from .metabase_objects import MetabaseObject
+from .generic import MetabaseGeneric
 
 
-class Collection(MetabaseObject):
+class Collection(MetabaseGeneric):
     authority_level: None
     description: None
     archived: bool

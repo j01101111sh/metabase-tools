@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from .metabase_objects import MetabaseObject
+from .generic import MetabaseGeneric
 
 
-class User(MetabaseObject):
+class User(MetabaseGeneric):
     email: str
     first_name: str
     last_login: datetime
