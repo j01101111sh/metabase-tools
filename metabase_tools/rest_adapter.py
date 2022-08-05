@@ -2,7 +2,8 @@ import logging
 from json import JSONDecodeError
 from typing import Optional
 
-import requests
+from requests import Response, Session
+from requests.exceptions import RequestException
 
 from .exceptions import MetabaseApiException
 from .models import Result
@@ -21,7 +22,7 @@ class RestAdapter:
         self.metabase_url = f'{metabase_url}/api'
 
         # Starts session to be reused by the adapter so that the auth token is cached
-        self._session = requests.Session()
+        self._session = Session()
 
         # Determines what was supplied in credentials and authenticates accordingly
         if 'token' in credentials:
@@ -42,7 +43,7 @@ class RestAdapter:
         try:
             post_request = self._session.post(
                 f'{self.metabase_url}/session', json=credentials)
-        except requests.exceptions.RequestException as e:
+        except RequestException as e:
             self._logger.error(str(e))
             raise MetabaseApiException('Request failed') from e
 
@@ -57,7 +58,7 @@ class RestAdapter:
                 'Authentication failed. {status_code} - {reason}'.format(**post_request.json()))
         self._logger.debug('Authentication successful')
 
-    def _make_request(self, method: str, url: str, params: Optional[dict] = None, json: Optional[dict] = None) -> requests.Response:
+    def _make_request(self, method: str, url: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Response:
         """Log HTTP params and perform an HTTP request, catching and re-raising any exceptions
         Args:
             method (str): GET or POST
@@ -71,7 +72,7 @@ class RestAdapter:
         try:
             self._logger.debug(log_line_pre)
             return self._session.request(method=method, url=url, params=params, json=json)
-        except requests.exceptions.RequestException as e:
+        except RequestException as e:
             self._logger.error(str(e))
             raise MetabaseApiException('Request failed') from e
 
