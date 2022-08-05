@@ -76,7 +76,7 @@ class RestAdapter:
             self._logger.error(str(e))
             raise MetabaseApiException('Request failed') from e
 
-    def _do(self, http_method: str, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Result:
+    def do(self, http_method: str, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Result:
         """Private method for get and post methods
         Args:
             http_method (str): GET or POST
@@ -136,45 +136,3 @@ class RestAdapter:
         self._logger.error(log_line)
         raise MetabaseApiException(
             f'{response.status_code} - {response.reason}')
-
-    def get(self, endpoint: str, params: Optional[dict] = None) -> Result:
-        """HTTP GET request
-        Args:
-            endpoint (str): URL endpoint
-            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
-        Returns:
-            Result: a Result object
-        """
-        return self._do(http_method='GET', endpoint=endpoint, params=params)
-
-    def post(self, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Result:
-        """HTTP POST request
-        Args:
-            endpoint (str): URL endpoint
-            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
-            json (Dict, optional): Data payload. Defaults to None.
-        Returns:
-            Result: a Result object
-        """
-        return self._do(http_method='POST', endpoint=endpoint, params=params, json=json)
-
-    def delete(self, endpoint: str, params: Optional[dict] = None) -> Result:
-        """HTTP DELETE request
-        Args:
-            endpoint (str): URL endpoint
-            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
-        Returns:
-            Result: a Result object
-        """
-        return self._do(http_method='DELETE', endpoint=endpoint, params=params)
-
-    def put(self, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Result:
-        """HTTP PUT request
-        Args:
-            endpoint (str): URL endpoint
-            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
-            json (Dict, optional): Data payload. Defaults to None.
-        Returns:
-            Result: a Result object
-        """
-        return self._do(http_method='PUT', endpoint=endpoint, params=params, json=json)
