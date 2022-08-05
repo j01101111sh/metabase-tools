@@ -1,6 +1,6 @@
 from typing import Optional
 
-from .models import Result
+from .models.generic_models import Result
 from .rest_adapter import RestAdapter
 
 

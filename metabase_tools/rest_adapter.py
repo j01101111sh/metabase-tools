@@ -6,7 +6,7 @@ from requests import Response, Session
 from requests.exceptions import RequestException
 
 from .exceptions import MetabaseApiException
-from .models import Result
+from .models.generic_models import Result
 
 
 class RestAdapter:
