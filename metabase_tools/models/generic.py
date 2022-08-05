@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 from typing_extensions import Self
 
-from ..exceptions import MetabaseApiException
+from ..exceptions import EmptyDataReceived, InvalidParameters
 from ..metabase import MetabaseApi
 
 
@@ -21,5 +21,5 @@ class MetabaseGeneric(BaseModel):
                 # Unpack data into instances of the class and return
                 return [cls(**record) for record in response.data]
         else:
-            raise MetabaseApiException('Invalid target(s)')
-        raise MetabaseApiException('No data returned')
+            raise InvalidParameters('Invalid target(s)')
+        raise EmptyDataReceived('No data returned')

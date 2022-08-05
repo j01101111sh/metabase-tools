@@ -226,7 +226,7 @@ python-versions = ">=3.6"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.9"
+python-versions = "^3.10"
 content-hash = "bf1574d42123ebaec6a8b47c98140eb01367dce20a99d62384426fb1ca8a5c74"
 
 [metadata.files]
