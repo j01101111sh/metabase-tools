@@ -104,6 +104,7 @@ class RestAdapter:
                     raise MetabaseApiException('Bad JSON in response') from e
 
             # If there are additional pages, merge the dictionaries, extending any lists found in the result
+            # TODO Determine if this is necessary
             if new_data and '_links' in new_data and 'next' in new_data['_links']:
                 for key, value in new_data.items():
                     if key in data_out and isinstance(data_out[key], list):
