@@ -1,11 +1,6 @@
 import requests
 
-HOST = 'http://localhost:3000'
-FIRST = 'Jim'
-LAST = 'Halpert'
-EMAIL = 'jim@dundermifflin.com'
-PASSWORD = 'Whg6R96c*^fc{um>'
-SITE_NAME = 'testing-site'
+from metabase_details import EMAIL, FIRST, HOST, LAST, PASSWORD, SITE_NAME
 
 response = requests.get(HOST + '/api/session/properties')
 setup_token = response.json()['setup-token']

@@ -59,6 +59,9 @@ class RestAdapter:
                 'Authentication failed. {status_code} - {reason}'.format(**post_request.json()))
         self._logger.debug('Authentication successful')
 
+    def get_token(self):
+        return self._session.headers.get('X-Metabase-Session')
+
     def _make_request(self, method: str, url: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Response:
         """Log HTTP params and perform an HTTP request, catching and re-raising any exceptions
         Args:
