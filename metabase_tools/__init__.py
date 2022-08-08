@@ -7,3 +7,4 @@ from .exceptions import (AuthenticationFailure, EmptyDataReceived,
                          MetabaseApiException, RequestFailure)
 from .metabase import MetabaseApi
 from .models.card import Card
+from .rest import RestAdapter
