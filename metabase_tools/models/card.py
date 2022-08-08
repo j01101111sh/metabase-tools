@@ -20,7 +20,7 @@ class Card(MetabaseGeneric):
     creator: User
     database_id: int
     enable_embedding: bool
-    collection_id: int
+    collection_id: Optional[int]
     query_type: str
     name: str
     creator_id: int
@@ -33,7 +33,7 @@ class Card(MetabaseGeneric):
     display: str
     last_edit_info: dict = Field(alias='last-edit-info')
     visualization_settings: dict
-    collection: Collection
+    collection: Optional[Collection]
     dataset: bool
     created_at: datetime
     public_uuid: Optional[UUID]
