@@ -48,16 +48,16 @@ class RestAdapter:
             self._logger.error(str(e))
             raise RequestFailure('Request failed during authentication') from e
 
-        try:
+        if post_request.status_code == 200:
             headers = {
                 'Content-Type': 'application/json',
                 'X-Metabase-Session': post_request.json()['id']
             }
             self._session.headers.update(headers)
-        except KeyError:
+            self._logger.debug('Authentication successful')
+        else:
             raise AuthenticationFailure(
-                'Authentication failed. {status_code} - {reason}'.format(**post_request.json()))
-        self._logger.debug('Authentication successful')
+                f'Authentication failed. {post_request.status_code} - {post_request.reason}')
 
     def get_token(self):
         return self._session.headers.get('X-Metabase-Session')
