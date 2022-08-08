@@ -1,8 +1,4 @@
-from pydantic import BaseModel
-from pydantic.fields import Field
-
-
-class Result(BaseModel):
+class Result:
     """Result returned from RestAdapter
     Args:
         status_code (int): Standard HTTP status code
@@ -11,4 +7,9 @@ class Result(BaseModel):
     """
     status_code: int
     message: str = ''
-    data: list[dict] | dict | None = Field(default_factory=list)
+    data: list[dict] | dict | None
+
+    def __init__(self, status_code: int, message: str = '', data: list[dict] | dict | None = None):
+        self.status_code = status_code
+        self.message = message
+        self.data = data
