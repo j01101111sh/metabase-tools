@@ -9,7 +9,7 @@ from ..metabase import MetabaseApi
 
 class MetabaseGeneric(BaseModel):
     @classmethod
-    def get(cls, adapter: MetabaseApi, endpoint: str, targets: Optional[int | list[int]]) -> list[Self] | Self:
+    def get(cls, adapter: MetabaseApi, endpoint: str, targets: Optional[int | list[int]]) -> Self | list[Self]:
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
             pass
         elif isinstance(targets, int):
