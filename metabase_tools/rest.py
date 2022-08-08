@@ -5,7 +5,8 @@ from typing import Optional
 from requests import Response, Session
 from requests.exceptions import RequestException
 
-from .exceptions import MetabaseApiException
+from .exceptions import (AuthenticationFailure, InvalidDataReceived,
+                         RequestFailure)
 from .models.result import Result
 
 
@@ -33,7 +34,7 @@ class RestAdapter:
                 'Token not present, using username and password')
             self._authenticate(credentials=credentials)
         else:
-            raise MetabaseApiException(
+            raise AuthenticationFailure(
                 'Credentials provided do not contain either [username and password] or [token]')
 
     def _authenticate(self, credentials: dict):
@@ -45,18 +46,21 @@ class RestAdapter:
                 f'{self.metabase_url}/session', json=credentials)
         except RequestException as e:
             self._logger.error(str(e))
-            raise MetabaseApiException('Request failed') from e
+            raise RequestFailure('Request failed during authentication') from e
 
-        try:
+        if post_request.status_code == 200:
             headers = {
                 'Content-Type': 'application/json',
                 'X-Metabase-Session': post_request.json()['id']
             }
             self._session.headers.update(headers)
-        except KeyError:
-            raise MetabaseApiException(
-                'Authentication failed. {status_code} - {reason}'.format(**post_request.json()))
-        self._logger.debug('Authentication successful')
+            self._logger.debug('Authentication successful')
+        else:
+            raise AuthenticationFailure(
+                f'Authentication failed. {post_request.status_code} - {post_request.reason}')
+
+    def get_token(self):
+        return self._session.headers.get('X-Metabase-Session')
 
     def _make_request(self, method: str, url: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Response:
         """Log HTTP params and perform an HTTP request, catching and re-raising any exceptions
@@ -74,7 +78,7 @@ class RestAdapter:
             return self._session.request(method=method, url=url, params=params, json=json)
         except RequestException as e:
             self._logger.error(str(e))
-            raise MetabaseApiException('Request failed') from e
+            raise RequestFailure('Request failed') from e
 
     def do(self, http_method: str, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Result:
         """Private method for get and post methods
@@ -101,7 +105,7 @@ class RestAdapter:
                     new_data = None
                 else:
                     self._logger.error(log_line_post.format(False, None, e))
-                    raise MetabaseApiException('Bad JSON in response') from e
+                    raise InvalidDataReceived('Bad JSON in response') from e
 
             # If there are additional pages, merge the dictionaries, extending any lists found in the result
             # TODO Determine if this is necessary
@@ -135,5 +139,5 @@ class RestAdapter:
             return Result(status_code=response.status_code, message=response.reason, data=data_out)
 
         self._logger.error(log_line)
-        raise MetabaseApiException(
+        raise RequestFailure(
             f'{response.status_code} - {response.reason}')
