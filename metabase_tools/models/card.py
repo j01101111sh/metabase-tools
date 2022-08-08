@@ -39,5 +39,5 @@ class Card(MetabaseGeneric):
     public_uuid: Optional[UUID]
 
     @classmethod
-    def get(cls, adapter: MetabaseApi, targets: Optional[int | list[int]] = None) -> list[Self] | Self:
+    def get(cls, adapter: MetabaseApi, targets: Optional[int | list[int]] = None) -> Self | list[Self]:
         return super(Card, cls).get(adapter=adapter, endpoint='/card', targets=targets)
