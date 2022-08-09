@@ -5,6 +5,7 @@ from uuid import UUID
 from pydantic.fields import Field
 from typing_extensions import Self
 
+from ..exceptions import InvalidParameters
 from ..metabase import MetabaseApi
 from .collection import Collection
 from .generic import MetabaseGeneric
@@ -49,3 +50,7 @@ class Card(MetabaseGeneric):
     @classmethod
     def put(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> Self | list[Self]:
         return super(Card, cls).put(adapter=adapter, endpoint='/card', payloads=payloads)
+
+    @classmethod
+    def archive(cls, adapter: MetabaseApi, targets: int | list[int], unarchive=False) -> Self | list[Self]:
+        return super(Card, cls).archive(adapter=adapter, endpoint='/card', targets=targets, unarchive=unarchive)

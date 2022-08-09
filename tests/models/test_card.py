@@ -53,6 +53,38 @@ def test_card_update_one(api):
     assert change_result.description == f'Updated {dt}'
 
 
+def test_card_archive_one(api):
+    card_to_archive = 2
+    change_result = Card.archive(adapter=api, targets=card_to_archive)
+    assert isinstance(change_result, Card)
+    assert change_result.archived == True
+
+
+def test_card_archive_list(api):
+    cards_to_archive = [2, 3]
+    change_results = Card.archive(adapter=api, targets=cards_to_archive)
+    assert isinstance(change_results, list)
+    assert all(isinstance(cr, Card) for cr in change_results)
+    assert all(cr.archived for cr in change_results)
+
+
+def test_card_unarchive_one(api):
+    card_to_archive = 2
+    change_result = Card.archive(
+        adapter=api, targets=card_to_archive, unarchive=True)
+    assert isinstance(change_result, Card)
+    assert change_result.archived == False
+
+
+def test_card_unarchive_list(api):
+    cards_to_archive = [2, 3]
+    change_results = Card.archive(
+        adapter=api, targets=cards_to_archive, unarchive=True)
+    assert isinstance(change_results, list)
+    assert all(isinstance(cr, Card) for cr in change_results)
+    assert all(not cr.archived for cr in change_results)
+
+
 def test_card_list_all(api):
     cards = Card.get(adapter=api)
     assert isinstance(cards, list)

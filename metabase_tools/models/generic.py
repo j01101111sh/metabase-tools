@@ -73,7 +73,14 @@ class MetabaseGeneric(BaseModel):
         # TODO docstring
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
-            pass
+            results = []
+            for payload in payloads:
+                response = adapter.put(
+                    endpoint=f'{endpoint}/{payload["id"]}', json=payload)
+                if response.data and isinstance(response.data, dict):
+                    results.append(cls(**response.data))
+            if len(results) > 0:
+                return results
         elif isinstance(payloads, dict):
             # If a single target is provided, return that object
             response = adapter.put(
@@ -85,3 +92,25 @@ class MetabaseGeneric(BaseModel):
             raise InvalidParameters('Invalid target(s)')
         # If response.data was empty or not a valid type, raise error
         raise EmptyDataReceived('No data returned')
+
+    @classmethod
+    def archive(cls, adapter: MetabaseApi, endpoint: str, targets: int | list[int], unarchive: bool) -> Self | list[Self]:
+        # TODO docstring
+        archive_template = {'id': None, 'archived': not unarchive}
+        if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
+            results = []
+            for target in targets:
+                archive_template['id'] = target
+                response = adapter.put(
+                    endpoint=f'{endpoint}/{target}', json=archive_template)
+                if response.data and isinstance(response.data, dict):
+                    results.append(cls(**response.data))
+            return results
+        elif isinstance(targets, int):
+            payloads = archive_template
+            payloads['id'] = targets
+            response = adapter.put(
+                endpoint=f'{endpoint}/{targets}', json=archive_template)
+            if response.data and isinstance(response.data, dict):
+                return cls(**response.data)
+        raise InvalidParameters('Invalid set of targets')
