@@ -28,7 +28,11 @@ class RestAdapter:
         # Determines what was supplied in credentials and authenticates accordingly
         if 'token' in credentials:
             self._logger.debug('Using supplied token for requests.')
-            self._token = credentials['token']
+            headers = {
+                'Content-Type': 'application/json',
+                'X-Metabase-Session': credentials['token']
+            }
+            self._session.headers.update(headers)
         elif 'username' in credentials and 'password' in credentials:
             self._logger.debug(
                 'Token not present, using username and password')
@@ -59,8 +63,8 @@ class RestAdapter:
             raise AuthenticationFailure(
                 f'Authentication failed. {post_request.status_code} - {post_request.reason}')
 
-    def get_token(self):
-        return self._session.headers.get('X-Metabase-Session')
+    def get_token(self) -> str:
+        return str(self._session.headers.get('X-Metabase-Session'))
 
     def _make_request(self, method: str, url: str, params: Optional[dict] = None, json: Optional[dict] = None) -> Response:
         """Log HTTP params and perform an HTTP request, catching and re-raising any exceptions
