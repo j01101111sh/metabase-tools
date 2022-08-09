@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 from metabase_tools import Card, MetabaseApi
 
@@ -38,6 +40,16 @@ def test_card_create_one(api):
     }
     new_card_obj = Card.post(adapter=api, payloads=new_card_def)
     assert isinstance(new_card_obj, Card)
+
+
+def test_card_update_one(api):
+    dt = datetime.now().isoformat(timespec='seconds')
+    card_changes = {
+        'id': 1,
+        'description': f'Updated {dt}'
+    }
+    change_result = Card.put(adapter=api, payloads=card_changes)
+    assert isinstance(change_result, Card)
 
 
 def test_card_list_all(api):
