@@ -5,7 +5,6 @@ from uuid import UUID
 from pydantic.fields import Field
 from typing_extensions import Self
 
-from ..exceptions import InvalidParameters
 from ..metabase import MetabaseApi
 from .collection import Collection
 from .generic import MetabaseGeneric
