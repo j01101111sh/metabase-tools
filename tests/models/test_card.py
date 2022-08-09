@@ -1,6 +1,5 @@
 import pytest
 from metabase_tools import Card, MetabaseApi
-from tests.metabase_details import CREDENTIALS, HOST
 
 
 @pytest.fixture(scope='module')
