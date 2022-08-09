@@ -31,10 +31,10 @@ class Card(MetabaseGeneric):
     dataset_query: dict
     id: int
     display: str
-    last_edit_info: dict = Field(alias='last-edit-info')
+    last_edit_info: Optional[dict] = Field(alias='last-edit-info')
     visualization_settings: dict
     collection: Optional[Collection]
-    dataset: bool
+    dataset: Optional[int]
     created_at: datetime
     public_uuid: Optional[UUID]
 
