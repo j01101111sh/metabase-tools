@@ -45,7 +45,5 @@ jobs:
         run: poetry install --no-interaction --no-root
       - name: Install library
         run: poetry install --no-interaction
-      - name: Setup Metabase installation
-        run: poetry run python ./tests/configure_docker.py
       - name: Test with pytest
         run: poetry run pytest
