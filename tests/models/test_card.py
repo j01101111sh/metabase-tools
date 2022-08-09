@@ -14,6 +14,7 @@ def test_card_create_one(api):
             'table.pivot_column': 'QUANTITY',
             'table.cell_column': 'ID'
         },
+        'collection_id': 2,
         'name': 'Test Card',
         'dataset_query': {
             'type': 'native',
