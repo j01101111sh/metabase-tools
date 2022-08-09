@@ -12,7 +12,6 @@ class MetabaseApi:
                 token = {'token': f.read()}
             self._rest_adapter = RestAdapter(
                 metabase_url=metabase_url, credentials=token)
-            pass
         except FileNotFoundError:
             if credentials:
                 self._rest_adapter = RestAdapter(
