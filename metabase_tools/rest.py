@@ -138,6 +138,10 @@ class RestAdapter:
             self._logger.debug(log_line)
             return Result(status_code=response.status_code, message=response.reason, data=data_out)
 
+        if isinstance(new_data, dict) and 'errors' in new_data:
+            error_line = f'{response.status_code} - {response.reason} - {new_data["errors"]}'
+            self._logger.error(error_line)
+        else:
+            error_line = f'{response.status_code} - {response.reason}'
         self._logger.error(log_line)
-        raise RequestFailure(
-            f'{response.status_code} - {response.reason}')
+        raise RequestFailure(error_line)
