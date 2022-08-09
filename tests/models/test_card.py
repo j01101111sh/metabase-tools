@@ -50,6 +50,7 @@ def test_card_update_one(api):
     }
     change_result = Card.put(adapter=api, payloads=card_changes)
     assert isinstance(change_result, Card)
+    assert change_result.description == f'Updated {dt}'
 
 
 def test_card_list_all(api):
