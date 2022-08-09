@@ -5,7 +5,7 @@ from tests.metabase_details import CREDENTIALS, HOST
 
 @pytest.fixture(scope='module')
 def api():
-    return MetabaseApi(metabase_url=HOST, credentials=CREDENTIALS)
+    return MetabaseApi(metabase_url=HOST, credentials=CREDENTIALS, cache_token=True, token_path='./metabase.token')
 
 
 def test_card_create_one(api):
