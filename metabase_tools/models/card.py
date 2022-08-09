@@ -12,10 +12,10 @@ from .user import User
 
 
 class Card(MetabaseGeneric):
-    description: None
+    description: Optional[str]
     archived: bool
-    collection_position: None
-    table_id: None
+    collection_position: Optional[int]
+    table_id: Optional[int]
     result_metadata: list[dict]
     creator: User
     database_id: int
@@ -25,9 +25,9 @@ class Card(MetabaseGeneric):
     name: str
     creator_id: int
     updated_at: datetime
-    made_public_by_id: None
-    embedding_params: None
-    cache_ttl: None
+    made_public_by_id: Optional[int]
+    embedding_params: Optional[dict]
+    cache_ttl: Optional[str]
     dataset_query: dict
     id: int
     display: str
