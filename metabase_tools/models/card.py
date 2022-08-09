@@ -12,10 +12,10 @@ from .user import User
 
 
 class Card(MetabaseGeneric):
-    description: None
+    description: Optional[str]
     archived: bool
-    collection_position: None
-    table_id: None
+    collection_position: Optional[int]
+    table_id: Optional[int]
     result_metadata: list[dict]
     creator: User
     database_id: int
@@ -25,19 +25,27 @@ class Card(MetabaseGeneric):
     name: str
     creator_id: int
     updated_at: datetime
-    made_public_by_id: None
-    embedding_params: None
-    cache_ttl: None
+    made_public_by_id: Optional[int]
+    embedding_params: Optional[dict]
+    cache_ttl: Optional[str]
     dataset_query: dict
     id: int
     display: str
-    last_edit_info: dict = Field(alias='last-edit-info')
+    last_edit_info: Optional[dict] = Field(alias='last-edit-info')
     visualization_settings: dict
     collection: Optional[Collection]
-    dataset: bool
+    dataset: Optional[int]
     created_at: datetime
     public_uuid: Optional[UUID]
 
     @classmethod
     def get(cls, adapter: MetabaseApi, targets: Optional[int | list[int]] = None) -> Self | list[Self]:
         return super(Card, cls).get(adapter=adapter, endpoint='/card', targets=targets)
+
+    @classmethod
+    def post(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> Self | list[Self]:
+        return super(Card, cls).post(adapter=adapter, endpoint='/card', payloads=payloads)
+
+    @classmethod
+    def put(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> Self | list[Self]:
+        return super(Card, cls).put(adapter=adapter, endpoint='/card', payloads=payloads)

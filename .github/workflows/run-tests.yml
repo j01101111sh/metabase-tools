@@ -15,10 +15,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Download the docker image
-        run: docker pull metabase/metabase:v0.44.0
+      - name: Login to Docker hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Pull the docker image
+        run: docker pull joshnotable/metabase-tools:latest
       - name: Initialize docker container
-        run: docker run -d -p 3000:3000 --name metabase-python-testing metabase/metabase:v0.44.0
+        run: docker run -d -p 3000:3000 --name metabase-tools joshnotable/metabase-tools:latest
       - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
         uses: actions/setup-python@v3
         with:
@@ -40,7 +45,5 @@ jobs:
         run: poetry install --no-interaction --no-root
       - name: Install library
         run: poetry install --no-interaction
-      - name: Setup Metabase installation
-        run: poetry run python ./tests/configure_docker.py
       - name: Test with pytest
         run: poetry run pytest
