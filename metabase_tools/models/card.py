@@ -41,3 +41,7 @@ class Card(MetabaseGeneric):
     @classmethod
     def get(cls, adapter: MetabaseApi, targets: Optional[int | list[int]] = None) -> Self | list[Self]:
         return super(Card, cls).get(adapter=adapter, endpoint='/card', targets=targets)
+
+    @classmethod
+    def post(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> Self | list[Self]:
+        return super(Card, cls).post(adapter=adapter, endpoint='/card', payloads=payloads)

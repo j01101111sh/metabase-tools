@@ -49,3 +49,21 @@ class MetabaseGeneric(BaseModel):
             raise InvalidParameters('Invalid target(s)')
         # If response.data was empty, raise error
         raise EmptyDataReceived('No data returned')
+
+    @classmethod
+    def post(cls, adapter: MetabaseApi, endpoint: str, payloads: dict | list[dict]) -> Self | list[Self]:
+        # TODO validate params by creating a method in the child class
+        # TODO docstring
+        if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
+            # If a list of targets is provided, return a list of objects
+            pass
+        elif isinstance(payloads, dict):
+            # If a single target is provided, return that object
+            response = adapter.post(endpoint=endpoint, json=payloads)
+            if response.data and isinstance(response.data, dict):
+                return cls(**response.data)
+        else:
+            # If something other than dict or list[dict], raise error
+            raise InvalidParameters('Invalid target(s)')
+        # If response.data was empty or not a valid type, raise error
+        raise EmptyDataReceived('No data returned')
