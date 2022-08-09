@@ -4,8 +4,20 @@ from tests.metabase_details import CREDENTIALS, HOST
 
 
 @pytest.fixture(scope='module')
-def api():
-    return MetabaseApi(metabase_url=HOST, credentials=CREDENTIALS, cache_token=True, token_path='./metabase.token')
+def api(host, credentials):
+    return MetabaseApi(metabase_url=host, credentials=credentials, cache_token=True, token_path='./metabase.token')
+
+
+@pytest.fixture(scope='module')
+def credentials():
+    from tests.metabase_details import CREDENTIALS
+    return CREDENTIALS
+
+
+@pytest.fixture(scope='module')
+def host():
+    from tests.metabase_details import HOST
+    return HOST
 
 
 def test_card_create_one(api):
