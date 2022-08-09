@@ -28,7 +28,11 @@ class RestAdapter:
         # Determines what was supplied in credentials and authenticates accordingly
         if 'token' in credentials:
             self._logger.debug('Using supplied token for requests.')
-            self._token = credentials['token']
+            headers = {
+                'Content-Type': 'application/json',
+                'X-Metabase-Session': credentials['token']
+            }
+            self._session.headers.update(headers)
         elif 'username' in credentials and 'password' in credentials:
             self._logger.debug(
                 'Token not present, using username and password')
