@@ -8,7 +8,7 @@ from .models.collection import Collection
 
 
 class MetabaseTools(MetabaseApi):
-    def download_native_queries(self, save_path: str | None = None, save_file: str | None = None, root_folder: str = './', file_extension: str = '.sql') -> None:
+    def download_native_queries(self, save_path: str | None = None, save_file: str | None = None, root_folder: str = './', file_extension: str = '.sql') -> Path:
         # TODO make method generic to include other filters
         """Downloads all native queries on the connected server into a JSON file formatted for input into the upload_native_queries function
 
@@ -59,6 +59,9 @@ class MetabaseTools(MetabaseApi):
         p /= save_file
         with open(p, 'w', newline='', encoding='utf-8') as f:
             f.write(dumps(formatted_list, indent=2))
+
+        # Returns path to file saved
+        return p
 
     def upload_native_queries(self, mapping_path: str | None = None, dry_run: bool = True) -> None:
         """Uploads files 

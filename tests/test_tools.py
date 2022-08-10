@@ -1,3 +1,8 @@
+from datetime import datetime
+from pathlib import Path
+from time import gmtime
+from venv import create
+
 import pytest
 from metabase_tools import MetabaseTools
 
@@ -25,5 +30,10 @@ def test_auth(tools):
 
 
 def test_download_native_queries(tools):
-    tools.download_native_queries(save_path='./scratch/files/')
-    pass
+    f = tools.download_native_queries(save_path='./scratch/files/')
+    size = f.stat().st_size
+    create_time = f.stat().st_ctime
+    now = datetime.now().timestamp()
+    assert size > 0  # File size greater than 0
+    assert create_time - now < 2  # file was created in the last 2 seconds
+    f.unlink()  # remove created file
