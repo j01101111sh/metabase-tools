@@ -22,7 +22,7 @@ class Collection(MetabaseGeneric):
     can_write: Optional[bool]
 
     @classmethod
-    def get(cls, adapter: MetabaseApi, targets: Optional[int | list[int]] = None) -> Self | list[Self]:
+    def get(cls, adapter: MetabaseApi, targets: Optional[int | list[int]] = None) -> list[Self]:
         return super(Collection, cls).get(adapter=adapter, endpoint='/collection', targets=targets)
 
     @classmethod
@@ -38,7 +38,12 @@ class Collection(MetabaseGeneric):
         children = []
         for child in parent['children']:
             children.append(
-                {'id': child['id'], 'path': f'{path}/{parent["name"]}/{child["name"]}'.replace('//', '/')})
+                {
+                    'id': child['id'],
+                    'name': child['name'],
+                    'path': f'{path}/{parent["name"]}/{child["name"]}'.replace('//', '/')
+                }
+            )
             if 'children' in child and len(child['children']) > 0:
                 grandchildren = Collection.flatten_tree(
                     child, f'{path}/{parent["name"]}'.replace('//', '/'))
@@ -56,18 +61,23 @@ class Collection(MetabaseGeneric):
             if root_folder['personal_owner_id'] is not None:  # Skips personal folders
                 continue
             folders.append(
-                {'id': root_folder['id'], 'path': f'/{root_folder["name"]}'})
+                {
+                    'id': root_folder['id'],
+                    'name': root_folder['name'],
+                    'path': f'/{root_folder["name"]}'
+                }
+            )
             folders.extend(Collection.flatten_tree(root_folder))
         return folders
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> Self | list[Self]:
+    def post(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> list[Self]:
         return super(Collection, cls).post(adapter=adapter, endpoint='/collection', payloads=payloads)
 
     @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> Self | list[Self]:
+    def put(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> list[Self]:
         return super(Collection, cls).put(adapter=adapter, endpoint='/collection', payloads=payloads)
 
     @classmethod
-    def archive(cls, adapter: MetabaseApi, targets: int | list[int], unarchive=False) -> Self | list[Self]:
+    def archive(cls, adapter: MetabaseApi, targets: int | list[int], unarchive=False) -> list[Self]:
         return super(Collection, cls).archive(adapter=adapter, endpoint='/collection', targets=targets, unarchive=unarchive)
