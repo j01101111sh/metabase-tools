@@ -39,7 +39,8 @@ def test_card_create_one(api):
         'display': 'table'
     }
     new_card_obj = Card.post(adapter=api, payloads=new_card_def)
-    assert isinstance(new_card_obj, Card)
+    assert isinstance(new_card_obj, list)
+    assert all(isinstance(card, Card) for card in new_card_obj)
 
 
 def test_card_update_one(api):
@@ -49,8 +50,45 @@ def test_card_update_one(api):
         'description': f'Updated {dt}'
     }
     change_result = Card.put(adapter=api, payloads=card_changes)
-    assert isinstance(change_result, Card)
-    assert change_result.description == f'Updated {dt}'
+    assert isinstance(change_result, list)
+    assert all(isinstance(card, Card) for card in change_result)
+    assert all(card.description == f'Updated {dt}' for card in change_result)
+
+
+def test_card_archive_one(api):
+    card_to_archive = 1
+    change_result = Card.archive(adapter=api, targets=card_to_archive)
+    assert isinstance(change_result, list)
+    assert all(isinstance(card, Card) for card in change_result)
+    assert all(card.archived == True for card in change_result)
+
+
+def test_card_archive_list(api):
+    cards = Card.get(adapter=api)
+    cards_to_archive = [card.id for card in cards][:2]
+    change_results = Card.archive(adapter=api, targets=cards_to_archive)
+    assert isinstance(change_results, list)
+    assert all(isinstance(cr, Card) for cr in change_results)
+    assert all(cr.archived for cr in change_results)
+
+
+def test_card_unarchive_one(api):
+    card_to_archive = 1
+    change_result = Card.archive(
+        adapter=api, targets=card_to_archive, unarchive=True)
+    assert isinstance(change_result, list)
+    assert all(isinstance(card, Card) for card in change_result)
+    assert all(card.archived == False for card in change_result)
+
+
+def test_card_unarchive_list(api):
+    cards = Card.get(adapter=api)
+    cards_to_unarchive = [card.id for card in cards][:2]
+    change_results = Card.archive(
+        adapter=api, targets=cards_to_unarchive, unarchive=True)
+    assert isinstance(change_results, list)
+    assert all(isinstance(cr, Card) for cr in change_results)
+    assert all(not cr.archived for cr in change_results)
 
 
 def test_card_list_all(api):

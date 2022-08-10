@@ -1,2 +1,0 @@
-include versioneer.py
-include metabase_tools/_version.py
