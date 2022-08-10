@@ -29,8 +29,10 @@ def test_collection_list_all(api):
 def test_collection_tree(api):
     collection_tree = Collection.get_tree(adapter=api)
     assert isinstance(collection_tree, list)
+    assert all(isinstance(collection, dict) for collection in collection_tree)
 
 
 def test_flat_tree(api):
-    folders = Collection.get_flat_list(adapter=api)
-    pass
+    collections = Collection.get_flat_list(adapter=api)
+    assert isinstance(collections, list)
+    assert all(isinstance(collection, dict) for collection in collections)
