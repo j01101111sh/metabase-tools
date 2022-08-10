@@ -24,3 +24,13 @@ def test_collection_list_all(api):
     assert isinstance(collections, list)
     assert all(isinstance(collection, Collection)
                for collection in collections)
+
+
+def test_collection_tree(api):
+    collection_tree = Collection.get_tree(adapter=api)
+    assert isinstance(collection_tree, list)
+
+
+def test_flat_tree(api):
+    folders = Collection.get_flat_list(adapter=api)
+    pass
