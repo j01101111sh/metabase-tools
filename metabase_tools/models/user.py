@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from .generic import MetabaseGeneric
+from metabase_tools.models.generic import MetabaseGeneric
 
 
 class User(MetabaseGeneric):

@@ -1,7 +1,7 @@
 from typing import Optional
 
-from .models.result import Result
-from .rest import RestAdapter
+from metabase_tools.models.result import Result
+from metabase_tools.rest import RestAdapter
 
 
 class MetabaseApi:

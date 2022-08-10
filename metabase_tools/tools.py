@@ -2,9 +2,9 @@ from datetime import datetime
 from json import dumps
 from pathlib import Path
 
-from .metabase import MetabaseApi
-from .models.card import Card
-from .models.collection import Collection
+from metabase_tools.metabase import MetabaseApi
+from metabase_tools.models.card import Card
+from metabase_tools.models.collection import Collection
 
 
 class MetabaseTools(MetabaseApi):

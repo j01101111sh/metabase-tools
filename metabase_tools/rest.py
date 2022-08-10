@@ -5,9 +5,9 @@ from typing import Optional
 from requests import Response, Session
 from requests.exceptions import RequestException
 
-from .exceptions import (AuthenticationFailure, InvalidDataReceived,
-                         RequestFailure)
-from .models.result import Result
+from metabase_tools.exceptions import (AuthenticationFailure,
+                                       InvalidDataReceived, RequestFailure)
+from metabase_tools.models.result import Result
 
 
 class RestAdapter:

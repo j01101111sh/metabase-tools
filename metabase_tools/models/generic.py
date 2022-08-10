@@ -1,10 +1,9 @@
 from typing import Optional
 
+from metabase_tools.exceptions import EmptyDataReceived, InvalidParameters
+from metabase_tools.metabase import MetabaseApi
 from pydantic import BaseModel
 from typing_extensions import Self
-
-from ..exceptions import EmptyDataReceived, InvalidParameters
-from ..metabase import MetabaseApi
 
 
 class MetabaseGeneric(BaseModel):

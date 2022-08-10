@@ -1,10 +1,9 @@
 from typing import Optional
 
+from metabase_tools.exceptions import EmptyDataReceived
+from metabase_tools.metabase import MetabaseApi
+from metabase_tools.models.generic import MetabaseGeneric
 from typing_extensions import Self
-
-from ..exceptions import EmptyDataReceived
-from ..metabase import MetabaseApi
-from .generic import MetabaseGeneric
 
 
 class Collection(MetabaseGeneric):
