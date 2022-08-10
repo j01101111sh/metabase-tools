@@ -19,20 +19,70 @@ def host():
     return HOST
 
 
-def test_collection_list_all(api):
+def test_collection_create_one(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_collection_create_many(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_collection_update_one(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_collection_update_many(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_collection_archive_one(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_collection_archive_many(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_collection_unarchive_one(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_collection_unarchive_many(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_collection_get_one(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_collection_get_many(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_collection_get_all(api: MetabaseApi):
     collections = Collection.get(adapter=api)
     assert isinstance(collections, list)
     assert all(isinstance(collection, Collection)
                for collection in collections)
 
 
-def test_collection_tree(api):
+def test_get_collection_tree(api: MetabaseApi):
     collection_tree = Collection.get_tree(adapter=api)
     assert isinstance(collection_tree, list)
     assert all(isinstance(collection, dict) for collection in collection_tree)
 
 
-def test_flat_tree(api):
+def test_flatten_tree(api: MetabaseApi):
     collections = Collection.get_flat_list(adapter=api)
     assert isinstance(collections, list)
     assert all(isinstance(collection, dict) for collection in collections)

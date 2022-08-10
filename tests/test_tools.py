@@ -5,28 +5,30 @@ from metabase_tools import MetabaseTools
 
 
 @pytest.fixture(scope='module')
-def tools(host, credentials):
-    return MetabaseTools(metabase_url=host, credentials=credentials, cache_token=True, token_path='./metabase.token')
+def tools(host: str, credentials: dict) -> MetabaseTools:
+    tools = MetabaseTools(metabase_url=host, credentials=credentials,
+                          cache_token=True, token_path='./metabase.token')
+    return tools
 
 
 @pytest.fixture(scope='module')
-def credentials():
+def credentials() -> dict:
     from tests.metabase_details import CREDENTIALS
     return CREDENTIALS
 
 
 @pytest.fixture(scope='module')
-def host():
+def host() -> str:
     from tests.metabase_details import HOST
     return HOST
 
 
-def test_auth(tools):
+def test_auth(tools: MetabaseTools):
     token = tools._rest_adapter.get_token()
     assert token is not None
 
 
-def test_download_native_queries(tools):
+def test_download_native_queries(tools: MetabaseTools):
     f = tools.download_native_queries(save_path='./scratch/files/')
     size = f.stat().st_size
     create_time = f.stat().st_ctime

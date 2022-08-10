@@ -21,7 +21,7 @@ def host():
     return HOST
 
 
-def test_card_create_one(api):
+def test_card_create_one(api: MetabaseApi):
     new_card_def = {
         'visualization_settings': {
             'table.pivot_column': 'QUANTITY',
@@ -43,7 +43,12 @@ def test_card_create_one(api):
     assert all(isinstance(card, Card) for card in new_card_obj)
 
 
-def test_card_update_one(api):
+def test_card_create_many(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_card_update_one(api: MetabaseApi):
     dt = datetime.now().isoformat(timespec='seconds')
     card_changes = {
         'id': 1,
@@ -55,7 +60,12 @@ def test_card_update_one(api):
     assert all(card.description == f'Updated {dt}' for card in change_result)
 
 
-def test_card_archive_one(api):
+def test_card_update_many(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_card_archive_one(api: MetabaseApi):
     card_to_archive = 1
     change_result = Card.archive(adapter=api, targets=card_to_archive)
     assert isinstance(change_result, list)
@@ -63,7 +73,7 @@ def test_card_archive_one(api):
     assert all(card.archived == True for card in change_result)
 
 
-def test_card_archive_list(api):
+def test_card_archive_many(api: MetabaseApi):
     cards = Card.get(adapter=api)
     cards_to_archive = [card.id for card in cards][:2]
     change_results = Card.archive(adapter=api, targets=cards_to_archive)
@@ -72,7 +82,7 @@ def test_card_archive_list(api):
     assert all(cr.archived for cr in change_results)
 
 
-def test_card_unarchive_one(api):
+def test_card_unarchive_one(api: MetabaseApi):
     card_to_archive = 1
     change_result = Card.archive(
         adapter=api, targets=card_to_archive, unarchive=True)
@@ -81,7 +91,7 @@ def test_card_unarchive_one(api):
     assert all(card.archived == False for card in change_result)
 
 
-def test_card_unarchive_list(api):
+def test_card_unarchive_many(api: MetabaseApi):
     cards = Card.get(adapter=api)
     cards_to_unarchive = [card.id for card in cards][:2]
     change_results = Card.archive(
@@ -91,7 +101,17 @@ def test_card_unarchive_list(api):
     assert all(not cr.archived for cr in change_results)
 
 
-def test_card_list_all(api):
+def test_card_get_one(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_card_get_many(api: MetabaseApi):
+    # TODO
+    pass
+
+
+def test_card_get_all(api: MetabaseApi):
     cards = Card.get(adapter=api)
     assert isinstance(cards, list)
     assert all(isinstance(card, Card) for card in cards)
