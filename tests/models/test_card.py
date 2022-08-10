@@ -73,7 +73,7 @@ def test_card_archive_list(api):
 
 
 def test_card_unarchive_one(api):
-    card_to_archive = 2
+    card_to_archive = 1
     change_result = Card.archive(
         adapter=api, targets=card_to_archive, unarchive=True)
     assert isinstance(change_result, list)
