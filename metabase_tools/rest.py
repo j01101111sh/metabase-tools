@@ -105,6 +105,10 @@ class RestAdapter:
         except (ValueError, JSONDecodeError) as e:
             if response.status_code == 204:
                 data = None
+            elif response.status_code == 401:
+                self._logger.error(log_line_post.format(False, None, e))
+                raise AuthenticationFailure(
+                    f'{response.status_code} - {response.reason}')
             else:
                 self._logger.error(log_line_post.format(False, None, e))
                 raise InvalidDataReceived('Bad JSON in response') from e
