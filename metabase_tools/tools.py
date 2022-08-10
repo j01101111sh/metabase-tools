@@ -63,7 +63,7 @@ class MetabaseTools(MetabaseApi):
         # Returns path to file saved
         return p
 
-    def upload_native_queries(self, mapping_path: str | None = None, dry_run: bool = True) -> None:
+    def upload_native_queries(self, mapping_path: Path | str, dry_run: bool = True) -> None:
         """Uploads files 
 
         Parameters
