@@ -216,18 +216,10 @@ brotli = ["brotlicffi (>=0.8.0)", "brotli (>=1.0.9)", "brotlipy (>=0.6.0)"]
 secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
-[[package]]
-name = "versioneer"
-version = "0.22"
-description = "Easy VCS-based management of project version strings"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "bf1574d42123ebaec6a8b47c98140eb01367dce20a99d62384426fb1ca8a5c74"
+content-hash = "0522a86c575f39201ba67009d448772b83e8c30df2ed65e504e8665953c6fd19"
 
 [metadata.files]
 atomicwrites = [
@@ -341,8 +333,4 @@ typing-extensions = [
 urllib3 = [
     {file = "urllib3-1.26.11-py2.py3-none-any.whl", hash = "sha256:c33ccba33c819596124764c23a97d25f32b28433ba0dedeb77d873a38722c9bc"},
     {file = "urllib3-1.26.11.tar.gz", hash = "sha256:ea6e8fb210b19d950fab93b60c9009226c63a28808bc8386e05301e25883ac0a"},
-]
-versioneer = [
-    {file = "versioneer-0.22-py3-none-any.whl", hash = "sha256:dee243f8f084351a1d79eabefc2e55d58aa8a2af086a7e41602a6aafbd972a34"},
-    {file = "versioneer-0.22.tar.gz", hash = "sha256:9f0e9a2cb5ef521cbfd104d43a208dd9124dfb4accfa72d694e0d0430a0142bc"},
 ]
