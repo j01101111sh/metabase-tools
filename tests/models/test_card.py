@@ -56,7 +56,7 @@ def test_card_update_one(api):
 
 
 def test_card_archive_one(api):
-    card_to_archive = 2
+    card_to_archive = 1
     change_result = Card.archive(adapter=api, targets=card_to_archive)
     assert isinstance(change_result, list)
     assert all(isinstance(card, Card) for card in change_result)
@@ -64,7 +64,8 @@ def test_card_archive_one(api):
 
 
 def test_card_archive_list(api):
-    cards_to_archive = [2, 3]
+    cards = Card.get(adapter=api)
+    cards_to_archive = [card.id for card in cards][:2]
     change_results = Card.archive(adapter=api, targets=cards_to_archive)
     assert isinstance(change_results, list)
     assert all(isinstance(cr, Card) for cr in change_results)
@@ -81,9 +82,10 @@ def test_card_unarchive_one(api):
 
 
 def test_card_unarchive_list(api):
-    cards_to_archive = [2, 3]
+    cards = Card.get(adapter=api)
+    cards_to_unarchive = [card.id for card in cards][:2]
     change_results = Card.archive(
-        adapter=api, targets=cards_to_archive, unarchive=True)
+        adapter=api, targets=cards_to_unarchive, unarchive=True)
     assert isinstance(change_results, list)
     assert all(isinstance(cr, Card) for cr in change_results)
     assert all(not cr.archived for cr in change_results)
