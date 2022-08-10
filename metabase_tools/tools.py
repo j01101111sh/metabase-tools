@@ -63,16 +63,22 @@ class MetabaseTools(MetabaseApi):
         # Returns path to file saved
         return p
 
-    def upload_native_queries(self, mapping_path: Path | str, dry_run: bool = True) -> None:
-        """Uploads files 
+    def upload_native_queries(self, mapping_path: Path | str, dry_run: bool = True, error_on_failure: bool = False) -> list[dict]:
+        """Uploads files
 
         Parameters
         ----------
-        mapping_path : str | None, optional
+        mapping_path : Path | str
             Path to the mapping configuration file, by default None
         dry_run : bool, optional
             Execute task as a dry run (i.e. do not make any changes), by default True
+
+        Returns
+        -------
+        list[dict]
+            list of dicts with results of upload
         """
+
         # Determine mapping path
 
         # Open mapping configuration file
@@ -91,3 +97,5 @@ class MetabaseTools(MetabaseApi):
         # Push changes back to Metabase API
         if not dry_run:
             pass
+
+        return [{'id': 1, 'is_success': False}]
