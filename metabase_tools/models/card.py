@@ -2,12 +2,13 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
+from pydantic.fields import Field
+from typing_extensions import Self
+
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.collection import Collection
 from metabase_tools.models.generic import MetabaseGeneric
 from metabase_tools.models.user import User
-from pydantic.fields import Field
-from typing_extensions import Self
 
 
 class Card(MetabaseGeneric):
