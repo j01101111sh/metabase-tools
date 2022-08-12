@@ -118,7 +118,7 @@ class RestAdapter:
         """
         full_api_url = self.metabase_url + endpoint
 
-        log_line_post = "success={}, status_code={}, message={}"
+        log_line_post = "success=%s, status_code=%s, message=%s"
         response = self._make_request(
             method=http_method, url=full_api_url, params=params, json=json
         )
@@ -129,12 +129,16 @@ class RestAdapter:
             if response.status_code == 204:
                 data = None
             elif response.status_code == 401:
-                self._logger.error(log_line_post, False, None, error_raised)
+                self._logger.error(
+                    log_line_post, False, response.status_code, error_raised
+                )
                 raise AuthenticationFailure(
                     f"{response.status_code} - {response.reason}"
                 ) from error_raised
             else:
-                self._logger.error(log_line_post, False, None, error_raised)
+                self._logger.error(
+                    log_line_post, False, response.status_code, error_raised
+                )
                 raise InvalidDataReceived("Bad JSON in response") from error_raised
 
         # If status_code in 200-299 range, return Result, else raise exception
