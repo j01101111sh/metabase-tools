@@ -67,3 +67,13 @@ def test_auth_token_fail(host):
             metabase_url=host, credentials=bad_credentials, token_path="./missing.token"
         )
         test_data = api.do(http_method="GET", endpoint="/user/current")
+
+
+def test_auth_token_file_success(host, token):
+    api = MetabaseApi(metabase_url=host)
+    assert api.get_token()
+
+
+def test_auth_token_file_fail(host):
+    with pytest.raises(AuthenticationFailure):
+        api = MetabaseApi(metabase_url=host, token_path="./missing.token")
