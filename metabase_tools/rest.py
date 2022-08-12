@@ -41,7 +41,7 @@ class RestAdapter:
             self._authenticate(credentials=credentials)
         else:
             raise AuthenticationFailure(
-                "Credentials provided do not contain either [username and password] or [token]"
+                "Credentials missing [username and password] or [token]"
             )
 
     def _authenticate(self, credentials: dict):
@@ -51,11 +51,14 @@ class RestAdapter:
             post_request = self._session.post(
                 f"{self.metabase_url}/session", json=credentials
             )
-        except RequestException as e:
-            self._logger.error(str(e))
-            raise RequestFailure("Request failed during authentication") from e
+        except RequestException as error_raised:
+            self._logger.error(str(error_raised))
+            raise RequestFailure(
+                "Request failed during authentication"
+            ) from error_raised
 
-        if post_request.status_code == 200:
+        status_code = post_request.status_code
+        if status_code == 200:
             headers = {
                 "Content-Type": "application/json",
                 "X-Metabase-Session": post_request.json()["id"],
@@ -63,8 +66,9 @@ class RestAdapter:
             self._session.headers.update(headers)
             self._logger.debug("Authentication successful")
         else:
+            reason = post_request.reason
             raise AuthenticationFailure(
-                f"Authentication failed. {post_request.status_code} - {post_request.reason}"
+                f"Authentication failed. {status_code} - {reason}"
             )
 
     def get_token(self) -> str:
@@ -77,7 +81,7 @@ class RestAdapter:
         params: Optional[dict] = None,
         json: Optional[dict] = None,
     ) -> Response:
-        """Log HTTP params and perform an HTTP request, catching and re-raising any exceptions
+        """Perform an HTTP request, catching and re-raising any exceptions
         Args:
             method (str): GET or POST
             url (str): URL endpoint
@@ -92,9 +96,9 @@ class RestAdapter:
             return self._session.request(
                 method=method, url=url, params=params, json=json
             )
-        except RequestException as e:
-            self._logger.error(str(e))
-            raise RequestFailure("Request failed") from e
+        except RequestException as error_raised:
+            self._logger.error(str(error_raised))
+            raise RequestFailure("Request failed") from error_raised
 
     def do(
         self,
@@ -121,26 +125,24 @@ class RestAdapter:
         # Deserialize JSON output to Python object, or return failed Result on exception
         try:
             data = response.json()
-        except (ValueError, JSONDecodeError) as e:
+        except (ValueError, JSONDecodeError) as error_raised:
             if response.status_code == 204:
                 data = None
             elif response.status_code == 401:
-                self._logger.error(log_line_post.format(False, None, e))
+                self._logger.error(log_line_post, False, None, error_raised)
                 raise AuthenticationFailure(
                     f"{response.status_code} - {response.reason}"
-                )
+                ) from error_raised
             else:
-                self._logger.error(log_line_post.format(False, None, e))
-                raise InvalidDataReceived("Bad JSON in response") from e
+                self._logger.error(log_line_post, False, None, error_raised)
+                raise InvalidDataReceived("Bad JSON in response") from error_raised
 
-        # If status_code in 200-299 range, return success Result with data, otherwise raise exception
+        # If status_code in 200-299 range, return Result, else raise exception
         is_success = 299 >= response.status_code >= 200
-        log_line = log_line_post.format(
-            is_success, response.status_code, response.reason
-        )
-
         if is_success:
-            self._logger.debug(log_line)
+            self._logger.debug(
+                log_line_post, is_success, response.status_code, response.reason
+            )
             return Result(
                 status_code=response.status_code, message=response.reason, data=data
             )
@@ -152,5 +154,5 @@ class RestAdapter:
             self._logger.error(error_line)
         else:
             error_line = f"{response.status_code} - {response.reason}"
-        self._logger.error(log_line)
+        self._logger.error(log_line_post)
         raise RequestFailure(error_line)

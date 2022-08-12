@@ -16,7 +16,7 @@ class MetabaseTools(MetabaseApi):
         file_extension: str = ".sql",
     ) -> Path:
         # TODO make method generic to include other filters
-        """Downloads all native queries on the connected server into a JSON file formatted for input into the upload_native_queries function
+        """Downloads all native queries into a JSON file
 
         Parameters
         ----------
@@ -24,9 +24,9 @@ class MetabaseTools(MetabaseApi):
             Name of the file to save results to, by default None
         """
         # Determine save path
-        dt = datetime.now().strftime("%y%m%dT%H%M%S")
-        save_path = save_path or f"."
-        save_file = save_file or f"mapping_{dt}.json"
+        timestamp = datetime.now().strftime("%y%m%dT%H%M%S")
+        save_path = save_path or "."
+        save_file = save_file or f"mapping_{timestamp}.json"
 
         # Download list of cards from Metabase API
         cards = Card.get(adapter=self)
@@ -52,14 +52,14 @@ class MetabaseTools(MetabaseApi):
             formatted_list["cards"].append(new_card)
 
         # Save formatted + filtered list
-        p = Path(f"{save_path}")
-        p.mkdir(parents=True, exist_ok=True)
-        p /= save_file
-        with open(p, "w", newline="", encoding="utf-8") as f:
-            f.write(dumps(formatted_list, indent=2))
+        path = Path(f"{save_path}")
+        path.mkdir(parents=True, exist_ok=True)
+        path /= save_file
+        with open(path, "w", newline="", encoding="utf-8") as file:
+            file.write(dumps(formatted_list, indent=2))
 
         # Returns path to file saved
-        return p
+        return path
 
     def upload_native_queries(
         self,
