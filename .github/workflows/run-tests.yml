@@ -45,5 +45,7 @@ jobs:
         run: poetry install --no-interaction --no-root
       - name: Install library
         run: poetry install --no-interaction
+      - name: Code linting
+        run: poetry run black .
       - name: Test with pytest
         run: poetry run pytest
