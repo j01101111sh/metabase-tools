@@ -139,7 +139,9 @@ class RestAdapter:
                 self._logger.error(
                     log_line_post, False, response.status_code, error_raised
                 )
-                raise InvalidDataReceived("Bad JSON in response") from error_raised
+                raise InvalidDataReceived(
+                    f"{response.status_code} - {response.reason}"
+                ) from error_raised
 
         # If status_code in 200-299 range, return Result, else raise exception
         is_success = 299 >= response.status_code >= 200
