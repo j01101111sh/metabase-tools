@@ -31,7 +31,7 @@ def host() -> str:
 
 
 def test_auth(tools: MetabaseTools):
-    token = tools._rest_adapter.get_token()
+    token = tools.get_token()
     assert token is not None
 
 

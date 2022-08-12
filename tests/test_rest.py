@@ -1,7 +1,8 @@
 import pytest
-from metabase_tools import MetabaseApi, RestAdapter
-from metabase_tools.exceptions import AuthenticationFailure
 from typing_extensions import assert_never
+
+from metabase_tools import MetabaseApi
+from metabase_tools.exceptions import AuthenticationFailure
 
 
 @pytest.fixture
@@ -33,19 +34,21 @@ def token(host, credentials):
 
 
 def test_auth_credential_success(host, credentials):
-    rest_adapter = RestAdapter(metabase_url=host, credentials=credentials)
-    assert rest_adapter.get_token() is not None
+    api = MetabaseApi(metabase_url=host, credentials=credentials)
+    assert api.get_token() is not None
 
 
 def test_auth_credential_fail(host, email):
     bad_credentials = {"username": email, "password": "badpass"}
     with pytest.raises(AuthenticationFailure):
-        rest_adapter = RestAdapter(metabase_url=host, credentials=bad_credentials)
+        api = MetabaseApi(
+            metabase_url=host, credentials=bad_credentials, token_path="./missing.token"
+        )
 
 
 def test_auth_token_success(host, token, email):
-    rest_adapter = RestAdapter(metabase_url=host, credentials=token)
-    test_response = rest_adapter.do(http_method="GET", endpoint="/user/current")
+    api = MetabaseApi(metabase_url=host, credentials=token)
+    test_response = api.do(http_method="GET", endpoint="/user/current")
     assert test_response.status_code == 200
     if isinstance(test_response.data, dict):
         assert test_response.data["email"] == email
@@ -56,5 +59,7 @@ def test_auth_token_success(host, token, email):
 def test_auth_token_fail(host):
     bad_credentials = {"token": "badtoken"}
     with pytest.raises(AuthenticationFailure):
-        rest_adapter = RestAdapter(metabase_url=host, credentials=bad_credentials)
-        test_data = rest_adapter.do(http_method="GET", endpoint="/user/current")
+        api = MetabaseApi(
+            metabase_url=host, credentials=bad_credentials, token_path="./missing.token"
+        )
+        test_data = api.do(http_method="GET", endpoint="/user/current")
