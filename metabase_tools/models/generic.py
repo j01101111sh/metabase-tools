@@ -35,11 +35,18 @@ class MetabaseGeneric(BaseModel):
             No data is received from the API
         """
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
-            # If a list of targets is provided, return a list of objects
-            pass
+            results = []
+            for target in targets:
+                response = adapter.get(endpoint=f"{endpoint}/{target}")
+                if response.data and isinstance(response.data, dict):
+                    results.append(cls(**response.data))
+            if len(results) > 0:
+                return results
         elif isinstance(targets, int):
             # If a single target is provided, return that object
-            pass
+            response = adapter.get(endpoint=f"{endpoint}/{targets}")
+            if response.data and isinstance(response.data, dict):
+                return [cls(**response.data)]
         elif targets is None:
             # If no targets are provided, all objects of that type should be returned
             response = adapter.get(endpoint=endpoint)
