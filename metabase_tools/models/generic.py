@@ -58,9 +58,16 @@ class MetabaseGeneric(BaseModel):
     ) -> list[Self]:
         # TODO validate params by creating a method in the child class
         # TODO docstring
+        # TODO refactor for DRY
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
-            pass
+            results = []
+            for payload in payloads:
+                response = adapter.post(endpoint=f"{endpoint}", json=payload)
+                if response.data and isinstance(response.data, dict):
+                    results.append(cls(**response.data))
+            if len(results) > 0:
+                return results
         elif isinstance(payloads, dict):
             # If a single target is provided, return that object
             response = adapter.post(endpoint=endpoint, json=payloads)
@@ -82,7 +89,7 @@ class MetabaseGeneric(BaseModel):
             results = []
             for payload in payloads:
                 response = adapter.put(
-                    endpoint=f'{endpoint}/{payload["id"]}', json=payload
+                    endpoint=f"{endpoint}/{payload['id']}", json=payload
                 )
                 if response.data and isinstance(response.data, dict):
                     results.append(cls(**response.data))
