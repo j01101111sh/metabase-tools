@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import pytest
+
 from metabase_tools import Card, MetabaseApi
 
 
@@ -124,13 +125,17 @@ def test_card_unarchive_many(api: MetabaseApi):
 
 
 def test_card_get_one(api: MetabaseApi):
-    # TODO
-    pass
+    card_to_get = 1
+    card = Card.get(adapter=api, targets=card_to_get)
+    assert isinstance(card, list)
+    assert all(isinstance(c, Card) for c in card)
 
 
 def test_card_get_many(api: MetabaseApi):
-    # TODO
-    pass
+    cards_to_get = [1, 1]
+    cards = Card.get(adapter=api, targets=cards_to_get)
+    assert isinstance(cards, list)
+    assert all(isinstance(card, Card) for card in cards)
 
 
 def test_card_get_all(api: MetabaseApi):
