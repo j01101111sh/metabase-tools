@@ -2,20 +2,27 @@ import pytest
 from metabase_tools import Collection, MetabaseApi
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def api(host, credentials):
-    return MetabaseApi(metabase_url=host, credentials=credentials, cache_token=True, token_path='./metabase.token')
+    return MetabaseApi(
+        metabase_url=host,
+        credentials=credentials,
+        cache_token=True,
+        token_path="./metabase.token",
+    )
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def credentials():
     from tests.metabase_details import CREDENTIALS
+
     return CREDENTIALS
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def host():
     from tests.metabase_details import HOST
+
     return HOST
 
 
@@ -72,8 +79,7 @@ def test_collection_get_many(api: MetabaseApi):
 def test_collection_get_all(api: MetabaseApi):
     collections = Collection.get(adapter=api)
     assert isinstance(collections, list)
-    assert all(isinstance(collection, Collection)
-               for collection in collections)
+    assert all(isinstance(collection, Collection) for collection in collections)
 
 
 def test_get_collection_tree(api: MetabaseApi):
