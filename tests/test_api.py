@@ -34,7 +34,9 @@ def token(host, credentials):
 
 
 def test_auth_credential_success(host, credentials):
-    api = MetabaseApi(metabase_url=host, credentials=credentials)
+    api = MetabaseApi(
+        metabase_url=host, credentials=credentials, token_path="./missing.token"
+    )
     assert api.get_token() is not None
 
 
@@ -47,7 +49,9 @@ def test_auth_credential_fail(host, email):
 
 
 def test_auth_token_success(host, token, email):
-    api = MetabaseApi(metabase_url=host, credentials=token)
+    api = MetabaseApi(
+        metabase_url=host, credentials=token, token_path="./missing.token"
+    )
     test_response = api.do(http_method="GET", endpoint="/user/current")
     assert test_response.status_code == 200
     if isinstance(test_response.data, dict):
@@ -63,3 +67,13 @@ def test_auth_token_fail(host):
             metabase_url=host, credentials=bad_credentials, token_path="./missing.token"
         )
         test_data = api.do(http_method="GET", endpoint="/user/current")
+
+
+def test_auth_token_file_success(host, token):
+    api = MetabaseApi(metabase_url=host)
+    assert api.get_token()
+
+
+def test_auth_token_file_fail(host):
+    with pytest.raises(AuthenticationFailure):
+        api = MetabaseApi(metabase_url=host, token_path="./missing.token")
