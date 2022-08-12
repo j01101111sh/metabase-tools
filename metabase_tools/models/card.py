@@ -5,10 +5,10 @@ from uuid import UUID
 from pydantic.fields import Field
 from typing_extensions import Self
 
-from ..metabase import MetabaseApi
-from .collection import Collection
-from .generic import MetabaseGeneric
-from .user import User
+from metabase_tools.metabase import MetabaseApi
+from metabase_tools.models.collection import Collection
+from metabase_tools.models.generic import MetabaseGeneric
+from metabase_tools.models.user import User
 
 
 class Card(MetabaseGeneric):
@@ -31,7 +31,7 @@ class Card(MetabaseGeneric):
     dataset_query: dict
     id: int
     display: str
-    last_edit_info: Optional[dict] = Field(alias='last-edit-info')
+    last_edit_info: Optional[dict] = Field(alias="last-edit-info")
     visualization_settings: dict
     collection: Optional[Collection]
     dataset: Optional[int]
@@ -39,17 +39,27 @@ class Card(MetabaseGeneric):
     public_uuid: Optional[UUID]
 
     @classmethod
-    def get(cls, adapter: MetabaseApi, targets: Optional[int | list[int]] = None) -> list[Self]:
-        return super(Card, cls).get(adapter=adapter, endpoint='/card', targets=targets)
+    def get(
+        cls, adapter: MetabaseApi, targets: Optional[int | list[int]] = None
+    ) -> list[Self]:
+        return super(Card, cls).get(adapter=adapter, endpoint="/card", targets=targets)
 
     @classmethod
     def post(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> list[Self]:
-        return super(Card, cls).post(adapter=adapter, endpoint='/card', payloads=payloads)
+        return super(Card, cls).post(
+            adapter=adapter, endpoint="/card", payloads=payloads
+        )
 
     @classmethod
     def put(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> list[Self]:
-        return super(Card, cls).put(adapter=adapter, endpoint='/card', payloads=payloads)
+        return super(Card, cls).put(
+            adapter=adapter, endpoint="/card", payloads=payloads
+        )
 
     @classmethod
-    def archive(cls, adapter: MetabaseApi, targets: int | list[int], unarchive=False) -> list[Self]:
-        return super(Card, cls).archive(adapter=adapter, endpoint='/card', targets=targets, unarchive=unarchive)
+    def archive(
+        cls, adapter: MetabaseApi, targets: int | list[int], unarchive=False
+    ) -> list[Self]:
+        return super(Card, cls).archive(
+            adapter=adapter, endpoint="/card", targets=targets, unarchive=unarchive
+        )
