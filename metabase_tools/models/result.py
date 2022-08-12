@@ -8,7 +8,7 @@ class Result:
 
     status_code: int
     message: str = ""
-    data: list[dict] | dict | None
+    data: list[dict] | dict | None  # TODO make Result.data always a list of dicts
 
     def __init__(
         self, status_code: int, message: str = "", data: list[dict] | dict | None = None
