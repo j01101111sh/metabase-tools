@@ -1,9 +1,10 @@
 from typing import Optional
 
+from typing_extensions import Self
+
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.generic import MetabaseGeneric
-from typing_extensions import Self
 
 
 class Collection(MetabaseGeneric):
@@ -17,7 +18,7 @@ class Collection(MetabaseGeneric):
     location: Optional[str]
     namespace: Optional[int]
     effective_location: Optional[str]
-    effective_ancestors: Optional[list[str]]
+    effective_ancestors: Optional[list[dict]]
     can_write: Optional[bool]
 
     @classmethod
