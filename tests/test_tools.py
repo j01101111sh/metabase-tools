@@ -50,6 +50,7 @@ def test_download_native_queries(tools: MetabaseTools):
 
 def test_upload_native_queries_dry_run(tools: MetabaseTools):
     mapping_path = Path("./dev/files/mapping.json")
+    # TODO Add a file move and a query change to ensure there are updates to make
     results = tools.upload_native_queries(mapping_path=mapping_path, dry_run=True)
     assert isinstance(results, list)
     assert all(isinstance(result, dict) for result in results)
@@ -58,6 +59,7 @@ def test_upload_native_queries_dry_run(tools: MetabaseTools):
 
 def test_upload_native_queries_actual(tools: MetabaseTools):
     mapping_path = Path("./dev/files/mapping.json")
+    # TODO Add a file move and a query change to ensure there are updates to make
     results = tools.upload_native_queries(mapping_path=mapping_path, dry_run=False)
     assert isinstance(results, list)
     assert all(isinstance(result, dict) for result in results)
