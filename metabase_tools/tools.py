@@ -115,6 +115,7 @@ class MetabaseTools(MetabaseApi):
 
         # Iterate through mapping file
         updates = []
+        collections = Collection.get_flat_list(adapter=self)
         for card in cards:
             card_path = Path(f"{root_folder}/{card['path']}/{card['name']}.{extension}")
             if card_path.exists():
@@ -126,7 +127,6 @@ class MetabaseTools(MetabaseApi):
                     prod_code = card_obj.dataset_query["native"]["query"]
                     code_update = dev_code != prod_code
                     # Verify location of card
-                    collections = Collection.get_flat_list(adapter=self)
                     dev_loc = card["path"]
                     prod_loc = None
                     for coll in collections:
@@ -152,9 +152,33 @@ class MetabaseTools(MetabaseApi):
                         updates.append(new_def)
                 else:
                     # Check if a card with the same name exists in the listed location
-                    # If exists, update card
-                    # Elif does not exist, create card
-                    pass
+                    coll_id = "root"
+                    for coll in collections:
+                        if card["path"] == coll["path"]:
+                            coll_id = coll["id"]
+                            break
+                    coll_contents = self.get(endpoint=f"/collection/{coll_id}/items")
+                    card_id = None
+                    if coll_contents.data:
+                        for item in coll_contents.data:
+                            if item["model"] == "card" and item["name"] == card["name"]:
+                                card_id = item["id"]
+                                card["id"] = card_id  # update mapping dict
+                                break
+
+                    if card_id:  # update card
+                        card_obj = Card.get(adapter=self, targets=[card_id])[0]
+                        with open(card_path, "r", newline="", encoding="utf-8") as file:
+                            dev_code = file.read()
+                        prod_code = card_obj.dataset_query["native"]["query"]
+                        code_update = dev_code != prod_code
+                        if code_update:
+                            new_query = card_obj.dataset_query
+                            new_query["native"]["query"] = dev_code
+                            new_def = {"id": card["id"], "dataset_query": new_query}
+                            updates.append(new_def)
+                    else:  # create card
+                        pass
             else:
                 raise FileNotFoundError(f"{card_path} not found")
 
@@ -168,5 +192,8 @@ class MetabaseTools(MetabaseApi):
                     results.append(
                         {"id": result.id, "name": result.name, "is_success": True}
                     )
+
+            with open(mapping_path, "w") as file:
+                file.write(dumps(mapping, indent=2))
 
         return results
