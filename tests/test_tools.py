@@ -1,5 +1,7 @@
 from datetime import datetime
 from pathlib import Path
+from random import choice
+from string import ascii_lowercase
 
 import pytest
 
@@ -47,18 +49,16 @@ def test_download_native_queries(tools: MetabaseTools):
     assert create_time - now < 2  # file was created in the last 2 seconds
 
 
-def test_upload_native_queries_dry_run(tools: MetabaseTools):
+def test_upload_native_queries(tools: MetabaseTools):
     mapping_path = Path("./tests/data/mapping.json")
-    results = tools.upload_native_queries(mapping_path=mapping_path, dry_run=True)
-    assert isinstance(results, list)
-    assert all(isinstance(result, dict) for result in results)
-    assert all(result["is_success"] for result in results)
-
-
-def test_upload_native_queries_actual(tools: MetabaseTools):
-    mapping_path = Path("./tests/data/mapping.json")
-    # TODO Add a file move and a query change to ensure there are updates to make
+    test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
+    with open(test_card_path, "r", newline="", encoding="utf-8") as file:
+        current = file.read()
+    with open(test_card_path, "a", newline="", encoding="utf-8") as file:
+        file.write("\n-- " + "".join(choice(ascii_lowercase) for x in range(6)))
     results = tools.upload_native_queries(mapping_path=mapping_path, dry_run=False)
+    with open(test_card_path, "w", newline="", encoding="utf-8") as file:
+        file.write(current)
     assert isinstance(results, list)
     assert all(isinstance(result, dict) for result in results)
     assert all(result["is_success"] for result in results)
