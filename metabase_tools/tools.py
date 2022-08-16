@@ -62,8 +62,13 @@ class MetabaseTools(MetabaseApi):
             sql_path = Path(f"{save_path}/{new_card['path']}")
             sql_path.mkdir(parents=True, exist_ok=True)
             sql_path /= f"{new_card['name']}.{file_extension}"
-            with open(sql_path, "w", newline="", encoding="utf-8") as file:
-                file.write(sql_code)
+            try:
+                with open(sql_path, "w", newline="", encoding="utf-8") as file:
+                    file.write(sql_code)
+            except OSError as error:
+                # TODO log invalid file names
+                # Raised when an invalid file name is encountered
+                continue
 
         # Save formatted + filtered list
         mapping_path = Path(f"{save_path}")
