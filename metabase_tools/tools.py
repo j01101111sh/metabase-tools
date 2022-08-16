@@ -41,7 +41,7 @@ class MetabaseTools(MetabaseApi):
 
         # Format filtered list
         formatted_list = {
-            "root": root_folder,
+            "root": str(root_folder),
             "file_extension": file_extension,
             "cards": [],
         }
