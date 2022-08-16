@@ -1,3 +1,6 @@
+"""
+MetabaseTools extends MetabaseApi with additional complex functions
+"""
 from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
@@ -10,6 +13,8 @@ from metabase_tools.models.database import Database
 
 
 class MetabaseTools(MetabaseApi):
+    """Extends MetabaseApi with additional complex functions"""
+
     def download_native_queries(
         self,
         save_file: Optional[Path | str] = None,
@@ -21,8 +26,17 @@ class MetabaseTools(MetabaseApi):
 
         Parameters
         ----------
-        save_path : str | None, optional
-            Name of the file to save results to, by default None
+        save_file : Optional[Path | str], optional
+            Path to save mapping file, defaults to mapping_{timestamp}.json
+        root_folder : Path | str, optional
+            Root folder to save queries, by default "."
+        file_extension : str, optional
+            File extension to save the queries, by default "sql"
+
+        Returns
+        -------
+        Path
+            Path to save file
         """
         # Determine save path
         timestamp = datetime.now().strftime("%y%m%dT%H%M%S")
