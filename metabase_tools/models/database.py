@@ -14,14 +14,12 @@ class Database(MetabaseGeneric):
     timezone: str
     auto_run_queries: bool
     metadata_sync_schedule: str
-    name: str
     caveats: Optional[str]
     is_full_sync: bool
     updated_at: datetime
     native_permissions: Optional[str]
     details: dict
     is_sample: bool
-    id: int
     is_on_demand: bool
     options: Optional[str]
     engine: str

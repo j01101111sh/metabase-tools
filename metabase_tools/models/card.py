@@ -22,14 +22,12 @@ class Card(MetabaseGeneric):
     enable_embedding: bool
     collection_id: Optional[int]
     query_type: Optional[str]
-    name: str
     creator_id: int
     updated_at: datetime
     made_public_by_id: Optional[int]
     embedding_params: Optional[dict]
     cache_ttl: Optional[str]
     dataset_query: dict
-    id: int
     display: str
     last_edit_info: Optional[dict] = Field(alias="last-edit-info")
     visualization_settings: dict
