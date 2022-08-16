@@ -16,12 +16,12 @@ class Card(MetabaseGeneric):
     archived: bool
     collection_position: Optional[int]
     table_id: Optional[int]
-    result_metadata: list[dict]
+    result_metadata: Optional[list[dict]]
     creator: User
-    database_id: int
+    database_id: Optional[int]
     enable_embedding: bool
     collection_id: Optional[int]
-    query_type: str
+    query_type: Optional[str]
     name: str
     creator_id: int
     updated_at: datetime
