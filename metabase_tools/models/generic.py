@@ -12,9 +12,10 @@ from metabase_tools.metabase import MetabaseApi
 
 
 class MetabaseGeneric(BaseModel):
-"""Provides generic methods for objects following generic pattern"""
+    """Provides generic methods for objects following generic pattern"""
+
     id: int
-    name: str    
+    name: str
 
     @classmethod
     def _request_list(
