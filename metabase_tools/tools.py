@@ -90,7 +90,10 @@ class MetabaseTools(MetabaseApi):
                 self._logger.debug(f"{card.name} saved to {sql_path}\n{card}")
             except OSError as error_raised:
                 self._logger.warning(
-                    f"Skipping {card.name} (name error): {str(error_raised)}\n{card}"
+                    "Skipping %s (name error): %s\n%s",
+                    card.name,
+                    str(error_raised),
+                    card,
                 )
                 continue
 
@@ -111,7 +114,7 @@ class MetabaseTools(MetabaseApi):
         self,
         mapping_path: Path | str,
         dry_run: bool = True,
-        error_on_failure: bool = False,  # TODO implement
+        stop_on_error: bool = False,
     ) -> list[dict]:
         """Uploads files
 
@@ -135,117 +138,131 @@ class MetabaseTools(MetabaseApi):
             mapping = loads(file.read())
 
         # Initialize common settings (e.g. root folder, file extension, etc.)
-        root_folder = mapping.get("root", ".")
+        root_folder = Path(mapping.get("root", "."))
         extension = mapping.get("file_extension", ".sql")
         cards = mapping["cards"]
 
         # Iterate through mapping file
-        updates = []
-        creates = []
+        changes = {"updates": [], "creates": []}
         collections = Collection.get_flat_list(adapter=self)
         for card in cards:
             card_path = Path(f"{root_folder}/{card['path']}/{card['name']}.{extension}")
-            if card_path.exists():
-                if "id" in card:
-                    card_obj = Card.get(adapter=self, targets=[card["id"]])[0]
+            if card_path.exists():  # Ensures file exists
+                if "id" in card:  # If ID is in mapping, use that, else use location
+                    prod_card = Card.get(adapter=self, targets=[card["id"]])[0]
                     # Verify query definition
                     with open(card_path, "r", newline="", encoding="utf-8") as file:
                         dev_code = file.read()
-                    prod_code = card_obj.dataset_query["native"]["query"]
-                    code_update = dev_code != prod_code
                     # Verify location of card
-                    dev_loc = card["path"]
-                    prod_loc = None
-                    for coll in collections:
-                        if card_obj.collection_id == coll["id"]:
-                            prod_loc = coll["path"]
-                            break
-                    loc_update = dev_loc != prod_loc
-                    new_coll_id = card_obj.collection_id
-                    if loc_update:
-                        for coll in collections:
-                            if coll["path"] == card["path"]:
-                                new_coll_id = coll["id"]
-                                break
+                    prod_loc = [
+                        coll["path"]
+                        for coll in collections
+                        if prod_card.collection_id == coll["id"]
+                    ][0]
+                    dev_coll_id = prod_card.collection_id  # Sets to prod loc as default
+                    if card["path"] != prod_loc:
+                        # find coll_id of new path
+                        dev_coll_id = [
+                            coll["id"]
+                            for coll in collections
+                            if coll["path"] == card["path"]
+                        ][0]
                     # Generate update
-                    if code_update or loc_update:
-                        new_query = card_obj.dataset_query
-                        new_query["native"]["query"] = dev_code
-                        new_def = {
+                    if (
+                        dev_code != prod_card.dataset_query["native"]["query"]
+                        or card["path"] != prod_loc
+                    ):
+                        dev_query = prod_card.dataset_query.copy()
+                        dev_query["native"]["query"] = dev_code
+                        dev_def = {
                             "id": card["id"],
-                            "dataset_query": new_query,
-                            "collection_id": new_coll_id,
+                            "dataset_query": dev_query,
+                            "collection_id": dev_coll_id,
                         }
-                        updates.append(new_def)
+                        changes["updates"].append(dev_def.copy())
                 else:
                     # Check if a card with the same name exists in the listed location
-                    coll_id = "root"
-                    for coll in collections:
-                        if card["path"] == coll["path"]:
-                            coll_id = coll["id"]
-                            break
-                    coll_contents = self.get(endpoint=f"/collection/{coll_id}/items")
-                    card_id = None
-                    if coll_contents.data:
-                        for item in coll_contents.data:
-                            if item["model"] == "card" and item["name"] == card["name"]:
-                                card_id = item["id"]
-                                break
+                    dev_coll_id = [
+                        coll["id"]
+                        for coll in collections
+                        if card["path"] == coll["path"]
+                    ][0]
+                    try:
+                        card_id = [
+                            item["id"]
+                            for item in self.get(
+                                endpoint=f"/collection/{dev_coll_id}/items"
+                            ).data  # type: ignore
+                            if item["model"] == "card" and item["name"] == card["name"]
+                        ][0]
+                    except IndexError as error_raised:
+                        self._logger.debug(
+                            "Card not found in listed location, creating: %s", card
+                        )
+                        card_id = None
+                    except TypeError as error_raised:
+                        # No items in collection
+                        card_id = None
 
                     if card_id:  # update card
-                        card_obj = Card.get(adapter=self, targets=[card_id])[0]
+                        prod_card = Card.get(adapter=self, targets=[card_id])[0]
                         with open(card_path, "r", newline="", encoding="utf-8") as file:
                             dev_code = file.read()
-                        prod_code = card_obj.dataset_query["native"]["query"]
-                        code_update = dev_code != prod_code
-                        if code_update:
-                            new_query = card_obj.dataset_query
-                            new_query["native"]["query"] = dev_code
-                            new_def = {"id": card_id, "dataset_query": new_query}
-                            updates.append(new_def)
+                        if dev_code != prod_card.dataset_query["native"]["query"]:
+                            dev_query = prod_card.dataset_query.copy()
+                            dev_query["native"]["query"] = dev_code
+                            dev_def = {"id": card_id, "dataset_query": dev_query}
+                            changes["updates"].append(dev_def)
                     else:  # create card
                         with open(card_path, "r", newline="", encoding="utf-8") as file:
-                            query = file.read()
-                        databases = Database.get(adapter=self)
-                        db_id = None
-                        for database in databases:
-                            if card["database"] == database.name:
-                                db_id = database.id
-                                break
+                            dev_query = file.read()
+                        db_id = [
+                            database.id
+                            for database in Database.get(adapter=self)
+                            if card["database"] == database.name
+                        ][0]
 
                         new_card_def = {
                             "visualization_settings": {},
-                            "collection_id": coll_id,
+                            "collection_id": dev_coll_id,
                             "name": card["name"],
                             "dataset_query": {
                                 "type": "native",
-                                "native": {"query": query},
+                                "native": {"query": dev_query},
                                 "database": db_id,
                             },
                             "display": "table",
                         }
-                        creates.append(new_card_def.copy())
+                        changes["creates"].append(new_card_def.copy())
             else:
-                raise FileNotFoundError(f"{card_path} not found")
+                self._logger.error(
+                    "Skipping %s (file not found):\n%s", card["name"], card
+                )
+                if stop_on_error:
+                    raise FileNotFoundError(f"{card_path} not found")
+                else:
+                    continue
 
         # Loop exit before pushing changes to Metabase in case errors are encountered
         # Push changes back to Metabase API
-        results = []
         if not dry_run:
-            if len(updates) > 0:
-                update_results = Card.put(adapter=self, payloads=updates)
+            results = []
+            if len(changes["updates"]) > 0:
+                update_results = Card.put(adapter=self, payloads=changes["updates"])
                 if isinstance(update_results, list):
                     for result in update_results:
                         results.append(
                             {"id": result.id, "name": result.name, "is_success": True}
                         )
 
-            if len(creates) > 0:
-                create_results = Card.post(adapter=self, payloads=creates)
+            if len(changes["creates"]) > 0:
+                create_results = Card.post(adapter=self, payloads=changes["creates"])
                 if isinstance(create_results, list):
                     for result in create_results:
                         results.append(
                             {"id": result.id, "name": result.name, "is_success": True}
                         )
 
-        return results
+            return results
+        else:
+            return changes["creates"] + changes["updates"]
