@@ -18,7 +18,7 @@ class Database(MetabaseGeneric):
     caveats: Optional[str]
     is_full_sync: bool
     updated_at: datetime
-    native_permissions: str
+    native_permissions: Optional[str]
     details: dict
     is_sample: bool
     id: int

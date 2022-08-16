@@ -165,7 +165,6 @@ class MetabaseTools(MetabaseApi):
                         for item in coll_contents.data:
                             if item["model"] == "card" and item["name"] == card["name"]:
                                 card_id = item["id"]
-                                card["id"] = card_id  # update mapping dict
                                 break
 
                     if card_id:  # update card
@@ -177,7 +176,7 @@ class MetabaseTools(MetabaseApi):
                         if code_update:
                             new_query = card_obj.dataset_query
                             new_query["native"]["query"] = dev_code
-                            new_def = {"id": card["id"], "dataset_query": new_query}
+                            new_def = {"id": card_id, "dataset_query": new_query}
                             updates.append(new_def)
                     else:  # create card
                         with open(card_path, "r", newline="", encoding="utf-8") as file:
@@ -215,9 +214,6 @@ class MetabaseTools(MetabaseApi):
                         results.append(
                             {"id": result.id, "name": result.name, "is_success": True}
                         )
-
-            with open(mapping_path, "w") as file:
-                file.write(dumps(mapping, indent=2))
 
             if len(creates) > 0:
                 create_results = Card.post(adapter=self, payloads=creates)
