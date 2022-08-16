@@ -12,7 +12,6 @@ from metabase_tools.models.database import Database
 class MetabaseTools(MetabaseApi):
     def download_native_queries(
         self,
-        save_path: Optional[Path | str] = None,
         save_file: Optional[Path | str] = None,
         root_folder: Path | str = ".",
         file_extension: str = "sql",
@@ -27,19 +26,17 @@ class MetabaseTools(MetabaseApi):
         """
         # Determine save path
         timestamp = datetime.now().strftime("%y%m%dT%H%M%S")
-        save_path = save_path or "."
-        save_file = save_file or f"mapping_{timestamp}.json"
+        root_folder = Path(root_folder)  # Convert root folder to a path object
+        save_file = Path(save_file or f"mapping_{timestamp}.json")
 
-        # Download list of cards from Metabase API
-        cards = Card.get(adapter=self)
-
-        # Filter list of cards to only those with native queries
-        cards = [card for card in cards if card.query_type == "native"]
+        # Download list of cards from Metabase API and filter to only native queries
+        cards = [card for card in Card.get(adapter=self) if card.query_type == "native"]
 
         # Create dictionary of collections for file paths
-        collections = {}
-        for item in Collection.get_flat_list(adapter=self):
-            collections[item["id"]] = {"name": item["name"], "path": item["path"]}
+        collections = {
+            item["id"]: {"name": item["name"], "path": item["path"]}
+            for item in Collection.get_flat_list(adapter=self)
+        }
 
         # Format filtered list
         formatted_list = {
@@ -49,31 +46,40 @@ class MetabaseTools(MetabaseApi):
         }
 
         for card in cards:
+            # Mapping dict append
             try:
                 new_card = {
                     "id": card.id,
                     "name": card.name,
                     "path": collections[card.collection_id]["path"],
+                    "database": Database.search(
+                        adapter=self, search_params=[{"id": card.database_id}]
+                    )[0].name,
                 }
-            except KeyError as error:
-                # Raised if collection_id is not in collections which will happen for personal colls
+            except KeyError as error_raised:
+                self._logger.warning(
+                    f"Skipping {card.name} (personal collection)\n{card}"
+                )
                 continue
             formatted_list["cards"].append(new_card)
-            sql_code = card.dataset_query["native"]["query"]
 
-            sql_path = Path(f"{save_path}/{new_card['path']}")
+            # SQL file creation
+            sql_code = card.dataset_query["native"]["query"]
+            sql_path = Path(f"{root_folder}/{new_card['path']}")
             sql_path.mkdir(parents=True, exist_ok=True)
             sql_path /= f"{new_card['name']}.{file_extension}"
             try:
                 with open(sql_path, "w", newline="", encoding="utf-8") as file:
                     file.write(sql_code)
-            except OSError as error:
-                # TODO log invalid file names
-                # Raised when an invalid file name is encountered
+                self._logger.debug(f"{card.name} saved to {sql_path}\n{card}")
+            except OSError as error_raised:
+                self._logger.warning(
+                    f"Skipping {card.name} (name error): {str(error_raised)}\n{card}"
+                )
                 continue
 
-        # Save formatted + filtered list
-        mapping_path = Path(f"{save_path}")
+        # Save mapping file
+        mapping_path = Path(f"{root_folder}")
         mapping_path.mkdir(parents=True, exist_ok=True)
         mapping_path /= save_file
         with open(mapping_path, "w", newline="", encoding="utf-8") as file:
@@ -86,7 +92,7 @@ class MetabaseTools(MetabaseApi):
         self,
         mapping_path: Path | str,
         dry_run: bool = True,
-        error_on_failure: bool = False,
+        error_on_failure: bool = False,  # TODO implement
     ) -> list[dict]:
         """Uploads files
 

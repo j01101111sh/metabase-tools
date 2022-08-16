@@ -39,9 +39,7 @@ def test_auth(tools: MetabaseTools):
 
 
 def test_download_native_queries(tools: MetabaseTools):
-    file = tools.download_native_queries(
-        save_path="./dev/data", root_folder="./dev/data"
-    )
+    file = tools.download_native_queries(root_folder="./dev/data")
     size = file.stat().st_size
     create_time = file.stat().st_ctime
     now = datetime.now().timestamp()
