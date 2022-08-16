@@ -127,11 +127,11 @@ class MetabaseTools(MetabaseApi):
                     code_update = dev_code != prod_code
                     # Verify location of card
                     collections = Collection.get_flat_list(adapter=self)
-                    dev_loc = card["path"][1:]
+                    dev_loc = card["path"]
                     prod_loc = None
                     for coll in collections:
                         if card_obj.collection_id == coll["id"]:
-                            prod_loc = coll["name"]
+                            prod_loc = coll["path"]
                             break
                     loc_update = dev_loc != prod_loc
                     new_coll_id = card_obj.collection_id

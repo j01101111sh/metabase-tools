@@ -1,0 +1,16 @@
+{
+  "root": "./tests/data",
+  "file_extension": "sql",
+  "cards": [
+    {
+      "id": 33,
+      "name": "Accounting Question",
+      "path": "/Development"
+    },
+    {
+      "id": 1,
+      "name": "Test Card",
+      "path": "/Development/Accounting"
+    }
+  ]
+}

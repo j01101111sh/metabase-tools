@@ -38,19 +38,17 @@ def test_auth(tools: MetabaseTools):
 
 def test_download_native_queries(tools: MetabaseTools):
     file = tools.download_native_queries(
-        save_path="./dev/files/", root_folder="./dev/files/"
+        save_path="./dev/data", root_folder="./dev/data"
     )
     size = file.stat().st_size
     create_time = file.stat().st_ctime
     now = datetime.now().timestamp()
     assert size > 0  # File size greater than 0
     assert create_time - now < 2  # file was created in the last 2 seconds
-    # file.unlink()  # remove created file
 
 
 def test_upload_native_queries_dry_run(tools: MetabaseTools):
-    mapping_path = Path("./dev/files/mapping.json")
-    # TODO Add a file move and a query change to ensure there are updates to make
+    mapping_path = Path("./tests/data/mapping.json")
     results = tools.upload_native_queries(mapping_path=mapping_path, dry_run=True)
     assert isinstance(results, list)
     assert all(isinstance(result, dict) for result in results)
@@ -58,7 +56,7 @@ def test_upload_native_queries_dry_run(tools: MetabaseTools):
 
 
 def test_upload_native_queries_actual(tools: MetabaseTools):
-    mapping_path = Path("./dev/files/mapping.json")
+    mapping_path = Path("./tests/data/mapping.json")
     # TODO Add a file move and a query change to ensure there are updates to make
     results = tools.upload_native_queries(mapping_path=mapping_path, dry_run=False)
     assert isinstance(results, list)
