@@ -54,7 +54,9 @@ def test_upload_native_queries(tools: MetabaseTools):
         current = file.read()
     with open(test_card_path, "a", newline="", encoding="utf-8") as file:
         file.write("\n-- " + "".join(choice(ascii_lowercase) for x in range(6)))
-    results = tools.upload_native_queries(mapping_path=mapping_path, dry_run=False)
+    results = tools.upload_native_queries(
+        mapping_path=mapping_path, dry_run=False, stop_on_error=True
+    )
     with open(test_card_path, "w", newline="", encoding="utf-8") as file:
         file.write(current)
     assert isinstance(results, list)

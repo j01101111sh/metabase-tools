@@ -115,7 +115,7 @@ class MetabaseTools(MetabaseApi):
         mapping_path: Path | str,
         dry_run: bool = True,
         stop_on_error: bool = False,
-    ) -> list[dict]:
+    ) -> list[dict] | dict:
         """Uploads files
 
         Parameters
@@ -143,7 +143,7 @@ class MetabaseTools(MetabaseApi):
         cards = mapping["cards"]
 
         # Iterate through mapping file
-        changes = {"updates": [], "creates": []}
+        changes = {"updates": [], "creates": [], "errors": []}
         collections = Collection.get_flat_list(adapter=self)
         for card in cards:
             card_path = Path(f"{root_folder}/{card['path']}/{card['name']}.{extension}")
@@ -241,7 +241,7 @@ class MetabaseTools(MetabaseApi):
                 if stop_on_error:
                     raise FileNotFoundError(f"{card_path} not found")
                 else:
-                    continue
+                    changes["errors"].append(card)
 
         # Loop exit before pushing changes to Metabase in case errors are encountered
         # Push changes back to Metabase API
@@ -265,4 +265,4 @@ class MetabaseTools(MetabaseApi):
 
             return results
         else:
-            return changes["creates"] + changes["updates"]
+            return changes
