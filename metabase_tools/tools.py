@@ -45,12 +45,14 @@ class MetabaseTools(MetabaseApi):
 
         # Download list of cards from Metabase API and filter to only native queries
         cards = [card for card in Card.get(adapter=self) if card.query_type == "native"]
+        self._logger.debug("Found %s cards with native queries", len(cards))
 
         # Create dictionary of collections for file paths
         collections = {
             item["id"]: {"name": item["name"], "path": item["path"]}
             for item in Collection.get_flat_list(adapter=self)
         }
+        self._logger.debug("Generated flat list of %s collections", len(collections))
 
         # Format filtered list
         formatted_list = {
@@ -72,7 +74,7 @@ class MetabaseTools(MetabaseApi):
                 }
             except KeyError as error_raised:
                 self._logger.warning(
-                    f"Skipping {card.name} (personal collection)\n{card}"
+                    "Skipping %s (personal collection)\n%s", card.name, card
                 )
                 continue
             formatted_list["cards"].append(new_card)
@@ -96,6 +98,9 @@ class MetabaseTools(MetabaseApi):
         mapping_path = Path(f"{root_folder}")
         mapping_path.mkdir(parents=True, exist_ok=True)
         mapping_path /= save_file
+        self._logger.debug(
+            "Completed iterating through list, saving file: %s", mapping_path
+        )
         with open(mapping_path, "w", newline="", encoding="utf-8") as file:
             file.write(dumps(formatted_list, indent=2))
 
