@@ -71,7 +71,6 @@ class Card(MetabaseGeneric):
     ) -> list[Self]:
         return super(Card, cls).search(
             adapter=adapter,
-            endpoint="/card",
             search_params=search_params,
             search_list=search_list,
         )

@@ -129,7 +129,6 @@ class MetabaseGeneric(BaseModel):
     def search(
         cls,
         adapter: MetabaseApi,
-        endpoint: str,
         search_params: list[dict],
         search_list: Optional[list[Self]] = None,
     ) -> list[Self]:
@@ -151,13 +150,13 @@ class MetabaseGeneric(BaseModel):
         list[Self]
             List of objects of the relevant type
         """
-        # TODO add tests
-        objs = search_list or cls.get(adapter=adapter, endpoint=endpoint)
+        # TODO add tests for search
+        objs = search_list or cls.get(adapter=adapter)  # type: ignore
         results = []
         for param in search_params:
             for obj in objs:
                 obj_dict = obj.dict()
                 for key, value in param.items():
-                    if key in obj_dict and value == obj_dict:
+                    if key in obj_dict and value == obj_dict[key]:
                         results.append(obj)
         return results

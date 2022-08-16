@@ -108,7 +108,6 @@ class Collection(MetabaseGeneric):
     ) -> list[Self]:
         return super(Collection, cls).search(
             adapter=adapter,
-            endpoint="/collection",
             search_params=search_params,
             search_list=search_list,
         )

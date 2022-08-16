@@ -64,7 +64,7 @@ class Database(MetabaseGeneric):
     ) -> list[Self]:
         return super(Database, cls).search(
             adapter=adapter,
-            endpoint="/database",
+            # endpoint="/database",
             search_params=search_params,
             search_list=search_list,
         )
