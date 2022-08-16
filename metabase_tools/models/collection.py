@@ -23,14 +23,14 @@ class Collection(MetabaseGeneric):
 
     @classmethod
     def get(
-        cls, adapter: MetabaseApi, targets: Optional[int | list[int]] = None
+        cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
     ) -> list[Self]:
         return super(Collection, cls).get(
             adapter=adapter, endpoint="/collection", targets=targets
         )
 
     @classmethod
-    def get_tree(cls, adapter: MetabaseApi) -> dict | list[dict]:
+    def get_tree(cls, adapter: MetabaseApi) -> list[dict]:
         response = adapter.get(endpoint="/collection/tree")
         if response.data:
             return response.data
@@ -78,20 +78,20 @@ class Collection(MetabaseGeneric):
         return folders
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> list[Self]:
+    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         return super(Collection, cls).post(
             adapter=adapter, endpoint="/collection", payloads=payloads
         )
 
     @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> list[Self]:
+    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         return super(Collection, cls).put(
             adapter=adapter, endpoint="/collection", payloads=payloads
         )
 
     @classmethod
     def archive(
-        cls, adapter: MetabaseApi, targets: int | list[int], unarchive=False
+        cls, adapter: MetabaseApi, targets: list[int], unarchive=False
     ) -> list[Self]:
         return super(Collection, cls).archive(
             adapter=adapter,
