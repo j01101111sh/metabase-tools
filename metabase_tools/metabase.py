@@ -123,7 +123,7 @@ class MetabaseApi:
     ) -> Result:
         """Private method for get and post methods
         Args:
-            http_method (str): GET or POST
+            http_method (str): GET or POST or PUT or DELETE
             endpoint (str): URL endpoint
             ep_params (Dict, optional): Endpoint parameters. Defaults to None.
             data (Dict, optional): Data payload. Defaults to None.
