@@ -6,6 +6,7 @@ from typing import Optional
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.card import Card
 from metabase_tools.models.collection import Collection
+from metabase_tools.models.database import Database
 
 
 class MetabaseTools(MetabaseApi):
@@ -115,6 +116,7 @@ class MetabaseTools(MetabaseApi):
 
         # Iterate through mapping file
         updates = []
+        creates = []
         collections = Collection.get_flat_list(adapter=self)
         for card in cards:
             card_path = Path(f"{root_folder}/{card['path']}/{card['name']}.{extension}")
@@ -178,7 +180,27 @@ class MetabaseTools(MetabaseApi):
                             new_def = {"id": card["id"], "dataset_query": new_query}
                             updates.append(new_def)
                     else:  # create card
-                        pass
+                        with open(card_path, "r", newline="", encoding="utf-8") as file:
+                            query = file.read()
+                        databases = Database.get(adapter=self)
+                        db_id = None
+                        for database in databases:
+                            if card["database"] == database.name:
+                                db_id = database.id
+                                break
+
+                        new_card_def = {
+                            "visualization_settings": {},
+                            "collection_id": coll_id,
+                            "name": card["name"],
+                            "dataset_query": {
+                                "type": "native",
+                                "native": {"query": query},
+                                "database": db_id,
+                            },
+                            "display": "table",
+                        }
+                        creates.append(new_card_def.copy())
             else:
                 raise FileNotFoundError(f"{card_path} not found")
 
@@ -186,14 +208,23 @@ class MetabaseTools(MetabaseApi):
         # Push changes back to Metabase API
         results = []
         if not dry_run:
-            update_results = Card.put(adapter=self, payloads=updates)
-            if isinstance(update_results, list):
-                for result in update_results:
-                    results.append(
-                        {"id": result.id, "name": result.name, "is_success": True}
-                    )
+            if len(updates) > 0:
+                update_results = Card.put(adapter=self, payloads=updates)
+                if isinstance(update_results, list):
+                    for result in update_results:
+                        results.append(
+                            {"id": result.id, "name": result.name, "is_success": True}
+                        )
 
             with open(mapping_path, "w") as file:
                 file.write(dumps(mapping, indent=2))
+
+            if len(creates) > 0:
+                create_results = Card.post(adapter=self, payloads=creates)
+                if isinstance(create_results, list):
+                    for result in create_results:
+                        results.append(
+                            {"id": result.id, "name": result.name, "is_success": True}
+                        )
 
         return results
