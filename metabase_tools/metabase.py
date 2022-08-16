@@ -58,7 +58,7 @@ class MetabaseApi:
         if cache_token:
             self.save_token(file=token_path)
 
-    def _authenticate(self, credentials: dict):
+    def _authenticate(self, credentials: dict) -> None:
         """Private method for authenticating a session with the API"""
         self._logger.debug("Starting authentication - RestAdapter member")
         try:

@@ -10,7 +10,7 @@ from metabase_tools.metabase import MetabaseApi
 class MetabaseGeneric(BaseModel):
     @classmethod
     def get(
-        cls, adapter: MetabaseApi, endpoint: str, targets: Optional[int | list[int]]
+        cls, adapter: MetabaseApi, endpoint: str, targets: Optional[list[int]]
     ) -> list[Self]:
         """Generic method for returning an object or list of objects
 
@@ -42,11 +42,6 @@ class MetabaseGeneric(BaseModel):
                     results.append(cls(**response.data))
             if len(results) > 0:
                 return results
-        elif isinstance(targets, int):
-            # If a single target is provided, return that object
-            response = adapter.get(endpoint=f"{endpoint}/{targets}")
-            if response.data and isinstance(response.data, dict):
-                return [cls(**response.data)]
         elif targets is None:
             # If no targets are provided, all objects of that type should be returned
             response = adapter.get(endpoint=endpoint)
@@ -61,7 +56,7 @@ class MetabaseGeneric(BaseModel):
 
     @classmethod
     def post(
-        cls, adapter: MetabaseApi, endpoint: str, payloads: dict | list[dict]
+        cls, adapter: MetabaseApi, endpoint: str, payloads: list[dict]
     ) -> list[Self]:
         # TODO validate params by creating a method in the child class
         # TODO docstring
@@ -75,11 +70,6 @@ class MetabaseGeneric(BaseModel):
                     results.append(cls(**response.data))
             if len(results) > 0:
                 return results
-        elif isinstance(payloads, dict):
-            # If a single target is provided, return that object
-            response = adapter.post(endpoint=endpoint, json=payloads)
-            if response.data and isinstance(response.data, dict):
-                return [cls(**response.data)]
         else:
             # If something other than dict or list[dict], raise error
             raise InvalidParameters("Invalid target(s)")
@@ -88,7 +78,7 @@ class MetabaseGeneric(BaseModel):
 
     @classmethod
     def put(
-        cls, adapter: MetabaseApi, endpoint: str, payloads: dict | list[dict]
+        cls, adapter: MetabaseApi, endpoint: str, payloads: list[dict]
     ) -> list[Self]:
         # TODO docstring
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
@@ -102,13 +92,6 @@ class MetabaseGeneric(BaseModel):
                     results.append(cls(**response.data))
             if len(results) > 0:
                 return results
-        elif isinstance(payloads, dict):
-            # If a single target is provided, return that object
-            response = adapter.put(
-                endpoint=f'{endpoint}/{payloads["id"]}', json=payloads
-            )
-            if response.data and isinstance(response.data, dict):
-                return [cls(**response.data)]
         else:
             # If something other than dict or list[dict], raise error
             raise InvalidParameters("Invalid target(s)")
@@ -120,10 +103,9 @@ class MetabaseGeneric(BaseModel):
         cls,
         adapter: MetabaseApi,
         endpoint: str,
-        targets: int | list[int],
+        targets: list[int],
         unarchive: bool,
     ) -> list[Self]:
-        # TODO docstring
         archive_template = {"id": None, "archived": not unarchive}
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
             results = []
@@ -134,13 +116,8 @@ class MetabaseGeneric(BaseModel):
                 )
                 if response.data and isinstance(response.data, dict):
                     results.append(cls(**response.data))
-            return results
-        elif isinstance(targets, int):
-            payloads = archive_template
-            payloads["id"] = targets
-            response = adapter.put(
-                endpoint=f"{endpoint}/{targets}", json=archive_template
-            )
-            if response.data and isinstance(response.data, dict):
-                return [cls(**response.data)]
-        raise InvalidParameters("Invalid set of targets")
+            if len(results) > 0:
+                return results
+        else:
+            raise InvalidParameters("Invalid set of targets")
+        raise EmptyDataReceived("No data returned")

@@ -16,12 +16,12 @@ class Card(MetabaseGeneric):
     archived: bool
     collection_position: Optional[int]
     table_id: Optional[int]
-    result_metadata: list[dict]
+    result_metadata: Optional[list[dict]]
     creator: User
-    database_id: int
+    database_id: Optional[int]
     enable_embedding: bool
     collection_id: Optional[int]
-    query_type: str
+    query_type: Optional[str]
     name: str
     creator_id: int
     updated_at: datetime
@@ -40,25 +40,25 @@ class Card(MetabaseGeneric):
 
     @classmethod
     def get(
-        cls, adapter: MetabaseApi, targets: Optional[int | list[int]] = None
+        cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
     ) -> list[Self]:
         return super(Card, cls).get(adapter=adapter, endpoint="/card", targets=targets)
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> list[Self]:
+    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         return super(Card, cls).post(
             adapter=adapter, endpoint="/card", payloads=payloads
         )
 
     @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> list[Self]:
+    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         return super(Card, cls).put(
             adapter=adapter, endpoint="/card", payloads=payloads
         )
 
     @classmethod
     def archive(
-        cls, adapter: MetabaseApi, targets: int | list[int], unarchive=False
+        cls, adapter: MetabaseApi, targets: list[int], unarchive=False
     ) -> list[Self]:
         return super(Card, cls).archive(
             adapter=adapter, endpoint="/card", targets=targets, unarchive=unarchive

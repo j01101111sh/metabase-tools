@@ -1,0 +1,22 @@
+{
+  "root": "./tests/data",
+  "file_extension": "sql",
+  "cards": [
+    {
+      "id": 33,
+      "name": "Accounting Question",
+      "path": "/Development",
+      "database": "Sample Dataset"
+    },
+    {
+      "name": "Test Card",
+      "path": "/Development/Accounting",
+      "database": "Sample Dataset"
+    },
+    {
+      "name": "Test Create",
+      "path": "/Development",
+      "database": "Sample Dataset"
+    }
+  ]
+}
