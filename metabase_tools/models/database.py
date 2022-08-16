@@ -14,14 +14,12 @@ class Database(MetabaseGeneric):
     timezone: str
     auto_run_queries: bool
     metadata_sync_schedule: str
-    name: str
     caveats: Optional[str]
     is_full_sync: bool
     updated_at: datetime
     native_permissions: Optional[str]
     details: dict
     is_sample: bool
-    id: int
     is_on_demand: bool
     options: Optional[str]
     engine: str
@@ -55,4 +53,18 @@ class Database(MetabaseGeneric):
     ) -> list[Self]:
         return super(Database, cls).archive(
             adapter=adapter, endpoint="/database", targets=targets, unarchive=unarchive
+        )
+
+    @classmethod
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        search_params: list[dict],
+        search_list: Optional[list] = None,
+    ) -> list[Self]:
+        return super(Database, cls).search(
+            adapter=adapter,
+            # endpoint="/database",
+            search_params=search_params,
+            search_list=search_list,
         )

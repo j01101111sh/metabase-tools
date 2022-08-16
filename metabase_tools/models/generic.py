@@ -14,6 +14,9 @@ from metabase_tools.metabase import MetabaseApi
 class MetabaseGeneric(BaseModel):
     """Provides generic methods for objects following generic pattern"""
 
+    id: int
+    name: str
+
     @classmethod
     def _request_list(
         cls,
@@ -75,7 +78,7 @@ class MetabaseGeneric(BaseModel):
 
     @classmethod
     def get(
-        cls, adapter: MetabaseApi, endpoint: str, targets: Optional[list[int]]
+        cls, adapter: MetabaseApi, endpoint: str, targets: Optional[list[int]] = None
     ) -> list[Self]:
         """Generic method for returning an object or list of objects
 
@@ -238,3 +241,39 @@ class MetabaseGeneric(BaseModel):
                 ],
             )
         raise InvalidParameters("Invalid set of targets")
+
+    @classmethod
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        search_params: list[dict],
+        search_list: Optional[list[Self]] = None,
+    ) -> list[Self]:
+        """Method to search a list of objects meeting a list of parameters
+
+        Parameters
+        ----------
+        adapter : MetabaseApi
+            Connection to Metabase API
+        endpoint : str
+            Endpoint to use for the requests
+        search_params : list[dict]
+            List of dicts, each containing search criteria. 1 result returned per dict.
+        search_list : Optional[list[Self]], optional
+            Provide to search against an existing list, by default pulls from API
+
+        Returns
+        -------
+        list[Self]
+            List of objects of the relevant type
+        """
+        # TODO add tests for search
+        objs = search_list or cls.get(adapter=adapter)  # type: ignore
+        results = []
+        for param in search_params:
+            for obj in objs:
+                obj_dict = obj.dict()
+                for key, value in param.items():
+                    if key in obj_dict and value == obj_dict[key]:
+                        results.append(obj)
+        return results

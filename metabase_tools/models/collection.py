@@ -8,13 +8,12 @@ from metabase_tools.models.generic import MetabaseGeneric
 
 
 class Collection(MetabaseGeneric):
+    id: int | str  # root is a valid id for a collection
     description: Optional[str]
     archived: Optional[bool]
     slug: Optional[str]
     color: Optional[str]
-    name: str
     personal_owner_id: Optional[int]
-    id: str | int
     location: Optional[str]
     namespace: Optional[int]
     effective_location: Optional[str]
@@ -98,4 +97,17 @@ class Collection(MetabaseGeneric):
             endpoint="/collection",
             targets=targets,
             unarchive=unarchive,
+        )
+
+    @classmethod
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        search_params: list[dict],
+        search_list: Optional[list] = None,
+    ) -> list[Self]:
+        return super(Collection, cls).search(
+            adapter=adapter,
+            search_params=search_params,
+            search_list=search_list,
         )

@@ -39,9 +39,7 @@ def test_auth(tools: MetabaseTools):
 
 
 def test_download_native_queries(tools: MetabaseTools):
-    file = tools.download_native_queries(
-        save_path="./dev/data", root_folder="./dev/data"
-    )
+    file = tools.download_native_queries(root_folder="./dev/data")
     size = file.stat().st_size
     create_time = file.stat().st_ctime
     now = datetime.now().timestamp()
@@ -56,7 +54,9 @@ def test_upload_native_queries(tools: MetabaseTools):
         current = file.read()
     with open(test_card_path, "a", newline="", encoding="utf-8") as file:
         file.write("\n-- " + "".join(choice(ascii_lowercase) for x in range(6)))
-    results = tools.upload_native_queries(mapping_path=mapping_path, dry_run=False)
+    results = tools.upload_native_queries(
+        mapping_path=mapping_path, dry_run=False, stop_on_error=True
+    )
     with open(test_card_path, "w", newline="", encoding="utf-8") as file:
         file.write(current)
     assert isinstance(results, list)

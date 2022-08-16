@@ -22,14 +22,12 @@ class Card(MetabaseGeneric):
     enable_embedding: bool
     collection_id: Optional[int]
     query_type: Optional[str]
-    name: str
     creator_id: int
     updated_at: datetime
     made_public_by_id: Optional[int]
     embedding_params: Optional[dict]
     cache_ttl: Optional[str]
     dataset_query: dict
-    id: int
     display: str
     last_edit_info: Optional[dict] = Field(alias="last-edit-info")
     visualization_settings: dict
@@ -62,4 +60,17 @@ class Card(MetabaseGeneric):
     ) -> list[Self]:
         return super(Card, cls).archive(
             adapter=adapter, endpoint="/card", targets=targets, unarchive=unarchive
+        )
+
+    @classmethod
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        search_params: list[dict],
+        search_list: Optional[list] = None,
+    ) -> list[Self]:
+        return super(Card, cls).search(
+            adapter=adapter,
+            search_params=search_params,
+            search_list=search_list,
         )
