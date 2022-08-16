@@ -8,9 +8,12 @@ from metabase_tools.metabase import MetabaseApi
 
 
 class MetabaseGeneric(BaseModel):
+    id: int
+    name: str
+
     @classmethod
     def get(
-        cls, adapter: MetabaseApi, endpoint: str, targets: Optional[list[int]]
+        cls, adapter: MetabaseApi, endpoint: str, targets: Optional[list[int]] = None
     ) -> list[Self]:
         """Generic method for returning an object or list of objects
 
@@ -121,3 +124,40 @@ class MetabaseGeneric(BaseModel):
         else:
             raise InvalidParameters("Invalid set of targets")
         raise EmptyDataReceived("No data returned")
+
+    @classmethod
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        endpoint: str,
+        search_params: list[dict],
+        search_list: Optional[list[Self]] = None,
+    ) -> list[Self]:
+        """Method to search a list of objects meeting a list of parameters
+
+        Parameters
+        ----------
+        adapter : MetabaseApi
+            Connection to Metabase API
+        endpoint : str
+            Endpoint to use for the requests
+        search_params : list[dict]
+            List of dicts, each containing search criteria. 1 result returned per dict.
+        search_list : Optional[list[Self]], optional
+            Provide to search against an existing list, by default pulls from API
+
+        Returns
+        -------
+        list[Self]
+            List of objects of the relevant type
+        """
+        # TODO add tests
+        objs = search_list or cls.get(adapter=adapter, endpoint=endpoint)
+        results = []
+        for param in search_params:
+            for obj in objs:
+                obj_dict = obj.dict()
+                for key, value in param.items():
+                    if key in obj_dict and value == obj_dict:
+                        results.append(obj)
+        return results

@@ -63,3 +63,17 @@ class Card(MetabaseGeneric):
         return super(Card, cls).archive(
             adapter=adapter, endpoint="/card", targets=targets, unarchive=unarchive
         )
+
+    @classmethod
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        search_params: list[dict],
+        search_list: Optional[list] = None,
+    ) -> list[Self]:
+        return super(Card, cls).search(
+            adapter=adapter,
+            endpoint="/card",
+            search_params=search_params,
+            search_list=search_list,
+        )

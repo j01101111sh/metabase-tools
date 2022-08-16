@@ -56,3 +56,17 @@ class Database(MetabaseGeneric):
         return super(Database, cls).archive(
             adapter=adapter, endpoint="/database", targets=targets, unarchive=unarchive
         )
+
+    @classmethod
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        search_params: list[dict],
+        search_list: Optional[list] = None,
+    ) -> list[Self]:
+        return super(Database, cls).search(
+            adapter=adapter,
+            endpoint="/database",
+            search_params=search_params,
+            search_list=search_list,
+        )

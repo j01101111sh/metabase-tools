@@ -99,3 +99,17 @@ class Collection(MetabaseGeneric):
             targets=targets,
             unarchive=unarchive,
         )
+
+    @classmethod
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        search_params: list[dict],
+        search_list: Optional[list] = None,
+    ) -> list[Self]:
+        return super(Collection, cls).search(
+            adapter=adapter,
+            endpoint="/collection",
+            search_params=search_params,
+            search_list=search_list,
+        )
