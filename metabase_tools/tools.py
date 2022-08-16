@@ -47,11 +47,15 @@ class MetabaseTools(MetabaseApi):
         }
 
         for card in cards:
-            new_card = {
-                "id": card.id,
-                "name": card.name,
-                "path": collections[card.collection_id]["path"],
-            }
+            try:
+                new_card = {
+                    "id": card.id,
+                    "name": card.name,
+                    "path": collections[card.collection_id]["path"],
+                }
+            except KeyError as error:
+                # Raised if collection_id is not in collections which will happen for personal colls
+                continue
             formatted_list["cards"].append(new_card)
             sql_code = card.dataset_query["native"]["query"]
 
