@@ -1,6 +1,7 @@
 from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
+from typing import Optional
 
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.card import Card
@@ -10,9 +11,9 @@ from metabase_tools.models.collection import Collection
 class MetabaseTools(MetabaseApi):
     def download_native_queries(
         self,
-        save_path: str | None = None,
-        save_file: str | None = None,
-        root_folder: str = ".",
+        save_path: Optional[Path | str] = None,
+        save_file: Optional[Path | str] = None,
+        root_folder: Path | str = ".",
         file_extension: str = "sql",
     ) -> Path:
         # TODO make method generic to include other filters
