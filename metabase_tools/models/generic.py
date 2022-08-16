@@ -14,13 +14,34 @@ class MetabaseGeneric(BaseModel):
         http_method: str,
         adapter: MetabaseApi,
         endpoint: str,
-        targets: Optional[list[int]] = None,
-        jsons: Optional[list[dict]] = None,
+        source: list[int] | list[dict],
     ) -> list[Self]:
+        """Sends requests to API based on a list of objects
+
+        Parameters
+        ----------
+        http_method : str
+            GET or POST or PUT or DELETE
+        adapter : MetabaseApi
+            Connection to Metabase API
+        endpoint : str
+            Endpoint to use for the requests
+        source : list[int] | list[dict]
+            List of targets or payloads
+
+        Returns
+        -------
+        list[Self]
+            List of objects of the relevant type
+
+        Raises
+        ------
+        InvalidParameters
+            Targets and jsons are both None
+        EmptyDataReceived
+            No results returned from API
+        """
         results = []
-        source = targets or jsons
-        if not source:
-            raise InvalidParameters
 
         for item in source:
             if isinstance(item, int):
@@ -58,17 +79,18 @@ class MetabaseGeneric(BaseModel):
             Connection to Metabase API
         endpoint : str
             Endpoint to use for the request
-        targets : Optional[int  |  list[int]]
-            If None, return list of the selected objects. Otherwise, return the object(s) of the selected type with the ID(s) provided.
+        targets : Optional[list[int]]
+            If None, return all objects; else return the objects requested
 
         Returns
         -------
-         list[Self]
+        list[Self]
+            List of objects of the relevant type
 
         Raises
         ------
         InvalidParameters
-            Targets are not None, int, or list[int]
+            Targets are not None or list[int]
         EmptyDataReceived
             No data is received from the API
         """
@@ -77,9 +99,10 @@ class MetabaseGeneric(BaseModel):
                 http_method="GET",
                 adapter=adapter,
                 endpoint=endpoint,
-                targets=targets,
+                source=targets,
             )
-        elif targets is None:
+
+        if targets is None:
             # If no targets are provided, all objects of that type should be returned
             response = adapter.get(endpoint=endpoint)
             if response.data:  # Validate data was returned
@@ -95,6 +118,29 @@ class MetabaseGeneric(BaseModel):
     def post(
         cls, adapter: MetabaseApi, endpoint: str, payloads: list[dict]
     ) -> list[Self]:
+        """Generic method for creating a list of objects
+
+        Parameters
+        ----------
+        adapter : MetabaseApi
+            Connection to Metabase API
+        endpoint : str
+            Endpoint to use for the requests
+        payloads : list[dict]
+            List of json payloads
+
+        Returns
+        -------
+        list[Self]
+            List of objects of the relevant type
+
+        Raises
+        ------
+        InvalidParameters
+            Targets and jsons are both None
+        EmptyDataReceived
+            No results returned from API
+        """
         # TODO validate params by creating a method in the child class
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
@@ -102,7 +148,7 @@ class MetabaseGeneric(BaseModel):
                 http_method="POST",
                 adapter=adapter,
                 endpoint=endpoint,
-                jsons=payloads,
+                source=payloads,
             )
         else:
             # If something other than dict or list[dict], raise error
@@ -112,13 +158,36 @@ class MetabaseGeneric(BaseModel):
     def put(
         cls, adapter: MetabaseApi, endpoint: str, payloads: list[dict]
     ) -> list[Self]:
+        """Generic method for updating a list of objects
+
+        Parameters
+        ----------
+        adapter : MetabaseApi
+            Connection to Metabase API
+        endpoint : str
+            Endpoint to use for the requests
+        payloads : list[dict]
+            List of json payloads
+
+        Returns
+        -------
+        list[Self]
+            List of objects of the relevant type
+
+        Raises
+        ------
+        InvalidParameters
+            Targets and jsons are both None
+        EmptyDataReceived
+            No results returned from API
+        """
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
             return cls._request_list(
                 http_method="PUT",
                 adapter=adapter,
                 endpoint=endpoint,
-                jsons=payloads,
+                source=payloads,
             )
         else:
             # If something other than dict or list[dict], raise error
@@ -132,12 +201,37 @@ class MetabaseGeneric(BaseModel):
         targets: list[int],
         unarchive: bool,
     ) -> list[Self]:
+        """Generic method for archiving a list of objects
+
+        Parameters
+        ----------
+        adapter : MetabaseApi
+            Connection to Metabase API
+        endpoint : str
+            Endpoint to use for the requests
+        payloads : list[dict]
+            List of json payloads
+
+        Returns
+        -------
+        list[Self]
+            List of objects of the relevant type
+
+        Raises
+        ------
+        InvalidParameters
+            Targets and jsons are both None
+        EmptyDataReceived
+            No results returned from API
+        """
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
             return cls._request_list(
                 http_method="PUT",
                 adapter=adapter,
                 endpoint=endpoint,
-                jsons=[{"id": target, "archived": not unarchive} for target in targets],
+                source=[
+                    {"id": target, "archived": not unarchive} for target in targets
+                ],
             )
         else:
             raise InvalidParameters("Invalid set of targets")
