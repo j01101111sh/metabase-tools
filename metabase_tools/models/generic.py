@@ -1,3 +1,7 @@
+"""
+    MetabaseGeneric class to provide generic methods for objects following this pattern
+"""
+
 from typing import Optional
 
 from pydantic import BaseModel
@@ -8,6 +12,8 @@ from metabase_tools.metabase import MetabaseApi
 
 
 class MetabaseGeneric(BaseModel):
+    """Provides generic methods for objects following generic pattern"""
+
     @classmethod
     def _request_list(
         cls,
@@ -150,9 +156,8 @@ class MetabaseGeneric(BaseModel):
                 endpoint=endpoint,
                 source=payloads,
             )
-        else:
-            # If something other than dict or list[dict], raise error
-            raise InvalidParameters("Invalid target(s)")
+        # If something other than dict or list[dict], raise error
+        raise InvalidParameters("Invalid target(s)")
 
     @classmethod
     def put(
@@ -189,9 +194,8 @@ class MetabaseGeneric(BaseModel):
                 endpoint=endpoint,
                 source=payloads,
             )
-        else:
-            # If something other than dict or list[dict], raise error
-            raise InvalidParameters("Invalid target(s)")
+        # If something other than dict or list[dict], raise error
+        raise InvalidParameters("Invalid target(s)")
 
     @classmethod
     def archive(
@@ -233,5 +237,4 @@ class MetabaseGeneric(BaseModel):
                     {"id": target, "archived": not unarchive} for target in targets
                 ],
             )
-        else:
-            raise InvalidParameters("Invalid set of targets")
+        raise InvalidParameters("Invalid set of targets")
