@@ -72,7 +72,7 @@ class MetabaseTools(MetabaseApi):
                         adapter=self, search_params=[{"id": card.database_id}]
                     )[0].name,
                 }
-            except KeyError as error_raised:
+            except KeyError:
                 self._logger.warning(
                     "Skipping %s (personal collection)\n%s", card.name, card
                 )
@@ -87,7 +87,7 @@ class MetabaseTools(MetabaseApi):
             try:
                 with open(sql_path, "w", newline="", encoding="utf-8") as file:
                     file.write(sql_code)
-                self._logger.debug(f"{card.name} saved to {sql_path}\n{card}")
+                self._logger.debug("%s saved to %s\n%s", card.name, sql_path, card)
             except OSError as error_raised:
                 self._logger.warning(
                     "Skipping %s (name error): %s\n%s",
@@ -134,7 +134,7 @@ class MetabaseTools(MetabaseApi):
         mapping_path = Path(mapping_path or "./mapping.json")
 
         # Open mapping configuration file
-        with open(mapping_path, "r") as file:
+        with open(mapping_path, "r", newline="", encoding="utf-8") as file:
             mapping = loads(file.read())
 
         # Initialize common settings (e.g. root folder, file extension, etc.)
@@ -195,13 +195,10 @@ class MetabaseTools(MetabaseApi):
                             ).data  # type: ignore
                             if item["model"] == "card" and item["name"] == card["name"]
                         ][0]
-                    except IndexError as error_raised:
+                    except (IndexError, TypeError):  # Not found or no items in coll
                         self._logger.debug(
                             "Card not found in listed location, creating: %s", card
                         )
-                        card_id = None
-                    except TypeError as error_raised:
-                        # No items in collection
                         card_id = None
 
                     if card_id:  # update card
@@ -240,8 +237,7 @@ class MetabaseTools(MetabaseApi):
                 )
                 if stop_on_error:
                     raise FileNotFoundError(f"{card_path} not found")
-                else:
-                    changes["errors"].append(card)
+                changes["errors"].append(card)
 
         # Loop exit before pushing changes to Metabase in case errors are encountered
         # Push changes back to Metabase API
@@ -264,5 +260,4 @@ class MetabaseTools(MetabaseApi):
                         )
 
             return results
-        else:
-            return changes
+        return changes

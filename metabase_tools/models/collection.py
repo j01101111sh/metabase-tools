@@ -33,8 +33,7 @@ class Collection(MetabaseGeneric):
         response = adapter.get(endpoint="/collection/tree")
         if response.data:
             return response.data
-        else:
-            raise EmptyDataReceived
+        raise EmptyDataReceived
 
     @staticmethod
     def flatten_tree(parent: dict, path: str = "/") -> list:
