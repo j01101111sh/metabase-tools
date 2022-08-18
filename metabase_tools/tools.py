@@ -6,6 +6,12 @@ from json import dumps, loads
 from pathlib import Path
 from typing import Optional
 
+from metabase_tools.exceptions import (
+    EmptyDataReceived,
+    ItemInPersonalCollection,
+    ItemNotFound,
+    NoUpdateProvided,
+)
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.card import Card
 from metabase_tools.models.collection import Collection
@@ -48,11 +54,10 @@ class MetabaseTools(MetabaseApi):
         self._logger.debug("Found %s cards with native queries", len(cards))
 
         # Create dictionary of collections for file paths
-        collections = {
-            item["id"]: {"name": item["name"], "path": item["path"]}
-            for item in Collection.get_flat_list(adapter=self)
-        }
-        self._logger.debug("Generated flat list of %s collections", len(collections))
+        collections_by_id = self._get_collections_dict(key="id")
+        self._logger.debug(
+            "Generated flat list of %s collections", len(collections_by_id)
+        )
 
         # Format filtered list
         formatted_list = {
@@ -62,32 +67,23 @@ class MetabaseTools(MetabaseApi):
         }
 
         for card in cards:
-            # Mapping dict append
             try:
-                new_card = {
-                    "id": card.id,
-                    "name": card.name,
-                    "path": collections[card.collection_id]["path"],
-                    "database": Database.search(
-                        adapter=self, search_params=[{"id": card.database_id}]
-                    )[0].name,
-                }
-            except KeyError:
+                new_card = self._get_mapping_details(
+                    card, collections_by_id=collections_by_id
+                )
+            except ItemInPersonalCollection:
                 self._logger.warning(
                     "Skipping %s (personal collection)\n%s", card.name, card
                 )
                 continue
             formatted_list["cards"].append(new_card)
 
-            # SQL file creation
-            sql_code = card.dataset_query["native"]["query"]
-            sql_path = Path(f"{root_folder}/{new_card['path']}")
-            sql_path.mkdir(parents=True, exist_ok=True)
-            sql_path /= f"{new_card['name']}.{file_extension}"
             try:
-                with open(sql_path, "w", newline="", encoding="utf-8") as file:
-                    file.write(sql_code)
-                self._logger.debug("%s saved to %s\n%s", card.name, sql_path, card)
+                self._save_query(
+                    card=card,
+                    save_path=f"{root_folder}/{new_card['path']}",
+                    file_extension=file_extension,
+                )
             except OSError as error_raised:
                 self._logger.warning(
                     "Skipping %s (name error): %s\n%s",
@@ -96,6 +92,12 @@ class MetabaseTools(MetabaseApi):
                     card,
                 )
                 continue
+            self._logger.debug(
+                "%s saved to %s\n%s",
+                card.name,
+                f"{root_folder}/{new_card['path']}",
+                card,
+            )
 
         # Save mapping file
         mapping_path = Path(f"{root_folder}")
@@ -144,58 +146,34 @@ class MetabaseTools(MetabaseApi):
 
         # Iterate through mapping file
         changes = {"updates": [], "creates": [], "errors": []}
-        collections = Collection.get_flat_list(adapter=self)
+        collections_by_id = self._get_collections_dict(key="id")
+        collections_by_path = self._get_collections_dict(key="path")
         for card in cards:
             card_path = Path(f"{root_folder}/{card['path']}/{card['name']}.{extension}")
             if card_path.exists():  # Ensures file exists
                 if "id" in card:  # If ID is in mapping, use that, else use location
-                    prod_card = Card.get(adapter=self, targets=[card["id"]])[0]
-                    # Verify query definition
-                    with open(card_path, "r", newline="", encoding="utf-8") as file:
-                        dev_code = file.read()
-                    # Verify location of card
-                    prod_loc = [
-                        coll["path"]
-                        for coll in collections
-                        if prod_card.collection_id == coll["id"]
-                    ][0]
-                    dev_coll_id = prod_card.collection_id  # Sets to prod loc as default
-                    if card["path"] != prod_loc:
-                        # find coll_id of new path
-                        dev_coll_id = [
-                            coll["id"]
-                            for coll in collections
-                            if coll["path"] == card["path"]
-                        ][0]
-                    # Generate update
-                    if (
-                        dev_code != prod_card.dataset_query["native"]["query"]
-                        or card["path"] != prod_loc
-                    ):
-                        dev_query = prod_card.dataset_query.copy()
-                        dev_query["native"]["query"] = dev_code
-                        dev_def = {
-                            "id": card["id"],
-                            "dataset_query": dev_query,
-                            "collection_id": dev_coll_id,
-                        }
-                        changes["updates"].append(dev_def.copy())
+                    try:
+                        update = self._update_existing_card(
+                            card=card,
+                            collections_by_id=collections_by_id,
+                            collections_by_path=collections_by_path,
+                            card_path=card_path,
+                        )
+                    except NoUpdateProvided:
+                        self._logger.debug("No updates necessary for %s", card)
+                        continue
+                    changes["updates"].append(update)
                 else:
                     # Check if a card with the same name exists in the listed location
-                    dev_coll_id = [
-                        coll["id"]
-                        for coll in collections
-                        if card["path"] == coll["path"]
-                    ][0]
+                    dev_coll_id = collections_by_path[card["path"]]["id"]
                     try:
-                        card_id = [
-                            item["id"]
-                            for item in self.get(
-                                endpoint=f"/collection/{dev_coll_id}/items"
-                            ).data  # type: ignore
-                            if item["model"] == "card" and item["name"] == card["name"]
-                        ][0]
-                    except (IndexError, TypeError):  # Not found or no items in coll
+                        card_id = self._find_card_id(
+                            card_name=card["name"], collection_id=dev_coll_id
+                        )
+                    except (
+                        EmptyDataReceived,
+                        ItemNotFound,
+                    ):  # No items in collection or not found
                         self._logger.debug(
                             "Card not found in listed location, creating: %s", card
                         )
@@ -261,3 +239,83 @@ class MetabaseTools(MetabaseApi):
 
             return results
         return changes
+
+    def _get_mapping_details(
+        self,
+        card: Card,
+        collections_by_id: dict,
+    ) -> dict:
+        try:
+            mapping_details = {
+                "id": card.id,
+                "name": card.name,
+                "path": collections_by_id[card.collection_id]["path"],
+            }
+        except KeyError:
+            raise ItemInPersonalCollection("%s in personal collection", card.name)
+
+        mapping_details["database"] = Database.search(
+            adapter=self, search_params=[{"id": card.database_id}]
+        )[0].name
+
+        return mapping_details
+
+        # try:
+        #     self._save_query(
+        #         card=card,
+        #         save_path=f"{root_folder}/{new_card['path']}",
+        #         file_extension=file_extension,
+        #     )
+
+        #     )
+
+    def _save_query(self, card: Card, save_path: str, file_extension):
+        # SQL file creation
+        sql_code = card.dataset_query["native"]["query"]
+        sql_path = Path(f"{save_path}")
+        sql_path.mkdir(parents=True, exist_ok=True)
+        sql_path /= f"{card.name}.{file_extension}"
+        with open(sql_path, "w", newline="", encoding="utf-8") as file:
+            file.write(sql_code)
+
+    def _get_collections_dict(self, key: str):
+        collections = Collection.get_flat_list(adapter=self)
+        non_keys = [k for k in collections[0].keys() if k != key]
+        results = {item[key]: {nk: item[nk] for nk in non_keys} for item in collections}
+        return results
+
+    def _find_card_id(self, card_name: str, collection_id: int) -> int:
+        # TODO consider moving this to collection class
+        collection_items = Collection.get_contents(
+            adapter=self, collection_id=collection_id, model_type="card", archived=False
+        )
+        for item in collection_items:
+            if item["name"] == card_name:
+                return item["id"]
+        raise ItemNotFound
+
+    def _update_existing_card(
+        self,
+        card: dict,
+        collections_by_id: dict,
+        collections_by_path: dict,
+        card_path: Path | str,
+    ) -> dict:
+        prod_card = Card.get(adapter=self, targets=[card["id"]])[0]
+        # Get query definition
+        with open(card_path, "r", newline="", encoding="utf-8") as file:
+            dev_code = file.read()
+        # Generate update
+        if (
+            dev_code != prod_card.dataset_query["native"]["query"]
+            or card["path"] != collections_by_id[prod_card.collection_id]["path"]
+        ):
+            dev_query = prod_card.dataset_query.copy()
+            dev_query["native"]["query"] = dev_code
+            dev_def = {
+                "id": card["id"],
+                "dataset_query": dev_query,
+                "collection_id": collections_by_path[card["path"]]["id"],
+            }
+            return dev_def.copy()
+        raise NoUpdateProvided
