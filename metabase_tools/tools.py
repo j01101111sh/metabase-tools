@@ -296,26 +296,26 @@ class MetabaseTools(MetabaseApi):
 
     def _update_existing_card(
         self,
-        card: dict,
+        dev_card: dict,
         collections_by_id: dict,
         collections_by_path: dict,
         card_path: Path | str,
     ) -> dict:
-        prod_card = Card.get(adapter=self, targets=[card["id"]])[0]
+        prod_card = Card.get(adapter=self, targets=[dev_card["id"]])[0]
         # Get query definition
         with open(card_path, "r", newline="", encoding="utf-8") as file:
-            dev_code = file.read()
+            dev_card["query"] = file.read()
         # Generate update
         if (
-            dev_code != prod_card.dataset_query["native"]["query"]
-            or card["path"] != collections_by_id[prod_card.collection_id]["path"]
+            dev_card["query"] != prod_card.dataset_query["native"]["query"]
+            or dev_card["path"] != collections_by_id[prod_card.collection_id]["path"]
         ):
-            dev_query = prod_card.dataset_query.copy()
-            dev_query["native"]["query"] = dev_code
-            dev_def = {
-                "id": card["id"],
-                "dataset_query": dev_query,
-                "collection_id": collections_by_path[card["path"]]["id"],
+            dev_card["dataset_query"] = prod_card.dataset_query.copy()
+            dev_card["dataset_query"]["native"]["query"] = dev_card["query"]
+            dev_card["collection_id"] = collections_by_path[dev_card["path"]]["id"]
+            return {
+                "id": dev_card["id"],
+                "dataset_query": dev_card["dataset_query"],
+                "collection_id": dev_card["collection_id"],
             }
-            return dev_def.copy()
         raise NoUpdateProvided
