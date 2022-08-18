@@ -36,7 +36,7 @@ class Collection(MetabaseGeneric):
         raise EmptyDataReceived
 
     @staticmethod
-    def flatten_tree(parent: dict, path: str = "/") -> list:
+    def flatten_tree(parent: dict, path: str = "/") -> list[dict]:
         children = []
         for child in parent["children"]:
             children.append(
@@ -59,7 +59,7 @@ class Collection(MetabaseGeneric):
         return children
 
     @classmethod
-    def get_flat_list(cls, adapter: MetabaseApi) -> list:
+    def get_flat_list(cls, adapter: MetabaseApi) -> list[dict]:
         tree = cls.get_tree(adapter=adapter)
         folders = []
         for root_folder in tree:
