@@ -29,6 +29,42 @@ class Collection(MetabaseGeneric):
         )
 
     @classmethod
+    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+        return super(Collection, cls).post(
+            adapter=adapter, endpoint="/collection", payloads=payloads
+        )
+
+    @classmethod
+    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+        return super(Collection, cls).put(
+            adapter=adapter, endpoint="/collection", payloads=payloads
+        )
+
+    @classmethod
+    def archive(
+        cls, adapter: MetabaseApi, targets: list[int], unarchive=False
+    ) -> list[Self]:
+        return super(Collection, cls).archive(
+            adapter=adapter,
+            endpoint="/collection",
+            targets=targets,
+            unarchive=unarchive,
+        )
+
+    @classmethod
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        search_params: list[dict],
+        search_list: Optional[list] = None,
+    ) -> list[Self]:
+        return super(Collection, cls).search(
+            adapter=adapter,
+            search_params=search_params,
+            search_list=search_list,
+        )
+
+    @classmethod
     def get_tree(cls, adapter: MetabaseApi) -> list[dict]:
         response = adapter.get(endpoint="/collection/tree")
         if response.data:
@@ -76,37 +112,22 @@ class Collection(MetabaseGeneric):
         return folders
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        return super(Collection, cls).post(
-            adapter=adapter, endpoint="/collection", payloads=payloads
-        )
-
-    @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        return super(Collection, cls).put(
-            adapter=adapter, endpoint="/collection", payloads=payloads
-        )
-
-    @classmethod
-    def archive(
-        cls, adapter: MetabaseApi, targets: list[int], unarchive=False
-    ) -> list[Self]:
-        return super(Collection, cls).archive(
-            adapter=adapter,
-            endpoint="/collection",
-            targets=targets,
-            unarchive=unarchive,
-        )
-
-    @classmethod
-    def search(
+    def get_contents(
         cls,
         adapter: MetabaseApi,
-        search_params: list[dict],
-        search_list: Optional[list] = None,
-    ) -> list[Self]:
-        return super(Collection, cls).search(
-            adapter=adapter,
-            search_params=search_params,
-            search_list=search_list,
-        )
+        collection_id: int,
+        model_type: Optional[str] = None,
+        archived: bool = False,
+    ) -> list:
+        params = {}
+        if archived:
+            params["archived"] = archived
+        if model_type:
+            params["model"] = model_type
+        items = adapter.get(
+            endpoint=f"/collection/{collection_id}/items",
+            params=params,
+        ).data
+        if items:
+            return items
+        raise EmptyDataReceived
