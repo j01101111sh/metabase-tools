@@ -8,13 +8,12 @@ from metabase_tools.models.generic import MetabaseGeneric
 
 
 class Collection(MetabaseGeneric):
+    id: int | str  # root is a valid id for a collection
     description: Optional[str]
     archived: Optional[bool]
     slug: Optional[str]
     color: Optional[str]
-    name: str
     personal_owner_id: Optional[int]
-    id: str | int
     location: Optional[str]
     namespace: Optional[int]
     effective_location: Optional[str]
@@ -23,22 +22,57 @@ class Collection(MetabaseGeneric):
 
     @classmethod
     def get(
-        cls, adapter: MetabaseApi, targets: Optional[int | list[int]] = None
+        cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
     ) -> list[Self]:
         return super(Collection, cls).get(
             adapter=adapter, endpoint="/collection", targets=targets
         )
 
     @classmethod
-    def get_tree(cls, adapter: MetabaseApi) -> dict | list[dict]:
+    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+        return super(Collection, cls).post(
+            adapter=adapter, endpoint="/collection", payloads=payloads
+        )
+
+    @classmethod
+    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+        return super(Collection, cls).put(
+            adapter=adapter, endpoint="/collection", payloads=payloads
+        )
+
+    @classmethod
+    def archive(
+        cls, adapter: MetabaseApi, targets: list[int], unarchive=False
+    ) -> list[Self]:
+        return super(Collection, cls).archive(
+            adapter=adapter,
+            endpoint="/collection",
+            targets=targets,
+            unarchive=unarchive,
+        )
+
+    @classmethod
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        search_params: list[dict],
+        search_list: Optional[list] = None,
+    ) -> list[Self]:
+        return super(Collection, cls).search(
+            adapter=adapter,
+            search_params=search_params,
+            search_list=search_list,
+        )
+
+    @classmethod
+    def get_tree(cls, adapter: MetabaseApi) -> list[dict]:
         response = adapter.get(endpoint="/collection/tree")
         if response.data:
             return response.data
-        else:
-            raise EmptyDataReceived
+        raise EmptyDataReceived
 
     @staticmethod
-    def flatten_tree(parent: dict, path: str = "/") -> list:
+    def flatten_tree(parent: dict, path: str = "/") -> list[dict]:
         children = []
         for child in parent["children"]:
             children.append(
@@ -61,7 +95,7 @@ class Collection(MetabaseGeneric):
         return children
 
     @classmethod
-    def get_flat_list(cls, adapter: MetabaseApi) -> list:
+    def get_flat_list(cls, adapter: MetabaseApi) -> list[dict]:
         tree = cls.get_tree(adapter=adapter)
         folders = []
         for root_folder in tree:
@@ -78,24 +112,22 @@ class Collection(MetabaseGeneric):
         return folders
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> list[Self]:
-        return super(Collection, cls).post(
-            adapter=adapter, endpoint="/collection", payloads=payloads
-        )
-
-    @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: dict | list[dict]) -> list[Self]:
-        return super(Collection, cls).put(
-            adapter=adapter, endpoint="/collection", payloads=payloads
-        )
-
-    @classmethod
-    def archive(
-        cls, adapter: MetabaseApi, targets: int | list[int], unarchive=False
-    ) -> list[Self]:
-        return super(Collection, cls).archive(
-            adapter=adapter,
-            endpoint="/collection",
-            targets=targets,
-            unarchive=unarchive,
-        )
+    def get_contents(
+        cls,
+        adapter: MetabaseApi,
+        collection_id: int,
+        model_type: Optional[str] = None,
+        archived: bool = False,
+    ) -> list:
+        params = {}
+        if archived:
+            params["archived"] = archived
+        if model_type:
+            params["model"] = model_type
+        items = adapter.get(
+            endpoint=f"/collection/{collection_id}/items",
+            params=params,
+        ).data
+        if items:
+            return items
+        raise EmptyDataReceived

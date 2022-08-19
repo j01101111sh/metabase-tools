@@ -58,7 +58,7 @@ class MetabaseApi:
         if cache_token:
             self.save_token(file=token_path)
 
-    def _authenticate(self, credentials: dict):
+    def _authenticate(self, credentials: dict) -> None:
         """Private method for authenticating a session with the API"""
         self._logger.debug("Starting authentication - RestAdapter member")
         try:
@@ -123,7 +123,7 @@ class MetabaseApi:
     ) -> Result:
         """Private method for get and post methods
         Args:
-            http_method (str): GET or POST
+            http_method (str): GET or POST or PUT or DELETE
             endpoint (str): URL endpoint
             ep_params (Dict, optional): Endpoint parameters. Defaults to None.
             data (Dict, optional): Data payload. Defaults to None.

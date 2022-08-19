@@ -1,3 +1,7 @@
+"""
+    MetabaseGeneric class to provide generic methods for objects following this pattern
+"""
+
 from typing import Optional
 
 from pydantic import BaseModel
@@ -8,9 +12,73 @@ from metabase_tools.metabase import MetabaseApi
 
 
 class MetabaseGeneric(BaseModel):
+    """Provides generic methods for objects following generic pattern"""
+
+    id: int
+    name: str
+
+    @classmethod
+    def _request_list(
+        cls,
+        http_method: str,
+        adapter: MetabaseApi,
+        endpoint: str,
+        source: list[int] | list[dict],
+    ) -> list[Self]:
+        """Sends requests to API based on a list of objects
+
+        Parameters
+        ----------
+        http_method : str
+            GET or POST or PUT or DELETE
+        adapter : MetabaseApi
+            Connection to Metabase API
+        endpoint : str
+            Endpoint to use for the requests
+        source : list[int] | list[dict]
+            List of targets or payloads
+
+        Returns
+        -------
+        list[Self]
+            List of objects of the relevant type
+
+        Raises
+        ------
+        InvalidParameters
+            Targets and jsons are both None
+        EmptyDataReceived
+            No results returned from API
+        """
+        results = []
+
+        for item in source:
+            if isinstance(item, int):
+                response = adapter.do(
+                    http_method=http_method, endpoint=f"{endpoint}/{item}"
+                )
+            elif isinstance(item, dict):
+                if http_method == "PUT":
+                    response = adapter.do(
+                        http_method=http_method,
+                        endpoint=f"{endpoint}/{item['id']}",
+                        json=item,
+                    )
+                else:
+                    response = adapter.do(
+                        http_method=http_method, endpoint=f"{endpoint}", json=item
+                    )
+            else:
+                raise InvalidParameters
+            if response.data and isinstance(response.data, dict):
+                results.append(cls(**response.data))
+        if len(results) > 0:
+            return results
+        raise EmptyDataReceived("No data returned")
+
     @classmethod
     def get(
-        cls, adapter: MetabaseApi, endpoint: str, targets: Optional[int | list[int]]
+        cls, adapter: MetabaseApi, endpoint: str, targets: Optional[list[int]] = None
     ) -> list[Self]:
         """Generic method for returning an object or list of objects
 
@@ -20,34 +88,30 @@ class MetabaseGeneric(BaseModel):
             Connection to Metabase API
         endpoint : str
             Endpoint to use for the request
-        targets : Optional[int  |  list[int]]
-            If None, return list of the selected objects. Otherwise, return the object(s) of the selected type with the ID(s) provided.
+        targets : Optional[list[int]]
+            If None, return all objects; else return the objects requested
 
         Returns
         -------
-         list[Self]
+        list[Self]
+            List of objects of the relevant type
 
         Raises
         ------
         InvalidParameters
-            Targets are not None, int, or list[int]
+            Targets are not None or list[int]
         EmptyDataReceived
             No data is received from the API
         """
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
-            results = []
-            for target in targets:
-                response = adapter.get(endpoint=f"{endpoint}/{target}")
-                if response.data and isinstance(response.data, dict):
-                    results.append(cls(**response.data))
-            if len(results) > 0:
-                return results
-        elif isinstance(targets, int):
-            # If a single target is provided, return that object
-            response = adapter.get(endpoint=f"{endpoint}/{targets}")
-            if response.data and isinstance(response.data, dict):
-                return [cls(**response.data)]
-        elif targets is None:
+            return cls._request_list(
+                http_method="GET",
+                adapter=adapter,
+                endpoint=endpoint,
+                source=targets,
+            )
+
+        if targets is None:
             # If no targets are provided, all objects of that type should be returned
             response = adapter.get(endpoint=endpoint)
             if response.data:  # Validate data was returned
@@ -61,86 +125,155 @@ class MetabaseGeneric(BaseModel):
 
     @classmethod
     def post(
-        cls, adapter: MetabaseApi, endpoint: str, payloads: dict | list[dict]
+        cls, adapter: MetabaseApi, endpoint: str, payloads: list[dict]
     ) -> list[Self]:
+        """Generic method for creating a list of objects
+
+        Parameters
+        ----------
+        adapter : MetabaseApi
+            Connection to Metabase API
+        endpoint : str
+            Endpoint to use for the requests
+        payloads : list[dict]
+            List of json payloads
+
+        Returns
+        -------
+        list[Self]
+            List of objects of the relevant type
+
+        Raises
+        ------
+        InvalidParameters
+            Targets and jsons are both None
+        EmptyDataReceived
+            No results returned from API
+        """
         # TODO validate params by creating a method in the child class
-        # TODO docstring
-        # TODO refactor for DRY
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
-            results = []
-            for payload in payloads:
-                response = adapter.post(endpoint=f"{endpoint}", json=payload)
-                if response.data and isinstance(response.data, dict):
-                    results.append(cls(**response.data))
-            if len(results) > 0:
-                return results
-        elif isinstance(payloads, dict):
-            # If a single target is provided, return that object
-            response = adapter.post(endpoint=endpoint, json=payloads)
-            if response.data and isinstance(response.data, dict):
-                return [cls(**response.data)]
-        else:
-            # If something other than dict or list[dict], raise error
-            raise InvalidParameters("Invalid target(s)")
-        # If response.data was empty or not a valid type, raise error
-        raise EmptyDataReceived("No data returned")
+            return cls._request_list(
+                http_method="POST",
+                adapter=adapter,
+                endpoint=endpoint,
+                source=payloads,
+            )
+        # If something other than dict or list[dict], raise error
+        raise InvalidParameters("Invalid target(s)")
 
     @classmethod
     def put(
-        cls, adapter: MetabaseApi, endpoint: str, payloads: dict | list[dict]
+        cls, adapter: MetabaseApi, endpoint: str, payloads: list[dict]
     ) -> list[Self]:
-        # TODO docstring
+        """Generic method for updating a list of objects
+
+        Parameters
+        ----------
+        adapter : MetabaseApi
+            Connection to Metabase API
+        endpoint : str
+            Endpoint to use for the requests
+        payloads : list[dict]
+            List of json payloads
+
+        Returns
+        -------
+        list[Self]
+            List of objects of the relevant type
+
+        Raises
+        ------
+        InvalidParameters
+            Targets and jsons are both None
+        EmptyDataReceived
+            No results returned from API
+        """
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
-            results = []
-            for payload in payloads:
-                response = adapter.put(
-                    endpoint=f"{endpoint}/{payload['id']}", json=payload
-                )
-                if response.data and isinstance(response.data, dict):
-                    results.append(cls(**response.data))
-            if len(results) > 0:
-                return results
-        elif isinstance(payloads, dict):
-            # If a single target is provided, return that object
-            response = adapter.put(
-                endpoint=f'{endpoint}/{payloads["id"]}', json=payloads
+            return cls._request_list(
+                http_method="PUT",
+                adapter=adapter,
+                endpoint=endpoint,
+                source=payloads,
             )
-            if response.data and isinstance(response.data, dict):
-                return [cls(**response.data)]
-        else:
-            # If something other than dict or list[dict], raise error
-            raise InvalidParameters("Invalid target(s)")
-        # If response.data was empty or not a valid type, raise error
-        raise EmptyDataReceived("No data returned")
+        # If something other than dict or list[dict], raise error
+        raise InvalidParameters("Invalid target(s)")
 
     @classmethod
     def archive(
         cls,
         adapter: MetabaseApi,
         endpoint: str,
-        targets: int | list[int],
+        targets: list[int],
         unarchive: bool,
     ) -> list[Self]:
-        # TODO docstring
-        archive_template = {"id": None, "archived": not unarchive}
+        """Generic method for archiving a list of objects
+
+        Parameters
+        ----------
+        adapter : MetabaseApi
+            Connection to Metabase API
+        endpoint : str
+            Endpoint to use for the requests
+        payloads : list[dict]
+            List of json payloads
+
+        Returns
+        -------
+        list[Self]
+            List of objects of the relevant type
+
+        Raises
+        ------
+        InvalidParameters
+            Targets and jsons are both None
+        EmptyDataReceived
+            No results returned from API
+        """
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
-            results = []
-            for target in targets:
-                archive_template["id"] = target
-                response = adapter.put(
-                    endpoint=f"{endpoint}/{target}", json=archive_template
-                )
-                if response.data and isinstance(response.data, dict):
-                    results.append(cls(**response.data))
-            return results
-        elif isinstance(targets, int):
-            payloads = archive_template
-            payloads["id"] = targets
-            response = adapter.put(
-                endpoint=f"{endpoint}/{targets}", json=archive_template
+            return cls._request_list(
+                http_method="PUT",
+                adapter=adapter,
+                endpoint=endpoint,
+                source=[
+                    {"id": target, "archived": not unarchive} for target in targets
+                ],
             )
-            if response.data and isinstance(response.data, dict):
-                return [cls(**response.data)]
         raise InvalidParameters("Invalid set of targets")
+
+    @classmethod
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        search_params: list[dict],
+        search_list: Optional[list[Self]] = None,
+    ) -> list[Self]:
+        """Method to search a list of objects meeting a list of parameters
+
+        Parameters
+        ----------
+        adapter : MetabaseApi
+            Connection to Metabase API
+        endpoint : str
+            Endpoint to use for the requests
+        search_params : list[dict]
+            List of dicts, each containing search criteria. 1 result returned per dict.
+        search_list : Optional[list[Self]], optional
+            Provide to search against an existing list, by default pulls from API
+
+        Returns
+        -------
+        list[Self]
+            List of objects of the relevant type
+        """
+        # TODO add tests for search
+        objs = search_list or cls.get(adapter=adapter)  # type: ignore
+        results = []
+        for param in search_params:
+            for obj in objs:
+                obj_dict = obj.dict()
+                for key, value in param.items():
+                    if key in obj_dict and value == obj_dict[key]:
+                        results.append(obj)
+        return results

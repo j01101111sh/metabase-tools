@@ -1,62 +1,320 @@
+"""
+MetabaseTools extends MetabaseApi with additional complex functions
+"""
 from datetime import datetime
-from json import dumps
+from json import dumps, loads
 from pathlib import Path
+from typing import Optional
 
+from metabase_tools.exceptions import (
+    EmptyDataReceived,
+    InvalidParameters,
+    ItemInPersonalCollection,
+    ItemNotFound,
+    NoUpdateProvided,
+)
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.card import Card
 from metabase_tools.models.collection import Collection
+from metabase_tools.models.database import Database
 
 
 class MetabaseTools(MetabaseApi):
+    """Extends MetabaseApi with additional complex functions"""
+
     def download_native_queries(
         self,
-        save_path: str | None = None,
-        save_file: str | None = None,
-        root_folder: str = "./",
-        file_extension: str = ".sql",
+        save_file: Optional[Path | str] = None,
+        root_folder: Path | str = ".",
+        file_extension: str = "sql",
     ) -> Path:
         # TODO make method generic to include other filters
         """Downloads all native queries into a JSON file
 
         Parameters
         ----------
-        save_path : str | None, optional
-            Name of the file to save results to, by default None
+        save_file : Optional[Path | str], optional
+            Path to save mapping file, defaults to mapping_{timestamp}.json
+        root_folder : Path | str, optional
+            Root folder to save queries, by default "."
+        file_extension : str, optional
+            File extension to save the queries, by default "sql"
+
+        Returns
+        -------
+        Path
+            Path to save file
         """
         # Determine save path
         timestamp = datetime.now().strftime("%y%m%dT%H%M%S")
-        save_path = save_path or "."
-        save_file = save_file or f"mapping_{timestamp}.json"
+        root_folder = Path(root_folder)  # Convert root folder to a path object
+        save_file = Path(save_file or f"mapping_{timestamp}.json")
 
-        # Download list of cards from Metabase API
-        cards = Card.get(adapter=self)
-
-        # Filter list of cards to only those with native queries
-        cards = [card for card in cards if card.query_type == "native"]
+        # Download list of cards from Metabase API and filter to only native queries
+        cards = [card for card in Card.get(adapter=self) if card.query_type == "native"]
+        self._logger.debug("Found %s cards with native queries", len(cards))
 
         # Create dictionary of collections for file paths
-        collections = {}
-        for item in Collection.get_flat_list(adapter=self):
-            collections[item["id"]] = {"name": item["name"], "path": item["path"]}
+        collections_by_id = self._get_collections_dict(key="id")
+        self._logger.debug(
+            "Generated flat list of %s collections", len(collections_by_id)
+        )
 
         # Format filtered list
         formatted_list = {
-            "root": root_folder,
+            "root": str(root_folder),
             "file_extension": file_extension,
             "cards": [],
         }
 
         for card in cards:
-            path = collections[card.collection_id]["path"]
-            new_card = {"name": card.name, "id": card.id, "path": path}
+            try:
+                new_card = self._get_mapping_details(
+                    card, collections_by_id=collections_by_id
+                )
+            except ItemInPersonalCollection:
+                self._logger.warning(
+                    "Skipping %s (personal collection)\n%s", card.name, card
+                )
+                continue
             formatted_list["cards"].append(new_card)
 
-        # Save formatted + filtered list
-        path = Path(f"{save_path}")
-        path.mkdir(parents=True, exist_ok=True)
-        path /= save_file
-        with open(path, "w", newline="", encoding="utf-8") as file:
+            try:
+                self._save_query(
+                    card=card,
+                    save_path=f"{root_folder}/{new_card['path']}",
+                    file_extension=file_extension,
+                )
+            except OSError as error_raised:
+                self._logger.warning(
+                    "Skipping %s (name error): %s\n%s",
+                    card.name,
+                    str(error_raised),
+                    card,
+                )
+                continue
+            self._logger.debug(
+                "%s saved to %s\n%s",
+                card.name,
+                f"{root_folder}/{new_card['path']}",
+                card,
+            )
+
+        # Save mapping file
+        mapping_path = Path(f"{root_folder}")
+        mapping_path.mkdir(parents=True, exist_ok=True)
+        mapping_path /= save_file
+        self._logger.debug(
+            "Completed iterating through list, saving file: %s", mapping_path
+        )
+        with open(mapping_path, "w", newline="", encoding="utf-8") as file:
             file.write(dumps(formatted_list, indent=2))
 
         # Returns path to file saved
-        return path
+        return mapping_path
+
+    def upload_native_queries(
+        self,
+        mapping_path: Path | str,
+        dry_run: bool = True,
+        stop_on_error: bool = False,
+    ) -> list[dict] | dict:
+        """Uploads files
+
+        Parameters
+        ----------
+        mapping_path : Path | str
+            Path to the mapping configuration file, by default None
+        dry_run : bool, optional
+            Execute task as a dry run (i.e. do not make any changes), by default True
+
+        Returns
+        -------
+        list[dict]
+            list of dicts with results of upload
+        """
+        # Determine mapping path
+        mapping_path = Path(mapping_path or "./mapping.json")
+
+        # Open mapping configuration file
+        with open(mapping_path, "r", newline="", encoding="utf-8") as file:
+            mapping = loads(file.read())
+
+        # Initialize common settings (e.g. root folder, file extension, etc.)
+        root_folder = Path(mapping.get("root", "."))
+        extension = mapping.get("file_extension", ".sql")
+        cards = mapping["cards"]
+
+        # Iterate through mapping file
+        changes = {"updates": [], "creates": [], "errors": []}
+        collections_by_id = self._get_collections_dict(key="id")
+        collections_by_path = self._get_collections_dict(key="path")
+        for card in cards:
+            card_path = Path(f"{root_folder}/{card['path']}/{card['name']}.{extension}")
+            if (
+                card_path.exists() and "id" in card
+            ):  # Ensures file exists and id is present
+                try:
+                    update = self._update_existing_card(
+                        dev_card=card,
+                        card_path=card_path,
+                        collections_by_id=collections_by_id,
+                        collections_by_path=collections_by_path,
+                    )
+                except NoUpdateProvided:
+                    self._logger.debug("No updates necessary for %s", card)
+                    continue
+                changes["updates"].append(update)
+            elif card_path.exists():
+                # Check if a card with the same name exists in the listed location
+                dev_coll_id = collections_by_path[card["path"]]["id"]
+                try:
+                    card_id = self._find_card_id(
+                        card_name=card["name"], collection_id=dev_coll_id
+                    )
+                except (
+                    EmptyDataReceived,
+                    ItemNotFound,
+                ):  # No items in collection or not found
+                    self._logger.debug(
+                        "Card not found in listed location, creating: %s", card
+                    )
+                    card_id = None
+
+                if card_id:  # update card
+                    prod_card = Card.get(adapter=self, targets=[card_id])[0]
+                    with open(card_path, "r", newline="", encoding="utf-8") as file:
+                        dev_code = file.read()
+                    if dev_code != prod_card.dataset_query["native"]["query"]:
+                        dev_query = prod_card.dataset_query.copy()
+                        dev_query["native"]["query"] = dev_code
+                        dev_def = {"id": card_id, "dataset_query": dev_query}
+                        changes["updates"].append(dev_def)
+                else:  # create card
+                    with open(card_path, "r", newline="", encoding="utf-8") as file:
+                        dev_query = file.read()
+                    db_id = [
+                        database.id
+                        for database in Database.get(adapter=self)
+                        if card["database"] == database.name
+                    ][0]
+
+                    new_card_def = {
+                        "visualization_settings": {},
+                        "collection_id": dev_coll_id,
+                        "name": card["name"],
+                        "dataset_query": {
+                            "type": "native",
+                            "native": {"query": dev_query},
+                            "database": db_id,
+                        },
+                        "display": "table",
+                    }
+                    changes["creates"].append(new_card_def.copy())
+            else:
+                self._logger.error(
+                    "Skipping %s (file not found):\n%s", card["name"], card
+                )
+                if stop_on_error:
+                    raise FileNotFoundError(f"{card_path} not found")
+                changes["errors"].append(card)
+
+        # Loop exit before pushing changes to Metabase in case errors are encountered
+        # Push changes back to Metabase API
+        if not dry_run:
+            results = []
+            if len(changes["updates"]) > 0:
+                update_results = Card.put(adapter=self, payloads=changes["updates"])
+                if isinstance(update_results, list):
+                    for result in update_results:
+                        results.append(
+                            {"id": result.id, "name": result.name, "is_success": True}
+                        )
+
+            if len(changes["creates"]) > 0:
+                create_results = Card.post(adapter=self, payloads=changes["creates"])
+                if isinstance(create_results, list):
+                    for result in create_results:
+                        results.append(
+                            {"id": result.id, "name": result.name, "is_success": True}
+                        )
+
+            return results
+        return changes
+
+    def _get_mapping_details(self, card: Card, collections_by_id: dict) -> dict:
+        try:
+            mapping_details = {
+                "id": card.id,
+                "name": card.name,
+                "path": collections_by_id[card.collection_id]["path"],
+            }
+        except KeyError:
+            raise ItemInPersonalCollection("%s in personal collection", card.name)
+
+        mapping_details["database"] = Database.search(
+            adapter=self, search_params=[{"id": card.database_id}]
+        )[0].name
+
+        return mapping_details
+
+    def _save_query(self, card: Card, save_path: str, file_extension):
+        # SQL file creation
+        sql_code = card.dataset_query["native"]["query"]
+        sql_path = Path(f"{save_path}")
+        sql_path.mkdir(parents=True, exist_ok=True)
+        sql_path /= f"{card.name}.{file_extension}"
+        with open(sql_path, "w", newline="", encoding="utf-8") as file:
+            file.write(sql_code)
+
+    def _get_collections_dict(self, key: str):
+        collections = Collection.get_flat_list(adapter=self)
+        non_keys = [k for k in collections[0].keys() if k != key]
+        return {item[key]: {nk: item[nk] for nk in non_keys} for item in collections}
+
+    def _translate_path(
+        self, collection_id: Optional[int] = None, collection_path: Optional[str] = None
+    ) -> int | str:
+        if collection_id:
+            collections_by_id = self._get_collections_dict(key="id")
+            return collections_by_id[collection_id]["path"]
+        elif collection_path:
+            collections_by_path = self._get_collections_dict(key="path")
+            return collections_by_path[collection_path]["id"]
+        raise InvalidParameters
+
+    def _find_card_id(self, card_name: str, collection_id: int) -> int:
+        # TODO consider moving this to collection class
+        collection_items = Collection.get_contents(
+            adapter=self, collection_id=collection_id, model_type="card", archived=False
+        )
+        for item in collection_items:
+            if item["name"] == card_name:
+                return item["id"]
+        raise ItemNotFound
+
+    def _update_existing_card(
+        self,
+        dev_card: dict,
+        card_path: Path | str,
+        collections_by_id: dict,
+        collections_by_path: dict,
+    ) -> dict:
+        prod_card = Card.get(adapter=self, targets=[dev_card["id"]])[0]
+        # Get query definition
+        with open(card_path, "r", newline="", encoding="utf-8") as file:
+            dev_card["query"] = file.read()
+        # Generate update
+        if (
+            dev_card["query"] != prod_card.dataset_query["native"]["query"]
+            or dev_card["path"] != collections_by_id[prod_card.collection_id]["path"]
+        ):
+            dev_card["dataset_query"] = prod_card.dataset_query.copy()
+            dev_card["dataset_query"]["native"]["query"] = dev_card["query"]
+            dev_card["collection_id"] = collections_by_path[dev_card["path"]]["id"]
+            return {
+                "id": dev_card["id"],
+                "dataset_query": dev_card["dataset_query"],
+                "collection_id": dev_card["collection_id"],
+            }
+        raise NoUpdateProvided

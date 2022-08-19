@@ -1,4 +1,7 @@
 from datetime import datetime
+from pathlib import Path
+from random import choice
+from string import ascii_lowercase
 
 import pytest
 
@@ -36,10 +39,26 @@ def test_auth(tools: MetabaseTools):
 
 
 def test_download_native_queries(tools: MetabaseTools):
-    file = tools.download_native_queries(save_path="./dev/files/")
+    file = tools.download_native_queries(root_folder="./dev/data")
     size = file.stat().st_size
     create_time = file.stat().st_ctime
     now = datetime.now().timestamp()
     assert size > 0  # File size greater than 0
     assert create_time - now < 2  # file was created in the last 2 seconds
-    file.unlink()  # remove created file
+
+
+def test_upload_native_queries(tools: MetabaseTools):
+    mapping_path = Path("./tests/data/mapping.json")
+    test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
+    with open(test_card_path, "r", newline="", encoding="utf-8") as file:
+        current = file.read()
+    with open(test_card_path, "a", newline="", encoding="utf-8") as file:
+        file.write("\n-- " + "".join(choice(ascii_lowercase) for x in range(6)))
+    results = tools.upload_native_queries(
+        mapping_path=mapping_path, dry_run=False, stop_on_error=True
+    )
+    with open(test_card_path, "w", newline="", encoding="utf-8") as file:
+        file.write(current)
+    assert isinstance(results, list)
+    assert all(isinstance(result, dict) for result in results)
+    assert all(result["is_success"] for result in results)

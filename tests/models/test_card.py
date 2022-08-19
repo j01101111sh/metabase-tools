@@ -1,4 +1,6 @@
 from datetime import datetime
+from random import choice
+from string import ascii_lowercase
 
 import pytest
 
@@ -37,7 +39,7 @@ def new_card_def():
             "table.cell_column": "ID",
         },
         "collection_id": 2,
-        "name": "Test Card",
+        "name": "",
         "dataset_query": {
             "type": "native",
             "native": {
@@ -51,13 +53,25 @@ def new_card_def():
 
 
 def test_card_create_one(api: MetabaseApi, new_card_def: dict):
-    new_card_obj = Card.post(adapter=api, payloads=new_card_def)
+    card_one = new_card_def.copy()
+    card_one["name"] = "Test Card - " + "".join(
+        choice(ascii_lowercase) for x in range(6)
+    )
+    new_card_obj = Card.post(adapter=api, payloads=[card_one])
     assert isinstance(new_card_obj, list)
     assert all(isinstance(card, Card) for card in new_card_obj)
 
 
 def test_card_create_many(api: MetabaseApi, new_card_def: dict):
-    new_cards = [new_card_def, new_card_def]
+    card_one = new_card_def.copy()
+    card_one["name"] = "Test Card - " + "".join(
+        choice(ascii_lowercase) for x in range(6)
+    )
+    card_two = new_card_def.copy()
+    card_two["name"] = "Test Card - " + "".join(
+        choice(ascii_lowercase) for x in range(6)
+    )
+    new_cards = [card_one, card_two]
     new_card_objs = Card.post(adapter=api, payloads=new_cards)
     assert isinstance(new_card_objs, list)
     assert all(isinstance(card, Card) for card in new_card_objs)
@@ -65,8 +79,8 @@ def test_card_create_many(api: MetabaseApi, new_card_def: dict):
 
 def test_card_update_one(api: MetabaseApi):
     dt = datetime.now().isoformat(timespec="seconds")
-    card_changes = {"id": 1, "description": f"Updated {dt}"}
-    change_result = Card.put(adapter=api, payloads=card_changes)
+    card_change = {"id": 1, "description": f"Updated {dt}"}
+    change_result = Card.put(adapter=api, payloads=[card_change])
     assert isinstance(change_result, list)
     assert all(isinstance(card, Card) for card in change_result)
     assert all(card.description == f"Updated {dt}" for card in change_result)
@@ -82,14 +96,14 @@ def test_card_update_many(api: MetabaseApi):
         new_card = card_changes.copy()
         new_card.update(id=card)
         updates.append(new_card)
-    change_result = Card.put(adapter=api, payloads=card_changes)
+    change_result = Card.put(adapter=api, payloads=updates)
     assert isinstance(change_result, list)
     assert all(isinstance(card, Card) for card in change_result)
     assert all(card.description == f"Updated {dt}" for card in change_result)
 
 
 def test_card_archive_one(api: MetabaseApi):
-    card_to_archive = 1
+    card_to_archive = [1]
     change_result = Card.archive(adapter=api, targets=card_to_archive)
     assert isinstance(change_result, list)
     assert all(isinstance(card, Card) for card in change_result)
@@ -106,7 +120,7 @@ def test_card_archive_many(api: MetabaseApi):
 
 
 def test_card_unarchive_one(api: MetabaseApi):
-    card_to_archive = 1
+    card_to_archive = [1]
     change_result = Card.archive(adapter=api, targets=card_to_archive, unarchive=True)
     assert isinstance(change_result, list)
     assert all(isinstance(card, Card) for card in change_result)
@@ -125,7 +139,7 @@ def test_card_unarchive_many(api: MetabaseApi):
 
 
 def test_card_get_one(api: MetabaseApi):
-    card_to_get = 1
+    card_to_get = [1]
     card = Card.get(adapter=api, targets=card_to_get)
     assert isinstance(card, list)
     assert all(isinstance(c, Card) for c in card)
