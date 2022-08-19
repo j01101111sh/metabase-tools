@@ -72,3 +72,9 @@ class User(MetabaseGeneric):
         if response.data:
             return [cls(**record) for record in [response.data]]  # type: ignore
         raise RequestFailure
+
+    @classmethod
+    def disable(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+        return super(User, cls).delete(
+            adapter=adapter, endpoint="/user", targets=targets
+        )
