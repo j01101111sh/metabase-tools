@@ -8,6 +8,7 @@ from typing import Optional
 
 from metabase_tools.exceptions import (
     EmptyDataReceived,
+    InvalidParameters,
     ItemInPersonalCollection,
     ItemNotFound,
     NoUpdateProvided,
@@ -150,65 +151,66 @@ class MetabaseTools(MetabaseApi):
         collections_by_path = self._get_collections_dict(key="path")
         for card in cards:
             card_path = Path(f"{root_folder}/{card['path']}/{card['name']}.{extension}")
-            if card_path.exists():  # Ensures file exists
-                if "id" in card:  # If ID is in mapping, use that, else use location
-                    try:
-                        update = self._update_existing_card(
-                            card=card,
-                            collections_by_id=collections_by_id,
-                            collections_by_path=collections_by_path,
-                            card_path=card_path,
-                        )
-                    except NoUpdateProvided:
-                        self._logger.debug("No updates necessary for %s", card)
-                        continue
-                    changes["updates"].append(update)
-                else:
-                    # Check if a card with the same name exists in the listed location
-                    dev_coll_id = collections_by_path[card["path"]]["id"]
-                    try:
-                        card_id = self._find_card_id(
-                            card_name=card["name"], collection_id=dev_coll_id
-                        )
-                    except (
-                        EmptyDataReceived,
-                        ItemNotFound,
-                    ):  # No items in collection or not found
-                        self._logger.debug(
-                            "Card not found in listed location, creating: %s", card
-                        )
-                        card_id = None
+            if (
+                card_path.exists() and "id" in card
+            ):  # Ensures file exists and id is present
+                try:
+                    update = self._update_existing_card(
+                        dev_card=card,
+                        card_path=card_path,
+                        collections_by_id=collections_by_id,
+                        collections_by_path=collections_by_path,
+                    )
+                except NoUpdateProvided:
+                    self._logger.debug("No updates necessary for %s", card)
+                    continue
+                changes["updates"].append(update)
+            elif card_path.exists():
+                # Check if a card with the same name exists in the listed location
+                dev_coll_id = collections_by_path[card["path"]]["id"]
+                try:
+                    card_id = self._find_card_id(
+                        card_name=card["name"], collection_id=dev_coll_id
+                    )
+                except (
+                    EmptyDataReceived,
+                    ItemNotFound,
+                ):  # No items in collection or not found
+                    self._logger.debug(
+                        "Card not found in listed location, creating: %s", card
+                    )
+                    card_id = None
 
-                    if card_id:  # update card
-                        prod_card = Card.get(adapter=self, targets=[card_id])[0]
-                        with open(card_path, "r", newline="", encoding="utf-8") as file:
-                            dev_code = file.read()
-                        if dev_code != prod_card.dataset_query["native"]["query"]:
-                            dev_query = prod_card.dataset_query.copy()
-                            dev_query["native"]["query"] = dev_code
-                            dev_def = {"id": card_id, "dataset_query": dev_query}
-                            changes["updates"].append(dev_def)
-                    else:  # create card
-                        with open(card_path, "r", newline="", encoding="utf-8") as file:
-                            dev_query = file.read()
-                        db_id = [
-                            database.id
-                            for database in Database.get(adapter=self)
-                            if card["database"] == database.name
-                        ][0]
+                if card_id:  # update card
+                    prod_card = Card.get(adapter=self, targets=[card_id])[0]
+                    with open(card_path, "r", newline="", encoding="utf-8") as file:
+                        dev_code = file.read()
+                    if dev_code != prod_card.dataset_query["native"]["query"]:
+                        dev_query = prod_card.dataset_query.copy()
+                        dev_query["native"]["query"] = dev_code
+                        dev_def = {"id": card_id, "dataset_query": dev_query}
+                        changes["updates"].append(dev_def)
+                else:  # create card
+                    with open(card_path, "r", newline="", encoding="utf-8") as file:
+                        dev_query = file.read()
+                    db_id = [
+                        database.id
+                        for database in Database.get(adapter=self)
+                        if card["database"] == database.name
+                    ][0]
 
-                        new_card_def = {
-                            "visualization_settings": {},
-                            "collection_id": dev_coll_id,
-                            "name": card["name"],
-                            "dataset_query": {
-                                "type": "native",
-                                "native": {"query": dev_query},
-                                "database": db_id,
-                            },
-                            "display": "table",
-                        }
-                        changes["creates"].append(new_card_def.copy())
+                    new_card_def = {
+                        "visualization_settings": {},
+                        "collection_id": dev_coll_id,
+                        "name": card["name"],
+                        "dataset_query": {
+                            "type": "native",
+                            "native": {"query": dev_query},
+                            "database": db_id,
+                        },
+                        "display": "table",
+                    }
+                    changes["creates"].append(new_card_def.copy())
             else:
                 self._logger.error(
                     "Skipping %s (file not found):\n%s", card["name"], card
@@ -240,11 +242,7 @@ class MetabaseTools(MetabaseApi):
             return results
         return changes
 
-    def _get_mapping_details(
-        self,
-        card: Card,
-        collections_by_id: dict,
-    ) -> dict:
+    def _get_mapping_details(self, card: Card, collections_by_id: dict) -> dict:
         try:
             mapping_details = {
                 "id": card.id,
@@ -281,8 +279,18 @@ class MetabaseTools(MetabaseApi):
     def _get_collections_dict(self, key: str):
         collections = Collection.get_flat_list(adapter=self)
         non_keys = [k for k in collections[0].keys() if k != key]
-        results = {item[key]: {nk: item[nk] for nk in non_keys} for item in collections}
-        return results
+        return {item[key]: {nk: item[nk] for nk in non_keys} for item in collections}
+
+    def _translate_path(
+        self, collection_id: Optional[int] = None, collection_path: Optional[str] = None
+    ) -> int | str:
+        if collection_id:
+            collections_by_id = self._get_collections_dict(key="id")
+            return collections_by_id[collection_id]["path"]
+        elif collection_path:
+            collections_by_path = self._get_collections_dict(key="path")
+            return collections_by_path[collection_path]["id"]
+        raise InvalidParameters
 
     def _find_card_id(self, card_name: str, collection_id: int) -> int:
         # TODO consider moving this to collection class
@@ -297,9 +305,9 @@ class MetabaseTools(MetabaseApi):
     def _update_existing_card(
         self,
         dev_card: dict,
+        card_path: Path | str,
         collections_by_id: dict,
         collections_by_path: dict,
-        card_path: Path | str,
     ) -> dict:
         prod_card = Card.get(adapter=self, targets=[dev_card["id"]])[0]
         # Get query definition
