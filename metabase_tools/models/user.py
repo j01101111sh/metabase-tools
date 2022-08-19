@@ -46,14 +46,6 @@ class User(MetabaseGeneric):
         )
 
     @classmethod
-    def archive(
-        cls, adapter: MetabaseApi, targets: list[int], unarchive=False
-    ) -> list[Self]:
-        return super(User, cls).archive(
-            adapter=adapter, endpoint="/user", targets=targets, unarchive=unarchive
-        )
-
-    @classmethod
     def search(
         cls,
         adapter: MetabaseApi,
