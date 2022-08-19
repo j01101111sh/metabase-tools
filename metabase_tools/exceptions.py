@@ -20,3 +20,15 @@ class InvalidParameters(MetabaseApiException):
 
 class RequestFailure(MetabaseApiException):
     pass
+
+
+class ItemNotFound(MetabaseApiException):
+    pass
+
+
+class ItemInPersonalCollection(MetabaseApiException):
+    pass
+
+
+class NoUpdateProvided(MetabaseApiException):
+    pass
