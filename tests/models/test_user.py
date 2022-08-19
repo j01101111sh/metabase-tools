@@ -35,7 +35,7 @@ def test_user_get_one(api: MetabaseApi):
 
 
 def test_user_get_many(api: MetabaseApi):
-    users_to_get = [1, 1]
+    users_to_get = [1, 2, 3]
     users = User.get(adapter=api, targets=users_to_get)
     assert isinstance(users, list)
     assert all(isinstance(user, User) for user in users)
