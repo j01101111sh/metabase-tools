@@ -258,15 +258,6 @@ class MetabaseTools(MetabaseApi):
 
         return mapping_details
 
-        # try:
-        #     self._save_query(
-        #         card=card,
-        #         save_path=f"{root_folder}/{new_card['path']}",
-        #         file_extension=file_extension,
-        #     )
-
-        #     )
-
     def _save_query(self, card: Card, save_path: str, file_extension):
         # SQL file creation
         sql_code = card.dataset_query["native"]["query"]
