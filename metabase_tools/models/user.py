@@ -69,7 +69,6 @@ class User(MetabaseGeneric):
     @classmethod
     def current(cls, adapter: MetabaseApi) -> list[Self]:
         response = adapter.get(endpoint="/user/current")
-        l = []
         if response.data:
             return [cls(**record) for record in [response.data]]  # type: ignore
         raise RequestFailure
