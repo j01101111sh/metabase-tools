@@ -4,6 +4,7 @@ from typing import Optional
 from pydantic.fields import Field
 from typing_extensions import Self
 
+from metabase_tools.exceptions import RequestFailure
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.generic import MetabaseGeneric
 
@@ -64,3 +65,11 @@ class User(MetabaseGeneric):
             search_params=search_params,
             search_list=search_list,
         )
+
+    @classmethod
+    def current(cls, adapter: MetabaseApi) -> list[Self]:
+        response = adapter.get(endpoint="/user/current")
+        l = []
+        if response.data:
+            return [cls(**record) for record in [response.data]]  # type: ignore
+        raise RequestFailure

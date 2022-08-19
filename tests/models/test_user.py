@@ -45,3 +45,9 @@ def test_user_get_all(api: MetabaseApi):
     users = User.get(adapter=api)
     assert isinstance(users, list)
     assert all(isinstance(user, User) for user in users)
+
+
+def test_user_current(api: MetabaseApi):
+    user = User.current(adapter=api)
+    assert isinstance(user, list)
+    assert all(isinstance(u, User) for u in user)
