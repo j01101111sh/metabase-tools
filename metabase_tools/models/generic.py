@@ -277,3 +277,16 @@ class MetabaseGeneric(BaseModel):
                     if key in obj_dict and value == obj_dict[key]:
                         results.append(obj)
         return results
+
+    @classmethod
+    def delete(
+        cls, adapter: MetabaseApi, endpoint: str, targets: list[int]
+    ) -> list[Self]:
+        if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
+            return cls._request_list(
+                http_method="DELETE",
+                adapter=adapter,
+                endpoint=endpoint,
+                source=targets,
+            )
+        raise InvalidParameters("Invalid set of targets")
