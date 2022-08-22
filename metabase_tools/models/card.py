@@ -51,7 +51,7 @@ class Card(MetabaseGeneric):
     @classmethod
     def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         return super(Card, cls).put(
-            adapter=adapter, endpoint="/card", payloads=payloads
+            adapter=adapter, endpoint="/card/{id}", payloads=payloads
         )
 
     @classmethod
@@ -59,7 +59,7 @@ class Card(MetabaseGeneric):
         cls, adapter: MetabaseApi, targets: list[int], unarchive=False
     ) -> list[Self]:
         return super(Card, cls).archive(
-            adapter=adapter, endpoint="/card", targets=targets, unarchive=unarchive
+            adapter=adapter, endpoint="/card/{id}", targets=targets, unarchive=unarchive
         )
 
     @classmethod
