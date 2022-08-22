@@ -153,8 +153,8 @@ class User(MetabaseGeneric):
 
         Returns
         -------
-        list[Self]
-            List of users that were disabled
+        dict
+            Dict of users that were disabled with results
         """
         return super(User, cls).delete(
             adapter=adapter, endpoint="/user", targets=targets
@@ -162,6 +162,20 @@ class User(MetabaseGeneric):
 
     @classmethod
     def enable(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+        """Re-enable user(s) provided
+
+        Parameters
+        ----------
+        adapter : MetabaseApi
+            Connection to Metabase API
+        targets : list[int]
+            List of users to re-enabled
+
+        Returns
+        -------
+        list[Self]
+            List of users that were re-enabled
+        """
         return super(User, cls).put(
             adapter=adapter,
             endpoint="/user/{id}/reactivate",
