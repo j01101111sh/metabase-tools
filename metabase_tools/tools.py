@@ -51,7 +51,15 @@ class MetabaseTools(MetabaseApi):
         save_file = Path(save_file or f"mapping_{timestamp}.json")
 
         # Download list of cards from Metabase API and filter to only native queries
-        cards = [card for card in Card.get(adapter=self) if card.query_type == "native"]
+        cards = [
+            card
+            for card in Card.get(adapter=self)
+            if (
+                card.query_type == "native"
+                and card.collection
+                and card.collection.personal_owner_id is None
+            )
+        ]
         self._logger.debug("Found %s cards with native queries", len(cards))
 
         # Create dictionary of collections for file paths
