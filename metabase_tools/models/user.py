@@ -159,3 +159,16 @@ class User(MetabaseGeneric):
         return super(User, cls).delete(
             adapter=adapter, endpoint="/user", targets=targets
         )
+
+    @classmethod
+    def enable(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+        results = []
+        for user in targets:
+            results.append(
+                super(User, cls).put(
+                    adapter=adapter,
+                    endpoint="/user/{id}/reactivate",
+                    payloads=[{"id": user}],
+                )
+            )
+        return results
