@@ -157,7 +157,7 @@ class User(MetabaseGeneric):
             Dict of users that were disabled with results
         """
         return super(User, cls).delete(
-            adapter=adapter, endpoint="/user", targets=targets
+            adapter=adapter, endpoint="/user/{id}", targets=targets
         )
 
     @classmethod

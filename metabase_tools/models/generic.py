@@ -75,6 +75,8 @@ class MetabaseGeneric(BaseModel):
                 raise InvalidParameters
             if response.data and isinstance(response.data, dict):
                 results.append(response.data)
+            elif response.data and isinstance(response.data, list):
+                results.extend(response.data)
         if len(results) > 0:
             return results
         raise EmptyDataReceived("No data returned")
@@ -110,7 +112,7 @@ class MetabaseGeneric(BaseModel):
             results = cls._request_list(
                 http_method="GET",
                 adapter=adapter,
-                endpoint=endpoint,
+                endpoint=endpoint + "/{id}",
                 source=targets,
             )
             return [cls(**result) for result in results]
