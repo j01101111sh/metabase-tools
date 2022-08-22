@@ -131,3 +131,7 @@ class Collection(MetabaseGeneric):
         if items:
             return items
         raise EmptyDataReceived
+
+    @classmethod
+    def graph(cls, adapter: MetabaseApi):
+        return adapter.get(endpoint="/collection/graph").data
