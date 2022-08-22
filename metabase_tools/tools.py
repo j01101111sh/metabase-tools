@@ -73,7 +73,7 @@ class MetabaseTools(MetabaseApi):
                     card, collections_by_id=collections_by_id
                 )
             except ItemInPersonalCollection:
-                self._logger.warning("Skipping %s (personal collection)\n", card.name)
+                self._logger.warning("Skipping %s (personal collection)", card.name)
                 continue
             formatted_list["cards"].append(new_card)
 
@@ -87,10 +87,7 @@ class MetabaseTools(MetabaseApi):
                 self._logger.warning("Skipping %s (name error)", card.name)
                 continue
             self._logger.debug(
-                "%s saved to %s\n%s",
-                card.name,
-                f"{root_folder}/{new_card['path']}",
-                card,
+                "%s saved to %s", card.name, f"{root_folder}/{new_card['path']}"
             )
 
         # Save mapping file
@@ -155,7 +152,7 @@ class MetabaseTools(MetabaseApi):
                         collections_by_path=collections_by_path,
                     )
                 except NoUpdateProvided:
-                    self._logger.debug("No updates necessary for %s", card)
+                    self._logger.debug("No updates necessary for %s", card["name"])
                     continue
                 changes["updates"].append(update)
             elif card_path.exists():
@@ -170,7 +167,7 @@ class MetabaseTools(MetabaseApi):
                     ItemNotFound,
                 ):  # No items in collection or not found
                     self._logger.debug(
-                        "Card not found in listed location, creating: %s", card
+                        "%s not found in listed location, creating", card["name"]
                     )
                     card_id = None
 
