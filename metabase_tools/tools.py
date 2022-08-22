@@ -73,9 +73,7 @@ class MetabaseTools(MetabaseApi):
                     card, collections_by_id=collections_by_id
                 )
             except ItemInPersonalCollection:
-                self._logger.warning(
-                    "Skipping %s (personal collection)\n%s", card.name, card
-                )
+                self._logger.warning("Skipping %s (personal collection)\n", card.name)
                 continue
             formatted_list["cards"].append(new_card)
 
@@ -86,12 +84,7 @@ class MetabaseTools(MetabaseApi):
                     file_extension=file_extension,
                 )
             except OSError as error_raised:
-                self._logger.warning(
-                    "Skipping %s (name error): %s\n%s",
-                    card.name,
-                    str(error_raised),
-                    card,
-                )
+                self._logger.warning("Skipping %s (name error)", card.name)
                 continue
             self._logger.debug(
                 "%s saved to %s\n%s",
@@ -212,9 +205,7 @@ class MetabaseTools(MetabaseApi):
                     }
                     changes["creates"].append(new_card_def.copy())
             else:
-                self._logger.error(
-                    "Skipping %s (file not found):\n%s", card["name"], card
-                )
+                self._logger.error("Skipping %s (file not found)", card["name"])
                 if stop_on_error:
                     raise FileNotFoundError(f"{card_path} not found")
                 changes["errors"].append(card)
