@@ -184,6 +184,15 @@ class User(MetabaseGeneric):
 
     @classmethod
     def resend_invite(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+        """Resend the user invite email
+
+        :param adapter: Connection to Metabase API
+        :type adapter: MetabaseApi
+        :param targets: List of users to resend invites
+        :type targets: list[int]
+        :return: Users with resent invites
+        :rtype: list[Self]
+        """
         return super(User, cls).post(
             adapter=adapter,
             endpoint="/user/{id}/send_invite",
