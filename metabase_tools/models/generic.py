@@ -24,7 +24,7 @@ class MetabaseGeneric(BaseModel):
         adapter: MetabaseApi,
         endpoint: str,
         source: list[int] | list[dict],
-    ) -> list[Self]:
+    ) -> list[dict]:
         """Sends requests to API based on a list of objects
 
         Parameters
@@ -71,7 +71,7 @@ class MetabaseGeneric(BaseModel):
             else:
                 raise InvalidParameters
             if response.data and isinstance(response.data, dict):
-                results.append(cls(**response.data))
+                results.append(response.data)
         if len(results) > 0:
             return results
         raise EmptyDataReceived("No data returned")
@@ -104,12 +104,13 @@ class MetabaseGeneric(BaseModel):
             No data is received from the API
         """
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
-            return cls._request_list(
+            results = cls._request_list(
                 http_method="GET",
                 adapter=adapter,
                 endpoint=endpoint,
                 source=targets,
             )
+            return [cls(**result) for result in results]
 
         if targets is None:
             # If no targets are provided, all objects of that type should be returned
@@ -153,12 +154,13 @@ class MetabaseGeneric(BaseModel):
         # TODO validate params by creating a method in the child class
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
-            return cls._request_list(
+            results = cls._request_list(
                 http_method="POST",
                 adapter=adapter,
                 endpoint=endpoint,
                 source=payloads,
             )
+            return [cls(**result) for result in results]
         # If something other than dict or list[dict], raise error
         raise InvalidParameters("Invalid target(s)")
 
@@ -191,12 +193,13 @@ class MetabaseGeneric(BaseModel):
         """
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
-            return cls._request_list(
+            results = cls._request_list(
                 http_method="PUT",
                 adapter=adapter,
                 endpoint=endpoint,
                 source=payloads,
             )
+            return [cls(**result) for result in results]
         # If something other than dict or list[dict], raise error
         raise InvalidParameters("Invalid target(s)")
 
@@ -232,7 +235,7 @@ class MetabaseGeneric(BaseModel):
             No results returned from API
         """
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
-            return cls._request_list(
+            results = cls._request_list(
                 http_method="PUT",
                 adapter=adapter,
                 endpoint=endpoint,
@@ -240,6 +243,7 @@ class MetabaseGeneric(BaseModel):
                     {"id": target, "archived": not unarchive} for target in targets
                 ],
             )
+            return [cls(**result) for result in results]
         raise InvalidParameters("Invalid set of targets")
 
     @classmethod
@@ -281,7 +285,7 @@ class MetabaseGeneric(BaseModel):
     @classmethod
     def delete(
         cls, adapter: MetabaseApi, endpoint: str, targets: list[int]
-    ) -> list[Self]:
+    ) -> list[dict]:
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
             return cls._request_list(
                 http_method="DELETE",

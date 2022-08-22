@@ -141,7 +141,7 @@ class User(MetabaseGeneric):
         raise RequestFailure
 
     @classmethod
-    def disable(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+    def disable(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
         """Disables user(s) provided
 
         Parameters
