@@ -1,3 +1,7 @@
+"""
+Rest adapter for the Metabase API
+"""
+
 import logging
 from json import JSONDecodeError
 from typing import Optional
@@ -14,6 +18,8 @@ from metabase_tools.models.result import Result
 
 
 class MetabaseApi:
+    """Metabase API adapter"""
+
     def __init__(
         self,
         metabase_url: str,
@@ -178,6 +184,13 @@ class MetabaseApi:
         raise RequestFailure(error_line)
 
     def save_token(self, file: str):
+        """
+        Writes active token to the specified file
+
+        :param file: Name of file to write
+        :type file: str
+
+        """
         token = self.get_token()
         with open(file, "w") as f:
             f.write(token)
