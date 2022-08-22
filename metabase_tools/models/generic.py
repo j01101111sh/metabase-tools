@@ -287,10 +287,11 @@ class MetabaseGeneric(BaseModel):
         cls, adapter: MetabaseApi, endpoint: str, targets: list[int]
     ) -> list[dict]:
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
-            return cls._request_list(
+            results = cls._request_list(
                 http_method="DELETE",
                 adapter=adapter,
                 endpoint=endpoint,
                 source=targets,
             )
+            return [{target: result} for result, target in zip(results, targets)]
         raise InvalidParameters("Invalid set of targets")
