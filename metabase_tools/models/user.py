@@ -198,3 +198,35 @@ class User(MetabaseGeneric):
             endpoint="/user/{id}/send_invite",
             payloads=[{"id": target} for target in targets],
         )
+
+    @classmethod
+    def update_password(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+        """Updates passwords for users
+
+        :param adapter: Connection to Metabase API
+        :type adapter: MetabaseApi
+        :param payloads: List of dicts with user ids and new passwords
+        :type payloads: list[dict]
+        :return: Users with password changed
+        :rtype: list[Self]
+        """
+        return super(User, cls).put(
+            adapter=adapter, endpoint="/user/{id}/password", payloads=payloads
+        )
+
+    @classmethod
+    def qbnewb(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+        """Indicate that a user has been informed about Query Builder.
+
+        :param adapter: Connection to Metabase API
+        :type adapter: MetabaseApi
+        :param targets: List of users to toggle
+        :type targets: list[int]
+        :return: Users that were toggled
+        :rtype: list[Self]
+        """
+        return super(User, cls).put(
+            adapter=adapter,
+            endpoint="/user/{id}/qbnewb",
+            payloads=[{"id": target} for target in targets],
+        )
