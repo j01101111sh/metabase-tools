@@ -58,16 +58,17 @@ class MetabaseGeneric(BaseModel):
                     http_method=http_method, endpoint=f"{endpoint}/{item}"
                 )
             elif isinstance(item, dict):
-                endpoint = endpoint.format(**item)
                 if http_method == "PUT":
                     response = adapter.do(
                         http_method=http_method,
-                        endpoint=endpoint,
+                        endpoint=endpoint.format(**item),
                         json=item,
                     )
                 else:
                     response = adapter.do(
-                        http_method=http_method, endpoint=endpoint, json=item
+                        http_method=http_method,
+                        endpoint=endpoint.format(**item),
+                        json=item,
                     )
             else:
                 raise InvalidParameters
