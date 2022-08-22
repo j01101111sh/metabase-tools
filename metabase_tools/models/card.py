@@ -74,3 +74,14 @@ class Card(MetabaseGeneric):
             search_params=search_params,
             search_list=search_list,
         )
+
+    @classmethod
+    def related(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+        results = []
+        for target in targets:
+            new = {"card_id": target}
+            result = adapter.get(endpoint=f"/card/{target}/related").data
+            if isinstance(result, dict):
+                new |= result
+            results.append(new)
+        return results
