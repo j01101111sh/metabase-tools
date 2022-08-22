@@ -89,7 +89,7 @@ class User(MetabaseGeneric):
             List of user(s) updated
         """
         return super(User, cls).put(
-            adapter=adapter, endpoint="/user", payloads=payloads
+            adapter=adapter, endpoint="/user/{id}", payloads=payloads
         )
 
     @classmethod
