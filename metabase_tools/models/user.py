@@ -181,3 +181,11 @@ class User(MetabaseGeneric):
             endpoint="/user/{id}/reactivate",
             payloads=[{"id": target} for target in targets],
         )
+
+    @classmethod
+    def resend_invite(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+        return super(User, cls).post(
+            adapter=adapter,
+            endpoint="/user/{id}/send_invite",
+            payloads=[{"id": target} for target in targets],
+        )
