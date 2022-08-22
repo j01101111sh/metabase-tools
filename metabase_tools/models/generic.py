@@ -58,15 +58,16 @@ class MetabaseGeneric(BaseModel):
                     http_method=http_method, endpoint=f"{endpoint}/{item}"
                 )
             elif isinstance(item, dict):
+                endpoint = endpoint.format(**item)
                 if http_method == "PUT":
                     response = adapter.do(
                         http_method=http_method,
-                        endpoint=f"{endpoint}/{item['id']}",
+                        endpoint=endpoint,
                         json=item,
                     )
                 else:
                     response = adapter.do(
-                        http_method=http_method, endpoint=f"{endpoint}", json=item
+                        http_method=http_method, endpoint=endpoint, json=item
                     )
             else:
                 raise InvalidParameters
@@ -283,9 +284,7 @@ class MetabaseGeneric(BaseModel):
         return results
 
     @classmethod
-    def delete(
-        cls, adapter: MetabaseApi, endpoint: str, targets: list[int]
-    ) -> list[dict]:
+    def delete(cls, adapter: MetabaseApi, endpoint: str, targets: list[int]) -> dict:
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
             results = cls._request_list(
                 http_method="DELETE",
@@ -293,5 +292,5 @@ class MetabaseGeneric(BaseModel):
                 endpoint=endpoint,
                 source=targets,
             )
-            return [{target: result} for result, target in zip(results, targets)]
+            return {target: result for result, target in zip(results, targets)}
         raise InvalidParameters("Invalid set of targets")
