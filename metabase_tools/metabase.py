@@ -1,3 +1,5 @@
+"""REST adapater for Metabase API for handling authentication and simplified use
+"""
 import logging
 from json import JSONDecodeError
 from typing import Optional
@@ -14,6 +16,8 @@ from metabase_tools.models.result import Result
 
 
 class MetabaseApi:
+    """REST adapater for Metabase API for handling authentication and simplified use"""
+
     def __init__(
         self,
         metabase_url: str,
