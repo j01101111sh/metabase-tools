@@ -23,7 +23,8 @@ jobs:
       - name: Pull the docker image
         run: docker pull joshnotable/metabase-tools:latest
       - name: Initialize docker container
-        run: docker run -d -p 3000:3000 --name metabase-tools joshnotable/metabase-tools:latest
+        run: |
+          docker run -d -p 3000:3000 --name metabase-tools-tests metabase/metabase:v0.44.0
       - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
         uses: actions/setup-python@v3
         with:
@@ -40,5 +41,7 @@ jobs:
         run: poetry install --no-interaction
       - name: Code linting
         run: poetry run black .
+      - name: Setup Metabase
+        run: poetry run python ./tests/setup_metabase.py
       - name: Test with pytest
         run: poetry run pytest
