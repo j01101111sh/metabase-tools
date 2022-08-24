@@ -73,7 +73,7 @@ def create_users(session: requests.Session):
     responses = []
     for user in [dev, std, uat]:
         response = session.post(f"{HOST}/api/user", json=user)
-        if 200 >= response.status_code <= 299:
+        if 200 <= response.status_code <= 299:
             responses.append(response)
         else:
             raise requests.HTTPError(
@@ -82,19 +82,80 @@ def create_users(session: requests.Session):
     return responses
 
 
-def create_databases():
-    pass
+def create_collections(session: requests.Session):
+    dev = {
+        "name": "Development",
+        "color": "#FFFFFF",
+    }
+    uat = {
+        "name": "UAT",
+        "color": "#FFFFFF",
+    }
+    prod = {
+        "name": "Production",
+        "color": "#FFFFFF",
+    }
+    accounting = {"name": "Accounting", "color": "#FFFFFF", "parent_id": 2}
+    responses = []
+    for coll in [dev, uat, prod, accounting]:
+        response = session.post(f"{HOST}/api/collection", json=coll)
+        if 200 <= response.status_code <= 299:
+            responses.append(response)
+        else:
+            raise requests.HTTPError(
+                f"{coll['name']} - error {response.status_code} - {response.reason}: {json.loads(response.text)['errors']}"
+            )
+    return responses
 
 
-def create_collections():
-    pass
-
-
-def create_cards():
-    pass
+def create_cards(session: requests.Session):
+    accounting = {
+        "visualization_settings": {
+            "table.pivot_column": "QUANTITY",
+            "table.cell_column": "ID",
+        },
+        "collection_id": 2,
+        "name": "Accounting",
+        "dataset_query": {
+            "type": "native",
+            "native": {
+                "query": "--This card was created through the API\nSELECT ID, USER_ID, PRODUCT_ID, SUBTOTAL, TAX, TOTAL, DISCOUNT, CREATED_AT, QUANTITY\r\nFROM ORDERS\r\nLIMIT 100"
+            },
+            "database": 1,
+        },
+        "display": "table",
+    }
+    test = {
+        "visualization_settings": {
+            "table.pivot_column": "QUANTITY",
+            "table.cell_column": "ID",
+        },
+        "collection_id": 2,
+        "name": "Test",
+        "dataset_query": {
+            "type": "native",
+            "native": {
+                "query": "--This card was created through the API\nSELECT ID, USER_ID, PRODUCT_ID, SUBTOTAL, TAX, TOTAL, DISCOUNT, CREATED_AT, QUANTITY\r\nFROM ORDERS\r\nLIMIT 100"
+            },
+            "database": 1,
+        },
+        "display": "table",
+    }
+    responses = []
+    for card in [accounting, test]:
+        response = session.post(f"{HOST}/api/card", json=card)
+        if 200 <= response.status_code <= 299:
+            responses.append(response)
+        else:
+            raise requests.HTTPError(
+                f"{card['name']} - error {response.status_code} - {response.reason}: {json.loads(response.text)['errors']}"
+            )
+    return responses
 
 
 if __name__ == "__main__":
     setup_response = initial_setup()
     session = get_session()
     user_responses = create_users(session)
+    coll_responses = create_collections(session)
+    card_responses = create_cards(session)
