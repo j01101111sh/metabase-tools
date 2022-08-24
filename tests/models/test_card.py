@@ -158,6 +158,15 @@ def test_card_get_all(api: MetabaseApi):
     assert all(isinstance(card, Card) for card in cards)
 
 
-def test_card_releated_one(api: MetabaseApi):
+def test_card_related_one(api: MetabaseApi):
     related = Card.related(adapter=api, targets=[1])
-    assert related
+    assert isinstance(related, list)
+    assert len(related) == 1
+    assert all(isinstance(item, dict) for item in related)
+
+
+def test_card_related_many(api: MetabaseApi):
+    related = Card.related(adapter=api, targets=[1, 2])
+    assert isinstance(related, list)
+    assert len(related) == 2
+    assert all(isinstance(item, dict) for item in related)
