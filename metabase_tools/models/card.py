@@ -100,7 +100,7 @@ class Card(MetabaseGeneric):
         raise EmptyDataReceived
 
     @classmethod
-    def favorite(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+    def favorite(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
         results = []
         for target in targets:
             try:
@@ -115,7 +115,7 @@ class Card(MetabaseGeneric):
         return results
 
     @classmethod
-    def unfavorite(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+    def unfavorite(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
         results = []
         for target in targets:
             try:
