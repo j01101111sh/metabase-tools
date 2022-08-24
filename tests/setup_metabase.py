@@ -1,6 +1,7 @@
-import json
+from json import loads
 from random import choice
 from string import ascii_letters, digits
+from time import sleep
 
 import requests
 
@@ -15,8 +16,29 @@ from tests.metabase_details import (
 )
 
 
+def check_status_code(response: requests.Response) -> requests.Response:
+    if 200 <= response.status_code <= 299:
+        return response
+    raise requests.HTTPError(
+        f"{response.status_code} - {response.reason}: {loads(response.text)['errors']}"
+    )
+
+
 def initial_setup():
-    token_response = requests.get(HOST + "/api/session/properties")
+    MAX_ATTEMPTS = 10
+    WAIT_INTERVAL = 10
+    token_response = None
+    for _ in range(MAX_ATTEMPTS + 1):
+        try:
+            token_response = requests.get(HOST + "/api/session/properties")
+            break
+        except requests.exceptions.ConnectionError:
+            # Wait and try again if connection doesn't work the first time
+            sleep(WAIT_INTERVAL)
+
+    if not token_response:
+        raise requests.exceptions.ConnectionError
+
     setup_token = token_response.json()["setup-token"]
     response = requests.post(
         HOST + "/api/setup",
@@ -32,11 +54,7 @@ def initial_setup():
             "token": setup_token,
         },
     )
-    if 200 >= response.status_code <= 299:
-        return response
-    raise requests.HTTPError(
-        f"{response.status_code} - {response.reason}: {json.loads(response.text)['errors']}"
-    )
+    return check_status_code(response)
 
 
 def get_session() -> requests.Session:
@@ -73,12 +91,7 @@ def create_users(session: requests.Session):
     responses = []
     for user in [dev, std, uat]:
         response = session.post(f"{HOST}/api/user", json=user)
-        if 200 <= response.status_code <= 299:
-            responses.append(response)
-        else:
-            raise requests.HTTPError(
-                f"{user['email']} - error {response.status_code} - {response.reason}: {json.loads(response.text)['errors']}"
-            )
+        responses.append(check_status_code(response=response))
     return responses
 
 
@@ -99,12 +112,7 @@ def create_collections(session: requests.Session):
     responses = []
     for coll in [dev, uat, prod, accounting]:
         response = session.post(f"{HOST}/api/collection", json=coll)
-        if 200 <= response.status_code <= 299:
-            responses.append(response)
-        else:
-            raise requests.HTTPError(
-                f"{coll['name']} - error {response.status_code} - {response.reason}: {json.loads(response.text)['errors']}"
-            )
+        responses.append(check_status_code(response=response))
     return responses
 
 
@@ -144,12 +152,7 @@ def create_cards(session: requests.Session):
     responses = []
     for card in [accounting, test]:
         response = session.post(f"{HOST}/api/card", json=card)
-        if 200 <= response.status_code <= 299:
-            responses.append(response)
-        else:
-            raise requests.HTTPError(
-                f"{card['name']} - error {response.status_code} - {response.reason}: {json.loads(response.text)['errors']}"
-            )
+        responses.append(check_status_code(response=response))
     return responses
 
 
