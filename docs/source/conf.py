@@ -1,3 +1,8 @@
+import pathlib
+import sys
+
+sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -16,6 +21,8 @@ release = "0.4.0"
 
 extensions = [
     "sphinx.ext.duration",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
 ]
 
 templates_path = ["_templates"]

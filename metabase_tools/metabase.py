@@ -1,5 +1,7 @@
-"""REST adapater for Metabase API for handling authentication and simplified use
 """
+Rest adapter for the Metabase API
+"""
+
 import logging
 from json import JSONDecodeError
 from typing import Optional
@@ -16,7 +18,7 @@ from metabase_tools.models.result import Result
 
 
 class MetabaseApi:
-    """REST adapater for Metabase API for handling authentication and simplified use"""
+    """Metabase API adapter"""
 
     def __init__(
         self,
@@ -182,6 +184,13 @@ class MetabaseApi:
         raise RequestFailure(error_line)
 
     def save_token(self, file: str):
+        """
+        Writes active token to the specified file
+
+        :param file: Name of file to write
+        :type file: str
+
+        """
         token = self.get_token()
         with open(file, "w") as f:
             f.write(token)
