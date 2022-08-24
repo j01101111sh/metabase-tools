@@ -89,7 +89,7 @@ class User(MetabaseGeneric):
             List of user(s) updated
         """
         return super(User, cls).put(
-            adapter=adapter, endpoint="/user", payloads=payloads
+            adapter=adapter, endpoint="/user/{id}", payloads=payloads
         )
 
     @classmethod
@@ -141,7 +141,7 @@ class User(MetabaseGeneric):
         raise RequestFailure
 
     @classmethod
-    def disable(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+    def disable(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
         """Disables user(s) provided
 
         Parameters
@@ -153,9 +153,80 @@ class User(MetabaseGeneric):
 
         Returns
         -------
-        list[Self]
-            List of users that were disabled
+        dict
+            Dict of users that were disabled with results
         """
         return super(User, cls).delete(
             adapter=adapter, endpoint="/user", targets=targets
+        )
+
+    @classmethod
+    def enable(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+        """Re-enable user(s) provided
+
+        Parameters
+        ----------
+        adapter : MetabaseApi
+            Connection to Metabase API
+        targets : list[int]
+            List of users to re-enabled
+
+        Returns
+        -------
+        list[Self]
+            List of users that were re-enabled
+        """
+        return super(User, cls).put(
+            adapter=adapter,
+            endpoint="/user/{id}/reactivate",
+            payloads=[{"id": target} for target in targets],
+        )
+
+    @classmethod
+    def resend_invite(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+        """Resend the user invite email
+
+        :param adapter: Connection to Metabase API
+        :type adapter: MetabaseApi
+        :param targets: List of users to resend invites
+        :type targets: list[int]
+        :return: Users with resent invites
+        :rtype: list[Self]
+        """
+        return super(User, cls).post(
+            adapter=adapter,
+            endpoint="/user/{id}/send_invite",
+            payloads=[{"id": target} for target in targets],
+        )
+
+    @classmethod
+    def update_password(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+        """Updates passwords for users
+
+        :param adapter: Connection to Metabase API
+        :type adapter: MetabaseApi
+        :param payloads: List of dicts with user ids and new passwords
+        :type payloads: list[dict]
+        :return: Users with password changed
+        :rtype: list[Self]
+        """
+        return super(User, cls).put(
+            adapter=adapter, endpoint="/user/{id}/password", payloads=payloads
+        )
+
+    @classmethod
+    def qbnewb(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+        """Indicate that a user has been informed about Query Builder.
+
+        :param adapter: Connection to Metabase API
+        :type adapter: MetabaseApi
+        :param targets: List of users to toggle
+        :type targets: list[int]
+        :return: Users that were toggled
+        :rtype: list[Self]
+        """
+        return super(User, cls).put(
+            adapter=adapter,
+            endpoint="/user/{id}/qbnewb",
+            payloads=[{"id": target} for target in targets],
         )
