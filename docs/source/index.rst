@@ -16,6 +16,7 @@ MetabaseApi
    :maxdepth: 2
    :caption: Contents:
 
+
 Indices and tables
 ==================
 
@@ -23,5 +24,5 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. toctree::
 
+.. toctree::
