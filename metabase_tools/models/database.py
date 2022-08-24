@@ -48,14 +48,6 @@ class Database(MetabaseGeneric):
         )
 
     @classmethod
-    def archive(
-        cls, adapter: MetabaseApi, targets: list[int], unarchive=False
-    ) -> list[Self]:
-        return super(Database, cls).archive(
-            adapter=adapter, endpoint="/database", targets=targets, unarchive=unarchive
-        )
-
-    @classmethod
     def search(
         cls,
         adapter: MetabaseApi,

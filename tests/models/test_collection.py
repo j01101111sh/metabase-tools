@@ -56,8 +56,8 @@ def test_collection_create_many(api: MetabaseApi, new_coll_def: dict):
 def test_collection_update_one(api: MetabaseApi):
     timestamp = datetime.now().isoformat(timespec="seconds")
     coll_change = [
-        {"id": 5, "description": f"Updated {timestamp}"},
-        {"id": 16, "description": f"Updated {timestamp}"},
+        {"id": 3, "description": f"Updated {timestamp}"},
+        {"id": 4, "description": f"Updated {timestamp}"},
     ]
     change_result = Collection.put(adapter=api, payloads=coll_change)
     assert isinstance(change_result, list)
@@ -67,7 +67,7 @@ def test_collection_update_one(api: MetabaseApi):
 
 def test_collection_update_many(api: MetabaseApi):
     timestamp = datetime.now().isoformat(timespec="seconds")
-    coll_changes = {"id": 5, "description": f"Updated {timestamp}"}
+    coll_changes = {"id": 2, "description": f"Updated {timestamp}"}
     change_results = Collection.put(adapter=api, payloads=[coll_changes])
     assert isinstance(change_results, list)
     assert all(isinstance(coll, Collection) for coll in change_results)
@@ -75,7 +75,7 @@ def test_collection_update_many(api: MetabaseApi):
 
 
 def test_collection_archive_one(api: MetabaseApi):
-    coll_to_archive = 6
+    coll_to_archive = 2
     change_result = Collection.archive(adapter=api, targets=[coll_to_archive])
     assert isinstance(change_result, list)
     assert all(isinstance(coll, Collection) for coll in change_result)
@@ -83,7 +83,7 @@ def test_collection_archive_one(api: MetabaseApi):
 
 
 def test_collection_archive_many(api: MetabaseApi):
-    colls_to_archive = [7, 12]
+    colls_to_archive = [3, 4]
     change_results = Collection.archive(adapter=api, targets=colls_to_archive)
     assert isinstance(change_results, list)
     assert all(isinstance(coll, Collection) for coll in change_results)
@@ -91,7 +91,7 @@ def test_collection_archive_many(api: MetabaseApi):
 
 
 def test_collection_unarchive_one(api: MetabaseApi):
-    coll_to_unarchive = 6
+    coll_to_unarchive = 2
     change_result = Collection.archive(
         adapter=api, targets=[coll_to_unarchive], unarchive=True
     )
@@ -101,7 +101,7 @@ def test_collection_unarchive_one(api: MetabaseApi):
 
 
 def test_collection_unarchive_many(api: MetabaseApi):
-    colls_to_archive = [7, 12]
+    colls_to_archive = [3, 4]
     change_results = Collection.archive(
         adapter=api, targets=colls_to_archive, unarchive=True
     )
@@ -111,14 +111,14 @@ def test_collection_unarchive_many(api: MetabaseApi):
 
 
 def test_collection_get_one(api: MetabaseApi):
-    coll_to_get = 6
+    coll_to_get = 2
     coll = Collection.get(adapter=api, targets=[coll_to_get])
     assert isinstance(coll, list)
     assert all(isinstance(c, Collection) for c in coll)
 
 
 def test_collection_get_many(api: MetabaseApi):
-    colls_to_get = [7, 12]
+    colls_to_get = [3, 4]
     colls = Collection.get(adapter=api, targets=colls_to_get)
     assert isinstance(colls, list)
     assert all(isinstance(coll, Collection) for coll in colls)
@@ -140,3 +140,8 @@ def test_flatten_tree(api: MetabaseApi):
     collections = Collection.get_flat_list(adapter=api)
     assert isinstance(collections, list)
     assert all(isinstance(collection, dict) for collection in collections)
+
+
+def test_graph(api: MetabaseApi):
+    graph = Collection.graph(adapter=api)
+    assert graph

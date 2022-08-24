@@ -156,3 +156,74 @@ def test_card_get_all(api: MetabaseApi):
     cards = Card.get(adapter=api)
     assert isinstance(cards, list)
     assert all(isinstance(card, Card) for card in cards)
+
+
+def test_card_related_one(api: MetabaseApi):
+    related = Card.related(adapter=api, targets=[1])
+    assert isinstance(related, list)
+    assert len(related) == 1
+    assert all(isinstance(item, dict) for item in related)
+
+
+def test_card_related_many(api: MetabaseApi):
+    related = Card.related(adapter=api, targets=[1, 2])
+    assert isinstance(related, list)
+    assert len(related) == 2
+    assert all(isinstance(item, dict) for item in related)
+
+
+@pytest.mark.skip(reason="Not implemented in test environment")
+def test_card_embeddable(api: MetabaseApi):
+    embeddable = Card.embeddable(adapter=api)
+    assert isinstance(embeddable, list)
+    assert all(isinstance(card, Card) for card in embeddable)
+
+
+def test_card_favorite_one(api: MetabaseApi):
+    card_to_favorite = [1]
+    favorite = Card.favorite(adapter=api, targets=card_to_favorite)
+    assert isinstance(favorite, list)
+    assert all(isinstance(result, dict) for result in favorite)
+    assert len(card_to_favorite) == len(favorite)
+
+
+def test_card_favorite_many(api: MetabaseApi):
+    cards_to_favorite = [1, 2]
+    favorites = Card.favorite(adapter=api, targets=cards_to_favorite)
+    assert isinstance(favorites, list)
+    assert all(isinstance(result, dict) for result in favorites)
+    assert len(cards_to_favorite) == len(favorites)
+
+
+def test_card_unfavorite_one(api: MetabaseApi):
+    card_to_unfavorite = [1]
+    unfavorite = Card.unfavorite(adapter=api, targets=card_to_unfavorite)
+    assert isinstance(unfavorite, list)
+    assert all(isinstance(result, dict) for result in unfavorite)
+    assert len(card_to_unfavorite) == len(unfavorite)
+
+
+def test_card_unfavorite_many(api: MetabaseApi):
+    cards_to_unfavorite = [1, 2]
+    unfavorites = Card.unfavorite(adapter=api, targets=cards_to_unfavorite)
+    assert isinstance(unfavorites, list)
+    assert all(isinstance(result, dict) for result in unfavorites)
+    assert len(cards_to_unfavorite) == len(unfavorites)
+
+
+@pytest.mark.skip(reason="Not implemented in test environment")
+def test_card_share_one(api: MetabaseApi):
+    card_to_share = [1]
+    shared = Card.share(adapter=api, targets=card_to_share)
+    assert isinstance(shared, list)
+    assert all(isinstance(result, dict) for result in shared)
+    assert len(card_to_share) == len(shared)
+
+
+@pytest.mark.skip(reason="Not implemented in test environment")
+def test_card_unshare_one(api: MetabaseApi):
+    card_to_unshare = [1]
+    unshared = Card.unshare(adapter=api, targets=card_to_unshare)
+    assert isinstance(unshared, list)
+    assert all(isinstance(result, dict) for result in unshared)
+    assert len(card_to_unshare) == len(unshared)
