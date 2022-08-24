@@ -1,7 +1,7 @@
 name: run tests
 env:
   METABASE_DETAILS: ${{ secrets.METABASE_DETAILS }}
-on: [pull_request, release]
+on: [pull_request]
 
 jobs:
   build:
