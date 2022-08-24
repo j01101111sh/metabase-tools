@@ -5,6 +5,7 @@ from uuid import UUID
 from pydantic.fields import Field
 from typing_extensions import Self
 
+from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.collection import Collection
 from metabase_tools.models.generic import MetabaseGeneric
@@ -85,3 +86,10 @@ class Card(MetabaseGeneric):
                 new |= result
             results.append(new)
         return results
+
+    @classmethod
+    def embeddable(cls, adapter: MetabaseApi) -> list[Self]:
+        cards = adapter.get(endpoint=f"/card/embeddable").data
+        if cards:
+            return [cls(**card) for card in cards]
+        raise EmptyDataReceived

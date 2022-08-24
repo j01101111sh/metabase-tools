@@ -170,3 +170,10 @@ def test_card_related_many(api: MetabaseApi):
     assert isinstance(related, list)
     assert len(related) == 2
     assert all(isinstance(item, dict) for item in related)
+
+
+@pytest.mark.skip(reason="Not implemented in test environment")
+def test_card_embeddable(api: MetabaseApi):
+    embeddable = Card.embeddable(adapter=api)
+    assert isinstance(embeddable, list)
+    assert all(isinstance(card, Card) for card in embeddable)
