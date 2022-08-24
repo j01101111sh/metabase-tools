@@ -131,3 +131,19 @@ class Card(MetabaseGeneric):
                 }
             results.append(result)
         return results
+
+    @classmethod
+    def share(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+        results = []
+        for target in targets:
+            result = adapter.post(endpoint=f"/card/{target}/public_link").data
+            results.append(result)
+        return results
+
+    @classmethod
+    def unshare(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+        results = []
+        for target in targets:
+            result = adapter.delete(endpoint=f"/card/{target}/public_link").data
+            results.append(result)
+        return results

@@ -209,3 +209,21 @@ def test_card_unfavorite_many(api: MetabaseApi):
     assert isinstance(unfavorites, list)
     assert all(isinstance(result, dict) for result in unfavorites)
     assert len(cards_to_unfavorite) == len(unfavorites)
+
+
+@pytest.mark.skip(reason="Not implemented in test environment")
+def test_card_share_one(api: MetabaseApi):
+    card_to_share = [1]
+    shared = Card.share(adapter=api, targets=card_to_share)
+    assert isinstance(shared, list)
+    assert all(isinstance(result, dict) for result in shared)
+    assert len(card_to_share) == len(shared)
+
+
+@pytest.mark.skip(reason="Not implemented in test environment")
+def test_card_unshare_one(api: MetabaseApi):
+    card_to_unshare = [1]
+    unshared = Card.unshare(adapter=api, targets=card_to_unshare)
+    assert isinstance(unshared, list)
+    assert all(isinstance(result, dict) for result in unshared)
+    assert len(card_to_unshare) == len(unshared)
