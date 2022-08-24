@@ -55,25 +55,28 @@ class MetabaseGeneric(BaseModel):
         for item in source:
             if isinstance(item, int):
                 response = adapter.do(
-                    http_method=http_method, endpoint=f"{endpoint}/{item}"
+                    http_method=http_method, endpoint=endpoint.format(id=item)
                 )
             elif isinstance(item, dict):
+                item_ep = endpoint.format(**item)
                 if http_method == "PUT":
                     response = adapter.do(
                         http_method=http_method,
-                        endpoint=endpoint.format(**item),
+                        endpoint=item_ep,
                         json=item,
                     )
                 else:
                     response = adapter.do(
                         http_method=http_method,
-                        endpoint=endpoint.format(**item),
+                        endpoint=item_ep,
                         json=item,
                     )
             else:
                 raise InvalidParameters
             if response.data and isinstance(response.data, dict):
                 results.append(response.data)
+            elif response.data and isinstance(response.data, list):
+                results.extend(response.data)
         if len(results) > 0:
             return results
         raise EmptyDataReceived("No data returned")
@@ -109,7 +112,7 @@ class MetabaseGeneric(BaseModel):
             results = cls._request_list(
                 http_method="GET",
                 adapter=adapter,
-                endpoint=endpoint,
+                endpoint=endpoint + "/{id}",
                 source=targets,
             )
             return [cls(**result) for result in results]

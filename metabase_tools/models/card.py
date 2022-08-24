@@ -1,10 +1,16 @@
 from datetime import datetime
+from sqlite3 import adapt
 from typing import Optional
 from uuid import UUID
 
 from pydantic.fields import Field
 from typing_extensions import Self
 
+from metabase_tools.exceptions import (
+    EmptyDataReceived,
+    InvalidDataReceived,
+    RequestFailure,
+)
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.collection import Collection
 from metabase_tools.models.generic import MetabaseGeneric
@@ -74,3 +80,70 @@ class Card(MetabaseGeneric):
             search_params=search_params,
             search_list=search_list,
         )
+
+    @classmethod
+    def related(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+        results = []
+        for target in targets:
+            new = {"card_id": target}
+            result = adapter.get(endpoint=f"/card/{target}/related").data
+            if isinstance(result, dict):
+                new |= result
+            results.append(new)
+        return results
+
+    @classmethod
+    def embeddable(cls, adapter: MetabaseApi) -> list[Self]:
+        cards = adapter.get(endpoint=f"/card/embeddable").data
+        if cards:
+            return [cls(**card) for card in cards]
+        raise EmptyDataReceived
+
+    @classmethod
+    def favorite(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+        results = []
+        for target in targets:
+            try:
+                result = adapter.post(endpoint=f"/card/{target}/favorite").data
+            except RequestFailure:
+                result = {
+                    "card_id": target,
+                    "error": "Metabase error, probably already a favorite",
+                }
+            if isinstance(result, dict):
+                results.append(result)
+        return results
+
+    @classmethod
+    def unfavorite(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+        results = []
+        for target in targets:
+            try:
+                success = (
+                    adapter.delete(endpoint=f"/card/{target}/favorite").status_code
+                    == 204
+                )
+                result = {"card_id": target, "success": success}
+            except InvalidDataReceived:
+                result = {
+                    "card_id": target,
+                    "error": "Metabase error, probably not a favorite",
+                }
+            results.append(result)
+        return results
+
+    @classmethod
+    def share(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+        results = []
+        for target in targets:
+            result = adapter.post(endpoint=f"/card/{target}/public_link").data
+            results.append(result)
+        return results
+
+    @classmethod
+    def unshare(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+        results = []
+        for target in targets:
+            result = adapter.delete(endpoint=f"/card/{target}/public_link").data
+            results.append(result)
+        return results
