@@ -1,5 +1,6 @@
 import logging
 from json import JSONDecodeError
+from pathlib import Path
 from typing import Optional
 
 from requests import Response, Session
@@ -19,10 +20,12 @@ class MetabaseApi:
         metabase_url: str,
         credentials: Optional[dict] = None,
         cache_token: bool = False,
-        token_path: str = "./metabase.token",
+        token_path: Path | str = Path("./metabase.token"),
     ):
         self._logger = logging.getLogger(__name__)
+        authed = False
         credentials = credentials or {}
+        token_path = Path(token_path)
         try:
             with open(token_path, "r") as f:
                 credentials["token"] = f.read()
@@ -41,18 +44,35 @@ class MetabaseApi:
 
         # Determines what was supplied in credentials and authenticates accordingly
         if "token" in credentials:
-            self._logger.debug("Using supplied token for requests.")
+            self._logger.debug("Trying to authenticate with token")
             headers = {
                 "Content-Type": "application/json",
                 "X-Metabase-Session": credentials["token"],
             }
-            self._session.headers.update(headers)
-        elif "username" in credentials and "password" in credentials:
-            self._logger.debug("Token not present, using username and password")
+            authed = (
+                200
+                <= self._session.get(
+                    f"{self.metabase_url}/user/current", headers=headers
+                ).status_code
+                <= 299
+            )
+            if authed:
+                self._logger.debug("Successfully authenticated with token")
+                self._session.headers.update(headers)
+            else:
+                self._logger.debug("Failed to authenticate with token")
+                if token_path.exists():
+                    self._logger.debug("Deleting token file")
+                    token_path.unlink()
+
+        if not authed and "username" in credentials and "password" in credentials:
+            self._logger.debug("Trying to authenticate with username and password")
             self._authenticate(credentials=credentials)
-        else:
+            authed = True
+
+        if not authed:
             raise AuthenticationFailure(
-                "Credentials missing [username and password] or [token]"
+                "Failed to authenticate with credentials provided"
             )
 
         if cache_token:
@@ -177,7 +197,7 @@ class MetabaseApi:
         self._logger.error(log_line_post)
         raise RequestFailure(error_line)
 
-    def save_token(self, file: str):
+    def save_token(self, file: Path | str):
         token = self.get_token()
         with open(file, "w") as f:
             f.write(token)
