@@ -1,11 +1,16 @@
 from datetime import datetime
+from sqlite3 import adapt
 from typing import Optional
 from uuid import UUID
 
 from pydantic.fields import Field
 from typing_extensions import Self
 
-from metabase_tools.exceptions import EmptyDataReceived
+from metabase_tools.exceptions import (
+    EmptyDataReceived,
+    InvalidDataReceived,
+    RequestFailure,
+)
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.collection import Collection
 from metabase_tools.models.generic import MetabaseGeneric
@@ -93,3 +98,36 @@ class Card(MetabaseGeneric):
         if cards:
             return [cls(**card) for card in cards]
         raise EmptyDataReceived
+
+    @classmethod
+    def favorite(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+        results = []
+        for target in targets:
+            try:
+                result = adapter.post(endpoint=f"/card/{target}/favorite").data
+            except RequestFailure:
+                result = {
+                    "card_id": target,
+                    "error": "Metabase error, probably already a favorite",
+                }
+            if isinstance(result, dict):
+                results.append(result)
+        return results
+
+    @classmethod
+    def unfavorite(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+        results = []
+        for target in targets:
+            try:
+                success = (
+                    adapter.delete(endpoint=f"/card/{target}/favorite").status_code
+                    == 204
+                )
+                result = {"card_id": target, "success": success}
+            except InvalidDataReceived:
+                result = {
+                    "card_id": target,
+                    "error": "Metabase error, probably not a favorite",
+                }
+            results.append(result)
+        return results
