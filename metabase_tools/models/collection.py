@@ -37,7 +37,7 @@ class Collection(MetabaseGeneric):
     @classmethod
     def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         return super(Collection, cls).put(
-            adapter=adapter, endpoint="/collection", payloads=payloads
+            adapter=adapter, endpoint="/collection/{id}", payloads=payloads
         )
 
     @classmethod
@@ -46,7 +46,7 @@ class Collection(MetabaseGeneric):
     ) -> list[Self]:
         return super(Collection, cls).archive(
             adapter=adapter,
-            endpoint="/collection",
+            endpoint="/collection/{id}",
             targets=targets,
             unarchive=unarchive,
         )
