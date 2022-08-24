@@ -1,4 +1,4 @@
-import json
+from json import loads
 from random import choice
 from string import ascii_letters, digits
 from time import sleep
@@ -17,24 +17,21 @@ from tests.metabase_details import (
 
 
 def check_status_code(response: requests.Response) -> requests.Response:
-    if 200 >= response.status_code <= 299:
+    if 200 <= response.status_code <= 299:
         return response
     raise requests.HTTPError(
-        f"{response.status_code} - {response.reason}: {json.loads(response.text)['errors']}"
+        f"{response.status_code} - {response.reason}: {loads(response.text)['errors']}"
     )
 
 
 def initial_setup():
-    MAX_ATTEMPTS = 5
-    WAIT_INTERVAL = 60
-    attempts = 0
-    success = False
+    MAX_ATTEMPTS = 10
+    WAIT_INTERVAL = 10
     token_response = None
-    while attempts <= MAX_ATTEMPTS and not success:
-        attempts += 1
+    for _ in range(MAX_ATTEMPTS + 1):
         try:
             token_response = requests.get(HOST + "/api/session/properties")
-            success = True
+            break
         except requests.exceptions.ConnectionError:
             # Wait and try again if connection doesn't work the first time
             sleep(WAIT_INTERVAL)
