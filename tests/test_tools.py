@@ -53,7 +53,7 @@ def test_upload_native_queries(tools: MetabaseTools):
     with open(test_card_path, "r", newline="", encoding="utf-8") as file:
         current = file.read()
     with open(test_card_path, "a", newline="", encoding="utf-8") as file:
-        file.write("\n-- " + "".join(choice(ascii_lowercase) for x in range(6)))
+        file.write("\n-- " + "".join(choice(ascii_lowercase) for _ in range(6)))
     results = tools.upload_native_queries(
         mapping_path=mapping_path, dry_run=False, stop_on_error=True
     )

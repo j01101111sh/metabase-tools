@@ -55,7 +55,7 @@ def new_card_def():
 def test_card_create_one(api: MetabaseApi, new_card_def: dict):
     card_one = new_card_def.copy()
     card_one["name"] = "Test Card - " + "".join(
-        choice(ascii_lowercase) for x in range(6)
+        choice(ascii_lowercase) for _ in range(6)
     )
     new_card_obj = Card.post(adapter=api, payloads=[card_one])
     assert isinstance(new_card_obj, list)
@@ -65,11 +65,11 @@ def test_card_create_one(api: MetabaseApi, new_card_def: dict):
 def test_card_create_many(api: MetabaseApi, new_card_def: dict):
     card_one = new_card_def.copy()
     card_one["name"] = "Test Card - " + "".join(
-        choice(ascii_lowercase) for x in range(6)
+        choice(ascii_lowercase) for _ in range(6)
     )
     card_two = new_card_def.copy()
     card_two["name"] = "Test Card - " + "".join(
-        choice(ascii_lowercase) for x in range(6)
+        choice(ascii_lowercase) for _ in range(6)
     )
     new_cards = [card_one, card_two]
     new_card_objs = Card.post(adapter=api, payloads=new_cards)
