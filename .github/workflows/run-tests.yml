@@ -1,7 +1,7 @@
 name: run tests
 env:
   METABASE_DETAILS: ${{ secrets.METABASE_DETAILS }}
-on: [pull_request, release]
+on: [pull_request]
 
 jobs:
   build:
@@ -9,7 +9,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.10"]
+        python-version: ["3.10","3.11-dev"]
 
     runs-on: ${{ matrix.os }}
 
