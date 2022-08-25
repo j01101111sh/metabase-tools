@@ -11,7 +11,7 @@ from metabase_tools.exceptions import EmptyDataReceived, InvalidParameters
 from metabase_tools.metabase import MetabaseApi
 
 
-class MetabaseGeneric(BaseModel):
+class MetabaseGeneric(BaseModel, extra="forbid"):
     """Provides generic methods for objects following generic pattern"""
 
     id: int
