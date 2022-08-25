@@ -9,13 +9,13 @@ Welcome to metabase-tools's documentation!
 .. toctree::
    Usage
    MetabaseApi
-   Tools
-   Exceptions
    MetabaseGeneric
    Card
    Collection
    Database
    User
+   Tools
+   Exceptions
 
 
 Indices and tables
