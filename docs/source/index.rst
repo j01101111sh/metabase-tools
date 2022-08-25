@@ -7,7 +7,7 @@ Welcome to metabase-tools's documentation!
 
 
 .. toctree::
-   Usage
+   Install
    MetabaseApi
    MetabaseGeneric
    Card
