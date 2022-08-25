@@ -142,4 +142,4 @@ def test_flatten_tree(api: MetabaseApi):
 
 def test_graph(api: MetabaseApi):
     graph = Collection.graph(adapter=api)
-    assert graph
+    assert isinstance(graph, dict)

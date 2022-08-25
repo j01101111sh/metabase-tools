@@ -59,7 +59,7 @@ class Card(MetabaseGeneric):
 
         Args:
             adapter (MetabaseApi): Connection to Metabase API
-            targets (list[int], optional): Card IDs to fetch or returns all cards
+            targets (list[int], optional): Card IDs to fetch or returns all
 
         Returns:
             list[Card]: List of cards requested
