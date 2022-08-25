@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import ClassVar, Optional
 
 from typing_extensions import Self
 
@@ -8,6 +8,8 @@ from metabase_tools.models.generic import MetabaseGeneric
 
 
 class Database(MetabaseGeneric):
+    BASE_EP: ClassVar[str] = "/database"
+
     description: Optional[str]
     features: list[str]
     cache_field_values_schedule: str
@@ -26,26 +28,21 @@ class Database(MetabaseGeneric):
     refingerprint: Optional[str]
     created_at: datetime
     points_of_interest: Optional[str]
+    schedules: Optional[dict]
 
     @classmethod
     def get(
         cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
     ) -> list[Self]:
-        return super(Database, cls).get(
-            adapter=adapter, endpoint="/database", targets=targets
-        )
+        return super(Database, cls).get(adapter=adapter, targets=targets)
 
     @classmethod
     def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        return super(Database, cls).post(
-            adapter=adapter, endpoint="/database", payloads=payloads
-        )
+        return super(Database, cls).post(adapter=adapter, payloads=payloads)
 
     @classmethod
     def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        return super(Database, cls).put(
-            adapter=adapter, endpoint="/database", payloads=payloads
-        )
+        return super(Database, cls).put(adapter=adapter, payloads=payloads)
 
     @classmethod
     def search(

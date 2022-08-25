@@ -2,7 +2,7 @@
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import ClassVar, Optional
 
 from pydantic.fields import Field
 from typing_extensions import Self
@@ -14,6 +14,8 @@ from metabase_tools.models.generic import MetabaseGeneric
 
 class User(MetabaseGeneric):
     """Class for user objects from Metabase"""
+
+    BASE_EP: ClassVar[str] = "/user"
 
     name: str = Field(alias="common_name")
     email: str
@@ -50,7 +52,7 @@ class User(MetabaseGeneric):
         list[Self]
             List of users
         """
-        return super(User, cls).get(adapter=adapter, endpoint="/user", targets=targets)
+        return super(User, cls).get(adapter=adapter, targets=targets)
 
     @classmethod
     def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
@@ -68,9 +70,7 @@ class User(MetabaseGeneric):
         list[Self]
             List of created users
         """
-        return super(User, cls).post(
-            adapter=adapter, endpoint="/user", payloads=payloads
-        )
+        return super(User, cls).post(adapter=adapter, payloads=payloads)
 
     @classmethod
     def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
@@ -88,9 +88,7 @@ class User(MetabaseGeneric):
         list[Self]
             List of user(s) updated
         """
-        return super(User, cls).put(
-            adapter=adapter, endpoint="/user/{id}", payloads=payloads
-        )
+        return super(User, cls).put(adapter=adapter, payloads=payloads)
 
     @classmethod
     def search(
@@ -122,7 +120,7 @@ class User(MetabaseGeneric):
         )
 
     @classmethod
-    def current(cls, adapter: MetabaseApi) -> list[Self]:
+    def current(cls, adapter: MetabaseApi) -> Self:
         """Fetch the current user
 
         Parameters
@@ -136,8 +134,8 @@ class User(MetabaseGeneric):
             Current user details
         """
         response = adapter.get(endpoint="/user/current")
-        if response.data:
-            return [cls(**record) for record in [response.data]]  # type: ignore
+        if response.data and isinstance(response.data, dict):
+            return cls(**response.data)
         raise RequestFailure
 
     @classmethod
@@ -156,9 +154,7 @@ class User(MetabaseGeneric):
         dict
             Dict of users that were disabled with results
         """
-        return super(User, cls).delete(
-            adapter=adapter, endpoint="/user/{id}", targets=targets
-        )
+        return super(User, cls).delete(adapter=adapter, targets=targets)
 
     @classmethod
     def enable(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
@@ -176,11 +172,13 @@ class User(MetabaseGeneric):
         list[Self]
             List of users that were re-enabled
         """
-        return super(User, cls).put(
+        results = cls._request_list(
+            http_method="PUT",
             adapter=adapter,
             endpoint="/user/{id}/reactivate",
-            payloads=[{"id": target} for target in targets],
+            source=[{"id": target} for target in targets],
         )
+        return [cls(**result) for result in results]
 
     @classmethod
     def resend_invite(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
@@ -193,11 +191,13 @@ class User(MetabaseGeneric):
         :return: Users with resent invites
         :rtype: list[Self]
         """
-        return super(User, cls).post(
+        results = cls._request_list(
+            http_method="PUT",
             adapter=adapter,
             endpoint="/user/{id}/send_invite",
-            payloads=[{"id": target} for target in targets],
+            source=[{"id": target} for target in targets],
         )
+        return [cls(**result) for result in results]
 
     @classmethod
     def update_password(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
@@ -210,9 +210,13 @@ class User(MetabaseGeneric):
         :return: Users with password changed
         :rtype: list[Self]
         """
-        return super(User, cls).put(
-            adapter=adapter, endpoint="/user/{id}/password", payloads=payloads
+        results = cls._request_list(
+            http_method="PUT",
+            adapter=adapter,
+            endpoint="/user/{id}/password",
+            source=payloads,
         )
+        return [cls(**result) for result in results]
 
     @classmethod
     def qbnewb(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
@@ -225,8 +229,10 @@ class User(MetabaseGeneric):
         :return: Users that were toggled
         :rtype: list[Self]
         """
-        return super(User, cls).put(
+        results = cls._request_list(
+            http_method="PUT",
             adapter=adapter,
             endpoint="/user/{id}/qbnewb",
-            payloads=[{"id": target} for target in targets],
+            source=[{"id": target} for target in targets],
         )
+        return [cls(**result) for result in results]

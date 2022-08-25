@@ -138,5 +138,4 @@ def test_user_get_all(api: MetabaseApi):
 
 def test_user_current(api: MetabaseApi):
     user = User.current(adapter=api)
-    assert isinstance(user, list)
-    assert all(isinstance(u, User) for u in user)
+    assert isinstance(user, User)

@@ -2,7 +2,7 @@
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import ClassVar, Optional
 from uuid import UUID
 
 from pydantic.fields import Field
@@ -21,6 +21,8 @@ from metabase_tools.models.user import User
 
 class Card(MetabaseGeneric):
     """Card object class with related methods"""
+
+    BASE_EP: ClassVar[str] = "/card"
 
     description: Optional[str]
     archived: bool
@@ -45,6 +47,9 @@ class Card(MetabaseGeneric):
     dataset: Optional[int]
     created_at: datetime
     public_uuid: Optional[UUID]
+    can_write: Optional[bool]
+    dashboard_count: Optional[int]
+    is_favorite: Optional[bool] = Field(alias="favorite")
 
     @classmethod
     def get(
@@ -59,7 +64,7 @@ class Card(MetabaseGeneric):
         Returns:
             list[Card]: List of cards requested
         """
-        return super(Card, cls).get(adapter=adapter, endpoint="/card", targets=targets)
+        return super(Card, cls).get(adapter=adapter, targets=targets)
 
     @classmethod
     def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
@@ -72,9 +77,7 @@ class Card(MetabaseGeneric):
         Returns:
             list[Card]: List of cards created
         """
-        return super(Card, cls).post(
-            adapter=adapter, endpoint="/card", payloads=payloads
-        )
+        return super(Card, cls).post(adapter=adapter, payloads=payloads)
 
     @classmethod
     def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
@@ -87,9 +90,7 @@ class Card(MetabaseGeneric):
         Returns:
             list[Card]: List of updated cards
         """
-        return super(Card, cls).put(
-            adapter=adapter, endpoint="/card/{id}", payloads=payloads
-        )
+        return super(Card, cls).put(adapter=adapter, payloads=payloads)
 
     @classmethod
     def archive(
@@ -106,7 +107,7 @@ class Card(MetabaseGeneric):
             list[Card]: List of archived cards
         """
         return super(Card, cls).archive(
-            adapter=adapter, endpoint="/card/{id}", targets=targets, unarchive=unarchive
+            adapter=adapter, targets=targets, unarchive=unarchive
         )
 
     @classmethod
@@ -232,11 +233,12 @@ class Card(MetabaseGeneric):
         Returns:
             list[dict]: UUIDs to be used in public links.
         """
-        results = []
-        for target in targets:
-            result = adapter.post(endpoint=f"/card/{target}/public_link").data
-            results.append(result)
-        return results
+        return cls._request_list(
+            http_method="POST",
+            adapter=adapter,
+            endpoint="/card/{id}/public_link",
+            source=targets,
+        )
 
     @classmethod
     def unshare(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
@@ -249,8 +251,9 @@ class Card(MetabaseGeneric):
         Returns:
             list[dict]: Result of unshare operation
         """
-        results = []
-        for target in targets:
-            result = adapter.delete(endpoint=f"/card/{target}/public_link").data
-            results.append(result)
-        return results
+        return cls._request_list(
+            http_method="DELETE",
+            adapter=adapter,
+            endpoint="/card/{id}/public_link",
+            source=targets,
+        )
