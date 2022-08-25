@@ -19,6 +19,7 @@ class Collection(MetabaseGeneric):
     effective_location: Optional[str]
     effective_ancestors: Optional[list[dict]]
     can_write: Optional[bool]
+    parent_id: Optional[int]
 
     @classmethod
     def get(

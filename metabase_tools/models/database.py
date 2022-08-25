@@ -26,6 +26,7 @@ class Database(MetabaseGeneric):
     refingerprint: Optional[str]
     created_at: datetime
     points_of_interest: Optional[str]
+    schedules: Optional[dict]
 
     @classmethod
     def get(

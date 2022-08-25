@@ -45,6 +45,9 @@ class Card(MetabaseGeneric):
     dataset: Optional[int]
     created_at: datetime
     public_uuid: Optional[UUID]
+    can_write: Optional[bool]
+    dashboard_count: Optional[int]
+    is_favorite: Optional[bool] = Field(alias="favorite")
 
     @classmethod
     def get(
