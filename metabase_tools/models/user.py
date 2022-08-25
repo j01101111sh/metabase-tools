@@ -120,7 +120,7 @@ class User(MetabaseGeneric):
         )
 
     @classmethod
-    def current(cls, adapter: MetabaseApi) -> list[Self]:
+    def current(cls, adapter: MetabaseApi) -> Self:
         """Fetch the current user
 
         Parameters
@@ -134,8 +134,8 @@ class User(MetabaseGeneric):
             Current user details
         """
         response = adapter.get(endpoint="/user/current")
-        if response.data:
-            return [cls(**record) for record in [response.data]]  # type: ignore
+        if response.data and isinstance(response.data, dict):
+            return cls(**response.data)
         raise RequestFailure
 
     @classmethod

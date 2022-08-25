@@ -233,11 +233,12 @@ class Card(MetabaseGeneric):
         Returns:
             list[dict]: UUIDs to be used in public links.
         """
-        results = []
-        for target in targets:
-            result = adapter.post(endpoint=f"/card/{target}/public_link").data
-            results.append(result)
-        return results
+        return cls._request_list(
+            http_method="POST",
+            adapter=adapter,
+            endpoint="/card/{id}/public_link",
+            source=targets,
+        )
 
     @classmethod
     def unshare(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
@@ -250,8 +251,9 @@ class Card(MetabaseGeneric):
         Returns:
             list[dict]: Result of unshare operation
         """
-        results = []
-        for target in targets:
-            result = adapter.delete(endpoint=f"/card/{target}/public_link").data
-            results.append(result)
-        return results
+        return cls._request_list(
+            http_method="DELETE",
+            adapter=adapter,
+            endpoint="/card/{id}/public_link",
+            source=targets,
+        )

@@ -31,15 +31,11 @@ class Collection(MetabaseGeneric):
 
     @classmethod
     def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        return super(Collection, cls).post(
-            adapter=adapter, payloads=payloads
-        )
+        return super(Collection, cls).post(adapter=adapter, payloads=payloads)
 
     @classmethod
     def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        return super(Collection, cls).put(
-            adapter=adapter, payloads=payloads
-        )
+        return super(Collection, cls).put(adapter=adapter, payloads=payloads)
 
     @classmethod
     def archive(
@@ -124,6 +120,7 @@ class Collection(MetabaseGeneric):
             params["archived"] = archived
         if model_type:
             params["model"] = model_type
+
         items = adapter.get(
             endpoint=f"/collection/{collection_id}/items",
             params=params,
