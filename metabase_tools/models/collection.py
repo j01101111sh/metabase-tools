@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import ClassVar, Optional
 
 from typing_extensions import Self
 
@@ -8,6 +8,8 @@ from metabase_tools.models.generic import MetabaseGeneric
 
 
 class Collection(MetabaseGeneric):
+    BASE_EP: ClassVar[str] = "/collection"
+
     id: int | str  # root is a valid id for a collection
     description: Optional[str]
     archived: Optional[bool]
@@ -25,20 +27,18 @@ class Collection(MetabaseGeneric):
     def get(
         cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
     ) -> list[Self]:
-        return super(Collection, cls).get(
-            adapter=adapter, endpoint="/collection", targets=targets
-        )
+        return super(Collection, cls).get(adapter=adapter, targets=targets)
 
     @classmethod
     def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         return super(Collection, cls).post(
-            adapter=adapter, endpoint="/collection", payloads=payloads
+            adapter=adapter, payloads=payloads
         )
 
     @classmethod
     def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         return super(Collection, cls).put(
-            adapter=adapter, endpoint="/collection/{id}", payloads=payloads
+            adapter=adapter, payloads=payloads
         )
 
     @classmethod
@@ -47,7 +47,6 @@ class Collection(MetabaseGeneric):
     ) -> list[Self]:
         return super(Collection, cls).archive(
             adapter=adapter,
-            endpoint="/collection/{id}",
             targets=targets,
             unarchive=unarchive,
         )

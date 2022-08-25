@@ -2,7 +2,7 @@
     MetabaseGeneric class to provide generic methods for objects following this pattern
 """
 
-from typing import Optional
+from typing import ClassVar, Optional
 
 from pydantic import BaseModel
 from typing_extensions import Self
@@ -13,6 +13,8 @@ from metabase_tools.metabase import MetabaseApi
 
 class MetabaseGeneric(BaseModel, extra="forbid"):
     """Provides generic methods for objects following generic pattern"""
+
+    BASE_EP: ClassVar[str]
 
     id: int
     name: str
@@ -83,7 +85,7 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
 
     @classmethod
     def get(
-        cls, adapter: MetabaseApi, endpoint: str, targets: Optional[list[int]] = None
+        cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
     ) -> list[Self]:
         """Generic method for returning an object or list of objects
 
@@ -91,8 +93,6 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
         ----------
         adapter : MetabaseApi
             Connection to Metabase API
-        endpoint : str
-            Endpoint to use for the request
         targets : Optional[list[int]]
             If None, return all objects; else return the objects requested
 
@@ -112,14 +112,14 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
             results = cls._request_list(
                 http_method="GET",
                 adapter=adapter,
-                endpoint=endpoint + "/{id}",
+                endpoint=cls.BASE_EP + "/{id}",
                 source=targets,
             )
             return [cls(**result) for result in results]
 
         if targets is None:
             # If no targets are provided, all objects of that type should be returned
-            response = adapter.get(endpoint=endpoint)
+            response = adapter.get(endpoint=cls.BASE_EP)
             if response.data:  # Validate data was returned
                 # Unpack data into instances of the class and return
                 return [cls(**record) for record in response.data]
@@ -130,17 +130,13 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
         raise EmptyDataReceived("No data returned")
 
     @classmethod
-    def post(
-        cls, adapter: MetabaseApi, endpoint: str, payloads: list[dict]
-    ) -> list[Self]:
+    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Generic method for creating a list of objects
 
         Parameters
         ----------
         adapter : MetabaseApi
             Connection to Metabase API
-        endpoint : str
-            Endpoint to use for the requests
         payloads : list[dict]
             List of json payloads
 
@@ -161,7 +157,7 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
             results = cls._request_list(
                 http_method="POST",
                 adapter=adapter,
-                endpoint=endpoint,
+                endpoint=cls.BASE_EP,
                 source=payloads,
             )
             return [cls(**result) for result in results]
@@ -169,17 +165,13 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
         raise InvalidParameters("Invalid target(s)")
 
     @classmethod
-    def put(
-        cls, adapter: MetabaseApi, endpoint: str, payloads: list[dict]
-    ) -> list[Self]:
+    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Generic method for updating a list of objects
 
         Parameters
         ----------
         adapter : MetabaseApi
             Connection to Metabase API
-        endpoint : str
-            Endpoint to use for the requests
         payloads : list[dict]
             List of json payloads
 
@@ -200,7 +192,7 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
             results = cls._request_list(
                 http_method="PUT",
                 adapter=adapter,
-                endpoint=endpoint,
+                endpoint=cls.BASE_EP + "/{id}",
                 source=payloads,
             )
             return [cls(**result) for result in results]
@@ -211,7 +203,6 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
     def archive(
         cls,
         adapter: MetabaseApi,
-        endpoint: str,
         targets: list[int],
         unarchive: bool,
     ) -> list[Self]:
@@ -221,8 +212,6 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
         ----------
         adapter : MetabaseApi
             Connection to Metabase API
-        endpoint : str
-            Endpoint to use for the requests
         payloads : list[dict]
             List of json payloads
 
@@ -242,7 +231,7 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
             results = cls._request_list(
                 http_method="PUT",
                 adapter=adapter,
-                endpoint=endpoint,
+                endpoint=cls.BASE_EP + "/{id}",
                 source=[
                     {"id": target, "archived": not unarchive} for target in targets
                 ],
@@ -263,8 +252,6 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
         ----------
         adapter : MetabaseApi
             Connection to Metabase API
-        endpoint : str
-            Endpoint to use for the requests
         search_params : list[dict]
             List of dicts, each containing search criteria. 1 result returned per dict.
         search_list : Optional[list[Self]], optional
@@ -286,12 +273,12 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
         return results
 
     @classmethod
-    def delete(cls, adapter: MetabaseApi, endpoint: str, targets: list[int]) -> dict:
+    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
             results = cls._request_list(
                 http_method="DELETE",
                 adapter=adapter,
-                endpoint=endpoint,
+                endpoint=cls.BASE_EP + "/{id}",
                 source=targets,
             )
             return {target: result for result, target in zip(results, targets)}
