@@ -182,7 +182,7 @@ class Collection(MetabaseGeneric):
                 {
                     "id": root_folder["id"],
                     "name": root_folder["name"],
-                    "path": f'/{root_folder["name"]}',  # TODO replace with list comprehension
+                    "path": f'/{root_folder["name"]}',
                 }
             )
             folders.extend(Collection._flatten_tree(root_folder))
