@@ -1,5 +1,4 @@
 from datetime import datetime
-from sqlite3 import adapt
 from typing import Optional
 from uuid import UUID
 
