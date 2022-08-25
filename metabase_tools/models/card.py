@@ -209,11 +209,8 @@ class Card(MetabaseGeneric):
         results = []
         for target in targets:
             try:
-                success = (
-                    adapter.delete(endpoint=f"/card/{target}/favorite").status_code
-                    == 204
-                )
-                result = {"card_id": target, "success": success}
+                _ = adapter.delete(endpoint=f"/card/{target}/favorite")
+                result = {"card_id": target, "success": True}
             except (InvalidDataReceived, RequestFailure):
                 result = {
                     "card_id": target,

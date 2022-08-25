@@ -46,19 +46,19 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
 
         for item in source:
             if isinstance(item, int):
-                response = adapter.do(
+                response = adapter.generic_request(
                     http_method=http_method, endpoint=endpoint.format(id=item)
                 )
             elif isinstance(item, dict):
                 item_ep = endpoint.format(**item)
                 if http_method == "PUT":
-                    response = adapter.do(
+                    response = adapter.generic_request(
                         http_method=http_method,
                         endpoint=item_ep,
                         json=item,
                     )
                 else:
-                    response = adapter.do(
+                    response = adapter.generic_request(
                         http_method=http_method,
                         endpoint=item_ep,
                         json=item,

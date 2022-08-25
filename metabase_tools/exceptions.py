@@ -1,34 +1,38 @@
+"""Exceptions for the MetabaseApi class
+"""
+
+
 class MetabaseApiException(Exception):
-    pass
+    """Base exception for other exceptions included in this package"""
 
 
 class AuthenticationFailure(MetabaseApiException):
-    pass
+    """Error encountered while trying to authenticate with API"""
 
 
 class EmptyDataReceived(MetabaseApiException):
-    pass
+    """Response received but it contained no data"""
 
 
 class InvalidDataReceived(MetabaseApiException):
-    pass
+    """Data received but it could not be decoded"""
 
 
 class InvalidParameters(MetabaseApiException):
-    pass
-
-
-class RequestFailure(MetabaseApiException):
-    pass
+    """Invalid parameters supplied to API"""
 
 
 class ItemNotFound(MetabaseApiException):
-    pass
+    """Item was not found it the listed location"""
 
 
 class ItemInPersonalCollection(MetabaseApiException):
-    pass
+    """Requested item is in a personal collection"""
+
+
+class RequestFailure(MetabaseApiException):
+    """HTTP error encountered during request"""
 
 
 class NoUpdateProvided(MetabaseApiException):
-    pass
+    """An update was requested but no change was provided"""

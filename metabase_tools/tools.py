@@ -30,19 +30,16 @@ class MetabaseTools(MetabaseApi):
     ) -> Path:
         """Downloads all native queries into a JSON file
 
-        Parameters
-        ----------
-        save_file : Optional[Path | str], optional
-            Path to save mapping file, defaults to mapping_{timestamp}.json
-        root_folder : Path | str, optional
-            Root folder to save queries, by default "."
-        file_extension : str, optional
-            File extension to save the queries, by default "sql"
+        Args:
+            save_file (Path | str, optional): Path to save mapping file, defaults to \
+                mapping_{timestamp}.json
+            root_folder (Path | str, optional): Root folder to save queries, by \
+                default "."
+            file_extension (str, optional): File extension to save the queries, by \
+                default "sql"
 
-        Returns
-        -------
-        Path
-            Path to save file
+        Returns:
+            Path: Path to save file
         """
         # Determine save path
         timestamp = datetime.now().strftime("%y%m%dT%H%M%S")
@@ -90,7 +87,7 @@ class MetabaseTools(MetabaseApi):
                     save_path=f"{root_folder}/{new_card['path']}",
                     file_extension=file_extension,
                 )
-            except OSError as error_raised:
+            except OSError:
                 self._logger.warning("Skipping %s (name error)", card.name)
                 continue
             self._logger.debug(
@@ -116,19 +113,21 @@ class MetabaseTools(MetabaseApi):
         dry_run: bool = True,
         stop_on_error: bool = False,
     ) -> list[dict] | dict:
-        """Uploads files
+        """Uploads queries to Metabase
 
-        Parameters
-        ----------
-        mapping_path : Path | str
-            Path to the mapping configuration file, by default None
-        dry_run : bool, optional
-            Execute task as a dry run (i.e. do not make any changes), by default True
+        Args:
+            mapping_path (Path | str): Path to the mapping configuration file, by \
+                default None
+            dry_run (bool, optional): Execute task as a dry run (i.e. do not make \
+                any changes), by default True
+            stop_on_error (bool, optional): Raise error and stop if an error is \
+                encountered. Defaults to False.
 
-        Returns
-        -------
-        list[dict]
-            list of dicts with results of upload
+        Raises:
+            FileNotFoundError: The file referenced was not found
+
+        Returns:
+            list[dict] | dict: Results of upload
         """
         # Determine mapping path
         mapping_path = Path(mapping_path or "./mapping.json")
@@ -244,8 +243,10 @@ class MetabaseTools(MetabaseApi):
                 "name": card.name,
                 "path": collections_by_id[card.collection_id]["path"],
             }
-        except KeyError:
-            raise ItemInPersonalCollection("%s in personal collection", card.name)
+        except KeyError as error_raised:
+            raise ItemInPersonalCollection(
+                "Item in personal collection"
+            ) from error_raised
 
         mapping_details["database"] = Database.search(
             adapter=self, search_params=[{"id": card.database_id}]
@@ -273,9 +274,11 @@ class MetabaseTools(MetabaseApi):
         if collection_id:
             collections_by_id = self._get_collections_dict(key="id")
             return collections_by_id[collection_id]["path"]
-        elif collection_path:
+
+        if collection_path:
             collections_by_path = self._get_collections_dict(key="path")
             return collections_by_path[collection_path]["id"]
+
         raise InvalidParameters
 
     def _find_card_id(self, card_name: str, collection_id: int) -> int:

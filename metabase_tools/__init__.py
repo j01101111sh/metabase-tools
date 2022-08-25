@@ -1,3 +1,6 @@
+"""Unofficial API wrapper for Metabase
+"""
+
 __version__ = "0.5.0"
 
 from metabase_tools.exceptions import (
@@ -5,7 +8,10 @@ from metabase_tools.exceptions import (
     EmptyDataReceived,
     InvalidDataReceived,
     InvalidParameters,
+    ItemInPersonalCollection,
+    ItemNotFound,
     MetabaseApiException,
+    NoUpdateProvided,
     RequestFailure,
 )
 from metabase_tools.metabase import MetabaseApi
@@ -16,16 +22,19 @@ from metabase_tools.models.user import User
 from metabase_tools.tools import MetabaseTools
 
 __all__ = (
-    AuthenticationFailure,
-    EmptyDataReceived,
-    InvalidDataReceived,
-    InvalidParameters,
-    MetabaseApiException,
-    RequestFailure,
-    MetabaseApi,
-    Card,
-    Collection,
-    Database,
-    User,
-    MetabaseTools,
+    "AuthenticationFailure",
+    "EmptyDataReceived",
+    "InvalidDataReceived",
+    "InvalidParameters",
+    "ItemNotFound",
+    "ItemInPersonalCollection",
+    "MetabaseApiException",
+    "NoUpdateProvided",
+    "RequestFailure",
+    "MetabaseApi",
+    "Card",
+    "Collection",
+    "Database",
+    "User",
+    "MetabaseTools",
 )
