@@ -112,8 +112,8 @@ class User(MetabaseGeneric):
             User: Current user details
         """
         response = adapter.get(endpoint="/user/current")
-        if response.data and isinstance(response.data, dict):
-            return cls(**response.data)
+        if isinstance(response, dict):
+            return cls(**response)
         raise RequestFailure
 
     @classmethod

@@ -15,7 +15,6 @@ from metabase_tools.exceptions import (
     InvalidDataReceived,
     RequestFailure,
 )
-from metabase_tools.models.result import Result
 
 
 class MetabaseApi:
@@ -146,7 +145,7 @@ class MetabaseApi:
         endpoint: str,
         params: Optional[dict] = None,
         json: Optional[dict] = None,
-    ) -> Result:
+    ) -> Response:
         """Private method for get and post methods
         Args:
             http_method (str): GET or POST or PUT or DELETE
@@ -156,32 +155,13 @@ class MetabaseApi:
         Returns:
             Result: a Result object
         """
-        full_api_url = self.metabase_url + endpoint
-
         log_line_post = "success=%s, status_code=%s, message=%s"
         response = self._make_request(
-            method=http_method, url=full_api_url, params=params, json=json
+            method=http_method,
+            url=self.metabase_url + endpoint,
+            params=params,
+            json=json,
         )
-        # Deserialize JSON output to Python object, or return failed Result on exception
-        try:
-            data = response.json()
-        except (ValueError, JSONDecodeError) as error_raised:
-            if response.status_code == 204:
-                data = None
-            elif response.status_code == 401:
-                self._logger.error(
-                    log_line_post, False, response.status_code, error_raised
-                )
-                raise AuthenticationFailure(
-                    f"{response.status_code} - {response.reason}"
-                ) from error_raised
-            else:
-                self._logger.error(
-                    log_line_post, False, response.status_code, error_raised
-                )
-                raise InvalidDataReceived(
-                    f"{response.status_code} - {response.reason}"
-                ) from error_raised
 
         # If status_code in 200-299 range, return Result, else raise exception
         is_success = 299 >= response.status_code >= 200
@@ -189,17 +169,17 @@ class MetabaseApi:
             self._logger.debug(
                 log_line_post, is_success, response.status_code, response.reason
             )
-            return Result(
-                status_code=response.status_code, message=response.reason, data=data
+            try:
+                return response.json()
+            except JSONDecodeError:
+                raise InvalidDataReceived
+        elif response.status_code == 401:
+            self._logger.error(
+                log_line_post, False, response.status_code, response.text
             )
+            raise AuthenticationFailure(f"{response.status_code} - {response.reason}")
 
-        if isinstance(data, dict) and "errors" in data:
-            error_line = (
-                f'{response.status_code} - {response.reason} - {data["errors"]}'
-            )
-            self._logger.error(error_line)
-        else:
-            error_line = f"{response.status_code} - {response.reason}"
+        error_line = f"{response.status_code} - {response.reason}"
         self._logger.error(log_line_post)
         raise RequestFailure(error_line)
 
@@ -215,7 +195,7 @@ class MetabaseApi:
         with open(file, "w") as f:
             f.write(token)
 
-    def get(self, endpoint: str, params: Optional[dict] = None) -> Result:
+    def get(self, endpoint: str, params: Optional[dict] = None) -> Response:
         """HTTP GET request
         Args:
             endpoint (str): URL endpoint
@@ -227,7 +207,7 @@ class MetabaseApi:
 
     def post(
         self, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None
-    ) -> Result:
+    ) -> Response:
         """HTTP POST request
         Args:
             endpoint (str): URL endpoint
@@ -238,7 +218,7 @@ class MetabaseApi:
         """
         return self.do(http_method="POST", endpoint=endpoint, params=params, json=json)
 
-    def delete(self, endpoint: str, params: Optional[dict] = None) -> Result:
+    def delete(self, endpoint: str, params: Optional[dict] = None) -> Response:
         """HTTP DELETE request
         Args:
             endpoint (str): URL endpoint
@@ -250,7 +230,7 @@ class MetabaseApi:
 
     def put(
         self, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None
-    ) -> Result:
+    ) -> Response:
         """HTTP PUT request
         Args:
             endpoint (str): URL endpoint

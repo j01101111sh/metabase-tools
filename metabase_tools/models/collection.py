@@ -126,8 +126,10 @@ class Collection(MetabaseGeneric):
             list[dict]: Representation of collection tree
         """
         response = adapter.get(endpoint="/collection/tree")
-        if response.data:
-            return response.data
+        if isinstance(response, list) and all(
+            isinstance(record, dict) for record in response
+        ):
+            return response
         raise EmptyDataReceived
 
     @staticmethod
@@ -216,12 +218,15 @@ class Collection(MetabaseGeneric):
         if model_type:
             params["model"] = model_type
 
-        items = adapter.get(
+        response = adapter.get(
             endpoint=f"/collection/{collection_id}/items",
             params=params,
-        ).data
-        if items:
-            return items
+        )
+
+        if isinstance(response, list) and all(
+            isinstance(record, dict) for record in response
+        ):
+            return response
         raise EmptyDataReceived
 
     @classmethod
@@ -234,7 +239,7 @@ class Collection(MetabaseGeneric):
         Returns:
             dict: graph of collection
         """
-        result = adapter.get(endpoint="/collection/graph").data
+        result = adapter.get(endpoint="/collection/graph")
         if isinstance(result, dict):
             return result
         raise EmptyDataReceived

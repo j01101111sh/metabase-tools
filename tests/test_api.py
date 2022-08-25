@@ -55,9 +55,8 @@ def test_auth_token_success(host, token, email):
         metabase_url=host, credentials=token, token_path="./missing.token"
     )
     test_response = api.do(http_method="GET", endpoint="/user/current")
-    assert test_response.status_code == 200
-    if isinstance(test_response.data, dict):
-        assert test_response.data.get("email") == email
+    if isinstance(test_response, dict):
+        assert test_response.get("email") == email
     else:
         assert_never(NoReturn)
 

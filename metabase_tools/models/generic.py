@@ -65,10 +65,10 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
                     )
             else:
                 raise InvalidParameters
-            if response.data and isinstance(response.data, dict):
-                results.append(response.data)
-            elif response.data and isinstance(response.data, list):
-                results.extend(response.data)
+            if isinstance(response, dict):
+                results.append(response)
+            elif isinstance(response, list):
+                results.extend(response)
         if len(results) > 0:
             return results
         raise EmptyDataReceived("No data returned")
@@ -102,9 +102,11 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
         if targets is None:
             # If no targets are provided, all objects of that type should be returned
             response = adapter.get(endpoint=cls.BASE_EP)
-            if response.data:  # Validate data was returned
+            if isinstance(response, list):  # Validate data was returned
                 # Unpack data into instances of the class and return
-                return [cls(**record) for record in response.data]
+                return [
+                    cls(**record) for record in response if isinstance(record, dict)
+                ]
         else:
             # If something other than None, int or list[int], raise error
             raise InvalidParameters("Invalid target(s)")

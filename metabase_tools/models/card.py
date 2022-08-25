@@ -147,7 +147,7 @@ class Card(MetabaseGeneric):
         results = []
         for target in targets:
             new = {"card_id": target}
-            result = adapter.get(endpoint=f"/card/{target}/related").data
+            result = adapter.get(endpoint=f"/card/{target}/related")
             if isinstance(result, dict):
                 new |= result
             results.append(new)
@@ -166,9 +166,9 @@ class Card(MetabaseGeneric):
         Returns:
             list[Self]: List of cards with embedding enabled
         """
-        cards = adapter.get(endpoint="/card/embeddable").data
+        cards = adapter.get(endpoint="/card/embeddable")
         if cards:
-            return [cls(**card) for card in cards]
+            return [cls(**card) for card in cards if isinstance(card, dict)]
         raise EmptyDataReceived
 
     @classmethod
@@ -185,7 +185,7 @@ class Card(MetabaseGeneric):
         results = []
         for target in targets:
             try:
-                result = adapter.post(endpoint=f"/card/{target}/favorite").data
+                result = adapter.post(endpoint=f"/card/{target}/favorite")
             except RequestFailure:
                 result = {
                     "card_id": target,
@@ -214,7 +214,7 @@ class Card(MetabaseGeneric):
                     == 204
                 )
                 result = {"card_id": target, "success": success}
-            except InvalidDataReceived:
+            except (InvalidDataReceived, RequestFailure):
                 result = {
                     "card_id": target,
                     "error": "Metabase error, probably not a favorite",
