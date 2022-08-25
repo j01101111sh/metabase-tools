@@ -156,7 +156,6 @@ class MetabaseGeneric(BaseModel):
         EmptyDataReceived
             No results returned from API
         """
-        # TODO validate params by creating a method in the child class
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
             results = cls._request_list(
@@ -276,7 +275,6 @@ class MetabaseGeneric(BaseModel):
         list[Self]
             List of objects of the relevant type
         """
-        # TODO add tests for search
         objs = search_list or cls.get(adapter=adapter)  # type: ignore
         results = []
         for param in search_params:

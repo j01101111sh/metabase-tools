@@ -28,7 +28,6 @@ class MetabaseTools(MetabaseApi):
         root_folder: Path | str = ".",
         file_extension: str = "sql",
     ) -> Path:
-        # TODO make method generic to include other filters
         """Downloads all native queries into a JSON file
 
         Parameters
@@ -280,7 +279,6 @@ class MetabaseTools(MetabaseApi):
         raise InvalidParameters
 
     def _find_card_id(self, card_name: str, collection_id: int) -> int:
-        # TODO consider moving this to collection class
         collection_items = Collection.get_contents(
             adapter=self, collection_id=collection_id, model_type="card", archived=False
         )
