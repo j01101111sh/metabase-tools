@@ -29,28 +29,18 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
     ) -> list[dict]:
         """Sends requests to API based on a list of objects
 
-        Parameters
-        ----------
-        http_method : str
-            GET or POST or PUT or DELETE
-        adapter : MetabaseApi
-            Connection to Metabase API
-        endpoint : str
-            Endpoint to use for the requests
-        source : list[int] | list[dict]
-            List of targets or payloads
+        Args:
+            http_method (str): GET or POST or PUT or DELETE
+            adapter (MetabaseApi): Connection to Metabase API
+            endpoint (str): Endpoint to use for request
+            source (list[int] | list[dict]): List of targets or payloads
 
-        Returns
-        -------
-        list[Self]
-            List of objects of the relevant type
+        Raises:
+            InvalidParameters: Item in source is not an int or dict
+            EmptyDataReceived: No data returned
 
-        Raises
-        ------
-        InvalidParameters
-            Targets and jsons are both None
-        EmptyDataReceived
-            No results returned from API
+        Returns:
+            list[dict]: Aggregated results of all API calls
         """
         results = []
 
@@ -89,24 +79,16 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
     ) -> list[Self]:
         """Generic method for returning an object or list of objects
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
-        targets : Optional[list[int]]
-            If None, return all objects; else return the objects requested
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int], optional): IDs of the objects being requested
 
-        Returns
-        -------
-        list[Self]
-            List of objects of the relevant type
+        Raises:
+            InvalidParameters: Targets are not None or list[int]
+            EmptyDataReceived: No data is received from the API
 
-        Raises
-        ------
-        InvalidParameters
-            Targets are not None or list[int]
-        EmptyDataReceived
-            No data is received from the API
+        Returns:
+            list[Self]: List of objects of the relevant type
         """
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
             results = cls._request_list(
@@ -133,24 +115,15 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
     def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Generic method for creating a list of objects
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
-        payloads : list[dict]
-            List of json payloads
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            payloads (list[dict]): List of json payloads
 
-        Returns
-        -------
-        list[Self]
-            List of objects of the relevant type
+        Raises:
+            InvalidParameters: Targets and jsons are both None
 
-        Raises
-        ------
-        InvalidParameters
-            Targets and jsons are both None
-        EmptyDataReceived
-            No results returned from API
+        Returns:
+            list[Self]: List of objects of the relevant type
         """
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
@@ -168,24 +141,15 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
     def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Generic method for updating a list of objects
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
-        payloads : list[dict]
-            List of json payloads
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            payloads (list[dict]): List of json payloads
 
-        Returns
-        -------
-        list[Self]
-            List of objects of the relevant type
+        Raises:
+            InvalidParameters: Targets and jsons are both None
 
-        Raises
-        ------
-        InvalidParameters
-            Targets and jsons are both None
-        EmptyDataReceived
-            No results returned from API
+        Returns:
+            list[Self]: List of objects of the relevant type
         """
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
@@ -208,24 +172,16 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
     ) -> list[Self]:
         """Generic method for archiving a list of objects
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
-        payloads : list[dict]
-            List of json payloads
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): List of objects to archive
+            unarchive (bool): Whether object should be unarchived instead of archived
 
-        Returns
-        -------
-        list[Self]
-            List of objects of the relevant type
+        Raises:
+            InvalidParameters: Targets and jsons are both None
 
-        Raises
-        ------
-        InvalidParameters
-            Targets and jsons are both None
-        EmptyDataReceived
-            No results returned from API
+        Returns:
+            list[Self]: List of objects of the relevant type
         """
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
             results = cls._request_list(
@@ -248,19 +204,13 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
     ) -> list[Self]:
         """Method to search a list of objects meeting a list of parameters
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
-        search_params : list[dict]
-            List of dicts, each containing search criteria. 1 result returned per dict.
-        search_list : Optional[list[Self]], optional
-            Provide to search against an existing list, by default pulls from API
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            search_params (list[dict]): List of dicts, each containing search criteria. 1 result returned per dict.
+            search_list (list[Self], optional): Provide to search against an existing list, by default pulls from API
 
-        Returns
-        -------
-        list[Self]
-            List of objects of the relevant type
+        Returns:
+            list[Self]: List of objects of the relevant type
         """
         objs = search_list or cls.get(adapter=adapter)  # type: ignore
         results = []
@@ -274,6 +224,18 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
 
     @classmethod
     def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
+        """Method to delete a list of objects
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): List of objects to delete
+
+        Raises:
+            InvalidParameters: Targets is not a list of ints
+
+        Returns:
+            dict: _description_
+        """
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
             results = cls._request_list(
                 http_method="DELETE",
