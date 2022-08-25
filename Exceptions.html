@@ -1,9 +1,11 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -46,13 +48,13 @@
   
   
     <title>Exceptions &#8212; metabase-tools 0.5.0 documentation</title>
-    <link rel="stylesheet" href="_static/material.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/material.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Tools" href="Tools.html" />
@@ -194,55 +196,55 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  
-<span id="exceptions"></span><h1 id="exceptions--page-root">Exceptions<a class="headerlink" href="#exceptions--page-root" title="Permalink to this headline">¶</a></h1>
+  <section id="module-metabase_tools.exceptions">
+<span id="exceptions"></span><h1 id="exceptions--page-root">Exceptions<a class="headerlink" href="#exceptions--page-root" title="Permalink to this heading">¶</a></h1>
 <p>Exceptions for the MetabaseApi class</p>
-<dl class="exception">
-<dt id="metabase_tools.exceptions.AuthenticationFailure">
-<em class="property">exception </em><code class="sig-prename descclassname">metabase_tools.exceptions.</code><code class="sig-name descname">AuthenticationFailure</code><a class="headerlink" href="#metabase_tools.exceptions.AuthenticationFailure" title="Permalink to this definition">¶</a></dt>
+<dl class="py exception">
+<dt class="sig sig-object py" id="metabase_tools.exceptions.AuthenticationFailure">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">AuthenticationFailure</span></span><a class="headerlink" href="#metabase_tools.exceptions.AuthenticationFailure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Error encountered while trying to authenticate with API</p>
 </dd></dl>
-<dl class="exception">
-<dt id="metabase_tools.exceptions.EmptyDataReceived">
-<em class="property">exception </em><code class="sig-prename descclassname">metabase_tools.exceptions.</code><code class="sig-name descname">EmptyDataReceived</code><a class="headerlink" href="#metabase_tools.exceptions.EmptyDataReceived" title="Permalink to this definition">¶</a></dt>
+<dl class="py exception">
+<dt class="sig sig-object py" id="metabase_tools.exceptions.EmptyDataReceived">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">EmptyDataReceived</span></span><a class="headerlink" href="#metabase_tools.exceptions.EmptyDataReceived" title="Permalink to this definition">¶</a></dt>
 <dd><p>Response received but it contained no data</p>
 </dd></dl>
-<dl class="exception">
-<dt id="metabase_tools.exceptions.InvalidDataReceived">
-<em class="property">exception </em><code class="sig-prename descclassname">metabase_tools.exceptions.</code><code class="sig-name descname">InvalidDataReceived</code><a class="headerlink" href="#metabase_tools.exceptions.InvalidDataReceived" title="Permalink to this definition">¶</a></dt>
+<dl class="py exception">
+<dt class="sig sig-object py" id="metabase_tools.exceptions.InvalidDataReceived">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidDataReceived</span></span><a class="headerlink" href="#metabase_tools.exceptions.InvalidDataReceived" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data received but it could not be decoded</p>
 </dd></dl>
-<dl class="exception">
-<dt id="metabase_tools.exceptions.InvalidParameters">
-<em class="property">exception </em><code class="sig-prename descclassname">metabase_tools.exceptions.</code><code class="sig-name descname">InvalidParameters</code><a class="headerlink" href="#metabase_tools.exceptions.InvalidParameters" title="Permalink to this definition">¶</a></dt>
+<dl class="py exception">
+<dt class="sig sig-object py" id="metabase_tools.exceptions.InvalidParameters">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidParameters</span></span><a class="headerlink" href="#metabase_tools.exceptions.InvalidParameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Invalid parameters supplied to API</p>
 </dd></dl>
-<dl class="exception">
-<dt id="metabase_tools.exceptions.ItemInPersonalCollection">
-<em class="property">exception </em><code class="sig-prename descclassname">metabase_tools.exceptions.</code><code class="sig-name descname">ItemInPersonalCollection</code><a class="headerlink" href="#metabase_tools.exceptions.ItemInPersonalCollection" title="Permalink to this definition">¶</a></dt>
+<dl class="py exception">
+<dt class="sig sig-object py" id="metabase_tools.exceptions.ItemInPersonalCollection">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">ItemInPersonalCollection</span></span><a class="headerlink" href="#metabase_tools.exceptions.ItemInPersonalCollection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Requested item is in a personal collection</p>
 </dd></dl>
-<dl class="exception">
-<dt id="metabase_tools.exceptions.ItemNotFound">
-<em class="property">exception </em><code class="sig-prename descclassname">metabase_tools.exceptions.</code><code class="sig-name descname">ItemNotFound</code><a class="headerlink" href="#metabase_tools.exceptions.ItemNotFound" title="Permalink to this definition">¶</a></dt>
+<dl class="py exception">
+<dt class="sig sig-object py" id="metabase_tools.exceptions.ItemNotFound">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">ItemNotFound</span></span><a class="headerlink" href="#metabase_tools.exceptions.ItemNotFound" title="Permalink to this definition">¶</a></dt>
 <dd><p>Item was not found it the listed location</p>
 </dd></dl>
-<dl class="exception">
-<dt id="metabase_tools.exceptions.MetabaseApiException">
-<em class="property">exception </em><code class="sig-prename descclassname">metabase_tools.exceptions.</code><code class="sig-name descname">MetabaseApiException</code><a class="headerlink" href="#metabase_tools.exceptions.MetabaseApiException" title="Permalink to this definition">¶</a></dt>
+<dl class="py exception">
+<dt class="sig sig-object py" id="metabase_tools.exceptions.MetabaseApiException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">MetabaseApiException</span></span><a class="headerlink" href="#metabase_tools.exceptions.MetabaseApiException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base exception for other exceptions included in this package</p>
 </dd></dl>
-<dl class="exception">
-<dt id="metabase_tools.exceptions.NoUpdateProvided">
-<em class="property">exception </em><code class="sig-prename descclassname">metabase_tools.exceptions.</code><code class="sig-name descname">NoUpdateProvided</code><a class="headerlink" href="#metabase_tools.exceptions.NoUpdateProvided" title="Permalink to this definition">¶</a></dt>
+<dl class="py exception">
+<dt class="sig sig-object py" id="metabase_tools.exceptions.NoUpdateProvided">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">NoUpdateProvided</span></span><a class="headerlink" href="#metabase_tools.exceptions.NoUpdateProvided" title="Permalink to this definition">¶</a></dt>
 <dd><p>An update was requested but no change was provided</p>
 </dd></dl>
-<dl class="exception">
-<dt id="metabase_tools.exceptions.RequestFailure">
-<em class="property">exception </em><code class="sig-prename descclassname">metabase_tools.exceptions.</code><code class="sig-name descname">RequestFailure</code><a class="headerlink" href="#metabase_tools.exceptions.RequestFailure" title="Permalink to this definition">¶</a></dt>
+<dl class="py exception">
+<dt class="sig sig-object py" id="metabase_tools.exceptions.RequestFailure">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">RequestFailure</span></span><a class="headerlink" href="#metabase_tools.exceptions.RequestFailure" title="Permalink to this definition">¶</a></dt>
 <dd><p>HTTP error encountered during request</p>
 </dd></dl>
-
+</section>
 
 
           </article>
@@ -280,7 +282,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 2.4.4.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>
