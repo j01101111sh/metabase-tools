@@ -1,3 +1,7 @@
+"""
+Rest adapter for the Metabase API
+"""
+
 import logging
 from json import JSONDecodeError
 from pathlib import Path
@@ -11,10 +15,11 @@ from metabase_tools.exceptions import (
     InvalidDataReceived,
     RequestFailure,
 )
-from metabase_tools.models.result import Result
 
 
 class MetabaseApi:
+    """Metabase API adapter"""
+
     def __init__(
         self,
         metabase_url: str,
@@ -27,8 +32,8 @@ class MetabaseApi:
         credentials = credentials or {}
         token_path = Path(token_path)
         try:
-            with open(token_path, "r") as f:
-                credentials["token"] = f.read()
+            with open(token_path, "r", encoding="utf-8") as file:
+                credentials["token"] = file.read()
         except FileNotFoundError:
             pass
 
@@ -76,10 +81,18 @@ class MetabaseApi:
             )
 
         if cache_token:
-            self.save_token(file=token_path)
+            self.save_token(save_path=token_path)
 
     def _authenticate(self, credentials: dict) -> None:
-        """Private method for authenticating a session with the API"""
+        """Private method for authenticating a session with the API
+
+        Args:
+            credentials (dict): Username and password
+
+        Raises:
+            RequestFailure: HTTP error during authentication
+            AuthenticationFailure: API responded with failure code
+        """
         self._logger.debug("Starting authentication - RestAdapter member")
         try:
             post_request = self._session.post(
@@ -106,7 +119,22 @@ class MetabaseApi:
             )
 
     def get_token(self) -> str:
+        """Get the token being used in the adapter
+
+        Returns:
+            str: Token
+        """
         return str(self._session.headers.get("X-Metabase-Session"))
+
+    def save_token(self, save_path: Path | str):
+        """Writes active token to the specified file
+
+        Args:
+            save_path (Path | str): Name of file to write
+        """
+        token = self.get_token()
+        with open(save_path, "w", encoding="utf-8") as file:
+            file.write(token)
 
     def _make_request(
         self,
@@ -116,13 +144,18 @@ class MetabaseApi:
         json: Optional[dict] = None,
     ) -> Response:
         """Perform an HTTP request, catching and re-raising any exceptions
+
         Args:
-            method (str): GET or POST
+            method (str): GET or POST or DELETE or PUT
             url (str): URL endpoint
-            params (dict): Endpoint parameters
-            json (dict): Data payload
+            params (dict, optional): Endpoint parameters
+            json (dict, optional): Data payload
+
+        Raises:
+            RequestFailure: Request failed
+
         Returns:
-            request result
+            Response: Response from the API
         """
         log_line_pre = f"{method=}, {url=}, {params=}"
         try:
@@ -134,48 +167,36 @@ class MetabaseApi:
             self._logger.error(str(error_raised))
             raise RequestFailure("Request failed") from error_raised
 
-    def do(
+    def generic_request(
         self,
         http_method: str,
         endpoint: str,
         params: Optional[dict] = None,
         json: Optional[dict] = None,
-    ) -> Result:
-        """Private method for get and post methods
+    ) -> list[dict] | dict:
+        """Method for dispatching HTTP requests
+
         Args:
             http_method (str): GET or POST or PUT or DELETE
             endpoint (str): URL endpoint
-            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
-            data (Dict, optional): Data payload. Defaults to None.
-        Returns:
-            Result: a Result object
-        """
-        full_api_url = self.metabase_url + endpoint
+            params (dict, optional): Endpoint parameters
+            json (dict, optional): Data payload
 
+        Raises:
+            InvalidDataReceived: Unable to decode response from API
+            AuthenticationFailure: Auth failure received from API
+            RequestFailure: Other failure during request
+
+        Returns:
+            list[dict] | dict: Response from API
+        """
         log_line_post = "success=%s, status_code=%s, message=%s"
         response = self._make_request(
-            method=http_method, url=full_api_url, params=params, json=json
+            method=http_method,
+            url=self.metabase_url + endpoint,
+            params=params,
+            json=json,
         )
-        # Deserialize JSON output to Python object, or return failed Result on exception
-        try:
-            data = response.json()
-        except (ValueError, JSONDecodeError) as error_raised:
-            if response.status_code == 204:
-                data = None
-            elif response.status_code == 401:
-                self._logger.error(
-                    log_line_post, False, response.status_code, error_raised
-                )
-                raise AuthenticationFailure(
-                    f"{response.status_code} - {response.reason}"
-                ) from error_raised
-            else:
-                self._logger.error(
-                    log_line_post, False, response.status_code, error_raised
-                )
-                raise InvalidDataReceived(
-                    f"{response.status_code} - {response.reason}"
-                ) from error_raised
 
         # If status_code in 200-299 range, return Result, else raise exception
         is_success = 299 >= response.status_code >= 200
@@ -183,67 +204,76 @@ class MetabaseApi:
             self._logger.debug(
                 log_line_post, is_success, response.status_code, response.reason
             )
-            return Result(
-                status_code=response.status_code, message=response.reason, data=data
+            try:
+                return response.json()
+            except JSONDecodeError as error_raised:
+                raise InvalidDataReceived from error_raised
+        elif response.status_code == 401:
+            self._logger.error(
+                log_line_post, False, response.status_code, response.text
             )
+            raise AuthenticationFailure(f"{response.status_code} - {response.reason}")
 
-        if isinstance(data, dict) and "errors" in data:
-            error_line = (
-                f'{response.status_code} - {response.reason} - {data["errors"]}'
-            )
-            self._logger.error(error_line)
-        else:
-            error_line = f"{response.status_code} - {response.reason}"
+        error_line = f"{response.status_code} - {response.reason}"
         self._logger.error(log_line_post)
         raise RequestFailure(error_line)
 
-    def save_token(self, file: Path | str):
-        token = self.get_token()
-        with open(file, "w") as f:
-            f.write(token)
-
-    def get(self, endpoint: str, params: Optional[dict] = None) -> Result:
+    def get(self, endpoint: str, params: Optional[dict] = None) -> list[dict] | dict:
         """HTTP GET request
+
         Args:
             endpoint (str): URL endpoint
-            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
+            ep_params (dict, optional): Endpoint parameters
+
         Returns:
-            Result: a Result object
+            list[dict] | dict: Response from API
         """
-        return self.do(http_method="GET", endpoint=endpoint, params=params)
+        return self.generic_request(http_method="GET", endpoint=endpoint, params=params)
 
     def post(
         self, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None
-    ) -> Result:
+    ) -> list[dict] | dict:
         """HTTP POST request
-        Args:
-            endpoint (str): URL endpoint
-            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
-            json (Dict, optional): Data payload. Defaults to None.
-        Returns:
-            Result: a Result object
-        """
-        return self.do(http_method="POST", endpoint=endpoint, params=params, json=json)
 
-    def delete(self, endpoint: str, params: Optional[dict] = None) -> Result:
-        """HTTP DELETE request
         Args:
             endpoint (str): URL endpoint
-            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
+            params (dict, optional): Endpoint parameters
+            json (dict, optional): Data payload
+
         Returns:
-            Result: a Result object
+            list[dict] | dict: Response from API
         """
-        return self.do(http_method="DELETE", endpoint=endpoint, params=params)
+        return self.generic_request(
+            http_method="POST", endpoint=endpoint, params=params, json=json
+        )
+
+    def delete(self, endpoint: str, params: Optional[dict] = None) -> list[dict] | dict:
+        """HTTP DELETE request
+
+        Args:
+            endpoint (str): URL endpoint
+            params (dict, optional): Endpoint parameters
+
+        Returns:
+            list[dict] | dict: Response from API
+        """
+        return self.generic_request(
+            http_method="DELETE", endpoint=endpoint, params=params
+        )
 
     def put(
         self, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None
-    ) -> Result:
+    ) -> list[dict] | dict:
         """HTTP PUT request
+
         Args:
             endpoint (str): URL endpoint
-            ep_params (Dict, optional): Endpoint parameters. Defaults to None.
-            json (Dict, optional): Data payload. Defaults to None.
+            ep_params (dict, optional): Endpoint parameters
+            json (dict, optional): Data payload
+
         Returns:
-            Result: a Result object
+            list[dict] | dict: Response from API
         """
-        return self.do(http_method="PUT", endpoint=endpoint, params=params, json=json)
+        return self.generic_request(
+            http_method="PUT", endpoint=endpoint, params=params, json=json
+        )

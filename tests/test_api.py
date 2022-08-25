@@ -54,10 +54,9 @@ def test_auth_token_success(host, token, email):
     api = MetabaseApi(
         metabase_url=host, credentials=token, token_path="./missing.token"
     )
-    test_response = api.do(http_method="GET", endpoint="/user/current")
-    assert test_response.status_code == 200
-    if isinstance(test_response.data, dict):
-        assert test_response.data.get("email") == email
+    test_response = api.get(endpoint="/user/current")
+    if isinstance(test_response, dict):
+        assert test_response.get("email") == email
     else:
         assert_never(NoReturn)
 
@@ -68,7 +67,7 @@ def test_auth_token_fail(host):
         api = MetabaseApi(
             metabase_url=host, credentials=bad_credentials, token_path="./missing.token"
         )
-        test_data = api.do(http_method="GET", endpoint="/user/current")
+        test_data = api.get(endpoint="/user/current")
 
 
 def test_auth_token_file_success(host, token):

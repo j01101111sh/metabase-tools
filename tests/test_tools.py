@@ -39,7 +39,8 @@ def test_auth(tools: MetabaseTools):
 
 
 def test_download_native_queries(tools: MetabaseTools):
-    file = tools.download_native_queries(root_folder="./dev/data")
+    folder_timestamp = datetime.now().strftime("%y%m%dT%H%M%S")
+    file = tools.download_native_queries(root_folder=f"./temp/data{folder_timestamp}")
     size = file.stat().st_size
     create_time = file.stat().st_ctime
     now = datetime.now().timestamp()
@@ -53,7 +54,7 @@ def test_upload_native_queries(tools: MetabaseTools):
     with open(test_card_path, "r", newline="", encoding="utf-8") as file:
         current = file.read()
     with open(test_card_path, "a", newline="", encoding="utf-8") as file:
-        file.write("\n-- " + "".join(choice(ascii_lowercase) for x in range(6)))
+        file.write("\n-- " + "".join(choice(ascii_lowercase) for _ in range(6)))
     results = tools.upload_native_queries(
         mapping_path=mapping_path, dry_run=False, stop_on_error=True
     )

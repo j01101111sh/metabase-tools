@@ -1,4 +1,7 @@
-from typing import Optional
+"""Classes related to collections endpoints
+"""
+
+from typing import ClassVar, Optional
 
 from typing_extensions import Self
 
@@ -8,6 +11,10 @@ from metabase_tools.models.generic import MetabaseGeneric
 
 
 class Collection(MetabaseGeneric):
+    """Collection object class with related methods"""
+
+    BASE_EP: ClassVar[str] = "/collection"
+
     id: int | str  # root is a valid id for a collection
     description: Optional[str]
     archived: Optional[bool]
@@ -19,34 +26,65 @@ class Collection(MetabaseGeneric):
     effective_location: Optional[str]
     effective_ancestors: Optional[list[dict]]
     can_write: Optional[bool]
+    parent_id: Optional[int]
 
     @classmethod
     def get(
         cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
     ) -> list[Self]:
-        return super(Collection, cls).get(
-            adapter=adapter, endpoint="/collection", targets=targets
-        )
+        """Fetch a list of collections using the provided MetabaseAPI
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int], optional): Collection IDs to fetch or returns all
+
+        Returns:
+            list[Collection]: List of collections requested
+        """
+        return super(Collection, cls).get(adapter=adapter, targets=targets)
 
     @classmethod
     def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        return super(Collection, cls).post(
-            adapter=adapter, endpoint="/collection", payloads=payloads
-        )
+        """Create new collections
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            payloads (list[dict]): Details of collections to create
+
+        Returns:
+            list[Collection]: List of collections created
+        """
+        return super(Collection, cls).post(adapter=adapter, payloads=payloads)
 
     @classmethod
     def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        return super(Collection, cls).put(
-            adapter=adapter, endpoint="/collection/{id}", payloads=payloads
-        )
+        """Update existing collections
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            payloads (list[dict]): Details of collections to update
+
+        Returns:
+            list[Collection]: List of updated collections
+        """
+        return super(Collection, cls).put(adapter=adapter, payloads=payloads)
 
     @classmethod
     def archive(
         cls, adapter: MetabaseApi, targets: list[int], unarchive=False
     ) -> list[Self]:
+        """Archive collections
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): Collection IDs to archive
+            unarchive (bool, optional): Unarchive targets. Defaults to False.
+
+        Returns:
+            list[Collection]: List of archived collections
+        """
         return super(Collection, cls).archive(
             adapter=adapter,
-            endpoint="/collection/{id}",
             targets=targets,
             unarchive=unarchive,
         )
@@ -58,6 +96,16 @@ class Collection(MetabaseGeneric):
         search_params: list[dict],
         search_list: Optional[list] = None,
     ) -> list[Self]:
+        """Search for collection based on provided criteria
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            search_params (list[dict]): Search criteria; 1 result per
+            search_list (list, optional): Search existing list or pulls from API
+
+        Returns:
+            list[Collection]: List of collections from results
+        """
         return super(Collection, cls).search(
             adapter=adapter,
             search_params=search_params,
@@ -66,13 +114,36 @@ class Collection(MetabaseGeneric):
 
     @classmethod
     def get_tree(cls, adapter: MetabaseApi) -> list[dict]:
+        """Collection tree
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+
+        Raises:
+            EmptyDataReceived: No data returned from API
+
+        Returns:
+            list[dict]: Representation of collection tree
+        """
         response = adapter.get(endpoint="/collection/tree")
-        if response.data:
-            return response.data
+        if isinstance(response, list) and all(
+            isinstance(record, dict) for record in response
+        ):
+            return response
         raise EmptyDataReceived
 
     @staticmethod
-    def flatten_tree(parent: dict, path: str = "/") -> list[dict]:
+    def _flatten_tree(parent: dict, path: str = "/") -> list[dict]:
+        """Recursive function to flatten collection tree to show the full path for all\
+             collections
+
+        Args:
+            parent (dict): Parent collection
+            path (str, optional): Path to parent collection. Defaults to "/".
+
+        Returns:
+            list[dict]: Flattened list
+        """
         children = []
         for child in parent["children"]:
             children.append(
@@ -85,7 +156,7 @@ class Collection(MetabaseGeneric):
                 }
             )
             if "children" in child and len(child["children"]) > 0:
-                grandchildren = Collection.flatten_tree(
+                grandchildren = Collection._flatten_tree(
                     child, f'{path}/{parent["name"]}'.replace("//", "/")
                 )
                 if isinstance(grandchildren, list):
@@ -96,6 +167,14 @@ class Collection(MetabaseGeneric):
 
     @classmethod
     def get_flat_list(cls, adapter: MetabaseApi) -> list[dict]:
+        """Flattens collection tree so the full path of each collection is shown
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+
+        Returns:
+            list[dict]: Flattened collection tree
+        """
         tree = cls.get_tree(adapter=adapter)
         folders = []
         for root_folder in tree:
@@ -108,7 +187,7 @@ class Collection(MetabaseGeneric):
                     "path": f'/{root_folder["name"]}',
                 }
             )
-            folders.extend(Collection.flatten_tree(root_folder))
+            folders.extend(Collection._flatten_tree(root_folder))
         return folders
 
     @classmethod
@@ -119,19 +198,48 @@ class Collection(MetabaseGeneric):
         model_type: Optional[str] = None,
         archived: bool = False,
     ) -> list:
+        """Get the contents of the provided collection
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            collection_id (int): ID of the requested collection
+            model_type (str, optional): Filter to provided model. Defaults to all.
+            archived (bool, optional): Archived objects. Defaults to False.
+
+        Raises:
+            EmptyDataReceived: No results from API
+
+        Returns:
+            list: Contents of collection
+        """
         params = {}
         if archived:
             params["archived"] = archived
         if model_type:
             params["model"] = model_type
-        items = adapter.get(
+
+        response = adapter.get(
             endpoint=f"/collection/{collection_id}/items",
             params=params,
-        ).data
-        if items:
-            return items
+        )
+
+        if isinstance(response, list) and all(
+            isinstance(record, dict) for record in response
+        ):
+            return response
         raise EmptyDataReceived
 
     @classmethod
-    def graph(cls, adapter: MetabaseApi):
-        return adapter.get(endpoint="/collection/graph").data
+    def graph(cls, adapter: MetabaseApi) -> dict:
+        """Graph of collection
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+
+        Returns:
+            dict: graph of collection
+        """
+        result = adapter.get(endpoint="/collection/graph")
+        if isinstance(result, dict):
+            return result
+        raise EmptyDataReceived

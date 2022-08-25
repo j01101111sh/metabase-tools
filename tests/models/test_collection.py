@@ -39,14 +39,12 @@ def new_coll_def():
 
 
 def test_coll_create_one(api: MetabaseApi, new_coll_def: dict):
-    # TODO Add random string to name
     new_coll_objs = Collection.post(adapter=api, payloads=[new_coll_def])
     assert isinstance(new_coll_objs, list)
     assert all(isinstance(coll, Collection) for coll in new_coll_objs)
 
 
 def test_collection_create_many(api: MetabaseApi, new_coll_def: dict):
-    # TODO Add random string to name
     new_colls = [new_coll_def, new_coll_def]
     new_coll_objs = Collection.post(adapter=api, payloads=new_colls)
     assert isinstance(new_coll_objs, list)
@@ -144,4 +142,4 @@ def test_flatten_tree(api: MetabaseApi):
 
 def test_graph(api: MetabaseApi):
     graph = Collection.graph(adapter=api)
-    assert graph
+    assert isinstance(graph, dict)
