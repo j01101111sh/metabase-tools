@@ -1,8 +1,11 @@
+"""Result object for use in the rest adapter
+"""
+
 from typing import Optional
 
 
 class Result:
-    """Result returned from RestAdapter
+    """Result returned from MetabaseApi
     Args:
         status_code (int): Standard HTTP status code
         message (str, optional): Human readable result. Defaults to ''.
