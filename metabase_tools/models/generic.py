@@ -206,8 +206,10 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
 
         Args:
             adapter (MetabaseApi): Connection to Metabase API
-            search_params (list[dict]): List of dicts, each containing search criteria. 1 result returned per dict.
-            search_list (list[Self], optional): Provide to search against an existing list, by default pulls from API
+            search_params (list[dict]): Each dict contains search criteria and returns\
+                 1 result
+            search_list (list[Self], optional): Provide to search against an existing \
+                list, by default pulls from API
 
         Returns:
             list[Self]: List of objects of the relevant type
