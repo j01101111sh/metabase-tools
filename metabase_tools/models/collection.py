@@ -1,4 +1,4 @@
-"""Classes related to card endpoints
+"""Classes related to collections endpoints
 """
 
 from typing import ClassVar, Optional
