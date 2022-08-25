@@ -93,7 +93,7 @@ class Card(MetabaseGeneric):
 
     @classmethod
     def embeddable(cls, adapter: MetabaseApi) -> list[Self]:
-        cards = adapter.get(endpoint=f"/card/embeddable").data
+        cards = adapter.get(endpoint="/card/embeddable").data
         if cards:
             return [cls(**card) for card in cards]
         raise EmptyDataReceived
