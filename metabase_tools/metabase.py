@@ -38,11 +38,7 @@ class MetabaseApi:
             pass
 
         # Validate Metabase URL
-        if metabase_url[-1] == "/":
-            metabase_url = metabase_url[:-1]
-        if metabase_url[-4:] == "/api":
-            metabase_url = metabase_url[:-4]
-        self.metabase_url = f"{metabase_url}/api"
+        self.metabase_url = self._validate_base_url(url=metabase_url)
 
         # Starts session to be reused by the adapter so that the auth token is cached
         self._session = Session()
@@ -82,6 +78,15 @@ class MetabaseApi:
 
         if cache_token:
             self.save_token(save_path=token_path)
+
+    def _validate_base_url(self, url: str) -> str:
+        if url[-1] == "/":
+            url = url[:-1]
+        if url[-4:] == "/api":
+            url = url[:-4]
+        if url[:4] != "http":
+            url = f"http://{url}"
+        return f"{url}/api"
 
     def _authenticate(self, credentials: dict) -> None:
         """Private method for authenticating a session with the API
