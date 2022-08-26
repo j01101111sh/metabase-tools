@@ -39,7 +39,7 @@ def test_auth_credential_success(host, credentials):
     api = MetabaseApi(
         metabase_url=host, credentials=credentials, token_path="./missing.token"
     )
-    assert api.get_token() is not None
+    assert api.test_for_auth()
 
 
 def test_auth_credential_fail(host, email):
@@ -71,10 +71,15 @@ def test_auth_token_fail(host):
 
 
 def test_auth_token_file_success(host, token):
-    api = MetabaseApi(metabase_url=host)
-    assert api.get_token()
+    api = MetabaseApi(metabase_url=host, credentials=token)
+    assert api.test_for_auth()
 
 
 def test_auth_token_file_fail(host):
     with pytest.raises(AuthenticationFailure):
         api = MetabaseApi(metabase_url=host, token_path="./missing.token")
+
+
+def test_auth_without_protocol(host, credentials):
+    api = MetabaseApi(metabase_url=host[7:], credentials=credentials)
+    assert api.test_for_auth()
