@@ -82,3 +82,8 @@ def test_cache_token(host, credentials, result_path, run_id, token):
         cached_token = {"token": file.read()}
     assert cached_token == token
     assert api.test_for_auth()
+
+
+def test_fail_on_no_credentials(host):
+    with pytest.raises(AuthenticationFailure):
+        api = MetabaseApi(metabase_url=host)
