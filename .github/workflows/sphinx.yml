@@ -3,11 +3,11 @@ name: Sphinx build
 on: 
   push:
     branches:
-      main
+      - main
   pull_request:
     branches:
-      main,
-      'v*.*.*-dev'
+      - main,
+      - 'v*.*.*-dev'
 
 jobs:
   build:
