@@ -84,7 +84,7 @@ class MetabaseApi:
 
     def _delete_cached_token(self, token_path: Path):
         if token_path.exists():
-            self._logger.debug("Deleting token file")
+            self._logger.warning("Deleting token file")
             token_path.unlink()
 
     def _auth_with_cached_token(self, token_path: Path):
@@ -94,30 +94,30 @@ class MetabaseApi:
             self._logger.debug("Attempting authentication with token file")
             self._add_token_to_header(token=token)
             authed = self.test_for_auth()
-            self._logger.debug(f"Authenticated with token file: {authed}")
+            self._logger.debug("Authenticated with token file: %s", authed)
             return authed
         except Exception as error_raised:
-            self._logger.debug(
+            self._logger.warning(
                 "Exception encountered during attempt to authenticate with token file:\
                      %s",
                 error_raised,
             )
-            return False
+        return False
 
     def _auth_with_passed_token(self, credentials: dict) -> bool:
         try:
             self._logger.debug("Attempting authentication with token passed")
             self._add_token_to_header(token=credentials["token"])
             authed = self.test_for_auth()
-            self._logger.debug(f"Authenticated with token passed: {authed}")
+            self._logger.debug("Authenticated with token passed: %s", authed)
             return authed
         except Exception as error_raised:
-            self._logger.debug(
+            self._logger.warning(
                 "Exception encountered during attempt to authenticate with token \
                     passed: %s",
                 error_raised,
             )
-            return False
+        return False
 
     def _auth_with_login(self, credentials: dict) -> bool:
         """Private method for authenticating a session with the API
@@ -132,15 +132,15 @@ class MetabaseApi:
             )
             self._add_token_to_header(token=response.json()["id"])
             authed = self.test_for_auth()
-            self._logger.debug(f"Authenticated with login: {authed}")
+            self._logger.debug("Authenticated with login: %s", authed)
             return authed
         except Exception as error_raised:
-            self._logger.debug(
+            self._logger.warning(
                 "Exception encountered during attempt to authenticate with login \
                     passed: %s",
                 error_raised,
             )
-            return False
+        return False
 
     def test_for_auth(self) -> bool:
         """Validates successful authentication by attempting to retrieve data about \
