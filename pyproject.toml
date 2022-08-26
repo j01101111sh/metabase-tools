@@ -30,3 +30,13 @@ profile = 'black'
 
 [tool.pylint.format]
 max-line-length = "88"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcName)s - %(name)s\n\t%(message)s"
+
+log_file_level = "DEBUG"
+log_file_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcName)s - %(name)s\n\t%(message)s"
