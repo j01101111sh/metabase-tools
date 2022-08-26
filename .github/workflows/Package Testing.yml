@@ -1,4 +1,4 @@
-name: run tests
+name: Package testing
 env:
   METABASE_DETAILS: ${{ secrets.METABASE_DETAILS }}
 on: [pull_request]
