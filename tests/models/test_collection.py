@@ -1,32 +1,6 @@
-from datetime import datetime
-
 import pytest
 
 from metabase_tools import Collection, MetabaseApi
-
-
-@pytest.fixture(scope="module")
-def api(host, credentials):
-    return MetabaseApi(
-        metabase_url=host,
-        credentials=credentials,
-        cache_token=True,
-        token_path="./metabase.token",
-    )
-
-
-@pytest.fixture(scope="module")
-def credentials():
-    from tests.metabase_details import CREDENTIALS
-
-    return CREDENTIALS
-
-
-@pytest.fixture(scope="module")
-def host():
-    from tests.metabase_details import HOST
-
-    return HOST
 
 
 @pytest.fixture(scope="module")
@@ -51,25 +25,23 @@ def test_collection_create_many(api: MetabaseApi, new_coll_def: dict):
     assert all(isinstance(coll, Collection) for coll in new_coll_objs)
 
 
-def test_collection_update_one(api: MetabaseApi):
-    timestamp = datetime.now().isoformat(timespec="seconds")
+def test_collection_update_one(api: MetabaseApi, run_id: str):
     coll_change = [
-        {"id": 3, "description": f"Updated {timestamp}"},
-        {"id": 4, "description": f"Updated {timestamp}"},
+        {"id": 3, "description": f"Updated {run_id}"},
+        {"id": 4, "description": f"Updated {run_id}"},
     ]
     change_result = Collection.update(adapter=api, payloads=coll_change)
     assert isinstance(change_result, list)
     assert all(isinstance(coll, Collection) for coll in change_result)
-    assert all(coll.description == f"Updated {timestamp}" for coll in change_result)
+    assert all(coll.description == f"Updated {run_id}" for coll in change_result)
 
 
-def test_collection_update_many(api: MetabaseApi):
-    timestamp = datetime.now().isoformat(timespec="seconds")
-    coll_changes = {"id": 2, "description": f"Updated {timestamp}"}
+def test_collection_update_many(api: MetabaseApi, run_id):
+    coll_changes = {"id": 2, "description": f"Updated {run_id}"}
     change_results = Collection.update(adapter=api, payloads=[coll_changes])
     assert isinstance(change_results, list)
     assert all(isinstance(coll, Collection) for coll in change_results)
-    assert all(coll.description == f"Updated {timestamp}" for coll in change_results)
+    assert all(coll.description == f"Updated {run_id}" for coll in change_results)
 
 
 def test_collection_archive_one(api: MetabaseApi):
@@ -77,7 +49,7 @@ def test_collection_archive_one(api: MetabaseApi):
     change_result = Collection.archive(adapter=api, targets=[coll_to_archive])
     assert isinstance(change_result, list)
     assert all(isinstance(coll, Collection) for coll in change_result)
-    assert all(coll.archived == True for coll in change_result)
+    assert all(coll.archived is True for coll in change_result)
 
 
 def test_collection_archive_many(api: MetabaseApi):
@@ -85,7 +57,7 @@ def test_collection_archive_many(api: MetabaseApi):
     change_results = Collection.archive(adapter=api, targets=colls_to_archive)
     assert isinstance(change_results, list)
     assert all(isinstance(coll, Collection) for coll in change_results)
-    assert all(coll.archived == True for coll in change_results)
+    assert all(coll.archived is True for coll in change_results)
 
 
 def test_collection_unarchive_one(api: MetabaseApi):
@@ -95,7 +67,7 @@ def test_collection_unarchive_one(api: MetabaseApi):
     )
     assert isinstance(change_result, list)
     assert all(isinstance(coll, Collection) for coll in change_result)
-    assert all(coll.archived == False for coll in change_result)
+    assert all(coll.archived is False for coll in change_result)
 
 
 def test_collection_unarchive_many(api: MetabaseApi):
@@ -105,7 +77,7 @@ def test_collection_unarchive_many(api: MetabaseApi):
     )
     assert isinstance(change_results, list)
     assert all(isinstance(coll, Collection) for coll in change_results)
-    assert all(coll.archived == False for coll in change_results)
+    assert all(coll.archived is False for coll in change_results)
 
 
 def test_collection_get_one(api: MetabaseApi):

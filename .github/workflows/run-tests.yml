@@ -41,4 +41,9 @@ jobs:
           max_attempts: 3
           command: poetry run python ./tests/setup_metabase.py
       - name: Test with pytest
-        run: poetry run pytest
+        run: poetry run pytest --cov=metabase_tools --cov-report=xml
+      - name: Upload coverage to Codecov
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -t ${CODECOV_TOKEN}

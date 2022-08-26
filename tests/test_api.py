@@ -8,31 +8,16 @@ from metabase_tools.exceptions import AuthenticationFailure
 
 
 @pytest.fixture
-def credentials():
-    from tests.metabase_details import CREDENTIALS
-
-    return CREDENTIALS
-
-
-@pytest.fixture
-def host():
-    from tests.metabase_details import HOST
-
-    return HOST
-
-
-@pytest.fixture
-def email():
-    from tests.metabase_details import EMAIL
-
-    return EMAIL
-
-
-@pytest.fixture
-def token(host, credentials):
-    api = MetabaseApi(metabase_url=host, credentials=credentials, cache_token=True)
-    with open("./metabase.token", "r") as f:
-        return {"token": f.read()}
+def token(host, credentials, result_path, run_id):
+    token_path = f"{result_path}/{run_id}.token"
+    api = MetabaseApi(
+        metabase_url=host,
+        credentials=credentials,
+        cache_token=True,
+        token_path=token_path,
+    )
+    with open(token_path, "r", encoding="utf-8") as file:
+        return {"token": file.read()}
 
 
 def test_auth_credential_success(host, credentials):
@@ -82,4 +67,18 @@ def test_auth_token_file_fail(host):
 
 def test_auth_without_protocol(host, credentials):
     api = MetabaseApi(metabase_url=host[7:], credentials=credentials)
+    assert api.test_for_auth()
+
+
+def test_cache_token(host, credentials, result_path, run_id, token):
+    token_path = f"{result_path}/{run_id}.token"
+    api = MetabaseApi(
+        metabase_url=host,
+        credentials=credentials,
+        cache_token=True,
+        token_path=token_path,
+    )
+    with open(token_path, "r", encoding="utf-8") as file:
+        cached_token = {"token": file.read()}
+    assert cached_token == token
     assert api.test_for_auth()

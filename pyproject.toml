@@ -2,7 +2,7 @@
 name = "metabase-tools"
 version = "0.5.0"
 description = "Unofficial API wrapper for Metabase plus additional helper tools"
-authors = ["Josh Odell <josh@notablefi.com>"]
+authors = ["Josh Odell <j01101111sh@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -12,6 +12,7 @@ typing-extensions = "^4.3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
+pytest-cov = "^3.0.0"
 pylint = "^2.14.5"
 black = "^22.6.0"
 isort = "^5.10.1"
@@ -30,3 +31,15 @@ profile = 'black'
 
 [tool.pylint.format]
 max-line-length = "88"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "*.py"
+python_functions = "test_*"
+
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcName)s - %(name)s\n\t%(message)s"
+
+log_file_level = "DEBUG"
+log_file_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcName)s - %(name)s\n\t%(message)s"

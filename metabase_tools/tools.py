@@ -1,7 +1,6 @@
 """
 MetabaseTools extends MetabaseApi with additional complex functions
 """
-from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
 from typing import Optional
@@ -42,9 +41,8 @@ class MetabaseTools(MetabaseApi):
             Path: Path to save file
         """
         # Determine save path
-        timestamp = datetime.now().strftime("%y%m%dT%H%M%S")
         root_folder = Path(root_folder)  # Convert root folder to a path object
-        save_file = Path(save_file or f"mapping_{timestamp}.json")
+        save_file = Path(save_file or "mapping.json")
 
         # Download list of cards from Metabase API and filter to only native queries
         cards = [
