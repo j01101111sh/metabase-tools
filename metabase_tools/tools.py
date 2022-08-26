@@ -218,7 +218,7 @@ class MetabaseTools(MetabaseApi):
         if not dry_run:
             results = []
             if len(changes["updates"]) > 0:
-                update_results = Card.put(adapter=self, payloads=changes["updates"])
+                update_results = Card.update(adapter=self, payloads=changes["updates"])
                 if isinstance(update_results, list):
                     for result in update_results:
                         results.append(
@@ -226,7 +226,7 @@ class MetabaseTools(MetabaseApi):
                         )
 
             if len(changes["creates"]) > 0:
-                create_results = Card.post(adapter=self, payloads=changes["creates"])
+                create_results = Card.create(adapter=self, payloads=changes["creates"])
                 if isinstance(create_results, list):
                     for result in create_results:
                         results.append(

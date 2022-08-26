@@ -7,10 +7,10 @@ from typing import ClassVar, Optional
 from typing_extensions import Self
 
 from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.generic import MetabaseGeneric
+from metabase_tools.models.generic import GenericTemplateWithoutArchive
 
 
-class Database(MetabaseGeneric):
+class Database(GenericTemplateWithoutArchive):
     """Database object class with related methods"""
 
     BASE_EP: ClassVar[str] = "/database"
@@ -51,7 +51,7 @@ class Database(MetabaseGeneric):
         return super(Database, cls).get(adapter=adapter, targets=targets)
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Create new databases
 
         Args:
@@ -61,10 +61,10 @@ class Database(MetabaseGeneric):
         Returns:
             list[Database]: List of databases created
         """
-        return super(Database, cls).post(adapter=adapter, payloads=payloads)
+        return super(Database, cls).create(adapter=adapter, payloads=payloads)
 
     @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Update existing databases
 
         Args:
@@ -74,7 +74,7 @@ class Database(MetabaseGeneric):
         Returns:
             list[Database]: List of updated databases
         """
-        return super(Database, cls).put(adapter=adapter, payloads=payloads)
+        return super(Database, cls).update(adapter=adapter, payloads=payloads)
 
     @classmethod
     def search(

@@ -7,10 +7,10 @@ from typing_extensions import Self
 
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.generic import MetabaseGeneric, MetabaseGenericArchive
+from metabase_tools.models.generic import GenericTemplateWithArchive
 
 
-class Collection(MetabaseGeneric, MetabaseGenericArchive):
+class Collection(GenericTemplateWithArchive):
     """Collection object class with related methods"""
 
     BASE_EP: ClassVar[str] = "/collection"
@@ -44,7 +44,7 @@ class Collection(MetabaseGeneric, MetabaseGenericArchive):
         return super(Collection, cls).get(adapter=adapter, targets=targets)
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Create new collections
 
         Args:
@@ -54,10 +54,10 @@ class Collection(MetabaseGeneric, MetabaseGenericArchive):
         Returns:
             list[Collection]: List of collections created
         """
-        return super(Collection, cls).post(adapter=adapter, payloads=payloads)
+        return super(Collection, cls).create(adapter=adapter, payloads=payloads)
 
     @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Update existing collections
 
         Args:
@@ -67,7 +67,7 @@ class Collection(MetabaseGeneric, MetabaseGenericArchive):
         Returns:
             list[Collection]: List of updated collections
         """
-        return super(Collection, cls).put(adapter=adapter, payloads=payloads)
+        return super(Collection, cls).update(adapter=adapter, payloads=payloads)
 
     @classmethod
     def archive(

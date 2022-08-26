@@ -1,5 +1,5 @@
 """
-    MetabaseGeneric class to provide generic methods for objects following this pattern
+    Generic classes for Metabase
 """
 
 from typing import ClassVar, Optional
@@ -11,7 +11,9 @@ from metabase_tools.exceptions import EmptyDataReceived, InvalidParameters
 from metabase_tools.metabase import MetabaseApi
 
 
-class MetabaseGenericBase(BaseModel, extra="forbid"):
+class MetabaseGenericObject(BaseModel, extra="forbid"):
+    """Base class for all Metabase objects. Provides generic fields and methods."""
+
     BASE_EP: ClassVar[str]
 
     id: int
@@ -72,8 +74,8 @@ class MetabaseGenericBase(BaseModel, extra="forbid"):
         raise EmptyDataReceived("No data returned")
 
 
-class MetabaseGeneric(MetabaseGenericBase):
-    """Provides generic methods for objects following generic pattern"""
+class GenericGet(MetabaseGenericObject):
+    """Generic class for objects with get support in the API"""
 
     @classmethod
     def get(
@@ -116,58 +118,6 @@ class MetabaseGeneric(MetabaseGenericBase):
         raise EmptyDataReceived("No data returned")
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        """Generic method for creating a list of objects
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            payloads (list[dict]): List of json payloads
-
-        Raises:
-            InvalidParameters: Targets and jsons are both None
-
-        Returns:
-            list[Self]: List of objects of the relevant type
-        """
-        if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
-            # If a list of targets is provided, return a list of objects
-            results = cls._request_list(
-                http_method="POST",
-                adapter=adapter,
-                endpoint=cls.BASE_EP,
-                source=payloads,
-            )
-            return [cls(**result) for result in results]
-        # If something other than dict or list[dict], raise error
-        raise InvalidParameters("Invalid target(s)")
-
-    @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        """Generic method for updating a list of objects
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            payloads (list[dict]): List of json payloads
-
-        Raises:
-            InvalidParameters: Targets and jsons are both None
-
-        Returns:
-            list[Self]: List of objects of the relevant type
-        """
-        if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
-            # If a list of targets is provided, return a list of objects
-            results = cls._request_list(
-                http_method="PUT",
-                adapter=adapter,
-                endpoint=cls.BASE_EP + "/{id}",
-                source=payloads,
-            )
-            return [cls(**result) for result in results]
-        # If something other than dict or list[dict], raise error
-        raise InvalidParameters("Invalid target(s)")
-
-    @classmethod
     def search(
         cls,
         adapter: MetabaseApi,
@@ -196,6 +146,70 @@ class MetabaseGeneric(MetabaseGenericBase):
                         results.append(obj)
         return results
 
+
+class GenericCreate(MetabaseGenericObject):
+    """Generic class for objects with create support in the API"""
+
+    @classmethod
+    def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+        """Generic method for creating a list of objects
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            payloads (list[dict]): List of json payloads
+
+        Raises:
+            InvalidParameters: Targets and jsons are both None
+
+        Returns:
+            list[Self]: List of objects of the relevant type
+        """
+        if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
+            # If a list of targets is provided, return a list of objects
+            results = cls._request_list(
+                http_method="POST",
+                adapter=adapter,
+                endpoint=cls.BASE_EP,
+                source=payloads,
+            )
+            return [cls(**result) for result in results]
+        # If something other than dict or list[dict], raise error
+        raise InvalidParameters("Invalid target(s)")
+
+
+class GenericUpdate(MetabaseGenericObject):
+    """Generic class for objects with update support in the API"""
+
+    @classmethod
+    def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+        """Generic method for updating a list of objects
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            payloads (list[dict]): List of json payloads
+
+        Raises:
+            InvalidParameters: Targets and jsons are both None
+
+        Returns:
+            list[Self]: List of objects of the relevant type
+        """
+        if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
+            # If a list of targets is provided, return a list of objects
+            results = cls._request_list(
+                http_method="PUT",
+                adapter=adapter,
+                endpoint=cls.BASE_EP + "/{id}",
+                source=payloads,
+            )
+            return [cls(**result) for result in results]
+        # If something other than dict or list[dict], raise error
+        raise InvalidParameters("Invalid target(s)")
+
+
+class GenericDelete(MetabaseGenericObject):
+    """Generic class for objects with delete support in the API"""
+
     @classmethod
     def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
         """Method to delete a list of objects
@@ -221,7 +235,9 @@ class MetabaseGeneric(MetabaseGenericBase):
         raise InvalidParameters("Invalid set of targets")
 
 
-class MetabaseGenericArchive(MetabaseGenericBase):
+class GenericArchive(MetabaseGenericObject):
+    """Generic class for objects with archive support in the API"""
+
     @classmethod
     def archive(
         cls,
@@ -253,3 +269,15 @@ class MetabaseGenericArchive(MetabaseGenericBase):
             )
             return [cls(**result) for result in results]
         raise InvalidParameters("Invalid set of targets")
+
+
+class GenericTemplateWithArchive(
+    GenericGet, GenericCreate, GenericUpdate, GenericDelete, GenericArchive
+):
+    pass
+
+
+class GenericTemplateWithoutArchive(
+    GenericGet, GenericCreate, GenericUpdate, GenericDelete
+):
+    pass
