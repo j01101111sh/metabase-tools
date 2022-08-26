@@ -1,11 +1,9 @@
 from json import loads
-from random import choice
-from string import ascii_letters, digits
 from time import sleep
 
 import requests
 
-from tests.metabase_details import (
+from tests.helpers import (
     CREDENTIALS,
     EMAIL,
     FIRST,
@@ -13,6 +11,7 @@ from tests.metabase_details import (
     LAST,
     PASSWORD,
     SITE_NAME,
+    random_string,
 )
 
 
@@ -73,20 +72,20 @@ def create_users(session: requests.Session):
     dev = {
         "first_name": "Dev",
         "last_name": "Setup",
-        "email": f"dev@DunderMifflin.com",
-        "password": "".join(choice(ascii_letters + digits) for _ in range(20)),
+        "email": "dev@DunderMifflin.com",
+        "password": random_string(20),
     }
     std = {
         "first_name": "Standard",
         "last_name": "Setup",
-        "email": f"std@DunderMifflin.com",
-        "password": "".join(choice(ascii_letters + digits) for _ in range(20)),
+        "email": "std@DunderMifflin.com",
+        "password": random_string(20),
     }
     uat = {
         "first_name": "UAT",
         "last_name": "Setup",
-        "email": f"uat@DunderMifflin.com",
-        "password": "".join(choice(ascii_letters + digits) for _ in range(20)),
+        "email": "uat@DunderMifflin.com",
+        "password": random_string(20),
     }
     responses = []
     for user in [dev, std, uat]:

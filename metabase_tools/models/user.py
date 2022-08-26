@@ -1,19 +1,21 @@
-"""User class for user objects from Metabase
+"""Classes related to user endpoints
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import ClassVar, Optional
 
 from pydantic.fields import Field
 from typing_extensions import Self
 
 from metabase_tools.exceptions import RequestFailure
 from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.generic import MetabaseGeneric
+from metabase_tools.models.generic import GenericTemplateWithoutArchive
 
 
-class User(MetabaseGeneric):
-    """Class for user objects from Metabase"""
+class User(GenericTemplateWithoutArchive):
+    """User object class with related methods"""
+
+    BASE_EP: ClassVar[str] = "/user"
 
     name: str = Field(alias="common_name")
     email: str
@@ -38,59 +40,40 @@ class User(MetabaseGeneric):
     ) -> list[Self]:
         """Fetch a list of users using the provided MetabaseAPI
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
-        targets : list[int], optional
-            List of targets to fetch. Returns all users if not provided.
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int], optional): User IDs to fetch or returns all
 
-        Returns
-        -------
-        list[Self]
-            List of users
+        Returns:
+            list[User]: List of users requested
         """
-        return super(User, cls).get(adapter=adapter, endpoint="/user", targets=targets)
+        return super(User, cls).get(adapter=adapter, targets=targets)
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        """Create new user(s)
+    def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+        """Create new users
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
-        payloads : list[dict]
-            List of dicts with details for new user(s)
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            payloads (list[dict]): Details of users to create
 
-        Returns
-        -------
-        list[Self]
-            List of created users
+        Returns:
+            list[User]: List of users created
         """
-        return super(User, cls).post(
-            adapter=adapter, endpoint="/user", payloads=payloads
-        )
+        return super(User, cls).create(adapter=adapter, payloads=payloads)
 
     @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        """Update existing user(s)
+    def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+        """Update existing users
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
-        payloads : list[dict]
-            List of dicts with details for user update(s)
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            payloads (list[dict]): Details of users to update
 
-        Returns
-        -------
-        list[Self]
-            List of user(s) updated
+        Returns:
+            list[User]: List of updated users
         """
-        return super(User, cls).put(
-            adapter=adapter, endpoint="/user/{id}", payloads=payloads
-        )
+        return super(User, cls).update(adapter=adapter, payloads=payloads)
 
     @classmethod
     def search(
@@ -101,19 +84,13 @@ class User(MetabaseGeneric):
     ) -> list[Self]:
         """Search for users based on provided criteria
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
-        search_params : list[dict]
-            List of dicts, each containing search criteria. 1 result returned per dict.
-        search_list : Optional[list[Self]], optional
-            Provide to search against an existing list, by default pulls from API
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            search_params (list[dict]): Search criteria; 1 result per
+            search_list (list, optional): Search existing list or pulls from API
 
-        Returns
-        -------
-        list[Self]
-            List of users from results
+        Returns:
+            list[User]: List of users from results
         """
         return super(User, cls).search(
             adapter=adapter,
@@ -122,111 +99,122 @@ class User(MetabaseGeneric):
         )
 
     @classmethod
-    def current(cls, adapter: MetabaseApi) -> list[Self]:
-        """Fetch the current user
+    def current(cls, adapter: MetabaseApi) -> Self:
+        """Current user details
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
 
-        Returns
-        -------
-        list[Self]
-            Current user details
+        Raises:
+            RequestFailure: Invalid response from API
+
+        Returns:
+            User: Current user details
         """
         response = adapter.get(endpoint="/user/current")
-        if response.data:
-            return [cls(**record) for record in [response.data]]  # type: ignore
+        if isinstance(response, dict):
+            return cls(**response)
         raise RequestFailure
+
+    @classmethod
+    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
+        """Disables user(s) provided
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): List of users to disable
+
+        Returns:
+            dict: Dict of users that were disabled with results
+        """
+        # This method is provided to override the super class' delete function
+        return cls.disable(adapter=adapter, targets=targets)
 
     @classmethod
     def disable(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
         """Disables user(s) provided
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
-        targets : list[int]
-            List of users to disable
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): List of users to disable
 
-        Returns
-        -------
-        dict
-            Dict of users that were disabled with results
+        Returns:
+            dict: Dict of users that were disabled with results
         """
-        return super(User, cls).delete(
-            adapter=adapter, endpoint="/user/{id}", targets=targets
-        )
+        return super(User, cls).delete(adapter=adapter, targets=targets)
 
     @classmethod
     def enable(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
-        """Re-enable user(s) provided
+        """Enable user(s) provided
 
-        Parameters
-        ----------
-        adapter : MetabaseApi
-            Connection to Metabase API
-        targets : list[int]
-            List of users to re-enabled
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): List of users to enable
 
-        Returns
-        -------
-        list[Self]
-            List of users that were re-enabled
+        Returns:
+            list[User]: Enabled users
         """
-        return super(User, cls).put(
+        results = cls._request_list(
+            http_method="PUT",
             adapter=adapter,
             endpoint="/user/{id}/reactivate",
-            payloads=[{"id": target} for target in targets],
+            source=[{"id": target} for target in targets],
         )
+        return [cls(**result) for result in results]
 
     @classmethod
     def resend_invite(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
-        """Resend the user invite email
+        """Resent user invites
 
-        :param adapter: Connection to Metabase API
-        :type adapter: MetabaseApi
-        :param targets: List of users to resend invites
-        :type targets: list[int]
-        :return: Users with resent invites
-        :rtype: list[Self]
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): List of users to resend invites for
+
+        Returns:
+            list[User]: Users with a resent invite
         """
-        return super(User, cls).post(
+        results = cls._request_list(
+            http_method="PUT",
             adapter=adapter,
             endpoint="/user/{id}/send_invite",
-            payloads=[{"id": target} for target in targets],
+            source=[{"id": target} for target in targets],
         )
+        return [cls(**result) for result in results]
 
     @classmethod
     def update_password(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Updates passwords for users
 
-        :param adapter: Connection to Metabase API
-        :type adapter: MetabaseApi
-        :param payloads: List of dicts with user ids and new passwords
-        :type payloads: list[dict]
-        :return: Users with password changed
-        :rtype: list[Self]
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            payloads (list[dict]): List of users and passwords to update
+
+        Returns:
+            list[User]: List of users with reset passwords
         """
-        return super(User, cls).put(
-            adapter=adapter, endpoint="/user/{id}/password", payloads=payloads
+        results = cls._request_list(
+            http_method="PUT",
+            adapter=adapter,
+            endpoint="/user/{id}/password",
+            source=payloads,
         )
+        return [cls(**result) for result in results]
 
     @classmethod
     def qbnewb(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
         """Indicate that a user has been informed about Query Builder.
 
-        :param adapter: Connection to Metabase API
-        :type adapter: MetabaseApi
-        :param targets: List of users to toggle
-        :type targets: list[int]
-        :return: Users that were toggled
-        :rtype: list[Self]
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): List of users to toggle
+
+        Returns:
+            list[Self]: Users with query builder toggle set
         """
-        return super(User, cls).put(
+        results = cls._request_list(
+            http_method="PUT",
             adapter=adapter,
             endpoint="/user/{id}/qbnewb",
-            payloads=[{"id": target} for target in targets],
+            source=[{"id": target} for target in targets],
         )
+        return [cls(**result) for result in results]

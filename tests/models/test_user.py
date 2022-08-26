@@ -1,82 +1,56 @@
-from random import choice
-from string import ascii_letters, ascii_lowercase, digits
-
 import pytest
 
 from metabase_tools import MetabaseApi, User
-
-
-@pytest.fixture(scope="module")
-def api(host, credentials):
-    return MetabaseApi(
-        metabase_url=host,
-        credentials=credentials,
-        cache_token=True,
-        token_path="./metabase.token",
-    )
-
-
-@pytest.fixture(scope="module")
-def credentials():
-    from tests.metabase_details import CREDENTIALS
-
-    return CREDENTIALS
-
-
-@pytest.fixture(scope="module")
-def host():
-    from tests.metabase_details import HOST
-
-    return HOST
+from tests.helpers import random_string
 
 
 @pytest.fixture(scope="function")
 def new_def():
-    first_name = "".join(choice(ascii_lowercase) for _ in range(6))
+    first_name = random_string(6)
     return {
         "first_name": first_name,
         "last_name": "Test",
         "email": f"{first_name}@DunderMifflin.com",
-        "password": "".join(choice(ascii_letters + digits) for _ in range(20)),
+        "password": random_string(20),
     }
 
 
 def test_user_create_one(api: MetabaseApi, new_def: dict):
     def_one = new_def.copy()
-    def_one["name"] = "Test " + "".join(choice(ascii_lowercase) for _ in range(6))
-    new_obj = User.post(adapter=api, payloads=[def_one])
+    def_one["name"] = "Test " + random_string(6)
+    new_obj = User.create(adapter=api, payloads=[def_one])
     assert isinstance(new_obj, list)
     assert all(isinstance(o, User) for o in new_obj)
 
 
 def test_user_create_many(api: MetabaseApi, new_def: dict):
     def_one = new_def.copy()
-    def_one["first_name"] = "".join(choice(ascii_lowercase) for _ in range(6))
+    def_one["first_name"] = random_string(6)
     def_one["email"] = f"{def_one['first_name']}@DunderMifflin.com"
     def_two = new_def.copy()
-    def_two["first_name"] = "".join(choice(ascii_lowercase) for _ in range(6))
+    def_two["first_name"] = random_string(6)
     def_two["email"] = f"{def_two['first_name']}@DunderMifflin.com"
     new_defs = [def_one, def_two]
-    new_objs = User.post(adapter=api, payloads=new_defs)
+    new_objs = User.create(adapter=api, payloads=new_defs)
     assert isinstance(new_objs, list)
     assert all(isinstance(o, User) for o in new_objs)
 
 
 def test_user_update_one(api: MetabaseApi):
-    new_name = "".join(choice(ascii_lowercase) for _ in range(6))
+    new_name = random_string(6)
     change = {"id": 3, "first_name": new_name}
-    results = User.put(adapter=api, payloads=[change])
+    results = User.update(adapter=api, payloads=[change])
     assert isinstance(results, list)
     assert all(isinstance(o, User) for o in results)
     assert all(o.first_name == new_name for o in results)
 
 
 def test_user_update_many(api: MetabaseApi):
-    new_name = "".join(choice(ascii_lowercase) for _ in range(6))
+    new_name = random_string(6)
     change_one = {"id": 3, "first_name": new_name}
     change_two = {"id": 4, "first_name": new_name}
     new_defs = [change_one, change_two]
-    results = User.put(adapter=api, payloads=new_defs)
+    results = User.update(adapter=api, payloads=new_defs)
     assert isinstance(results, list)
     assert all(isinstance(o, User) for o in results)
     assert all(o.first_name == new_name for o in results)
@@ -138,5 +112,4 @@ def test_user_get_all(api: MetabaseApi):
 
 def test_user_current(api: MetabaseApi):
     user = User.current(adapter=api)
-    assert isinstance(user, list)
-    assert all(isinstance(u, User) for u in user)
+    assert isinstance(user, User)
