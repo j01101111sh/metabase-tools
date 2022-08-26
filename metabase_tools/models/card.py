@@ -15,11 +15,11 @@ from metabase_tools.exceptions import (
 )
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.collection import Collection
-from metabase_tools.models.generic import MetabaseGeneric
+from metabase_tools.models.generic import GenericTemplateWithArchive
 from metabase_tools.models.user import User
 
 
-class Card(MetabaseGeneric):
+class Card(GenericTemplateWithArchive):
     """Card object class with related methods"""
 
     BASE_EP: ClassVar[str] = "/card"
@@ -67,7 +67,7 @@ class Card(MetabaseGeneric):
         return super(Card, cls).get(adapter=adapter, targets=targets)
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Create new cards
 
         Args:
@@ -77,10 +77,10 @@ class Card(MetabaseGeneric):
         Returns:
             list[Card]: List of cards created
         """
-        return super(Card, cls).post(adapter=adapter, payloads=payloads)
+        return super(Card, cls).create(adapter=adapter, payloads=payloads)
 
     @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Update existing cards
 
         Args:
@@ -90,7 +90,7 @@ class Card(MetabaseGeneric):
         Returns:
             list[Card]: List of updated cards
         """
-        return super(Card, cls).put(adapter=adapter, payloads=payloads)
+        return super(Card, cls).update(adapter=adapter, payloads=payloads)
 
     @classmethod
     def archive(

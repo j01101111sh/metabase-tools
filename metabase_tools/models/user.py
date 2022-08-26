@@ -9,10 +9,10 @@ from typing_extensions import Self
 
 from metabase_tools.exceptions import RequestFailure
 from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.generic import MetabaseGeneric
+from metabase_tools.models.generic import GenericTemplateWithoutArchive
 
 
-class User(MetabaseGeneric):
+class User(GenericTemplateWithoutArchive):
     """User object class with related methods"""
 
     BASE_EP: ClassVar[str] = "/user"
@@ -50,7 +50,7 @@ class User(MetabaseGeneric):
         return super(User, cls).get(adapter=adapter, targets=targets)
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Create new users
 
         Args:
@@ -60,10 +60,10 @@ class User(MetabaseGeneric):
         Returns:
             list[User]: List of users created
         """
-        return super(User, cls).post(adapter=adapter, payloads=payloads)
+        return super(User, cls).create(adapter=adapter, payloads=payloads)
 
     @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Update existing users
 
         Args:
@@ -73,7 +73,7 @@ class User(MetabaseGeneric):
         Returns:
             list[User]: List of updated users
         """
-        return super(User, cls).put(adapter=adapter, payloads=payloads)
+        return super(User, cls).update(adapter=adapter, payloads=payloads)
 
     @classmethod
     def search(
@@ -115,6 +115,20 @@ class User(MetabaseGeneric):
         if isinstance(response, dict):
             return cls(**response)
         raise RequestFailure
+
+    @classmethod
+    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
+        """Disables user(s) provided
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): List of users to disable
+
+        Returns:
+            dict: Dict of users that were disabled with results
+        """
+        # This method is provided to override the super class' delete function
+        return cls.disable(adapter=adapter, targets=targets)
 
     @classmethod
     def disable(cls, adapter: MetabaseApi, targets: list[int]) -> dict:

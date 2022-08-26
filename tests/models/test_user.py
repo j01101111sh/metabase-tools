@@ -44,7 +44,7 @@ def new_def():
 def test_user_create_one(api: MetabaseApi, new_def: dict):
     def_one = new_def.copy()
     def_one["name"] = "Test " + "".join(choice(ascii_lowercase) for _ in range(6))
-    new_obj = User.post(adapter=api, payloads=[def_one])
+    new_obj = User.create(adapter=api, payloads=[def_one])
     assert isinstance(new_obj, list)
     assert all(isinstance(o, User) for o in new_obj)
 
@@ -57,7 +57,7 @@ def test_user_create_many(api: MetabaseApi, new_def: dict):
     def_two["first_name"] = "".join(choice(ascii_lowercase) for _ in range(6))
     def_two["email"] = f"{def_two['first_name']}@DunderMifflin.com"
     new_defs = [def_one, def_two]
-    new_objs = User.post(adapter=api, payloads=new_defs)
+    new_objs = User.create(adapter=api, payloads=new_defs)
     assert isinstance(new_objs, list)
     assert all(isinstance(o, User) for o in new_objs)
 
@@ -65,7 +65,7 @@ def test_user_create_many(api: MetabaseApi, new_def: dict):
 def test_user_update_one(api: MetabaseApi):
     new_name = "".join(choice(ascii_lowercase) for _ in range(6))
     change = {"id": 3, "first_name": new_name}
-    results = User.put(adapter=api, payloads=[change])
+    results = User.update(adapter=api, payloads=[change])
     assert isinstance(results, list)
     assert all(isinstance(o, User) for o in results)
     assert all(o.first_name == new_name for o in results)
@@ -76,7 +76,7 @@ def test_user_update_many(api: MetabaseApi):
     change_one = {"id": 3, "first_name": new_name}
     change_two = {"id": 4, "first_name": new_name}
     new_defs = [change_one, change_two]
-    results = User.put(adapter=api, payloads=new_defs)
+    results = User.update(adapter=api, payloads=new_defs)
     assert isinstance(results, list)
     assert all(isinstance(o, User) for o in results)
     assert all(o.first_name == new_name for o in results)

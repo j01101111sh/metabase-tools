@@ -1,5 +1,5 @@
 """
-    MetabaseGeneric class to provide generic methods for objects following this pattern
+    Generic classes for Metabase
 """
 
 from typing import ClassVar, Optional
@@ -11,8 +11,8 @@ from metabase_tools.exceptions import EmptyDataReceived, InvalidParameters
 from metabase_tools.metabase import MetabaseApi
 
 
-class MetabaseGeneric(BaseModel, extra="forbid"):
-    """Provides generic methods for objects following generic pattern"""
+class MetabaseGenericObject(BaseModel, extra="forbid"):
+    """Base class for all Metabase objects. Provides generic fields and methods."""
 
     BASE_EP: ClassVar[str]
 
@@ -73,6 +73,10 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
             return results
         raise EmptyDataReceived("No data returned")
 
+
+class GenericGet(MetabaseGenericObject):
+    """Generic class for objects with get support in the API"""
+
     @classmethod
     def get(
         cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
@@ -114,7 +118,40 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
         raise EmptyDataReceived("No data returned")
 
     @classmethod
-    def post(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def search(
+        cls,
+        adapter: MetabaseApi,
+        search_params: list[dict],
+        search_list: Optional[list[Self]] = None,
+    ) -> list[Self]:
+        """Method to search a list of objects meeting a list of parameters
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            search_params (list[dict]): Each dict contains search criteria and returns\
+                 1 result
+            search_list (list[Self], optional): Provide to search against an existing \
+                list, by default pulls from API
+
+        Returns:
+            list[Self]: List of objects of the relevant type
+        """
+        objs = search_list or cls.get(adapter=adapter)  # type: ignore
+        results = []
+        for param in search_params:
+            for obj in objs:
+                obj_dict = obj.dict()
+                for key, value in param.items():
+                    if key in obj_dict and value == obj_dict[key]:
+                        results.append(obj)
+        return results
+
+
+class GenericCreate(MetabaseGenericObject):
+    """Generic class for objects with create support in the API"""
+
+    @classmethod
+    def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Generic method for creating a list of objects
 
         Args:
@@ -139,8 +176,12 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
         # If something other than dict or list[dict], raise error
         raise InvalidParameters("Invalid target(s)")
 
+
+class GenericUpdate(MetabaseGenericObject):
+    """Generic class for objects with update support in the API"""
+
     @classmethod
-    def put(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Generic method for updating a list of objects
 
         Args:
@@ -164,6 +205,38 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
             return [cls(**result) for result in results]
         # If something other than dict or list[dict], raise error
         raise InvalidParameters("Invalid target(s)")
+
+
+class GenericDelete(MetabaseGenericObject):
+    """Generic class for objects with delete support in the API"""
+
+    @classmethod
+    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
+        """Method to delete a list of objects
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): List of objects to delete
+
+        Raises:
+            InvalidParameters: Targets is not a list of ints
+
+        Returns:
+            dict: _description_
+        """
+        if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
+            results = cls._request_list(
+                http_method="DELETE",
+                adapter=adapter,
+                endpoint=cls.BASE_EP + "/{id}",
+                source=targets,
+            )
+            return {target: result for result, target in zip(results, targets)}
+        raise InvalidParameters("Invalid set of targets")
+
+
+class GenericArchive(MetabaseGenericObject):
+    """Generic class for objects with archive support in the API"""
 
     @classmethod
     def archive(
@@ -197,55 +270,14 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
             return [cls(**result) for result in results]
         raise InvalidParameters("Invalid set of targets")
 
-    @classmethod
-    def search(
-        cls,
-        adapter: MetabaseApi,
-        search_params: list[dict],
-        search_list: Optional[list[Self]] = None,
-    ) -> list[Self]:
-        """Method to search a list of objects meeting a list of parameters
 
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            search_params (list[dict]): Each dict contains search criteria and returns\
-                 1 result
-            search_list (list[Self], optional): Provide to search against an existing \
-                list, by default pulls from API
+class GenericTemplateWithArchive(
+    GenericGet, GenericCreate, GenericUpdate, GenericDelete, GenericArchive
+):
+    pass
 
-        Returns:
-            list[Self]: List of objects of the relevant type
-        """
-        objs = search_list or cls.get(adapter=adapter)  # type: ignore
-        results = []
-        for param in search_params:
-            for obj in objs:
-                obj_dict = obj.dict()
-                for key, value in param.items():
-                    if key in obj_dict and value == obj_dict[key]:
-                        results.append(obj)
-        return results
 
-    @classmethod
-    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
-        """Method to delete a list of objects
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            targets (list[int]): List of objects to delete
-
-        Raises:
-            InvalidParameters: Targets is not a list of ints
-
-        Returns:
-            dict: _description_
-        """
-        if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
-            results = cls._request_list(
-                http_method="DELETE",
-                adapter=adapter,
-                endpoint=cls.BASE_EP + "/{id}",
-                source=targets,
-            )
-            return {target: result for result, target in zip(results, targets)}
-        raise InvalidParameters("Invalid set of targets")
+class GenericTemplateWithoutArchive(
+    GenericGet, GenericCreate, GenericUpdate, GenericDelete
+):
+    pass
