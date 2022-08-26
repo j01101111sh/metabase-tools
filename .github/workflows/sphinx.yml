@@ -1,6 +1,13 @@
 name: Sphinx build
 
-on: push
+on: 
+  push:
+    branches:
+      main
+  pull_request:
+    branches:
+      main,
+      'v*.*.*-dev'
 
 jobs:
   build:
