@@ -41,7 +41,7 @@ jobs:
           max_attempts: 3
           command: poetry run python ./tests/setup_metabase.py
       - name: Test with pytest
-        run: poetry run pytest --cov
+        run: poetry run pytest --cov-report xml --cov-report term --junitxml=report.xml
       - name: Upload report to Codecov
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
