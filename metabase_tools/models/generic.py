@@ -11,9 +11,7 @@ from metabase_tools.exceptions import EmptyDataReceived, InvalidParameters
 from metabase_tools.metabase import MetabaseApi
 
 
-class MetabaseGeneric(BaseModel, extra="forbid"):
-    """Provides generic methods for objects following generic pattern"""
-
+class MetabaseGenericBase(BaseModel, extra="forbid"):
     BASE_EP: ClassVar[str]
 
     id: int
@@ -72,6 +70,10 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
         if len(results) > 0:
             return results
         raise EmptyDataReceived("No data returned")
+
+
+class MetabaseGeneric(MetabaseGenericBase):
+    """Provides generic methods for objects following generic pattern"""
 
     @classmethod
     def get(
@@ -166,38 +168,6 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
         raise InvalidParameters("Invalid target(s)")
 
     @classmethod
-    def archive(
-        cls,
-        adapter: MetabaseApi,
-        targets: list[int],
-        unarchive: bool,
-    ) -> list[Self]:
-        """Generic method for archiving a list of objects
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            targets (list[int]): List of objects to archive
-            unarchive (bool): Whether object should be unarchived instead of archived
-
-        Raises:
-            InvalidParameters: Targets and jsons are both None
-
-        Returns:
-            list[Self]: List of objects of the relevant type
-        """
-        if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
-            results = cls._request_list(
-                http_method="PUT",
-                adapter=adapter,
-                endpoint=cls.BASE_EP + "/{id}",
-                source=[
-                    {"id": target, "archived": not unarchive} for target in targets
-                ],
-            )
-            return [cls(**result) for result in results]
-        raise InvalidParameters("Invalid set of targets")
-
-    @classmethod
     def search(
         cls,
         adapter: MetabaseApi,
@@ -248,4 +218,38 @@ class MetabaseGeneric(BaseModel, extra="forbid"):
                 source=targets,
             )
             return {target: result for result, target in zip(results, targets)}
+        raise InvalidParameters("Invalid set of targets")
+
+
+class MetabaseGenericArchive(MetabaseGenericBase):
+    @classmethod
+    def archive(
+        cls,
+        adapter: MetabaseApi,
+        targets: list[int],
+        unarchive: bool,
+    ) -> list[Self]:
+        """Generic method for archiving a list of objects
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): List of objects to archive
+            unarchive (bool): Whether object should be unarchived instead of archived
+
+        Raises:
+            InvalidParameters: Targets and jsons are both None
+
+        Returns:
+            list[Self]: List of objects of the relevant type
+        """
+        if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
+            results = cls._request_list(
+                http_method="PUT",
+                adapter=adapter,
+                endpoint=cls.BASE_EP + "/{id}",
+                source=[
+                    {"id": target, "archived": not unarchive} for target in targets
+                ],
+            )
+            return [cls(**result) for result in results]
         raise InvalidParameters("Invalid set of targets")

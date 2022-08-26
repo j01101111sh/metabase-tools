@@ -15,11 +15,11 @@ from metabase_tools.exceptions import (
 )
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.collection import Collection
-from metabase_tools.models.generic import MetabaseGeneric
+from metabase_tools.models.generic import MetabaseGeneric, MetabaseGenericArchive
 from metabase_tools.models.user import User
 
 
-class Card(MetabaseGeneric):
+class Card(MetabaseGeneric, MetabaseGenericArchive):
     """Card object class with related methods"""
 
     BASE_EP: ClassVar[str] = "/card"
