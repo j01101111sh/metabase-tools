@@ -3,6 +3,9 @@ from pathlib import Path
 
 import pytest
 
+import tests.helpers as helpers
+from metabase_tools import MetabaseApi
+
 _run_id = datetime.now().strftime("%y%m%dT%H%M%S")
 _result_path = Path(f"./temp/test-{_run_id}")
 
@@ -15,6 +18,32 @@ def run_id() -> str:
 @pytest.fixture(scope="session")
 def result_path() -> Path:
     return _result_path
+
+
+@pytest.fixture(scope="package")
+def api(host, credentials):
+    token_path = f"{_result_path}/{_run_id}.token"
+    return MetabaseApi(
+        metabase_url=host,
+        credentials=credentials,
+        cache_token=True,
+        token_path=token_path,
+    )
+
+
+@pytest.fixture(scope="session")
+def credentials():
+    return helpers.CREDENTIALS
+
+
+@pytest.fixture(scope="session")
+def host():
+    return helpers.HOST
+
+
+@pytest.fixture(scope="session")
+def email():
+    return helpers.EMAIL
 
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
