@@ -25,17 +25,13 @@ class MetabaseApi:
         metabase_url: str,
         credentials: Optional[dict] = None,
         cache_token: bool = False,
-        token_path: Path | str = Path("./metabase.token"),
+        token_path: Optional[Path | str] = None,
     ):
         self._logger = logging.getLogger(__name__)
-        authed = False
+        if not credentials and not token_path:
+            raise AuthenticationFailure("No authentication method provided")
         credentials = credentials or {}
-        token_path = Path(token_path)
-        try:
-            with open(token_path, "r", encoding="utf-8") as file:
-                credentials["token"] = file.read()
-        except FileNotFoundError:
-            pass
+        token_path = Path(token_path) if token_path else None
 
         # Validate Metabase URL
         self.metabase_url = self._validate_base_url(url=metabase_url)
@@ -43,41 +39,12 @@ class MetabaseApi:
         # Starts session to be reused by the adapter so that the auth token is cached
         self._session = Session()
 
-        # Determines what was supplied in credentials and authenticates accordingly
-        if "token" in credentials:
-            self._logger.debug("Trying to authenticate with token")
-            headers = {
-                "Content-Type": "application/json",
-                "X-Metabase-Session": credentials["token"],
-            }
-            authed = (
-                200
-                <= self._session.get(
-                    f"{self.metabase_url}/user/current", headers=headers
-                ).status_code
-                <= 299
-            )
-            if authed:
-                self._logger.debug("Successfully authenticated with token")
-                self._session.headers.update(headers)
-            else:
-                self._logger.debug("Failed to authenticate with token")
-                if token_path.exists():
-                    self._logger.debug("Deleting token file")
-                    token_path.unlink()
-
-        if not authed and "username" in credentials and "password" in credentials:
-            self._logger.debug("Trying to authenticate with username and password")
-            self._authenticate(credentials=credentials)
-            authed = True
-
-        if not authed:
-            raise AuthenticationFailure(
-                "Failed to authenticate with credentials provided"
-            )
+        # Authenticate
+        self._authenticate(token_path=token_path, credentials=credentials)
 
         if cache_token:
-            self.save_token(save_path=token_path)
+            save_path = Path(token_path or "metabase.token")
+            self.save_token(save_path=save_path)
 
     def _validate_base_url(self, url: str) -> str:
         if url[-1] == "/":
@@ -88,48 +55,105 @@ class MetabaseApi:
             url = f"http://{url}"
         return f"{url}/api"
 
-    def _authenticate(self, credentials: dict) -> None:
+    def _authenticate(self, token_path: Optional[Path], credentials: dict):
+        authed = False
+        # Try cached token first
+        if token_path and token_path.exists():
+            authed = self._auth_with_cached_token(token_path=token_path)
+            if not authed:
+                self._delete_cached_token(token_path=token_path)
+        # Try token passed as credentials next
+        if not authed and "token" in credentials:
+            authed = self._auth_with_passed_token(credentials=credentials)
+        # Finally try username and password
+        if not authed and "username" in credentials and "password" in credentials:
+            authed = self._auth_with_login(credentials=credentials)
+        # Raise error if still not authenticated
+        if not authed:
+            self._logger.error("Failed to authenticate")
+            raise AuthenticationFailure(
+                "Failed to authenticate with credentials provided"
+            )
+
+    def _add_token_to_header(self, token: str) -> None:
+        headers = {
+            "Content-Type": "application/json",
+            "X-Metabase-Session": token,
+        }
+        self._session.headers.update(headers)
+
+    def _delete_cached_token(self, token_path: Path):
+        if token_path.exists():
+            self._logger.debug("Deleting token file")
+            token_path.unlink()
+
+    def _auth_with_cached_token(self, token_path: Path):
+        try:
+            with open(token_path, "r", encoding="utf-8") as file:
+                token = file.read()
+            self._logger.debug("Attempting authentication with token file")
+            self._add_token_to_header(token=token)
+            authed = self.test_for_auth()
+            self._logger.debug(f"Authenticated with token file: {authed}")
+            return authed
+        except Exception as error_raised:
+            self._logger.debug(
+                "Exception encountered during attempt to authenticate with token file:\
+                     %s",
+                error_raised,
+            )
+            return False
+
+    def _auth_with_passed_token(self, credentials: dict) -> bool:
+        try:
+            self._logger.debug("Attempting authentication with token passed")
+            self._add_token_to_header(token=credentials["token"])
+            authed = self.test_for_auth()
+            self._logger.debug(f"Authenticated with token passed: {authed}")
+            return authed
+        except Exception as error_raised:
+            self._logger.debug(
+                "Exception encountered during attempt to authenticate with token \
+                    passed: %s",
+                error_raised,
+            )
+            return False
+
+    def _auth_with_login(self, credentials: dict) -> bool:
         """Private method for authenticating a session with the API
 
         Args:
             credentials (dict): Username and password
-
-        Raises:
-            RequestFailure: HTTP error during authentication
-            AuthenticationFailure: API responded with failure code
         """
-        self._logger.debug("Starting authentication - RestAdapter member")
         try:
-            post_request = self._session.post(
+            self._logger.debug("Attempting authentication with username and password")
+            response = self._session.post(
                 f"{self.metabase_url}/session", json=credentials
             )
-        except RequestException as error_raised:
-            self._logger.error(str(error_raised))
-            raise RequestFailure(
-                "Request failed during authentication"
-            ) from error_raised
-
-        status_code = post_request.status_code
-        if status_code == 200:
-            headers = {
-                "Content-Type": "application/json",
-                "X-Metabase-Session": post_request.json()["id"],
-            }
-            self._session.headers.update(headers)
-            self._logger.debug("Authentication successful")
-        else:
-            reason = post_request.reason
-            raise AuthenticationFailure(
-                f"Authentication failed. {status_code} - {reason}"
+            self._add_token_to_header(token=response.json()["id"])
+            authed = self.test_for_auth()
+            self._logger.debug(f"Authenticated with login: {authed}")
+            return authed
+        except Exception as error_raised:
+            self._logger.debug(
+                "Exception encountered during attempt to authenticate with login \
+                    passed: %s",
+                error_raised,
             )
+            return False
 
-    def get_token(self) -> str:
-        """Get the token being used in the adapter
+    def test_for_auth(self) -> bool:
+        """Validates successful authentication by attempting to retrieve data about \
+            the current user
 
         Returns:
-            str: Token
+            bool: Successful authentication
         """
-        return str(self._session.headers.get("X-Metabase-Session"))
+        return (
+            200
+            <= self._session.get(f"{self.metabase_url}/user/current").status_code
+            <= 299
+        )
 
     def save_token(self, save_path: Path | str):
         """Writes active token to the specified file
@@ -137,7 +161,7 @@ class MetabaseApi:
         Args:
             save_path (Path | str): Name of file to write
         """
-        token = self.get_token()
+        token = str(self._session.headers.get("X-Metabase-Session"))
         with open(save_path, "w", encoding="utf-8") as file:
             file.write(token)
 

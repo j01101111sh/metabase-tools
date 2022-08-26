@@ -34,8 +34,7 @@ def host() -> str:
 
 
 def test_auth(tools: MetabaseTools):
-    token = tools.get_token()
-    assert token is not None
+    assert tools.test_for_auth()
 
 
 def test_download_native_queries(tools: MetabaseTools):
