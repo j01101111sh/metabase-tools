@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import NoReturn
 
 import pytest
@@ -87,3 +88,30 @@ def test_cache_token(host, credentials, result_path, run_id, token):
 def test_fail_on_no_credentials(host):
     with pytest.raises(AuthenticationFailure):
         api = MetabaseApi(metabase_url=host)
+
+
+def test_url_ends_in_slash(host, credentials):
+    api = MetabaseApi(metabase_url=f"{host}/", credentials=credentials)
+    assert api.test_for_auth()
+
+
+def test_url_ends_in_api(host, credentials):
+    api = MetabaseApi(metabase_url=f"{host}/api", credentials=credentials)
+    assert api.test_for_auth()
+
+
+def test_url_ends_in_api_and_slash(host, credentials):
+    api = MetabaseApi(metabase_url=f"{host}/api/", credentials=credentials)
+    assert api.test_for_auth()
+
+
+def test_bad_cached_token_erased(host, credentials):
+    bad_token = "badtoken"
+    bad_token_path = Path("bad_token.token")
+    with open(bad_token_path, "w", encoding="utf-8") as file:
+        file.write(bad_token)
+    api = MetabaseApi(
+        metabase_url=host, credentials=credentials, token_path=bad_token_path
+    )
+    assert api.test_for_auth()
+    assert not bad_token_path.exists()
