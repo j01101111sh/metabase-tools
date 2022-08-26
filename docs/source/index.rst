@@ -7,15 +7,15 @@ Welcome to metabase-tools's documentation!
 
 
 .. toctree::
-   Usage
+   Install
    MetabaseApi
-   Tools
-   Exceptions
    MetabaseGeneric
    Card
    Collection
    Database
    User
+   Tools
+   Exceptions
 
 
 Indices and tables
