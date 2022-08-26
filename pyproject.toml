@@ -34,6 +34,8 @@ max-line-length = "88"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+python_files = "*.py"
+python_functions = "test_*"
 
 log_cli = true
 log_cli_level = "INFO"

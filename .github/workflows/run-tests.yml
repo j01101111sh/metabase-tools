@@ -41,6 +41,6 @@ jobs:
           max_attempts: 3
           command: poetry run python ./tests/setup_metabase.py
       - name: Test with pytest
-        run: poetry run pytest --cov
+        run: poetry run pytest --cov=metabase_tools
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
