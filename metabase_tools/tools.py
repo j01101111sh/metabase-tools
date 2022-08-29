@@ -63,11 +63,7 @@ class MetabaseTools(MetabaseApi):
         )
 
         # Format filtered list
-        formatted_list = {
-            "root": str(root_folder),
-            "file_extension": file_extension,
-            "cards": [],
-        }
+        cards_to_write = []
 
         for card in cards:
             try:
@@ -77,7 +73,7 @@ class MetabaseTools(MetabaseApi):
             except ItemInPersonalCollection:
                 self._logger.warning("Skipping %s (personal collection)", card.name)
                 continue
-            formatted_list["cards"].append(new_card)
+            cards_to_write.append(new_card)
 
             try:
                 self._save_query(
@@ -102,7 +98,7 @@ class MetabaseTools(MetabaseApi):
             "Completed iterating through list, saving file: %s", mapping_path
         )
         with open(mapping_path, "w", newline="", encoding="utf-8") as file:
-            file.write(dumps(formatted_list, indent=2))
+            file.write(dumps(cards_to_write, indent=2))
 
         # Returns path to file saved
         return mapping_path
