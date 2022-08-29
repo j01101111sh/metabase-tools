@@ -106,6 +106,7 @@ class MetabaseTools(MetabaseApi):
     def upload_native_queries(
         self,
         mapping_path: Path | str,
+        file_extension: str,
         dry_run: bool = True,
         stop_on_error: bool = False,
     ) -> list[dict] | dict:
@@ -125,23 +126,17 @@ class MetabaseTools(MetabaseApi):
         Returns:
             list[dict] | dict: Results of upload
         """
-        # Determine mapping path
-        mapping_path = Path(mapping_path or "./mapping.json")
-
         # Open mapping configuration file
-        with open(mapping_path, "r", newline="", encoding="utf-8") as file:
+        with open(
+            mapping_path or "./mapping.json", "r", newline="", encoding="utf-8"
+        ) as file:
             mapping = loads(file.read())
-
-        # Initialize common settings (e.g. root folder, file extension, etc.)
-        root_folder = Path(mapping.get("root", "."))
-        extension = mapping.get("file_extension", ".sql")
-        cards = mapping["cards"]
 
         # Iterate through mapping file
         changes = {"updates": [], "creates": [], "errors": []}
         collections_by_path = self._get_collections_dict(key="path")
-        for card in cards:
-            card_path = Path(f"{root_folder}/{card['path']}/{card['name']}.{extension}")
+        for card in mapping["cards"]:
+            card_path = Path(f"./{card['path']}/{card['name']}.{file_extension}")
             if card_path.exists():
                 # Check if a card with the same name exists in the listed location
                 dev_coll_id = collections_by_path[card["path"]]["id"]
