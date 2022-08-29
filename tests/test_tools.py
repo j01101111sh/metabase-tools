@@ -42,7 +42,10 @@ def test_upload_native_queries(tools: MetabaseTools):
         file.write("\n-- " + random_string(6))
     try:
         results = tools.upload_native_queries(
-            mapping_path=mapping_path, dry_run=False, stop_on_error=True
+            mapping_path=mapping_path,
+            file_extension="sql",
+            dry_run=False,
+            stop_on_error=True,
         )
     except:
         assert_never(NoReturn)

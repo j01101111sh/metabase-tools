@@ -1,22 +1,23 @@
-{
-  "root": "./tests/data",
-  "file_extension": "sql",
-  "cards": [
-    {
-      "id": 1,
-      "name": "Accounting Question",
-      "path": "/Development",
-      "database": "Sample Dataset"
-    },
-    {
-      "name": "Test Card",
-      "path": "/Development/Accounting",
-      "database": "Sample Dataset"
-    },
-    {
-      "name": "Test Create",
-      "path": "/Development",
-      "database": "Sample Dataset"
-    }
-  ]
-}
+[
+  {
+    "name": "Accounting Question",
+    "collection_id": 2,
+    "path": "/Development",
+    "database_id": 1,
+    "database_name": "Sample Dataset"
+  },
+  {
+    "name": "Test Card",
+    "collection_id": 5,
+    "path": "/Development/Accounting",
+    "database_id": 1,
+    "database_name": "Sample Dataset"
+  },
+  {
+    "name": "Test Create",
+    "collection_id": 2,
+    "path": "/Development",
+    "database_id": 1,
+    "database_name": "Sample Dataset"
+  }
+]
