@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import NoReturn
 
 import pytest
@@ -82,3 +83,51 @@ def test_cache_token(host, credentials, result_path, run_id, token):
         cached_token = {"token": file.read()}
     assert cached_token == token
     assert api.test_for_auth()
+
+
+def test_fail_on_no_credentials(host):
+    with pytest.raises(AuthenticationFailure):
+        api = MetabaseApi(metabase_url=host)
+
+
+def test_url_ends_in_slash(host, credentials):
+    api = MetabaseApi(metabase_url=f"{host}/", credentials=credentials)
+    assert api.test_for_auth()
+
+
+def test_url_ends_in_api(host, credentials):
+    api = MetabaseApi(metabase_url=f"{host}/api", credentials=credentials)
+    assert api.test_for_auth()
+
+
+def test_url_ends_in_api_and_slash(host, credentials):
+    api = MetabaseApi(metabase_url=f"{host}/api/", credentials=credentials)
+    assert api.test_for_auth()
+
+
+def test_bad_cached_token_erased(host, credentials, caplog):
+    bad_token = "badtoken"
+    bad_token_path = Path("bad_token.token")
+    with open(bad_token_path, "w", encoding="utf-8") as file:
+        file.write(bad_token)
+    api = MetabaseApi(
+        metabase_url=host, credentials=credentials, token_path=bad_token_path
+    )
+    assert api.test_for_auth()
+    assert not bad_token_path.exists()
+    assert "Deleting token file" in caplog.text
+
+
+def test_bad_passed_token(host, caplog):
+    bad_token = {"token": "badtoken"}
+    with pytest.raises(AuthenticationFailure):
+        _ = MetabaseApi(metabase_url=host, credentials=bad_token)
+    assert "Failed to authenticate with token passed" in caplog.text
+
+
+def test_bad_passed_token_with_fallback(host, credentials, caplog):
+    credentials["token"] = "badtoken"
+    api = MetabaseApi(metabase_url=host, credentials=credentials)
+    assert api.test_for_auth()
+    assert "Failed to authenticate with token passed" in caplog.text
+    assert "Authenticated with login" in caplog.text

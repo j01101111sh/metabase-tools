@@ -94,7 +94,11 @@ class MetabaseApi:
             self._logger.debug("Attempting authentication with token file")
             self._add_token_to_header(token=token)
             authed = self.test_for_auth()
-            self._logger.debug("Authenticated with token file: %s", authed)
+            self._logger.debug(
+                "Authenticated with token file"
+                if authed
+                else "Failed to authenticate with token file"
+            )
             return authed
         except Exception as error_raised:
             self._logger.warning(
@@ -109,7 +113,11 @@ class MetabaseApi:
             self._logger.debug("Attempting authentication with token passed")
             self._add_token_to_header(token=credentials["token"])
             authed = self.test_for_auth()
-            self._logger.debug("Authenticated with token passed: %s", authed)
+            self._logger.debug(
+                "Authenticated with token passed"
+                if authed
+                else "Failed to authenticate with token passed"
+            )
             return authed
         except Exception as error_raised:
             self._logger.warning(
@@ -132,7 +140,11 @@ class MetabaseApi:
             )
             self._add_token_to_header(token=response.json()["id"])
             authed = self.test_for_auth()
-            self._logger.debug("Authenticated with login: %s", authed)
+            self._logger.debug(
+                "Authenticated with login"
+                if authed
+                else "Failed to authenticate with login"
+            )
             return authed
         except Exception as error_raised:
             self._logger.warning(
