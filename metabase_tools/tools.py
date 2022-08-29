@@ -89,7 +89,9 @@ class MetabaseTools(MetabaseApi):
                 self._logger.warning("Skipping %s (name error)", card.name)
                 continue
             self._logger.debug(
-                "%s saved to %s", card.name, f"{root_folder}/{new_card['path']}"
+                "%s saved to %s",
+                card.name,
+                f"{root_folder}/{new_card['path']}",
             )
 
         # Save mapping file
@@ -222,8 +224,8 @@ class MetabaseTools(MetabaseApi):
     def _get_mapping_details(self, card: Card, collections_by_id: dict) -> dict:
         try:
             mapping_details = {
-                "id": card.id,
                 "name": card.name,
+                "collection_id": card.collection_id,
                 "path": collections_by_id[card.collection_id]["path"],
             }
         except KeyError as error_raised:
@@ -231,7 +233,8 @@ class MetabaseTools(MetabaseApi):
                 "Item in personal collection"
             ) from error_raised
 
-        mapping_details["database"] = Database.search(
+        mapping_details["database_id"] = card.database_id
+        mapping_details["database_name"] = Database.search(
             adapter=self, search_params=[{"id": card.database_id}]
         )[0].name
 
