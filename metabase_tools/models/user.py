@@ -9,10 +9,10 @@ from typing_extensions import Self
 
 from metabase_tools.exceptions import RequestFailure
 from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.generic import GenericTemplateWithoutArchive
+from metabase_tools.models.generic import GenericWithoutArchive
 
 
-class User(GenericTemplateWithoutArchive):
+class User(GenericWithoutArchive):
     """User object class with related methods"""
 
     BASE_EP: ClassVar[str] = "/user"

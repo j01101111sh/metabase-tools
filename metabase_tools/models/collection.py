@@ -7,10 +7,10 @@ from typing_extensions import Self
 
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.generic import GenericTemplateWithArchive
+from metabase_tools.models.generic import GenericWithArchive
 
 
-class Collection(GenericTemplateWithArchive):
+class Collection(GenericWithArchive):
     """Collection object class with related methods"""
 
     BASE_EP: ClassVar[str] = "/collection"
