@@ -116,3 +116,18 @@ def test_bad_cached_token_erased(host, credentials, caplog):
     assert api.test_for_auth()
     assert not bad_token_path.exists()
     assert "Deleting token file" in caplog.text
+
+
+def test_bad_passed_token(host, caplog):
+    bad_token = {"token": "badtoken"}
+    with pytest.raises(AuthenticationFailure):
+        _ = MetabaseApi(metabase_url=host, credentials=bad_token)
+    assert "Failed to authenticate with token passed" in caplog.text
+
+
+def test_bad_passed_token_with_fallback(host, credentials, caplog):
+    credentials["token"] = "badtoken"
+    api = MetabaseApi(metabase_url=host, credentials=credentials)
+    assert api.test_for_auth()
+    assert "Failed to authenticate with token passed" in caplog.text
+    assert "Authenticated with login" in caplog.text
