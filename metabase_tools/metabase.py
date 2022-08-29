@@ -88,44 +88,28 @@ class MetabaseApi:
             token_path.unlink()
 
     def _auth_with_cached_token(self, token_path: Path):
-        try:
-            with open(token_path, "r", encoding="utf-8") as file:
-                token = file.read()
-            self._logger.debug("Attempting authentication with token file")
-            self._add_token_to_header(token=token)
-            authed = self.test_for_auth()
-            self._logger.debug(
-                "Authenticated with token file"
-                if authed
-                else "Failed to authenticate with token file"
-            )
-            return authed
-        except Exception as error_raised:
-            self._logger.warning(
-                "Exception encountered during attempt to authenticate with token file:\
-                     %s",
-                error_raised,
-            )
-        return False
+        with open(token_path, "r", encoding="utf-8") as file:
+            token = file.read()
+        self._logger.debug("Attempting authentication with token file")
+        self._add_token_to_header(token=token)
+        authed = self.test_for_auth()
+        self._logger.debug(
+            "Authenticated with token file"
+            if authed
+            else "Failed to authenticate with token file"
+        )
+        return authed
 
     def _auth_with_passed_token(self, credentials: dict) -> bool:
-        try:
-            self._logger.debug("Attempting authentication with token passed")
-            self._add_token_to_header(token=credentials["token"])
-            authed = self.test_for_auth()
-            self._logger.debug(
-                "Authenticated with token passed"
-                if authed
-                else "Failed to authenticate with token passed"
-            )
-            return authed
-        except Exception as error_raised:
-            self._logger.warning(
-                "Exception encountered during attempt to authenticate with token \
-                    passed: %s",
-                error_raised,
-            )
-        return False
+        self._logger.debug("Attempting authentication with token passed")
+        self._add_token_to_header(token=credentials["token"])
+        authed = self.test_for_auth()
+        self._logger.debug(
+            "Authenticated with token passed"
+            if authed
+            else "Failed to authenticate with token passed"
+        )
+        return authed
 
     def _auth_with_login(self, credentials: dict) -> bool:
         """Private method for authenticating a session with the API
@@ -146,7 +130,7 @@ class MetabaseApi:
                 else "Failed to authenticate with login"
             )
             return authed
-        except Exception as error_raised:
+        except KeyError as error_raised:
             self._logger.warning(
                 "Exception encountered during attempt to authenticate with login \
                     passed: %s",

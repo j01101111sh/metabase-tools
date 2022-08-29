@@ -33,8 +33,10 @@ jobs:
         run: |
           poetry install --no-interaction --no-root
           poetry install --no-interaction
-      - name: Code linting
+      - name: Enforce code formatting
         run: poetry run black .
+      - name: Enforce code style
+        run: poetry run pylint --extension-pkg-whitelist='pydantic' $(git ls-files './metabase_tools/*.py') 
       - name: Setup Metabase
         uses: nick-fields/retry@v2
         with:

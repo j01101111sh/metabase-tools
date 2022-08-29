@@ -73,8 +73,8 @@ class MetabaseGenericObject(BaseModel, extra="forbid"):
         raise EmptyDataReceived("No data returned")
 
 
-class GenericGet(MetabaseGenericObject):
-    """Generic class for objects with get support in the API"""
+class GenericWithoutArchive(MetabaseGenericObject):
+    """Generic class for objects without support for archive"""
 
     @classmethod
     def get(
@@ -145,10 +145,6 @@ class GenericGet(MetabaseGenericObject):
                         results.append(obj)
         return results
 
-
-class GenericCreate(MetabaseGenericObject):
-    """Generic class for objects with create support in the API"""
-
     @classmethod
     def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
         """Generic method for creating a list of objects
@@ -174,10 +170,6 @@ class GenericCreate(MetabaseGenericObject):
             return [cls(**result) for result in results]
         # If something other than dict or list[dict], raise error
         raise InvalidParameters("Invalid target(s)")
-
-
-class GenericUpdate(MetabaseGenericObject):
-    """Generic class for objects with update support in the API"""
 
     @classmethod
     def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
@@ -205,10 +197,6 @@ class GenericUpdate(MetabaseGenericObject):
         # If something other than dict or list[dict], raise error
         raise InvalidParameters("Invalid target(s)")
 
-
-class GenericDelete(MetabaseGenericObject):
-    """Generic class for objects with delete support in the API"""
-
     @classmethod
     def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
         """Method to delete a list of objects
@@ -234,7 +222,7 @@ class GenericDelete(MetabaseGenericObject):
         raise InvalidParameters("Invalid set of targets")
 
 
-class GenericArchive(MetabaseGenericObject):
+class GenericWithArchive(GenericWithoutArchive):
     """Generic class for objects with archive support in the API"""
 
     @classmethod
@@ -268,15 +256,3 @@ class GenericArchive(MetabaseGenericObject):
             )
             return [cls(**result) for result in results]
         raise InvalidParameters("Invalid set of targets")
-
-
-class GenericTemplateWithArchive(
-    GenericGet, GenericCreate, GenericUpdate, GenericDelete, GenericArchive
-):
-    pass
-
-
-class GenericTemplateWithoutArchive(
-    GenericGet, GenericCreate, GenericUpdate, GenericDelete
-):
-    pass
