@@ -141,25 +141,10 @@ class MetabaseTools(MetabaseApi):
 
         # Iterate through mapping file
         changes = {"updates": [], "creates": [], "errors": []}
-        collections_by_id = self._get_collections_dict(key="id")
         collections_by_path = self._get_collections_dict(key="path")
         for card in cards:
             card_path = Path(f"{root_folder}/{card['path']}/{card['name']}.{extension}")
-            if (
-                card_path.exists() and "id" in card
-            ):  # Ensures file exists and id is present
-                try:
-                    update = self._update_existing_card(
-                        dev_card=card,
-                        card_path=card_path,
-                        collections_by_id=collections_by_id,
-                        collections_by_path=collections_by_path,
-                    )
-                except NoUpdateProvided:
-                    self._logger.debug("No updates necessary for %s", card["name"])
-                    continue
-                changes["updates"].append(update)
-            elif card_path.exists():
+            if card_path.exists():
                 # Check if a card with the same name exists in the listed location
                 dev_coll_id = collections_by_path[card["path"]]["id"]
                 try:
