@@ -105,7 +105,7 @@ def test_url_ends_in_api_and_slash(host, credentials):
     assert api.test_for_auth()
 
 
-def test_bad_cached_token_erased(host, credentials):
+def test_bad_cached_token_erased(host, credentials, caplog):
     bad_token = "badtoken"
     bad_token_path = Path("bad_token.token")
     with open(bad_token_path, "w", encoding="utf-8") as file:
@@ -115,3 +115,10 @@ def test_bad_cached_token_erased(host, credentials):
     )
     assert api.test_for_auth()
     assert not bad_token_path.exists()
+    assert "Deleting token file" in caplog.text
+
+
+def test_bad_passed_token(host):
+    bad_token = {"token": "badtoken"}
+    with pytest.raises(Exception):
+        api = MetabaseApi(metabase_url=host, credentials=bad_token)
