@@ -116,9 +116,3 @@ def test_bad_cached_token_erased(host, credentials, caplog):
     assert api.test_for_auth()
     assert not bad_token_path.exists()
     assert "Deleting token file" in caplog.text
-
-
-def test_bad_passed_token(host):
-    bad_token = {"token": "badtoken"}
-    with pytest.raises(Exception):
-        api = MetabaseApi(metabase_url=host, credentials=bad_token)
