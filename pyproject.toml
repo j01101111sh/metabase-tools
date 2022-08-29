@@ -46,3 +46,7 @@ log_cli_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcName
 
 log_file_level = "DEBUG"
 log_file_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcName)s - %(name)s\n\t%(message)s"
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
