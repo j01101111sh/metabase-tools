@@ -8,6 +8,7 @@ authors = ["Josh Odell <j01101111sh@gmail.com>"]
 python = "^3.9"
 requests = "^2.28.1"
 pydantic = "^1.9.1"
+types-requests = "^2.28.9"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
