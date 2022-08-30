@@ -132,7 +132,7 @@ class MetabaseTools(MetabaseApi):
             cards = loads(file.read())
 
         # Iterate through mapping file
-        changes = {"updates": [], "creates": [], "errors": []}
+        changes: dict[str, list] = {"updates": [], "creates": [], "errors": []}
         collections_by_path = self._get_collections_dict(key="path")
         for card in cards:
             card_path = Path(

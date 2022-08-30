@@ -6,7 +6,6 @@ from typing import ClassVar, Optional
 from uuid import UUID
 
 from pydantic.fields import Field
-from typing_extensions import Self
 
 from metabase_tools.exceptions import (
     EmptyDataReceived,
@@ -15,7 +14,7 @@ from metabase_tools.exceptions import (
 )
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.collection import Collection
-from metabase_tools.models.generic import GenericWithArchive
+from metabase_tools.models.generic import GA, GenericWithArchive
 from metabase_tools.models.user import User
 
 
@@ -52,89 +51,7 @@ class Card(GenericWithArchive):
     is_favorite: Optional[bool] = Field(alias="favorite")
 
     @classmethod
-    def get(
-        cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
-    ) -> list[Self]:
-        """Fetch a list of cards using the provided MetabaseAPI
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            targets (list[int], optional): Card IDs to fetch or returns all
-
-        Returns:
-            list[Card]: List of cards requested
-        """
-        return super(Card, cls).get(adapter=adapter, targets=targets)
-
-    @classmethod
-    def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        """Create new cards
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            payloads (list[dict]): Details of cards to create
-
-        Returns:
-            list[Card]: List of cards created
-        """
-        return super(Card, cls).create(adapter=adapter, payloads=payloads)
-
-    @classmethod
-    def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        """Update existing cards
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            payloads (list[dict]): Details of cards to update
-
-        Returns:
-            list[Card]: List of updated cards
-        """
-        return super(Card, cls).update(adapter=adapter, payloads=payloads)
-
-    @classmethod
-    def archive(
-        cls, adapter: MetabaseApi, targets: list[int], unarchive=False
-    ) -> list[Self]:
-        """Archive cards
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            targets (list[int]): Card IDs to archive
-            unarchive (bool, optional): Unarchive targets. Defaults to False.
-
-        Returns:
-            list[Card]: List of archived cards
-        """
-        return super(Card, cls).archive(
-            adapter=adapter, targets=targets, unarchive=unarchive
-        )
-
-    @classmethod
-    def search(
-        cls,
-        adapter: MetabaseApi,
-        search_params: list[dict],
-        search_list: Optional[list] = None,
-    ) -> list[Self]:
-        """Search for cards based on provided criteria
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            search_params (list[dict]): Search criteria; 1 result per
-            search_list (list, optional): Search existing list or pulls from API
-
-        Returns:
-            list[Card]: List of cards from results
-        """
-        return super(Card, cls).search(
-            adapter=adapter,
-            search_params=search_params,
-            search_list=search_list,
-        )
-
-    @classmethod
-    def related(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+    def related(cls: type[GA], adapter: MetabaseApi, targets: list[int]) -> list[dict]:
         """Objects related to targets
 
         Args:
@@ -154,7 +71,7 @@ class Card(GenericWithArchive):
         return results
 
     @classmethod
-    def embeddable(cls, adapter: MetabaseApi) -> list[Self]:
+    def embeddable(cls: type[GA], adapter: MetabaseApi) -> list[GA]:
         """Fetch list of cards with embedding enabled
 
         Args:
@@ -172,7 +89,7 @@ class Card(GenericWithArchive):
         raise EmptyDataReceived
 
     @classmethod
-    def favorite(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+    def favorite(cls: type[GA], adapter: MetabaseApi, targets: list[int]) -> list[dict]:
         """Favorite cards
 
         Args:
@@ -196,7 +113,9 @@ class Card(GenericWithArchive):
         return results
 
     @classmethod
-    def unfavorite(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+    def unfavorite(
+        cls: type[GA], adapter: MetabaseApi, targets: list[int]
+    ) -> list[dict]:
         """Unfavorite cards
 
         Args:
@@ -208,6 +127,7 @@ class Card(GenericWithArchive):
         """
         results = []
         for target in targets:
+            result: dict[str, int | bool | str] = {}
             try:
                 _ = adapter.delete(endpoint=f"/card/{target}/favorite")
                 result = {"card_id": target, "success": True}
@@ -220,7 +140,7 @@ class Card(GenericWithArchive):
         return results
 
     @classmethod
-    def share(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+    def share(cls: type[GA], adapter: MetabaseApi, targets: list[int]) -> list[dict]:
         """Generate publicly-accessible links for cards
 
         Args:
@@ -238,7 +158,7 @@ class Card(GenericWithArchive):
         )
 
     @classmethod
-    def unshare(cls, adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+    def unshare(cls: type[GA], adapter: MetabaseApi, targets: list[int]) -> list[dict]:
         """Remove publicly-accessible links for cards
 
         Args:

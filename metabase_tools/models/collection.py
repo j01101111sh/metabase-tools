@@ -2,13 +2,11 @@
 """
 from __future__ import annotations  # Included for support of |
 
-from typing import ClassVar, Optional
-
-from typing_extensions import Self
+from typing import Any, ClassVar, Optional
 
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.generic import GenericWithArchive
+from metabase_tools.models.generic import GA, GenericWithArchive
 
 
 class Collection(GenericWithArchive):
@@ -16,7 +14,6 @@ class Collection(GenericWithArchive):
 
     BASE_EP: ClassVar[str] = "/collection"
 
-    id: int | str  # root is a valid id for a collection
     description: Optional[str]
     archived: Optional[bool]
     slug: Optional[str]
@@ -30,91 +27,7 @@ class Collection(GenericWithArchive):
     parent_id: Optional[int]
 
     @classmethod
-    def get(
-        cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
-    ) -> list[Self]:
-        """Fetch a list of collections using the provided MetabaseAPI
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            targets (list[int], optional): Collection IDs to fetch or returns all
-
-        Returns:
-            list[Collection]: List of collections requested
-        """
-        return super(Collection, cls).get(adapter=adapter, targets=targets)
-
-    @classmethod
-    def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        """Create new collections
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            payloads (list[dict]): Details of collections to create
-
-        Returns:
-            list[Collection]: List of collections created
-        """
-        return super(Collection, cls).create(adapter=adapter, payloads=payloads)
-
-    @classmethod
-    def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        """Update existing collections
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            payloads (list[dict]): Details of collections to update
-
-        Returns:
-            list[Collection]: List of updated collections
-        """
-        return super(Collection, cls).update(adapter=adapter, payloads=payloads)
-
-    @classmethod
-    def archive(
-        cls, adapter: MetabaseApi, targets: list[int], unarchive=False
-    ) -> list[Self]:
-        """Archive collections
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            targets (list[int]): Collection IDs to archive
-            unarchive (bool, optional): Unarchive targets. Defaults to False.
-
-        Returns:
-            list[Collection]: List of archived collections
-        """
-        return super(Collection, cls).archive(
-            adapter=adapter,
-            targets=targets,
-            unarchive=unarchive,
-        )
-
-    @classmethod
-    def search(
-        cls,
-        adapter: MetabaseApi,
-        search_params: list[dict],
-        search_list: Optional[list] = None,
-    ) -> list[Self]:
-        """Search for collection based on provided criteria
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            search_params (list[dict]): Search criteria; 1 result per
-            search_list (list, optional): Search existing list or pulls from API
-
-        Returns:
-            list[Collection]: List of collections from results
-        """
-        return super(Collection, cls).search(
-            adapter=adapter,
-            search_params=search_params,
-            search_list=search_list,
-        )
-
-    @classmethod
-    def get_tree(cls, adapter: MetabaseApi) -> list[dict]:
+    def get_tree(cls: type[GA], adapter: MetabaseApi) -> list[dict]:
         """Collection tree
 
         Args:
@@ -213,7 +126,7 @@ class Collection(GenericWithArchive):
         Returns:
             list: Contents of collection
         """
-        params = {}
+        params: dict[Any, Any] = {}
         if archived:
             params["archived"] = archived
         if model_type:

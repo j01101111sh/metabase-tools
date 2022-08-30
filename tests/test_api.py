@@ -1,8 +1,6 @@
 from pathlib import Path
-from typing import NoReturn
 
 import pytest
-from typing_extensions import assert_never
 
 from metabase_tools import MetabaseApi
 from metabase_tools.exceptions import AuthenticationFailure
@@ -44,7 +42,7 @@ def test_auth_token_success(host, token, email):
     if isinstance(test_response, dict):
         assert test_response.get("email") == email
     else:
-        assert_never(NoReturn)
+        assert False
 
 
 def test_auth_token_fail(host):

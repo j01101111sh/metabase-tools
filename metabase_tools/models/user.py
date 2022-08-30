@@ -5,11 +5,10 @@ from datetime import datetime
 from typing import ClassVar, Optional
 
 from pydantic.fields import Field
-from typing_extensions import Self
 
 from metabase_tools.exceptions import RequestFailure
 from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.generic import GenericWithoutArchive
+from metabase_tools.models.generic import GWA, GenericWithoutArchive
 
 
 class User(GenericWithoutArchive):
@@ -35,71 +34,7 @@ class User(GenericWithoutArchive):
     personal_collection_id: Optional[int]
 
     @classmethod
-    def get(
-        cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
-    ) -> list[Self]:
-        """Fetch a list of users using the provided MetabaseAPI
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            targets (list[int], optional): User IDs to fetch or returns all
-
-        Returns:
-            list[User]: List of users requested
-        """
-        return super(User, cls).get(adapter=adapter, targets=targets)
-
-    @classmethod
-    def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        """Create new users
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            payloads (list[dict]): Details of users to create
-
-        Returns:
-            list[User]: List of users created
-        """
-        return super(User, cls).create(adapter=adapter, payloads=payloads)
-
-    @classmethod
-    def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
-        """Update existing users
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            payloads (list[dict]): Details of users to update
-
-        Returns:
-            list[User]: List of updated users
-        """
-        return super(User, cls).update(adapter=adapter, payloads=payloads)
-
-    @classmethod
-    def search(
-        cls,
-        adapter: MetabaseApi,
-        search_params: list[dict],
-        search_list: Optional[list] = None,
-    ) -> list[Self]:
-        """Search for users based on provided criteria
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            search_params (list[dict]): Search criteria; 1 result per
-            search_list (list, optional): Search existing list or pulls from API
-
-        Returns:
-            list[User]: List of users from results
-        """
-        return super(User, cls).search(
-            adapter=adapter,
-            search_params=search_params,
-            search_list=search_list,
-        )
-
-    @classmethod
-    def current(cls, adapter: MetabaseApi) -> Self:
+    def current(cls: type[GWA], adapter: MetabaseApi) -> GWA:
         """Current user details
 
         Args:
@@ -144,7 +79,7 @@ class User(GenericWithoutArchive):
         return super(User, cls).delete(adapter=adapter, targets=targets)
 
     @classmethod
-    def enable(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+    def enable(cls: type[GWA], adapter: MetabaseApi, targets: list[int]) -> list[GWA]:
         """Enable user(s) provided
 
         Args:
@@ -163,7 +98,9 @@ class User(GenericWithoutArchive):
         return [cls(**result) for result in results]
 
     @classmethod
-    def resend_invite(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+    def resend_invite(
+        cls: type[GWA], adapter: MetabaseApi, targets: list[int]
+    ) -> list[GWA]:
         """Resent user invites
 
         Args:
@@ -182,7 +119,9 @@ class User(GenericWithoutArchive):
         return [cls(**result) for result in results]
 
     @classmethod
-    def update_password(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def update_password(
+        cls: type[GWA], adapter: MetabaseApi, payloads: list[dict]
+    ) -> list[GWA]:
         """Updates passwords for users
 
         Args:
@@ -201,7 +140,7 @@ class User(GenericWithoutArchive):
         return [cls(**result) for result in results]
 
     @classmethod
-    def qbnewb(cls, adapter: MetabaseApi, targets: list[int]) -> list[Self]:
+    def qbnewb(cls: type[GWA], adapter: MetabaseApi, targets: list[int]) -> list[GWA]:
         """Indicate that a user has been informed about Query Builder.
 
         Args:
