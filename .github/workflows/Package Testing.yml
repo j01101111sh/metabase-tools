@@ -33,9 +33,9 @@ jobs:
         uses: nick-fields/retry@v2
         with:
           max_attempts: 3
-        command: |
-          poetry install --no-interaction --no-root
-          poetry install --no-interaction
+          command: |
+            poetry install --no-interaction --no-root
+            poetry install --no-interaction
       - name: Enforce code formatting
         run: poetry run black .
       - name: Enforce code style
