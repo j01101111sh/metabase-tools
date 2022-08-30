@@ -234,7 +234,7 @@ class MetabaseApi:
             )
             try:
                 return_ = response.json()
-                if isinstance(return_, list | dict):
+                if isinstance(return_, list) or isinstance(return_, dict):
                     return return_
             except JSONDecodeError as error_raised:
                 raise InvalidDataReceived from error_raised
