@@ -22,12 +22,12 @@ class Collection(GenericWithArchive):
     location: Optional[str]
     namespace: Optional[int]
     effective_location: Optional[str]
-    effective_ancestors: Optional[list[dict]]
+    effective_ancestors: Optional[list[dict[str, Any]]]
     can_write: Optional[bool]
     parent_id: Optional[int]
 
     @classmethod
-    def get_tree(cls: type[GA], adapter: MetabaseApi) -> list[dict]:
+    def get_tree(cls: type[GA], adapter: MetabaseApi) -> list[dict[str, Any]]:
         """Collection tree
 
         Args:
@@ -47,7 +47,7 @@ class Collection(GenericWithArchive):
         raise EmptyDataReceived
 
     @staticmethod
-    def _flatten_tree(parent: dict, path: str = "/") -> list[dict]:
+    def _flatten_tree(parent: dict[str, Any], path: str = "/") -> list[dict[str, Any]]:
         """Recursive function to flatten collection tree to show the full path for all\
              collections
 
@@ -80,7 +80,7 @@ class Collection(GenericWithArchive):
         return children
 
     @classmethod
-    def get_flat_list(cls, adapter: MetabaseApi) -> list[dict]:
+    def get_flat_list(cls, adapter: MetabaseApi) -> list[dict[str, Any]]:
         """Flattens collection tree so the full path of each collection is shown
 
         Args:
@@ -111,7 +111,7 @@ class Collection(GenericWithArchive):
         collection_id: int,
         model_type: Optional[str] = None,
         archived: bool = False,
-    ) -> list:
+    ) -> list[dict[str, Any]]:
         """Get the contents of the provided collection
 
         Args:
@@ -144,7 +144,7 @@ class Collection(GenericWithArchive):
         raise EmptyDataReceived
 
     @classmethod
-    def graph(cls, adapter: MetabaseApi) -> dict:
+    def graph(cls, adapter: MetabaseApi) -> dict[str, Any]:
         """Graph of collection
 
         Args:

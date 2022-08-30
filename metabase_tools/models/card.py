@@ -2,7 +2,7 @@
 """
 
 from datetime import datetime
-from typing import ClassVar, Optional
+from typing import Any, ClassVar, Optional
 from uuid import UUID
 
 from pydantic.fields import Field
@@ -27,7 +27,7 @@ class Card(GenericWithArchive):
     archived: bool
     collection_position: Optional[int]
     table_id: Optional[int]
-    result_metadata: Optional[list[dict]]
+    result_metadata: Optional[list[dict[str, Any]]]
     creator: User
     database_id: Optional[int]
     enable_embedding: bool
@@ -36,12 +36,12 @@ class Card(GenericWithArchive):
     creator_id: int
     updated_at: datetime
     made_public_by_id: Optional[int]
-    embedding_params: Optional[dict]
+    embedding_params: Optional[dict[str, Any]]
     cache_ttl: Optional[str]
-    dataset_query: dict
+    dataset_query: dict[str, Any]
     display: str
-    last_edit_info: Optional[dict] = Field(alias="last-edit-info")
-    visualization_settings: dict
+    last_edit_info: Optional[dict[str, Any]] = Field(alias="last-edit-info")
+    visualization_settings: dict[str, Any]
     collection: Optional[Collection]
     dataset: Optional[int]
     created_at: datetime
@@ -51,7 +51,9 @@ class Card(GenericWithArchive):
     is_favorite: Optional[bool] = Field(alias="favorite")
 
     @classmethod
-    def related(cls: type[GA], adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+    def related(
+        cls: type[GA], adapter: MetabaseApi, targets: list[int]
+    ) -> list[dict[str, Any]]:
         """Objects related to targets
 
         Args:
@@ -89,7 +91,9 @@ class Card(GenericWithArchive):
         raise EmptyDataReceived
 
     @classmethod
-    def favorite(cls: type[GA], adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+    def favorite(
+        cls: type[GA], adapter: MetabaseApi, targets: list[int]
+    ) -> list[dict[str, Any]]:
         """Favorite cards
 
         Args:
@@ -115,7 +119,7 @@ class Card(GenericWithArchive):
     @classmethod
     def unfavorite(
         cls: type[GA], adapter: MetabaseApi, targets: list[int]
-    ) -> list[dict]:
+    ) -> list[dict[str, Any]]:
         """Unfavorite cards
 
         Args:
@@ -140,7 +144,9 @@ class Card(GenericWithArchive):
         return results
 
     @classmethod
-    def share(cls: type[GA], adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+    def share(
+        cls: type[GA], adapter: MetabaseApi, targets: list[int]
+    ) -> list[dict[str, Any]]:
         """Generate publicly-accessible links for cards
 
         Args:
@@ -158,7 +164,9 @@ class Card(GenericWithArchive):
         )
 
     @classmethod
-    def unshare(cls: type[GA], adapter: MetabaseApi, targets: list[int]) -> list[dict]:
+    def unshare(
+        cls: type[GA], adapter: MetabaseApi, targets: list[int]
+    ) -> list[dict[str, Any]]:
         """Remove publicly-accessible links for cards
 
         Args:

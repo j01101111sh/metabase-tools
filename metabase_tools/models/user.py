@@ -2,7 +2,7 @@
 """
 
 from datetime import datetime
-from typing import ClassVar, Optional
+from typing import Any, ClassVar, Optional
 
 from pydantic.fields import Field
 
@@ -30,7 +30,7 @@ class User(GenericWithoutArchive):
     is_active: Optional[bool]
     locale: Optional[str]
     group_ids: Optional[list[int]]
-    login_attributes: Optional[list]
+    login_attributes: Optional[list[dict[str, Any]]]
     personal_collection_id: Optional[int]
 
     @classmethod
@@ -52,7 +52,7 @@ class User(GenericWithoutArchive):
         raise RequestFailure
 
     @classmethod
-    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
+    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict[int, Any]:
         """Disables user(s) provided
 
         Args:
@@ -66,7 +66,7 @@ class User(GenericWithoutArchive):
         return cls.disable(adapter=adapter, targets=targets)
 
     @classmethod
-    def disable(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
+    def disable(cls, adapter: MetabaseApi, targets: list[int]) -> dict[int, Any]:
         """Disables user(s) provided
 
         Args:
@@ -120,7 +120,7 @@ class User(GenericWithoutArchive):
 
     @classmethod
     def update_password(
-        cls: type[GWA], adapter: MetabaseApi, payloads: list[dict]
+        cls: type[GWA], adapter: MetabaseApi, payloads: list[dict[str, Any]]
     ) -> list[GWA]:
         """Updates passwords for users
 

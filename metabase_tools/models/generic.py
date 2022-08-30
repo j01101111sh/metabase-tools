@@ -3,7 +3,7 @@
 """
 from __future__ import annotations  # Included for support of |
 
-from typing import ClassVar, Optional, TypeVar
+from typing import Any, ClassVar, Optional, TypeVar
 
 from pydantic import BaseModel
 
@@ -25,8 +25,8 @@ class MetabaseGenericObject(BaseModel, extra="forbid"):
         http_method: str,
         adapter: MetabaseApi,
         endpoint: str,
-        source: list[int] | list[dict],
-    ) -> list[dict]:
+        source: list[int] | list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
         """Sends requests to API based on a list of objects
 
         Args:
@@ -120,7 +120,7 @@ class GenericWithoutArchive(MetabaseGenericObject):
     def search(
         cls: type[GWA],
         adapter: MetabaseApi,
-        search_params: list[dict],
+        search_params: list[dict[str, Any]],
         search_list: Optional[list[GWA]] = None,
     ) -> list[GWA]:
         """Method to search a list of objects meeting a list of parameters
@@ -135,7 +135,7 @@ class GenericWithoutArchive(MetabaseGenericObject):
         Returns:
             list[Self]: List of objects of the relevant type
         """
-        objs = search_list or cls.get(adapter=adapter)  # type: ignore
+        objs = search_list or cls.get(adapter=adapter)
         results = []
         for param in search_params:
             for obj in objs:
@@ -146,7 +146,9 @@ class GenericWithoutArchive(MetabaseGenericObject):
         return results
 
     @classmethod
-    def create(cls: type[GWA], adapter: MetabaseApi, payloads: list[dict]) -> list[GWA]:
+    def create(
+        cls: type[GWA], adapter: MetabaseApi, payloads: list[dict[str, Any]]
+    ) -> list[GWA]:
         """Generic method for creating a list of objects
 
         Args:
@@ -172,7 +174,9 @@ class GenericWithoutArchive(MetabaseGenericObject):
         raise InvalidParameters("Invalid target(s)")
 
     @classmethod
-    def update(cls: type[GWA], adapter: MetabaseApi, payloads: list[dict]) -> list[GWA]:
+    def update(
+        cls: type[GWA], adapter: MetabaseApi, payloads: list[dict[str, Any]]
+    ) -> list[GWA]:
         """Generic method for updating a list of objects
 
         Args:
@@ -198,7 +202,7 @@ class GenericWithoutArchive(MetabaseGenericObject):
         raise InvalidParameters("Invalid target(s)")
 
     @classmethod
-    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
+    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict[int, Any]:
         """Method to delete a list of objects
 
         Args:
@@ -230,7 +234,7 @@ class GenericWithArchive(GenericWithoutArchive):
         cls: type[GA],
         adapter: MetabaseApi,
         targets: list[int],
-        unarchive: bool,
+        unarchive: bool = False,
     ) -> list[GA]:
         """Generic method for archiving a list of objects
 

@@ -2,7 +2,7 @@
 """
 
 from datetime import datetime
-from typing import ClassVar, Optional
+from typing import Any, ClassVar, Optional
 
 from metabase_tools.models.generic import GenericWithoutArchive
 
@@ -22,7 +22,7 @@ class Database(GenericWithoutArchive):
     is_full_sync: bool
     updated_at: datetime
     native_permissions: Optional[str]
-    details: dict
+    details: dict[str, Any]
     is_sample: bool
     is_on_demand: bool
     options: Optional[str]
@@ -30,4 +30,4 @@ class Database(GenericWithoutArchive):
     refingerprint: Optional[str]
     created_at: datetime
     points_of_interest: Optional[str]
-    schedules: Optional[dict]
+    schedules: Optional[dict[str, Any]]
