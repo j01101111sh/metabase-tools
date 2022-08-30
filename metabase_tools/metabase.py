@@ -1,11 +1,12 @@
 """
 Rest adapter for the Metabase API
 """
+from __future__ import annotations  # Included for support of |
 
 import logging
 from json import JSONDecodeError
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 from requests import Response, Session
 from requests.exceptions import RequestException
@@ -23,7 +24,7 @@ class MetabaseApi:
     def __init__(
         self,
         metabase_url: str,
-        credentials: Optional[dict] = None,
+        credentials: Optional[dict[str, str]] = None,
         cache_token: bool = False,
         token_path: Optional[Path | str] = None,
     ):
@@ -55,7 +56,9 @@ class MetabaseApi:
             url = f"http://{url}"
         return f"{url}/api"
 
-    def _authenticate(self, token_path: Optional[Path], credentials: dict):
+    def _authenticate(
+        self, token_path: Optional[Path], credentials: dict[str, str]
+    ) -> None:
         authed = False
         # Try cached token first
         if token_path and token_path.exists():
@@ -82,44 +85,36 @@ class MetabaseApi:
         }
         self._session.headers.update(headers)
 
-    def _delete_cached_token(self, token_path: Path):
+    def _delete_cached_token(self, token_path: Path) -> None:
         if token_path.exists():
             self._logger.warning("Deleting token file")
             token_path.unlink()
 
-    def _auth_with_cached_token(self, token_path: Path):
-        try:
-            with open(token_path, "r", encoding="utf-8") as file:
-                token = file.read()
-            self._logger.debug("Attempting authentication with token file")
-            self._add_token_to_header(token=token)
-            authed = self.test_for_auth()
-            self._logger.debug("Authenticated with token file: %s", authed)
-            return authed
-        except Exception as error_raised:
-            self._logger.warning(
-                "Exception encountered during attempt to authenticate with token file:\
-                     %s",
-                error_raised,
-            )
-        return False
+    def _auth_with_cached_token(self, token_path: Path) -> bool:
+        with open(token_path, "r", encoding="utf-8") as file:
+            token = file.read()
+        self._logger.debug("Attempting authentication with token file")
+        self._add_token_to_header(token=token)
+        authed = self.test_for_auth()
+        self._logger.debug(
+            "Authenticated with token file"
+            if authed
+            else "Failed to authenticate with token file"
+        )
+        return authed
 
-    def _auth_with_passed_token(self, credentials: dict) -> bool:
-        try:
-            self._logger.debug("Attempting authentication with token passed")
-            self._add_token_to_header(token=credentials["token"])
-            authed = self.test_for_auth()
-            self._logger.debug("Authenticated with token passed: %s", authed)
-            return authed
-        except Exception as error_raised:
-            self._logger.warning(
-                "Exception encountered during attempt to authenticate with token \
-                    passed: %s",
-                error_raised,
-            )
-        return False
+    def _auth_with_passed_token(self, credentials: dict[str, str]) -> bool:
+        self._logger.debug("Attempting authentication with token passed")
+        self._add_token_to_header(token=credentials["token"])
+        authed = self.test_for_auth()
+        self._logger.debug(
+            "Authenticated with token passed"
+            if authed
+            else "Failed to authenticate with token passed"
+        )
+        return authed
 
-    def _auth_with_login(self, credentials: dict) -> bool:
+    def _auth_with_login(self, credentials: dict[str, str]) -> bool:
         """Private method for authenticating a session with the API
 
         Args:
@@ -132,9 +127,13 @@ class MetabaseApi:
             )
             self._add_token_to_header(token=response.json()["id"])
             authed = self.test_for_auth()
-            self._logger.debug("Authenticated with login: %s", authed)
+            self._logger.debug(
+                "Authenticated with login"
+                if authed
+                else "Failed to authenticate with login"
+            )
             return authed
-        except Exception as error_raised:
+        except KeyError as error_raised:
             self._logger.warning(
                 "Exception encountered during attempt to authenticate with login \
                     passed: %s",
@@ -155,7 +154,7 @@ class MetabaseApi:
             <= 299
         )
 
-    def save_token(self, save_path: Path | str):
+    def save_token(self, save_path: Path | str) -> None:
         """Writes active token to the specified file
 
         Args:
@@ -169,8 +168,8 @@ class MetabaseApi:
         self,
         method: str,
         url: str,
-        params: Optional[dict] = None,
-        json: Optional[dict] = None,
+        params: Optional[dict[str, Any]] = None,
+        json: Optional[dict[str, Any]] = None,
     ) -> Response:
         """Perform an HTTP request, catching and re-raising any exceptions
 
@@ -200,9 +199,9 @@ class MetabaseApi:
         self,
         http_method: str,
         endpoint: str,
-        params: Optional[dict] = None,
-        json: Optional[dict] = None,
-    ) -> list[dict] | dict:
+        params: Optional[dict[str, Any]] = None,
+        json: Optional[dict[str, Any]] = None,
+    ) -> list[dict[str, Any]] | dict[str, Any]:
         """Method for dispatching HTTP requests
 
         Args:
@@ -217,7 +216,7 @@ class MetabaseApi:
             RequestFailure: Other failure during request
 
         Returns:
-            list[dict] | dict: Response from API
+            list[dict[str, Any]] | dict[str, Any]: Response from API
         """
         log_line_post = "success=%s, status_code=%s, message=%s"
         response = self._make_request(
@@ -234,7 +233,9 @@ class MetabaseApi:
                 log_line_post, is_success, response.status_code, response.reason
             )
             try:
-                return response.json()
+                return_ = response.json()
+                if isinstance(return_, (list, dict)):
+                    return return_
             except JSONDecodeError as error_raised:
                 raise InvalidDataReceived from error_raised
         elif response.status_code == 401:
@@ -247,7 +248,9 @@ class MetabaseApi:
         self._logger.error(log_line_post)
         raise RequestFailure(error_line)
 
-    def get(self, endpoint: str, params: Optional[dict] = None) -> list[dict] | dict:
+    def get(
+        self, endpoint: str, params: Optional[dict[str, Any]] = None
+    ) -> list[dict[str, Any]] | dict[str, Any]:
         """HTTP GET request
 
         Args:
@@ -255,13 +258,16 @@ class MetabaseApi:
             ep_params (dict, optional): Endpoint parameters
 
         Returns:
-            list[dict] | dict: Response from API
+            list[dict[str, Any]] | dict[str, Any]: Response from API
         """
         return self.generic_request(http_method="GET", endpoint=endpoint, params=params)
 
     def post(
-        self, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None
-    ) -> list[dict] | dict:
+        self,
+        endpoint: str,
+        params: Optional[dict[str, Any]] = None,
+        json: Optional[dict[str, Any]] = None,
+    ) -> list[dict[str, Any]] | dict[str, Any]:
         """HTTP POST request
 
         Args:
@@ -270,13 +276,15 @@ class MetabaseApi:
             json (dict, optional): Data payload
 
         Returns:
-            list[dict] | dict: Response from API
+            list[dict[str, Any]] | dict[str, Any]: Response from API
         """
         return self.generic_request(
             http_method="POST", endpoint=endpoint, params=params, json=json
         )
 
-    def delete(self, endpoint: str, params: Optional[dict] = None) -> list[dict] | dict:
+    def delete(
+        self, endpoint: str, params: Optional[dict[str, Any]] = None
+    ) -> list[dict[str, Any]] | dict[str, Any]:
         """HTTP DELETE request
 
         Args:
@@ -284,15 +292,18 @@ class MetabaseApi:
             params (dict, optional): Endpoint parameters
 
         Returns:
-            list[dict] | dict: Response from API
+            list[dict[str, Any]] | dict[str, Any]: Response from API
         """
         return self.generic_request(
             http_method="DELETE", endpoint=endpoint, params=params
         )
 
     def put(
-        self, endpoint: str, params: Optional[dict] = None, json: Optional[dict] = None
-    ) -> list[dict] | dict:
+        self,
+        endpoint: str,
+        params: Optional[dict[str, Any]] = None,
+        json: Optional[dict[str, Any]] = None,
+    ) -> list[dict[str, Any]] | dict[str, Any]:
         """HTTP PUT request
 
         Args:
@@ -301,7 +312,7 @@ class MetabaseApi:
             json (dict, optional): Data payload
 
         Returns:
-            list[dict] | dict: Response from API
+            list[dict[str, Any]] | dict[str, Any]: Response from API
         """
         return self.generic_request(
             http_method="PUT", endpoint=endpoint, params=params, json=json

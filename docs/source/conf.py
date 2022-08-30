@@ -14,7 +14,7 @@ sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 project = "metabase-tools"
 copyright = "2022, Josh Odell"
 author = "Josh Odell"
-release = "0.5.0"
+release = "0.6.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
