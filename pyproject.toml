@@ -49,4 +49,6 @@ log_file_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcNam
 
 [tool.coverage.report]
 fail_under = 80
+omit = ["tests/*.py"]
+exclude_lines = ["def _","except RequestException", "elif response.status_code == 401:"]
 show_missing = true
