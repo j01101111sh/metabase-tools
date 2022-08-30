@@ -1,7 +1,9 @@
-name: Generate documentation (dry-run)
+name: Publish documentation
 
-on: 
-  pull_request
+on:
+  push:
+    tags:
+      - "v*.*.*"
 
 jobs:
   build:
@@ -36,3 +38,8 @@ jobs:
         with:
           name: html-docs
           path: docs/build/html/
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build/html
