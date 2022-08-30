@@ -1,5 +1,6 @@
 """Classes related to collections endpoints
 """
+from __future__ import annotations  # Included for support of |
 
 from typing import ClassVar, Optional
 
