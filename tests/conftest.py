@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pytest
 
-import tests.helpers as helpers
 from metabase_tools import MetabaseApi
+from tests import helpers
 
 _run_id = datetime.now().strftime("%y%m%dT%H%M%S")
 _result_path = Path(f"./temp/test-{_run_id}")
