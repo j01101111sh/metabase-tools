@@ -7,7 +7,6 @@ from typing import Optional
 
 from metabase_tools.exceptions import (
     EmptyDataReceived,
-    InvalidParameters,
     ItemInPersonalCollection,
     ItemNotFound,
 )
@@ -230,19 +229,6 @@ class MetabaseTools(MetabaseApi):
         collections = Collection.get_flat_list(adapter=self)
         non_keys = [k for k in collections[0].keys() if k != key]
         return {item[key]: {nk: item[nk] for nk in non_keys} for item in collections}
-
-    def _translate_path(
-        self, collection_id: Optional[int] = None, collection_path: Optional[str] = None
-    ) -> int | str:
-        if collection_id:
-            collections_by_id = self._get_collections_dict(key="id")
-            return collections_by_id[collection_id]["path"]
-
-        if collection_path:
-            collections_by_path = self._get_collections_dict(key="path")
-            return collections_by_path[collection_path]["id"]
-
-        raise InvalidParameters
 
     def _find_card_id(self, card_name: str, collection_id: int) -> int:
         collection_items = Collection.get_contents(
