@@ -32,6 +32,7 @@ jobs:
       - name: Install dependencies
         uses: nick-fields/retry@v2
         with:
+          timeout_seconds: 120
           max_attempts: 3
           command: |
             poetry install --no-interaction --no-root
