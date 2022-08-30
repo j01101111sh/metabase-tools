@@ -77,7 +77,7 @@ def test_card_archive_one(api: MetabaseApi):
 
 def test_card_archive_many(api: MetabaseApi):
     cards = Card.get(adapter=api)
-    cards_to_archive = [card.id for card in cards][:2]
+    cards_to_archive = [1, 2]
     change_results = Card.archive(adapter=api, targets=cards_to_archive)
     assert isinstance(change_results, list)
     assert all(isinstance(cr, Card) for cr in change_results)
@@ -94,7 +94,7 @@ def test_card_unarchive_one(api: MetabaseApi):
 
 def test_card_unarchive_many(api: MetabaseApi):
     cards = Card.get(adapter=api)
-    cards_to_unarchive = [card.id for card in cards][:2]
+    cards_to_unarchive = [1, 2]
     change_results = Card.archive(
         adapter=api, targets=cards_to_unarchive, unarchive=True
     )

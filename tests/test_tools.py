@@ -1,9 +1,7 @@
 from datetime import datetime
 from pathlib import Path
-from typing import NoReturn
 
 import pytest
-from typing_extensions import assert_never
 
 from metabase_tools import MetabaseTools
 from tests.helpers import random_string
@@ -48,7 +46,7 @@ def test_upload(tools: MetabaseTools):
             stop_on_error=False,
         )
     except:
-        assert_never(NoReturn)
+        assert False
     finally:
         with open(test_card_path, "w", newline="", encoding="utf-8") as file:
             file.write(current)
@@ -72,7 +70,7 @@ def test_upload_dry(tools: MetabaseTools):
             stop_on_error=False,
         )
     except:
-        assert_never(NoReturn)
+        assert False
     finally:
         with open(test_card_path, "w", newline="", encoding="utf-8") as file:
             file.write(current)
@@ -97,7 +95,7 @@ def test_upload_stop(tools: MetabaseTools):
             stop_on_error=True,
         )
     except:
-        assert_never(NoReturn)
+        assert False
     finally:
         with open(test_card_path, "w", newline="", encoding="utf-8") as file:
             file.write(current)
@@ -121,7 +119,7 @@ def test_upload_dry_stop(tools: MetabaseTools):
             stop_on_error=True,
         )
     except:
-        assert_never(NoReturn)
+        assert False
     finally:
         with open(test_card_path, "w", newline="", encoding="utf-8") as file:
             file.write(current)

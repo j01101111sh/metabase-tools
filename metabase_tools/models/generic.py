@@ -1,11 +1,11 @@
 """
     Generic classes for Metabase
 """
+from __future__ import annotations  # Included for support of |
 
-from typing import ClassVar, Optional
+from typing import Any, ClassVar, Optional, TypeVar
 
 from pydantic import BaseModel
-from typing_extensions import Self
 
 from metabase_tools.exceptions import EmptyDataReceived, InvalidParameters
 from metabase_tools.metabase import MetabaseApi
@@ -16,7 +16,7 @@ class MetabaseGenericObject(BaseModel, extra="forbid"):
 
     BASE_EP: ClassVar[str]
 
-    id: int
+    id: int | str
     name: str
 
     @classmethod
@@ -25,8 +25,8 @@ class MetabaseGenericObject(BaseModel, extra="forbid"):
         http_method: str,
         adapter: MetabaseApi,
         endpoint: str,
-        source: list[int] | list[dict],
-    ) -> list[dict]:
+        source: list[int] | list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
         """Sends requests to API based on a list of objects
 
         Args:
@@ -78,8 +78,8 @@ class GenericWithoutArchive(MetabaseGenericObject):
 
     @classmethod
     def get(
-        cls, adapter: MetabaseApi, targets: Optional[list[int]] = None
-    ) -> list[Self]:
+        cls: type[GWA], adapter: MetabaseApi, targets: Optional[list[int]] = None
+    ) -> list[GWA]:
         """Generic method for returning an object or list of objects
 
         Args:
@@ -118,11 +118,11 @@ class GenericWithoutArchive(MetabaseGenericObject):
 
     @classmethod
     def search(
-        cls,
+        cls: type[GWA],
         adapter: MetabaseApi,
-        search_params: list[dict],
-        search_list: Optional[list[Self]] = None,
-    ) -> list[Self]:
+        search_params: list[dict[str, Any]],
+        search_list: Optional[list[GWA]] = None,
+    ) -> list[GWA]:
         """Method to search a list of objects meeting a list of parameters
 
         Args:
@@ -135,7 +135,7 @@ class GenericWithoutArchive(MetabaseGenericObject):
         Returns:
             list[Self]: List of objects of the relevant type
         """
-        objs = search_list or cls.get(adapter=adapter)  # type: ignore
+        objs = search_list or cls.get(adapter=adapter)
         results = []
         for param in search_params:
             for obj in objs:
@@ -146,7 +146,9 @@ class GenericWithoutArchive(MetabaseGenericObject):
         return results
 
     @classmethod
-    def create(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def create(
+        cls: type[GWA], adapter: MetabaseApi, payloads: list[dict[str, Any]]
+    ) -> list[GWA]:
         """Generic method for creating a list of objects
 
         Args:
@@ -172,7 +174,9 @@ class GenericWithoutArchive(MetabaseGenericObject):
         raise InvalidParameters("Invalid target(s)")
 
     @classmethod
-    def update(cls, adapter: MetabaseApi, payloads: list[dict]) -> list[Self]:
+    def update(
+        cls: type[GWA], adapter: MetabaseApi, payloads: list[dict[str, Any]]
+    ) -> list[GWA]:
         """Generic method for updating a list of objects
 
         Args:
@@ -198,7 +202,7 @@ class GenericWithoutArchive(MetabaseGenericObject):
         raise InvalidParameters("Invalid target(s)")
 
     @classmethod
-    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict:
+    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict[int, Any]:
         """Method to delete a list of objects
 
         Args:
@@ -227,11 +231,11 @@ class GenericWithArchive(GenericWithoutArchive):
 
     @classmethod
     def archive(
-        cls,
+        cls: type[GA],
         adapter: MetabaseApi,
         targets: list[int],
-        unarchive: bool,
-    ) -> list[Self]:
+        unarchive: bool = False,
+    ) -> list[GA]:
         """Generic method for archiving a list of objects
 
         Args:
@@ -256,3 +260,8 @@ class GenericWithArchive(GenericWithoutArchive):
             )
             return [cls(**result) for result in results]
         raise InvalidParameters("Invalid set of targets")
+
+
+MGO = TypeVar("MGO", bound="MetabaseGenericObject")
+GWA = TypeVar("GWA", bound="GenericWithoutArchive")
+GA = TypeVar("GA", bound="GenericWithArchive")

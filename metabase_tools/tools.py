@@ -1,9 +1,11 @@
 """
 MetabaseTools extends MetabaseApi with additional complex functions
 """
+from __future__ import annotations  # Included for support of |
+
 from json import dumps, loads
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 from metabase_tools.exceptions import (
     EmptyDataReceived,
@@ -107,7 +109,7 @@ class MetabaseTools(MetabaseApi):
         file_extension: str,
         dry_run: bool = True,
         stop_on_error: bool = False,
-    ) -> list[dict] | dict:
+    ) -> list[dict[str, Any]] | dict[str, Any]:
         """Uploads queries to Metabase
 
         Args:
@@ -130,7 +132,11 @@ class MetabaseTools(MetabaseApi):
             cards = loads(file.read())
 
         # Iterate through mapping file
-        changes = {"updates": [], "creates": [], "errors": []}
+        changes: dict[str, list[dict[str, Any]]] = {
+            "updates": [],
+            "creates": [],
+            "errors": [],
+        }
         collections_by_path = self._get_collections_dict(key="path")
         for card in cards:
             card_path = Path(
@@ -177,7 +183,9 @@ class MetabaseTools(MetabaseApi):
             return self._execute_changes(changes)
         return changes
 
-    def _execute_changes(self, changes):
+    def _execute_changes(
+        self, changes: dict[str, list[dict[str, Any]]]
+    ) -> list[dict[str, Any]] | dict[str, Any]:
         results = []
         if len(changes["updates"]) > 0:
             update_results = Card.update(adapter=self, payloads=changes["updates"])
@@ -197,7 +205,9 @@ class MetabaseTools(MetabaseApi):
 
         return results
 
-    def _get_mapping_details(self, card: Card, collections_by_id: dict) -> dict:
+    def _get_mapping_details(
+        self, card: Card, collections_by_id: dict[Any, Any]
+    ) -> dict[str, Any]:
         try:
             mapping_details = {
                 "name": card.name,
@@ -216,7 +226,7 @@ class MetabaseTools(MetabaseApi):
 
         return mapping_details
 
-    def _save_query(self, card: Card, save_path: str, file_extension):
+    def _save_query(self, card: Card, save_path: str, file_extension: str) -> None:
         # SQL file creation
         sql_code = card.dataset_query["native"]["query"]
         sql_path = Path(f"{save_path}")
@@ -225,7 +235,7 @@ class MetabaseTools(MetabaseApi):
         with open(sql_path, "w", newline="", encoding="utf-8") as file:
             file.write(sql_code)
 
-    def _get_collections_dict(self, key: str):
+    def _get_collections_dict(self, key: str) -> dict[Any, Any]:
         collections = Collection.get_flat_list(adapter=self)
         non_keys = [k for k in collections[0].keys() if k != key]
         return {item[key]: {nk: item[nk] for nk in non_keys} for item in collections}
@@ -235,7 +245,7 @@ class MetabaseTools(MetabaseApi):
             adapter=self, collection_id=collection_id, model_type="card", archived=False
         )
         for item in collection_items:
-            if item["name"] == card_name:
+            if item["name"] == card_name and isinstance(item["id"], int):
                 return item["id"]
         raise ItemNotFound
 
@@ -243,7 +253,7 @@ class MetabaseTools(MetabaseApi):
         self,
         card_id: int,
         card_path: Path | str,
-    ) -> dict:
+    ) -> dict[str, Any]:
         prod_card = Card.get(adapter=self, targets=[card_id])[0]
         with open(card_path, "r", newline="", encoding="utf-8") as file:
             dev_code = file.read()
@@ -254,7 +264,9 @@ class MetabaseTools(MetabaseApi):
             return dev_def
         return {}
 
-    def _create_new_card(self, card, card_path, dev_coll_id):
+    def _create_new_card(
+        self, card: dict[str, Any], card_path: Path, dev_coll_id: int
+    ) -> dict[str, Any]:
         with open(card_path, "r", newline="", encoding="utf-8") as file:
             dev_query = file.read()
         db_id = [

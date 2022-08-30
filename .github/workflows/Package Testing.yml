@@ -40,7 +40,9 @@ jobs:
       - name: Enforce code formatting
         run: poetry run black .
       - name: Enforce code style
-        run: poetry run pylint $(git ls-files './metabase_tools/*.py') 
+        run: poetry run pylint $(git ls-files './metabase_tools/*.py')
+      - name: Enforce type hinting
+        run: poetry run mypy --strict $(git ls-files './metabase_tools/*.py')
       - name: Setup Metabase
         uses: nick-fields/retry@v2
         with:
