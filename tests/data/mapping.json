@@ -19,5 +19,12 @@
     "path": "/Development",
     "database_id": 1,
     "database_name": "Sample Dataset"
+  },
+  {
+    "name": "Does not exist",
+    "collection_id": 2,
+    "path": "/Development",
+    "database_id": 1,
+    "database_name": "Sample Dataset"
   }
 ]
