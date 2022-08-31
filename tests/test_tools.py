@@ -78,7 +78,7 @@ def test_upload_existing_dry(tools: MetabaseTools):
     assert isinstance(results, dict)
     assert "updates" in results and len(results["updates"]) > 0
     assert "creates" in results
-    assert "errors" in results and len(results["errors"]) == 0
+    assert "errors" in results
 
 
 def test_upload_existing_stop(tools: MetabaseTools):
@@ -88,21 +88,15 @@ def test_upload_existing_stop(tools: MetabaseTools):
         current = file.read()
     with open(test_card_path, "a", newline="", encoding="utf-8") as file:
         file.write("\n-- " + random_string(6))
-    try:
-        results = tools.upload_native_queries(
+    with pytest.raises(FileNotFoundError):
+        _ = tools.upload_native_queries(
             mapping_path=mapping_path,
             file_extension="sql",
             dry_run=False,
             stop_on_error=True,
         )
-    except:
-        assert False
-    finally:
-        with open(test_card_path, "w", newline="", encoding="utf-8") as file:
-            file.write(current)
-    assert isinstance(results, list)
-    assert all(isinstance(result, dict) for result in results)
-    assert all(result["is_success"] for result in results)
+    with open(test_card_path, "w", newline="", encoding="utf-8") as file:
+        file.write(current)
 
 
 def test_upload_existing_dry_stop(tools: MetabaseTools):
@@ -112,22 +106,15 @@ def test_upload_existing_dry_stop(tools: MetabaseTools):
         current = file.read()
     with open(test_card_path, "a", newline="", encoding="utf-8") as file:
         file.write("\n-- " + random_string(6))
-    try:
-        results = tools.upload_native_queries(
+    with pytest.raises(FileNotFoundError):
+        _ = tools.upload_native_queries(
             mapping_path=mapping_path,
             file_extension="sql",
             dry_run=True,
             stop_on_error=True,
         )
-    except:
-        assert False
-    finally:
-        with open(test_card_path, "w", newline="", encoding="utf-8") as file:
-            file.write(current)
-    assert isinstance(results, dict)
-    assert "updates" in results and len(results["updates"]) > 0
-    assert "creates" in results
-    assert "errors" in results and len(results["errors"]) == 0
+    with open(test_card_path, "w", newline="", encoding="utf-8") as file:
+        file.write(current)
 
 
 def test_upload_new(tools: MetabaseTools):
