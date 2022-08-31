@@ -1,4 +1,5 @@
 from datetime import datetime
+from json import dumps, loads
 from pathlib import Path
 
 import pytest
@@ -31,7 +32,7 @@ def test_download_native_queries(tools: MetabaseTools, result_path):
     )  # file was created in the last 2 seconds
 
 
-def test_upload(tools: MetabaseTools):
+def test_upload_existing(tools: MetabaseTools):
     mapping_path = Path("./tests/data/mapping.json")
     test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
     with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -55,7 +56,7 @@ def test_upload(tools: MetabaseTools):
     assert all(result["is_success"] for result in results)
 
 
-def test_upload_dry(tools: MetabaseTools):
+def test_upload_existing_dry(tools: MetabaseTools):
     mapping_path = Path("./tests/data/mapping.json")
     test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
     with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -80,7 +81,7 @@ def test_upload_dry(tools: MetabaseTools):
     assert "errors" in results and len(results["errors"]) == 0
 
 
-def test_upload_stop(tools: MetabaseTools):
+def test_upload_existing_stop(tools: MetabaseTools):
     mapping_path = Path("./tests/data/mapping.json")
     test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
     with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -104,7 +105,7 @@ def test_upload_stop(tools: MetabaseTools):
     assert all(result["is_success"] for result in results)
 
 
-def test_upload_dry_stop(tools: MetabaseTools):
+def test_upload_existing_dry_stop(tools: MetabaseTools):
     mapping_path = Path("./tests/data/mapping.json")
     test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
     with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -127,3 +128,52 @@ def test_upload_dry_stop(tools: MetabaseTools):
     assert "updates" in results and len(results["updates"]) > 0
     assert "creates" in results
     assert "errors" in results and len(results["errors"]) == 0
+
+
+def test_upload_new(tools: MetabaseTools):
+    # Set parameters
+    mapping_path = Path("./tests/data/mapping.json")
+    test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
+    # Read contents of test card
+    with open(test_card_path, "r", newline="", encoding="utf-8") as file:
+        test_card = file.read()
+    # Create new .sql file with same contents
+    rdm_str = random_string(6, letters_only=True)
+    new_card_path = Path(f"{test_card_path} - {rdm_str}".replace(".sql", "") + ".sql")
+    with open(new_card_path, "w", encoding="utf-8") as file:
+        file.write(test_card)
+    # Update mapping file with new file
+    with open(mapping_path, "r", encoding="utf-8") as file:
+        o_map: list = loads(file.read())
+    n_map = o_map.copy()
+    new_card_map = {
+        "name": f"Test Card - {rdm_str}",
+        "collection_id": 5,
+        "path": "/Development/Accounting",
+        "database_id": 1,
+        "database_name": "Sample Dataset",
+    }
+    n_map.append(new_card_map)
+    with open(mapping_path, "w", encoding="utf-8") as file:
+        file.write(dumps(n_map, indent=2))
+    # Run upload
+    try:
+        results = tools.upload_native_queries(
+            mapping_path=mapping_path,
+            file_extension="sql",
+            dry_run=False,
+            stop_on_error=False,
+        )
+    except:
+        assert False
+    finally:
+        # Undo changes
+        if new_card_path.exists():
+            new_card_path.unlink()
+        with open(mapping_path, "w", encoding="utf-8") as file:
+            file.write(dumps(o_map, indent=2))
+            file.write("\n")
+    # Tests
+    assert isinstance(results, list)
+    assert all(isinstance(result, dict) for result in results)
+    assert all(result["is_success"] for result in results)
