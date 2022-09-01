@@ -52,20 +52,6 @@ class User(GenericWithoutArchive):
         raise RequestFailure
 
     @classmethod
-    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict[int, Any]:
-        """Disables user(s) provided
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            targets (list[int]): List of users to disable
-
-        Returns:
-            dict: Dict of users that were disabled with results
-        """
-        # This method is provided to override the super class' delete function
-        return cls.disable(adapter=adapter, targets=targets)
-
-    @classmethod
     def disable(cls, adapter: MetabaseApi, targets: list[int]) -> dict[int, Any]:
         """Disables user(s) provided
 
