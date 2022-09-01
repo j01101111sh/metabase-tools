@@ -228,3 +228,9 @@ def test_card_invalid_archive(api: MetabaseApi):
     targets = {}
     with pytest.raises(InvalidParameters):
         _ = Card.archive(adapter=api, targets=targets)  # type: ignore
+
+
+def test_card_query_one(api: MetabaseApi):
+    payloads = [1]
+    results = Card.query(adapter=api, payloads=payloads)
+    pass
