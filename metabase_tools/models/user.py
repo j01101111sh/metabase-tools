@@ -86,7 +86,7 @@ class User(GenericWithoutArchive):
     @classmethod
     def resend_invite(
         cls: type[GWA], adapter: MetabaseApi, targets: list[int]
-    ) -> list[GWA]:
+    ) -> list[dict[str, str]]:
         """Resent user invites
 
         Args:
@@ -96,13 +96,12 @@ class User(GenericWithoutArchive):
         Returns:
             list[User]: Users with a resent invite
         """
-        results = cls._request_list(
+        return cls._request_list(
             http_method="POST",
             adapter=adapter,
             endpoint="/user/{id}/send_invite",
             source=[{"id": target} for target in targets],
         )
-        return [cls(**result) for result in results]
 
     @classmethod
     def update_password(
