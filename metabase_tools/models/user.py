@@ -97,7 +97,7 @@ class User(GenericWithoutArchive):
             list[User]: Users with a resent invite
         """
         results = cls._request_list(
-            http_method="PUT",
+            http_method="POST",
             adapter=adapter,
             endpoint="/user/{id}/send_invite",
             source=[{"id": target} for target in targets],
