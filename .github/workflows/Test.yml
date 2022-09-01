@@ -50,7 +50,7 @@ jobs:
           max_attempts: 3
           command: poetry run python ./tests/setup_metabase.py
       - name: Test with pytest
-        run: poetry run pytest --cov=metabase_tools --cov-report=xml --cov-fail-under=80
+        run: poetry run pytest --cov=metabase_tools --cov-report=xml --cov-fail-under=90
       - name: Upload coverage to Codecov
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
