@@ -1,6 +1,6 @@
 import pytest
 
-from metabase_tools import Card, MetabaseApi
+from metabase_tools import Card, InvalidParameters, MetabaseApi
 from tests.helpers import random_string
 
 
@@ -198,3 +198,33 @@ def test_card_unshare_one(api: MetabaseApi):
     assert isinstance(unshared, list)
     assert all(isinstance(result, dict) for result in unshared)
     assert len(card_to_unshare) == len(unshared)
+
+
+def test_card_invalid_get(api: MetabaseApi):
+    targets = {}
+    with pytest.raises(InvalidParameters):
+        _ = Card.get(adapter=api, targets=targets)  # type: ignore
+
+
+def test_card_invalid_create(api: MetabaseApi):
+    payloads = {}
+    with pytest.raises(InvalidParameters):
+        _ = Card.create(adapter=api, payloads=payloads)  # type: ignore
+
+
+def test_card_invalid_update(api: MetabaseApi):
+    payloads = {}
+    with pytest.raises(InvalidParameters):
+        _ = Card.update(adapter=api, payloads=payloads)  # type: ignore
+
+
+def test_card_invalid_delete(api: MetabaseApi):
+    targets = {}
+    with pytest.raises(InvalidParameters):
+        _ = Card.delete(adapter=api, targets=targets)  # type: ignore
+
+
+def test_card_invalid_archive(api: MetabaseApi):
+    targets = {}
+    with pytest.raises(InvalidParameters):
+        _ = Card.archive(adapter=api, targets=targets)  # type: ignore
