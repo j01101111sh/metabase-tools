@@ -146,6 +146,9 @@ def test_card_embeddable(api: MetabaseApi):
 
 def test_card_favorite_one(api: MetabaseApi):
     card_to_favorite = [1]
+    _ = Card.favorite(adapter=api, targets=card_to_favorite)
+    _ = Card.favorite(adapter=api, targets=card_to_favorite)
+    _ = Card.unfavorite(adapter=api, targets=card_to_favorite)
     favorite = Card.favorite(adapter=api, targets=card_to_favorite)
     assert isinstance(favorite, list)
     assert all(isinstance(result, dict) for result in favorite)
@@ -162,6 +165,9 @@ def test_card_favorite_many(api: MetabaseApi):
 
 def test_card_unfavorite_one(api: MetabaseApi):
     card_to_unfavorite = [1]
+    _ = Card.unfavorite(adapter=api, targets=card_to_unfavorite)
+    _ = Card.unfavorite(adapter=api, targets=card_to_unfavorite)
+    _ = Card.favorite(adapter=api, targets=card_to_unfavorite)
     unfavorite = Card.unfavorite(adapter=api, targets=card_to_unfavorite)
     assert isinstance(unfavorite, list)
     assert all(isinstance(result, dict) for result in unfavorite)

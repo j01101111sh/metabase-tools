@@ -227,6 +227,9 @@ class MetabaseApi:
         )
 
         # If status_code in 200-299 range, return Result, else raise exception
+        if response.status_code == 204 and http_method == "DELETE":
+            return {}
+
         is_success = 299 >= response.status_code >= 200
         if is_success:
             self._logger.debug(
