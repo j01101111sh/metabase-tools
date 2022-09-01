@@ -86,7 +86,7 @@ class User(GenericWithoutArchive):
     @classmethod
     def resend_invite(
         cls: type[GWA], adapter: MetabaseApi, targets: list[int]
-    ) -> list[dict[str, str]]:
+    ) -> list[dict[str, bool]]:
         """Resent user invites
 
         Args:
@@ -125,7 +125,9 @@ class User(GenericWithoutArchive):
         return [cls(**result) for result in results]
 
     @classmethod
-    def qbnewb(cls: type[GWA], adapter: MetabaseApi, targets: list[int]) -> list[GWA]:
+    def qbnewb(
+        cls: type[GWA], adapter: MetabaseApi, targets: list[int]
+    ) -> list[dict[str, bool]]:
         """Indicate that a user has been informed about Query Builder.
 
         Args:
@@ -135,10 +137,9 @@ class User(GenericWithoutArchive):
         Returns:
             list[Self]: Users with query builder toggle set
         """
-        results = cls._request_list(
+        return cls._request_list(
             http_method="PUT",
             adapter=adapter,
             endpoint="/user/{id}/qbnewb",
             source=[{"id": target} for target in targets],
         )
-        return [cls(**result) for result in results]
