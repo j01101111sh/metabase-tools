@@ -66,8 +66,6 @@ class MetabaseGenericObject(BaseModel, extra="forbid"):
                 raise InvalidParameters
             if isinstance(response, dict):
                 results.append(response)
-            elif isinstance(response, list):
-                results.extend(response)
         if len(results) > 0:
             return results
         raise EmptyDataReceived("No data returned")

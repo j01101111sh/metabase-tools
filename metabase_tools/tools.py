@@ -66,13 +66,9 @@ class MetabaseTools(MetabaseApi):
         cards_to_write = []
 
         for card in cards:
-            try:
-                new_card = self._get_mapping_details(
-                    card, collections_by_id=collections_by_id
-                )
-            except ItemInPersonalCollection:
-                self._logger.warning("Skipping %s (personal collection)", card.name)
-                continue
+            new_card = self._get_mapping_details(
+                card, collections_by_id=collections_by_id
+            )
             cards_to_write.append(new_card)
 
             try:
