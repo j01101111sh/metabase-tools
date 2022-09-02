@@ -12,7 +12,7 @@ from pydantic.fields import Field
 from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.collection_model import Collection
 from metabase_tools.models.generic_model import Item
-from metabase_tools.models.user_model import User
+from metabase_tools.models.user_model import UserItem
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
@@ -30,7 +30,7 @@ class CardItem(Item):
     collection_position: Optional[int]
     table_id: Optional[int]
     result_metadata: Optional[list[dict[str, Any]]]
-    creator: User
+    creator: UserItem
     database_id: Optional[int]
     enable_embedding: bool
     collection_id: Optional[int]
