@@ -263,3 +263,12 @@ def test_card_query_one(cards: list[CardItem]):
     card = cards[0]
     results = card.query()
     assert isinstance(results, CardQueryResult)
+
+
+def test_card_search(api: MetabaseApi, cards: list[CardItem]):
+    params = [{"name": "Accounting"}]
+    results = api.cards.search(search_params=params, search_list=cards)
+    assert len(results) == len(params)
+    assert isinstance(results, list)
+    assert all(isinstance(result, CardItem) for result in results)
+    assert all(card._adapter is not None for card in results)
