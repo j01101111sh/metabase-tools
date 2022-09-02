@@ -6,6 +6,7 @@ from datetime import datetime
 from typing import Any, ClassVar, Optional
 from uuid import UUID
 
+from pydantic import BaseModel
 from pydantic.fields import Field
 
 from metabase_tools.exceptions import (
@@ -183,3 +184,38 @@ class Card(GenericWithArchive):
             endpoint="/card/{id}/public_link",
             source=targets,
         )
+
+    @classmethod
+    def query(
+        cls: type[GA], adapter: MetabaseApi, payloads: list[int]
+    ) -> list[CardQueryResult]:
+        """Execute a query stored in card(s)
+
+        Args:
+            adapter (MetabaseApi): Connection to Metabase API
+            targets (list[int]): list of cards to query
+
+        Returns:
+            list[CardQueryResult]: Results of queries
+        """
+        results = cls._request_list(
+            http_method="POST",
+            adapter=adapter,
+            endpoint="/card/{id}/query",
+            source=payloads,
+        )
+        return [CardQueryResult(**result) for result in results]
+
+
+class CardQueryResult(BaseModel):
+    """Object for results of a card query"""
+
+    data: dict[str, Any]
+    database_id: int
+    started_at: datetime
+    json_query: dict[str, Any]
+    average_execution_time: Optional[int]
+    status: str
+    context: str
+    row_count: int
+    running_time: int
