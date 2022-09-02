@@ -107,13 +107,25 @@ class CardItem(Item):
         raise InvalidParameters
 
     def share(self: CardItem) -> dict[str, Any]:
-        """Generate publicly-accessible links for card
+        """Generate publicly-accessible link for card
 
         Returns:
-            list[dict]: UUIDs to be used in public links.
+            dict: UUID to be used in public link.
         """
         if self._adapter:
             result = self._adapter.post(endpoint=f"/card/{self.id}/public_link")
+            if isinstance(result, dict):
+                return result
+        raise InvalidParameters
+
+    def unshare(self: CardItem) -> dict[str, Any]:
+        """Remove publicly-accessible links for card
+
+        Returns:
+            dict: UUID to be used in public link.
+        """
+        if self._adapter:
+            result = self._adapter.delete(endpoint=f"/card/{self.id}/public_link")
             if isinstance(result, dict):
                 return result
         raise InvalidParameters
