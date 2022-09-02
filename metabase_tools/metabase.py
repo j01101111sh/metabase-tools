@@ -11,6 +11,7 @@ from typing import Any, Optional
 from requests import Response, Session
 from requests.exceptions import RequestException
 
+from metabase_tools.endpoint.cards_endpoint import Cards
 from metabase_tools.exceptions import (
     AuthenticationFailure,
     InvalidDataReceived,
@@ -46,6 +47,8 @@ class MetabaseApi:
         if cache_token:
             save_path = Path(token_path or "metabase.token")
             self.save_token(save_path=save_path)
+
+        self.cards = Cards(self)
 
     def _validate_base_url(self, url: str) -> str:
         if url[-1] == "/":

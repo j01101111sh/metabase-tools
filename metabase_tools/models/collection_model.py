@@ -2,14 +2,16 @@
 """
 from __future__ import annotations  # Included for support of |
 
-from typing import Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
 from metabase_tools.exceptions import EmptyDataReceived
-from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.generic import GA, GenericWithArchive
+from metabase_tools.models.generic_model import Item
+
+if TYPE_CHECKING:
+    from metabase_tools.metabase import MetabaseApi
 
 
-class Collection(GenericWithArchive):
+class Collection(Item):
     """Collection object class with related methods"""
 
     BASE_EP: ClassVar[str] = "/collection"

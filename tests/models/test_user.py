@@ -39,7 +39,7 @@ def test_user_create_many(api: MetabaseApi, new_def: dict):
 def test_user_update_one(api: MetabaseApi):
     new_name = random_string(6)
     change = {"id": 3, "first_name": new_name}
-    results = User.update(adapter=api, payloads=[change])
+    results = User.update(adapter=api, payload=[change])
     assert isinstance(results, list)
     assert all(isinstance(o, User) for o in results)
     assert all(o.first_name == new_name for o in results)
@@ -50,7 +50,7 @@ def test_user_update_many(api: MetabaseApi):
     change_one = {"id": 3, "first_name": new_name}
     change_two = {"id": 4, "first_name": new_name}
     new_defs = [change_one, change_two]
-    results = User.update(adapter=api, payloads=new_defs)
+    results = User.update(adapter=api, payload=new_defs)
     assert isinstance(results, list)
     assert all(isinstance(o, User) for o in results)
     assert all(o.first_name == new_name for o in results)

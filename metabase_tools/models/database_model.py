@@ -4,10 +4,10 @@
 from datetime import datetime
 from typing import Any, ClassVar, Optional
 
-from metabase_tools.models.generic import GenericWithoutArchive
+from metabase_tools.models.generic_model import Item
 
 
-class Database(GenericWithoutArchive):
+class Database(Item):
     """Database object class with related methods"""
 
     BASE_EP: ClassVar[str] = "/database"

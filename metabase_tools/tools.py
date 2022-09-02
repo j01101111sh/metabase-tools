@@ -13,9 +13,9 @@ from metabase_tools.exceptions import (
     ItemNotFound,
 )
 from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.card import Card
-from metabase_tools.models.collection import Collection
-from metabase_tools.models.database import Database
+from metabase_tools.models.card_model import CardItem
+from metabase_tools.models.collection_model import Collection
+from metabase_tools.models.database_model import Database
 
 
 class MetabaseTools(MetabaseApi):
@@ -47,7 +47,7 @@ class MetabaseTools(MetabaseApi):
         # Download list of cards from Metabase API and filter to only native queries
         cards = [
             card
-            for card in Card.get(adapter=self)
+            for card in CardItem.get(adapter=self)
             if (
                 card.query_type == "native"
                 and card.collection
@@ -184,7 +184,7 @@ class MetabaseTools(MetabaseApi):
     ) -> list[dict[str, Any]] | dict[str, Any]:
         results = []
         if len(changes["updates"]) > 0:
-            update_results = Card.update(adapter=self, payloads=changes["updates"])
+            update_results = CardItem.update(adapter=self, payload=changes["updates"])
             if isinstance(update_results, list):
                 for result in update_results:
                     results.append(
@@ -192,7 +192,7 @@ class MetabaseTools(MetabaseApi):
                     )
 
         if len(changes["creates"]) > 0:
-            create_results = Card.create(adapter=self, payloads=changes["creates"])
+            create_results = CardItem.create(adapter=self, payloads=changes["creates"])
             if isinstance(create_results, list):
                 for result in create_results:
                     results.append(
@@ -202,7 +202,7 @@ class MetabaseTools(MetabaseApi):
         return results
 
     def _get_mapping_details(
-        self, card: Card, collections_by_id: dict[Any, Any]
+        self, card: CardItem, collections_by_id: dict[Any, Any]
     ) -> dict[str, Any]:
         try:
             mapping_details = {
@@ -222,7 +222,7 @@ class MetabaseTools(MetabaseApi):
 
         return mapping_details
 
-    def _save_query(self, card: Card, save_path: str, file_extension: str) -> None:
+    def _save_query(self, card: CardItem, save_path: str, file_extension: str) -> None:
         # SQL file creation
         sql_code = card.dataset_query["native"]["query"]
         sql_path = Path(f"{save_path}")
@@ -250,7 +250,7 @@ class MetabaseTools(MetabaseApi):
         card_id: int,
         card_path: Path | str,
     ) -> dict[str, Any]:
-        prod_card = Card.get(adapter=self, targets=[card_id])[0]
+        prod_card = CardItem.get(adapter=self, targets=[card_id])[0]
         with open(card_path, "r", newline="", encoding="utf-8") as file:
             dev_code = file.read()
         if dev_code != prod_card.dataset_query["native"]["query"]:
