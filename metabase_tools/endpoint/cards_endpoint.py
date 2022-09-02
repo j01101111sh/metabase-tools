@@ -1,3 +1,6 @@
+"""Classes related to card endpoints
+"""
+
 from __future__ import annotations
 
 import logging
@@ -12,21 +15,31 @@ logger = logging.getLogger(__name__)
 
 
 class Cards(Endpoint[CardItem]):
+    """Card related endpoint methods"""
+
     _BASE_EP: ClassVar[str] = "/card"
     _STD_OBJ: ClassVar[type] = CardItem
 
     def get(self, targets: Optional[list[int]] = None) -> list[CardItem]:
-        """_summary_
+        """Fetch list of cards
 
         Args:
-            targets (Optional[list[int]], optional): _description_. Defaults to None.
+            targets (list[int], optional): If provided, the list of cards to fetch
 
         Returns:
-            list[CardItem]: _description_
+            list[CardItem]
         """
         return super().get(targets=targets)
 
     def create(self, payloads: list[dict[str, Any]]) -> list[CardItem]:
+        """Create new card(s)
+
+        Args:
+            payloads (list[dict[str, Any]]): Card details
+
+        Returns:
+            list[CardItem]: Created cards
+        """
         return super().create(payloads=payloads)
 
     def search(
@@ -34,6 +47,17 @@ class Cards(Endpoint[CardItem]):
         search_params: list[dict[str, Any]],
         search_list: Optional[list[CardItem]] = None,
     ) -> list[CardItem]:
+        """Method to search a list of cards meeting a list of parameters
+
+        Args:
+            search_params (list[dict]): Each dict contains search criteria and returns\
+                 1 result
+            search_list (list[CardItem], optional): Provide to search an existing \
+                list, by default pulls from API
+
+        Returns:
+            list[CardItem]: List of cards of the relevant type
+        """
         return super().search(search_params=search_params, search_list=search_list)
 
     def embeddable(self) -> list[CardItem]:

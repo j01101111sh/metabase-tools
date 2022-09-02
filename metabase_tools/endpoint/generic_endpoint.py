@@ -1,3 +1,6 @@
+"""Generic methods for endpoints
+"""
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -13,6 +16,8 @@ T = TypeVar("T", bound=Item)
 
 
 class Endpoint(ABC, Generic[T]):
+    """Abstract base class for endpoints"""
+
     _BASE_EP: ClassVar[str]
     _STD_OBJ: ClassVar[type]
     _adapter: MetabaseApi
@@ -80,7 +85,7 @@ class Endpoint(ABC, Generic[T]):
             EmptyDataReceived: No data is received from the API
 
         Returns:
-            list[Self]: List of objects of the relevant type
+            list[T]: List of objects of the relevant type
         """
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
             results = self._request_list(
@@ -123,7 +128,7 @@ class Endpoint(ABC, Generic[T]):
             InvalidParameters: Targets and jsons are both None
 
         Returns:
-            list[Self]: List of objects of the relevant type
+            list[T]: List of objects of the relevant type
         """
         if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
             # If a list of targets is provided, return a list of objects
@@ -150,11 +155,11 @@ class Endpoint(ABC, Generic[T]):
         Args:
             search_params (list[dict]): Each dict contains search criteria and returns\
                  1 result
-            search_list (list[Self], optional): Provide to search against an existing \
+            search_list (list[T], optional): Provide to search against an existing \
                 list, by default pulls from API
 
         Returns:
-            list[Self]: List of objects of the relevant type
+            list[T]: List of objects of the relevant type
         """
         objs = search_list or self.get()
         results = []

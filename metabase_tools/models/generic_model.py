@@ -27,19 +27,24 @@ class Item(BaseModel, ABC, extra="forbid"):
     name: str
 
     def set_adapter(self, adapter: MetabaseApi) -> None:
+        """Sets the adapter on an object
+
+        Args:
+            adapter (MetabaseApi): Connection to MetabaseApi
+        """
         self._adapter = adapter
 
     def update(self: T, payload: dict[str, Any]) -> T:
         """Generic method for updating an object
 
         Args:
-            payloads (list[dict]): List of json payloads
+            payloads (dict): Details of update
 
         Raises:
             InvalidParameters: Targets and jsons are both None
 
         Returns:
-            list[Self]: List of objects of the relevant type
+            T: Object of the relevant type
         """
         if self._adapter:
             try:
@@ -55,7 +60,7 @@ class Item(BaseModel, ABC, extra="forbid"):
         raise InvalidParameters("Invalid target(s)")
 
     def archive(self: T, unarchive: bool = False) -> T:
-        """Generic method for archiving an of object
+        """Generic method for archiving an object
 
         Args:
             unarchive (bool): Whether object should be unarchived instead of archived
@@ -64,7 +69,7 @@ class Item(BaseModel, ABC, extra="forbid"):
             InvalidParameters: Targets and jsons are both None
 
         Returns:
-            list[Self]: List of objects of the relevant type
+            T: Object of the relevant type
         """
         payload = {"id": self.id, "archived": not unarchive}
         if self._adapter:
@@ -81,10 +86,10 @@ class Item(BaseModel, ABC, extra="forbid"):
         """Method to delete an object
 
         Raises:
-            InvalidParameters: Targets is not a list of ints
+            InvalidParameters: Invalid target
 
         Returns:
-            dict: _description_
+            dict: Results
         """
         if self._adapter:
             result = self._adapter.delete(endpoint=self._BASE_EP)
@@ -92,12 +97,3 @@ class Item(BaseModel, ABC, extra="forbid"):
                 final = {self.id: result}
                 return final
         raise InvalidParameters("Invalid target(s)")
-        # if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
-        #     results = cls._request_list(
-        #         http_method="DELETE",
-        #         adapter=adapter,
-        #         endpoint=cls.BASE_EP + "/{id}",
-        #         source=targets,
-        #     )
-        #     return {target: result for result, target in zip(results, targets)}
-        # raise InvalidParameters("Invalid set of targets")

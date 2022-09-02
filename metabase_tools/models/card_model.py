@@ -53,6 +53,11 @@ class CardItem(Item):
     is_favorite: Optional[bool] = Field(alias="favorite")
 
     def set_adapter(self, adapter: MetabaseApi) -> None:
+        """Sets the adapter on an object
+
+        Args:
+            adapter (MetabaseApi): Connection to MetabaseApi
+        """
         super().set_adapter(adapter=adapter)
 
     def delete(self: CardItem) -> dict[int | str, dict[str, Any]]:
@@ -64,9 +69,31 @@ class CardItem(Item):
         raise NotImplementedError
 
     def update(self: CardItem, payload: dict[str, Any]) -> CardItem:
+        """Method for updating a card
+
+        Args:
+            payloads (dict): Details of update
+
+        Raises:
+            InvalidParameters: Targets and jsons are both None
+
+        Returns:
+            CardItem: Object of the relevant type
+        """
         return super().update(payload=payload)
 
     def archive(self: CardItem, unarchive: bool = False) -> CardItem:
+        """Method for archiving a card
+
+        Args:
+            unarchive (bool): Whether object should be unarchived instead of archived
+
+        Raises:
+            InvalidParameters: Targets and jsons are both None
+
+        Returns:
+            CardItem: Object of the relevant type
+        """
         return super().archive(unarchive=unarchive)
 
     def related(self: CardItem) -> dict[str, Any]:
@@ -98,7 +125,7 @@ class CardItem(Item):
         """Unfavorite card
 
         Returns:
-            list[dict]: Results of unfavoriting operation
+            dict: Result of unfavoriting operation
         """
         if self._adapter:
             result = self._adapter.delete(endpoint=f"/card/{self.id}/favorite")
@@ -147,7 +174,7 @@ class CardQueryResult(BaseModel):
     """Object for results of a card query"""
 
     data: dict[str, Any]
-    database_id: int  #
+    database_id: int
     started_at: datetime
     json_query: dict[str, Any]
     average_execution_time: Optional[int]
