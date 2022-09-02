@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "metabase-tools"
-version = "0.6.0"
+version = "0.7.0"
 description = "Unofficial API wrapper for Metabase plus additional helper tools"
 authors = ["Josh Odell <j01101111sh@gmail.com>"]
 
@@ -9,6 +9,7 @@ python = "^3.10"
 requests = "^2.28.1"
 pydantic = "^1.9.1"
 types-requests = "^2.28.9"
+wrapt = "^1.14.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
@@ -49,7 +50,6 @@ log_file_level = "DEBUG"
 log_file_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcName)s - %(name)s\n\t%(message)s"
 
 [tool.coverage.report]
-fail_under = 80
 omit = ["tests/*.py"]
-exclude_lines = ["def _","except RequestException", "elif response.status_code == 401:"]
+exclude_lines = ["def _","except RequestException", "elif response.status_code == 401:", "EmptyDataReceived", "RequestFailure"]
 show_missing = true

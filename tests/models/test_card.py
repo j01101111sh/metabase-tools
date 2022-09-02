@@ -1,6 +1,6 @@
 import pytest
 
-from metabase_tools import Card, MetabaseApi
+from metabase_tools import Card, InvalidParameters, MetabaseApi
 from tests.helpers import random_string
 
 
@@ -146,6 +146,9 @@ def test_card_embeddable(api: MetabaseApi):
 
 def test_card_favorite_one(api: MetabaseApi):
     card_to_favorite = [1]
+    _ = Card.favorite(adapter=api, targets=card_to_favorite)
+    _ = Card.favorite(adapter=api, targets=card_to_favorite)
+    _ = Card.unfavorite(adapter=api, targets=card_to_favorite)
     favorite = Card.favorite(adapter=api, targets=card_to_favorite)
     assert isinstance(favorite, list)
     assert all(isinstance(result, dict) for result in favorite)
@@ -162,6 +165,9 @@ def test_card_favorite_many(api: MetabaseApi):
 
 def test_card_unfavorite_one(api: MetabaseApi):
     card_to_unfavorite = [1]
+    _ = Card.unfavorite(adapter=api, targets=card_to_unfavorite)
+    _ = Card.unfavorite(adapter=api, targets=card_to_unfavorite)
+    _ = Card.favorite(adapter=api, targets=card_to_unfavorite)
     unfavorite = Card.unfavorite(adapter=api, targets=card_to_unfavorite)
     assert isinstance(unfavorite, list)
     assert all(isinstance(result, dict) for result in unfavorite)
@@ -192,3 +198,39 @@ def test_card_unshare_one(api: MetabaseApi):
     assert isinstance(unshared, list)
     assert all(isinstance(result, dict) for result in unshared)
     assert len(card_to_unshare) == len(unshared)
+
+
+def test_card_invalid_get(api: MetabaseApi):
+    targets = {}
+    with pytest.raises(InvalidParameters):
+        _ = Card.get(adapter=api, targets=targets)  # type: ignore
+
+
+def test_card_invalid_create(api: MetabaseApi):
+    payloads = {}
+    with pytest.raises(InvalidParameters):
+        _ = Card.create(adapter=api, payloads=payloads)  # type: ignore
+
+
+def test_card_invalid_update(api: MetabaseApi):
+    payloads = {}
+    with pytest.raises(InvalidParameters):
+        _ = Card.update(adapter=api, payloads=payloads)  # type: ignore
+
+
+def test_card_invalid_delete(api: MetabaseApi):
+    targets = {}
+    with pytest.raises(InvalidParameters):
+        _ = Card.delete(adapter=api, targets=targets)  # type: ignore
+
+
+def test_card_invalid_archive(api: MetabaseApi):
+    targets = {}
+    with pytest.raises(InvalidParameters):
+        _ = Card.archive(adapter=api, targets=targets)  # type: ignore
+
+
+def test_card_query_one(api: MetabaseApi):
+    payloads = [1]
+    results = Card.query(adapter=api, payloads=payloads)
+    pass

@@ -1,7 +1,7 @@
 """Unofficial API wrapper for Metabase
 """
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"
 
 from metabase_tools.exceptions import (
     AuthenticationFailure,
@@ -15,7 +15,7 @@ from metabase_tools.exceptions import (
     RequestFailure,
 )
 from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.card import Card
+from metabase_tools.models.card import Card, CardQueryResult
 from metabase_tools.models.collection import Collection
 from metabase_tools.models.database import Database
 from metabase_tools.models.user import User
@@ -33,6 +33,7 @@ __all__ = (
     "RequestFailure",
     "MetabaseApi",
     "Card",
+    "CardQueryResult",
     "Collection",
     "Database",
     "User",

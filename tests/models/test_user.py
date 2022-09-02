@@ -113,3 +113,26 @@ def test_user_get_all(api: MetabaseApi):
 def test_user_current(api: MetabaseApi):
     user = User.current(adapter=api)
     assert isinstance(user, User)
+
+
+def test_user_resend(api: MetabaseApi):
+    targets = [2]
+    result = User.resend_invite(adapter=api, targets=targets)
+    assert isinstance(result, list)
+    assert all(isinstance(r, dict) for r in result)
+
+
+def test_user_reset_password(api: MetabaseApi):
+    payloads = [{"id": 2, "password": "asdfoin33kn23fkmsdf"}]
+    result = User.update_password(adapter=api, payloads=payloads)
+    assert isinstance(result, list)
+    assert all(isinstance(r, User) for r in result)
+    assert len(payloads) == len(result)
+
+
+def test_user_qbnewb(api: MetabaseApi):
+    targets = [2]
+    result = User.qbnewb(adapter=api, targets=targets)
+    assert isinstance(result, list)
+    assert all(isinstance(r, dict) for r in result)
+    assert len(targets) == len(result)

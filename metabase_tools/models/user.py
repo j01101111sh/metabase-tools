@@ -52,20 +52,6 @@ class User(GenericWithoutArchive):
         raise RequestFailure
 
     @classmethod
-    def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict[int, Any]:
-        """Disables user(s) provided
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            targets (list[int]): List of users to disable
-
-        Returns:
-            dict: Dict of users that were disabled with results
-        """
-        # This method is provided to override the super class' delete function
-        return cls.disable(adapter=adapter, targets=targets)
-
-    @classmethod
     def disable(cls, adapter: MetabaseApi, targets: list[int]) -> dict[int, Any]:
         """Disables user(s) provided
 
@@ -100,7 +86,7 @@ class User(GenericWithoutArchive):
     @classmethod
     def resend_invite(
         cls: type[GWA], adapter: MetabaseApi, targets: list[int]
-    ) -> list[GWA]:
+    ) -> list[dict[str, bool]]:
         """Resent user invites
 
         Args:
@@ -110,13 +96,12 @@ class User(GenericWithoutArchive):
         Returns:
             list[User]: Users with a resent invite
         """
-        results = cls._request_list(
-            http_method="PUT",
+        return cls._request_list(
+            http_method="POST",
             adapter=adapter,
             endpoint="/user/{id}/send_invite",
             source=[{"id": target} for target in targets],
         )
-        return [cls(**result) for result in results]
 
     @classmethod
     def update_password(
@@ -140,7 +125,9 @@ class User(GenericWithoutArchive):
         return [cls(**result) for result in results]
 
     @classmethod
-    def qbnewb(cls: type[GWA], adapter: MetabaseApi, targets: list[int]) -> list[GWA]:
+    def qbnewb(
+        cls: type[GWA], adapter: MetabaseApi, targets: list[int]
+    ) -> list[dict[str, bool]]:
         """Indicate that a user has been informed about Query Builder.
 
         Args:
@@ -150,10 +137,9 @@ class User(GenericWithoutArchive):
         Returns:
             list[Self]: Users with query builder toggle set
         """
-        results = cls._request_list(
+        return cls._request_list(
             http_method="PUT",
             adapter=adapter,
             endpoint="/user/{id}/qbnewb",
             source=[{"id": target} for target in targets],
         )
-        return [cls(**result) for result in results]
