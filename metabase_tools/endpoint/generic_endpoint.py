@@ -98,11 +98,14 @@ class Endpoint(ABC, Generic[T]):
             response = self._adapter.get(endpoint=self._BASE_EP)
             if isinstance(response, list):  # Validate data was returned
                 # Unpack data into instances of the class and return
-                return [
-                    self._STD_OBJ(self._adapter, **record)
+                objs = [
+                    self._STD_OBJ(**record)
                     for record in response
                     if isinstance(record, dict)
                 ]
+                for obj in objs:
+                    obj.set_adapter(self._adapter)
+                return objs
         else:
             # If something other than None, int or list[int], raise error
             raise InvalidParameters("Invalid target(s)")
@@ -129,7 +132,10 @@ class Endpoint(ABC, Generic[T]):
                 endpoint=self._BASE_EP,
                 source=payloads,
             )
-            return [self._STD_OBJ(**result) for result in results]
+            objs = [self._STD_OBJ(**result) for result in results]
+            for obj in objs:
+                obj.set_adapter(self._adapter)
+            return objs
         # If something other than dict or list[dict], raise error
         raise InvalidParameters("Invalid target(s)")
 

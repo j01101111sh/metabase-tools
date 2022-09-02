@@ -1,7 +1,14 @@
 import pytest
 
 from metabase_tools import CardItem, InvalidParameters, MetabaseApi
+from metabase_tools.exceptions import RequestFailure
+from metabase_tools.models.card_model import CardQueryResult
 from tests.helpers import random_string
+
+
+@pytest.fixture(scope="module")
+def cards(api: MetabaseApi) -> list[CardItem]:
+    return api.cards.get()
 
 
 @pytest.fixture(scope="module")
@@ -31,6 +38,7 @@ def test_card_create_one(api: MetabaseApi, new_card_def: dict):
     new_card_obj = api.cards.create(payloads=[card_one])
     assert isinstance(new_card_obj, list)
     assert all(isinstance(card, CardItem) for card in new_card_obj)
+    assert all(card._adapter is not None for card in new_card_obj)
 
 
 def test_card_create_many(api: MetabaseApi, new_card_def: dict):
@@ -42,10 +50,11 @@ def test_card_create_many(api: MetabaseApi, new_card_def: dict):
     new_card_objs = api.cards.create(payloads=new_cards)
     assert isinstance(new_card_objs, list)
     assert all(isinstance(card, CardItem) for card in new_card_objs)
+    assert all(card._adapter is not None for card in new_card_objs)
 
 
-def test_card_update_one(api: MetabaseApi, run_id: str):
-    item = api.cards.get(targets=[1])[0]
+def test_card_update_one(cards: list[CardItem], run_id: str):
+    item = cards[0]
     item_change = {"id": item.id, "description": f"Updated {run_id}"}
     new_item = item.update(payload=item_change)
     assert isinstance(new_item, CardItem)
@@ -54,188 +63,203 @@ def test_card_update_one(api: MetabaseApi, run_id: str):
     assert new_item._adapter is not None
 
 
-def test_card_update_many(api: MetabaseApi, run_id: str):
+def test_card_update_many(cards: list[CardItem], run_id: str):
     card_changes = {"id": 1, "description": f"Updated {run_id}"}
-    cards = CardItem.get(adapter=api)
-    cards_to_update = [card.id for card in cards][:2]
+    cards_to_update = cards[:2]
     updates = []
-    for card in cards_to_update:
+    for card in [card.id for card in cards_to_update]:
         new_card = card_changes.copy()
         new_card.update(id=card)
         updates.append(new_card)
-    change_result = CardItem.update(adapter=api, payload=updates)
+    change_result = [
+        card.update(payload=update) for card, update in zip(cards_to_update, updates)
+    ]
     assert isinstance(change_result, list)
     assert all(isinstance(card, CardItem) for card in change_result)
     assert all(card.description == f"Updated {run_id}" for card in change_result)
+    assert all(card._adapter is not None for card in change_result)
 
 
-def test_card_archive_one(api: MetabaseApi):
-    card_to_archive = [1]
-    card = api.cards.get(targets=card_to_archive)[0]
-    change_result = card.archive(adapter=api, unarchive=False)
+def test_card_archive_one(cards: list[CardItem]):
+    card = cards[0]
+    change_result = card.archive(unarchive=False)
+    assert isinstance(change_result, CardItem)
+    assert change_result.archived is True
+    assert change_result._adapter is not None
+
+
+def test_card_archive_many(cards: list[CardItem]):
+    items = cards[:2]
+    change_result = [item.archive(unarchive=False) for item in items]
     assert isinstance(change_result, list)
     assert all(isinstance(card, CardItem) for card in change_result)
     assert all(card.archived is True for card in change_result)
+    assert all(card._adapter is not None for card in change_result)
 
 
-def test_card_archive_many(api: MetabaseApi):
-    cards = CardItem.get(adapter=api)
-    cards_to_archive = [1, 2]
-    change_results = CardItem.archive(adapter=api, target=cards_to_archive)
-    assert isinstance(change_results, list)
-    assert all(isinstance(cr, CardItem) for cr in change_results)
-    assert all(cr.archived for cr in change_results)
+def test_card_unarchive_one(cards: list[CardItem]):
+    card = cards[0]
+    change_result = card.archive(unarchive=True)
+    assert isinstance(change_result, CardItem)
+    assert change_result.archived is False
+    assert change_result._adapter is not None
 
 
-def test_card_unarchive_one(api: MetabaseApi):
-    card_to_archive = [1]
-    change_result = CardItem.archive(
-        adapter=api, target=card_to_archive, unarchive=True
-    )
+def test_card_unarchive_many(cards: list[CardItem]):
+    items = cards[:2]
+    change_result = [item.archive(unarchive=True) for item in items]
     assert isinstance(change_result, list)
     assert all(isinstance(card, CardItem) for card in change_result)
     assert all(card.archived is False for card in change_result)
-
-
-def test_card_unarchive_many(api: MetabaseApi):
-    cards = CardItem.get(adapter=api)
-    cards_to_unarchive = [1, 2]
-    change_results = CardItem.archive(
-        adapter=api, target=cards_to_unarchive, unarchive=True
-    )
-    assert isinstance(change_results, list)
-    assert all(isinstance(cr, CardItem) for cr in change_results)
-    assert all(not cr.archived for cr in change_results)
+    assert all(card._adapter is not None for card in change_result)
 
 
 def test_card_get_one(api: MetabaseApi):
     card_to_get = [1]
-    card = CardItem.get(adapter=api, targets=card_to_get)
-    assert isinstance(card, list)
-    assert all(isinstance(c, CardItem) for c in card)
+    items = api.cards.get(targets=card_to_get)
+    assert isinstance(items, list)
+    assert all(isinstance(c, CardItem) for c in items)
+    assert all(card._adapter is not None for card in items)
 
 
 def test_card_get_many(api: MetabaseApi):
-    cards_to_get = [1, 1]
-    cards = CardItem.get(adapter=api, targets=cards_to_get)
-    assert isinstance(cards, list)
-    assert all(isinstance(card, CardItem) for card in cards)
+    cards_to_get = [1, 2]
+    items = api.cards.get(targets=cards_to_get)
+    assert isinstance(items, list)
+    assert all(isinstance(card, CardItem) for card in items)
+    assert all(card._adapter is not None for card in items)
 
 
 def test_card_get_all(api: MetabaseApi):
-    cards = api.cards.get()
-    assert isinstance(cards, list)
-    assert all(isinstance(card, CardItem) for card in cards)
+    items = api.cards.get()
+    assert isinstance(items, list)
+    assert all(isinstance(card, CardItem) for card in items)
+    assert all(card._adapter is not None for card in items)
 
 
-def test_card_related_one(api: MetabaseApi):
-    related = CardItem.related(adapter=api, targets=[1])
+def test_card_related_one(cards: list[CardItem]):
+    card = cards[0]
+    related = card.related()
+    assert isinstance(related, dict)
+
+
+def test_card_related_many(cards: list[CardItem]):
+    items = cards[:2]
+    related = [card.related() for card in items]
     assert isinstance(related, list)
-    assert len(related) == 1
+    assert len(related) == len(items)
     assert all(isinstance(item, dict) for item in related)
 
 
-def test_card_related_many(api: MetabaseApi):
-    related = CardItem.related(adapter=api, targets=[1, 2])
-    assert isinstance(related, list)
-    assert len(related) == 2
-    assert all(isinstance(item, dict) for item in related)
-
-
-# @pytest.mark.skip(reason="Not implemented in test environment")
+@pytest.mark.skip(reason="Not implemented in test environment")
 def test_card_embeddable(api: MetabaseApi):
     embeddable = api.cards.embeddable()
     assert isinstance(embeddable, list)
     assert all(isinstance(card, CardItem) for card in embeddable)
+    assert all(card._adapter is not None for card in embeddable)
 
 
-def test_card_favorite_one(api: MetabaseApi):
-    card_to_favorite = [1]
-    _ = CardItem.favorite(adapter=api, targets=card_to_favorite)
-    _ = CardItem.favorite(adapter=api, targets=card_to_favorite)
-    _ = CardItem.unfavorite(adapter=api, targets=card_to_favorite)
-    favorite = CardItem.favorite(adapter=api, targets=card_to_favorite)
-    assert isinstance(favorite, list)
-    assert all(isinstance(result, dict) for result in favorite)
-    assert len(card_to_favorite) == len(favorite)
+def test_card_favorite_one(cards: list[CardItem]):
+    card_to_favorite = cards[0]
+    try:
+        _ = card_to_favorite.unfavorite()
+    except:
+        pass
+    finally:
+        favorite = card_to_favorite.favorite()
+    assert isinstance(favorite, dict)
 
 
-def test_card_favorite_many(api: MetabaseApi):
-    cards_to_favorite = [1, 2]
-    favorites = CardItem.favorite(adapter=api, targets=cards_to_favorite)
+def test_card_favorite_many(cards: list[CardItem]):
+    card_to_favorite = cards[:2]
+    favorites = []
+    for card in card_to_favorite:
+        try:
+            _ = card.unfavorite()
+        except:
+            pass
+        finally:
+            new = card.favorite()
+            favorites.append(new)
     assert isinstance(favorites, list)
-    assert all(isinstance(result, dict) for result in favorites)
-    assert len(cards_to_favorite) == len(favorites)
+    assert all(isinstance(card, dict) for card in favorites)
 
 
-def test_card_unfavorite_one(api: MetabaseApi):
-    card_to_unfavorite = [1]
-    _ = CardItem.unfavorite(adapter=api, targets=card_to_unfavorite)
-    _ = CardItem.unfavorite(adapter=api, targets=card_to_unfavorite)
-    _ = CardItem.favorite(adapter=api, targets=card_to_unfavorite)
-    unfavorite = CardItem.unfavorite(adapter=api, targets=card_to_unfavorite)
-    assert isinstance(unfavorite, list)
-    assert all(isinstance(result, dict) for result in unfavorite)
-    assert len(card_to_unfavorite) == len(unfavorite)
+def test_card_unfavorite_one(cards: list[CardItem]):
+    card_to_unfavorite = cards[0]
+    try:
+        _ = card_to_unfavorite.favorite()
+    except:
+        pass
+    finally:
+        favorite = card_to_unfavorite.unfavorite()
+    assert isinstance(favorite, dict)
 
 
-def test_card_unfavorite_many(api: MetabaseApi):
-    cards_to_unfavorite = [1, 2]
-    unfavorites = CardItem.unfavorite(adapter=api, targets=cards_to_unfavorite)
+def test_card_unfavorite_many(cards: list[CardItem]):
+    card_to_unfavorite = cards[:2]
+    unfavorites = []
+    for card in card_to_unfavorite:
+        try:
+            _ = card.unfavorite()
+        except:
+            pass
+        finally:
+            new = card.favorite()
+            unfavorites.append(new)
     assert isinstance(unfavorites, list)
-    assert all(isinstance(result, dict) for result in unfavorites)
-    assert len(cards_to_unfavorite) == len(unfavorites)
+    assert all(isinstance(card, dict) for card in unfavorites)
 
 
 @pytest.mark.skip(reason="Not implemented in test environment")
-def test_card_share_one(api: MetabaseApi):
-    card_to_share = [1]
-    shared = CardItem.share(adapter=api, targets=card_to_share)
-    assert isinstance(shared, list)
-    assert all(isinstance(result, dict) for result in shared)
-    assert len(card_to_share) == len(shared)
+def test_card_share_one(cards: list[CardItem]):
+    card_to_share = cards[0]
+    shared = card_to_share.share()
+    assert isinstance(shared, dict)
 
 
 @pytest.mark.skip(reason="Not implemented in test environment")
-def test_card_unshare_one(api: MetabaseApi):
-    card_to_unshare = [1]
-    unshared = CardItem.unshare(adapter=api, targets=card_to_unshare)
-    assert isinstance(unshared, list)
-    assert all(isinstance(result, dict) for result in unshared)
-    assert len(card_to_unshare) == len(unshared)
+def test_card_unshare_one(cards: list[CardItem]):
+    items = cards[:2]
+    related = [card.related() for card in items]
+    assert isinstance(related, list)
+    assert len(related) == len(items)
+    assert all(isinstance(item, dict) for item in related)
 
 
 def test_card_invalid_get(api: MetabaseApi):
     targets = {}
     with pytest.raises(InvalidParameters):
-        _ = CardItem.get(adapter=api, targets=targets)  # type: ignore
+        _ = api.cards.get(targets=targets)  # type: ignore
 
 
 def test_card_invalid_create(api: MetabaseApi):
     payloads = {}
     with pytest.raises(InvalidParameters):
-        _ = CardItem.create(adapter=api, payloads=payloads)  # type: ignore
+        _ = api.cards.create(payloads=payloads)  # type: ignore
 
 
-def test_card_invalid_update(api: MetabaseApi):
+def test_card_invalid_update(cards: list[CardItem]):
+    card = cards[0]
     payloads = {}
     with pytest.raises(InvalidParameters):
-        _ = CardItem.update(adapter=api, payload=payloads)  # type: ignore
+        _ = card.update(payload=payloads)  # type: ignore
 
 
-def test_card_invalid_delete(api: MetabaseApi):
-    targets = {}
-    with pytest.raises(InvalidParameters):
-        _ = CardItem.delete(adapter=api, targets=targets)  # type: ignore
+def test_card_invalid_delete(cards: list[CardItem]):
+    card = cards[0]
+    with pytest.raises(NotImplementedError):
+        _ = card.delete()  # type: ignore
 
 
-def test_card_invalid_archive(api: MetabaseApi):
-    targets = {}
-    with pytest.raises(InvalidParameters):
-        _ = CardItem.archive(adapter=api, target=targets)  # type: ignore
+def test_card_invalid_archive(cards: list[CardItem]):
+    card = cards[0]
+    card.id = -1
+    with pytest.raises(RequestFailure):
+        _ = card.archive()  # type: ignore
 
 
-def test_card_query_one(api: MetabaseApi):
-    payloads = [1]
-    results = CardItem.query(adapter=api, payloads=payloads)
-    pass
+def test_card_query_one(cards: list[CardItem]):
+    card = cards[0]
+    results = card.query()
+    assert isinstance(results, CardQueryResult)

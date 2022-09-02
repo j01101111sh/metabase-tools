@@ -6,7 +6,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, PrivateAttr
 from pydantic.fields import Field
 
 from metabase_tools.exceptions import InvalidParameters
@@ -22,6 +22,8 @@ class CardItem(Item):
     """Card object class with related methods"""
 
     _BASE_EP: ClassVar[str] = "/card/{id}"
+
+    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
 
     description: Optional[str]
     archived: bool
@@ -53,6 +55,14 @@ class CardItem(Item):
     def set_adapter(self, adapter: MetabaseApi) -> None:
         super().set_adapter(adapter=adapter)
 
+    def delete(self: CardItem) -> dict[int | str, dict[str, Any]]:
+        """DEPRECATED; use archive instead
+
+        Returns:
+            dict[int | str, dict[str, Any]]: _description_
+        """
+        raise NotImplementedError
+
     def update(self: CardItem, payload: dict[str, Any]) -> CardItem:
         return super().update(payload=payload)
 
@@ -70,6 +80,54 @@ class CardItem(Item):
             result = self._adapter.get(endpoint=f"/card/{self.id}/related")
             if isinstance(result, dict):
                 return new | result
+        raise InvalidParameters
+
+    def favorite(self: CardItem) -> dict[str, Any]:
+        """Mark card as favorite
+
+        Returns:
+            dict: Result of favoriting operation
+        """
+        if self._adapter:
+            result = self._adapter.post(endpoint=f"/card/{self.id}/favorite")
+            if isinstance(result, dict):
+                return result
+        raise InvalidParameters
+
+    def unfavorite(self: CardItem) -> dict[str, Any]:
+        """Unfavorite card
+
+        Returns:
+            list[dict]: Results of unfavoriting operation
+        """
+        if self._adapter:
+            result = self._adapter.delete(endpoint=f"/card/{self.id}/favorite")
+            if isinstance(result, dict):
+                return result
+        raise InvalidParameters
+
+    def share(self: CardItem) -> dict[str, Any]:
+        """Generate publicly-accessible links for card
+
+        Returns:
+            list[dict]: UUIDs to be used in public links.
+        """
+        if self._adapter:
+            result = self._adapter.post(endpoint=f"/card/{self.id}/public_link")
+            if isinstance(result, dict):
+                return result
+        raise InvalidParameters
+
+    def query(self: CardItem) -> CardQueryResult:
+        """Execute a query stored in card(s)
+
+        Returns:
+            CardQueryResult: Results of query
+        """
+        if self._adapter:
+            result = self._adapter.post(endpoint=f"/card/{self.id}/query")
+            if isinstance(result, dict):
+                return CardQueryResult(**result)
         raise InvalidParameters
 
 

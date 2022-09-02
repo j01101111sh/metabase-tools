@@ -33,7 +33,6 @@ class Item(BaseModel, ABC, extra="forbid"):
         """Generic method for updating an object
 
         Args:
-            adapter (MetabaseApi): Connection to Metabase API
             payloads (list[dict]): List of json payloads
 
         Raises:
@@ -43,9 +42,12 @@ class Item(BaseModel, ABC, extra="forbid"):
             list[Self]: List of objects of the relevant type
         """
         if self._adapter:
-            result = self._adapter.put(
-                endpoint=self._BASE_EP.format(**payload), json=payload
-            )
+            try:
+                result = self._adapter.put(
+                    endpoint=self._BASE_EP.format(**payload), json=payload
+                )
+            except KeyError:
+                result = None
             if isinstance(result, dict):
                 obj = self.__class__(**result)
                 obj.set_adapter(adapter=self._adapter)
@@ -56,8 +58,6 @@ class Item(BaseModel, ABC, extra="forbid"):
         """Generic method for archiving an of object
 
         Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            targets (list[int]): List of objects to archive
             unarchive (bool): Whether object should be unarchived instead of archived
 
         Raises:
@@ -72,31 +72,32 @@ class Item(BaseModel, ABC, extra="forbid"):
                 endpoint=self._BASE_EP.format(**payload), json=payload
             )
             if isinstance(result, dict):
-                return self.__class__(**result)
+                obj = self.__class__(**result)
+                obj.set_adapter(self._adapter)
+                return obj
         raise InvalidParameters("Invalid target(s)")
 
-    # @classmethod
-    # def delete(cls, adapter: MetabaseApi, targets: list[int]) -> dict[int, Any]:
-    #     """Method to delete a list of objects
+    def delete(self) -> dict[int | str, dict[str, Any]]:
+        """Method to delete an object
 
-    #     Args:
-    #         adapter (MetabaseApi): Connection to Metabase API
-    #         targets (list[int]): List of objects to delete
+        Raises:
+            InvalidParameters: Targets is not a list of ints
 
-    #     Raises:
-    #         InvalidParameters: Targets is not a list of ints
-
-    #     Returns:
-    #         dict: _description_
-    #     """
-    #     if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
-    #         results = cls._request_list(
-    #             http_method="DELETE",
-    #             adapter=adapter,
-    #             endpoint=cls.BASE_EP + "/{id}",
-    #             source=targets,
-    #         )
-    #         return {target: result for result, target in zip(results, targets)}
-    #     raise InvalidParameters("Invalid set of targets")
-
-    #
+        Returns:
+            dict: _description_
+        """
+        if self._adapter:
+            result = self._adapter.delete(endpoint=self._BASE_EP)
+            if isinstance(result, dict):
+                final = {self.id: result}
+                return final
+        raise InvalidParameters("Invalid target(s)")
+        # if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
+        #     results = cls._request_list(
+        #         http_method="DELETE",
+        #         adapter=adapter,
+        #         endpoint=cls.BASE_EP + "/{id}",
+        #         source=targets,
+        #     )
+        #     return {target: result for result, target in zip(results, targets)}
+        # raise InvalidParameters("Invalid set of targets")
