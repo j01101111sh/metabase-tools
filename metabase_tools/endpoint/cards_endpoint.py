@@ -1,17 +1,12 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any, ClassVar, Optional
+from typing import Any, ClassVar, Optional
 
 from metabase_tools.exceptions import EmptyDataReceived
-
-# from metabase_tools.models.card_model import CardObject
 from metabase_tools.models.card_model import CardItem
 
 from .generic_endpoint import Endpoint
-
-if TYPE_CHECKING:
-    from metabase_tools.metabase import MetabaseApi
 
 logger = logging.getLogger(__name__)
 
@@ -54,64 +49,3 @@ class Cards(Endpoint[CardItem]):
         if cards:
             return [CardItem(**card) for card in cards if isinstance(card, dict)]
         raise EmptyDataReceived
-
-    # @classmethod
-    # def share(
-    #     cls: type[GA], adapter: MetabaseApi, targets: list[int]
-    # ) -> list[dict[str, Any]]:
-    #     """Generate publicly-accessible links for cards
-
-    #     Args:
-    #         adapter (MetabaseApi): Connection to Metabase API
-    #         targets (list[int]): Card IDs to share
-
-    #     Returns:
-    #         list[dict]: UUIDs to be used in public links.
-    #     """
-    #     return cls._request_list(
-    #         http_method="POST",
-    #         adapter=adapter,
-    #         endpoint="/card/{id}/public_link",
-    #         source=targets,
-    #     )
-
-    # @classmethod
-    # def unshare(
-    #     cls: type[GA], adapter: MetabaseApi, targets: list[int]
-    # ) -> list[dict[str, Any]]:
-    #     """Remove publicly-accessible links for cards
-
-    #     Args:
-    #         adapter (MetabaseApi): Connection to Metabase API
-    #         targets (list[int]): Card IDs to unshare
-
-    #     Returns:
-    #         list[dict]: Result of unshare operation
-    #     """
-    #     return cls._request_list(
-    #         http_method="DELETE",
-    #         adapter=adapter,
-    #         endpoint="/card/{id}/public_link",
-    #         source=targets,
-    #     )
-
-    # @classmethod
-    # def query(
-    #     cls: type[GA], adapter: MetabaseApi, payloads: list[int]
-    # ) -> list[CardQueryResult]:
-    #     """Execute a query stored in card(s)
-
-    #     Args:
-    #         adapter (MetabaseApi): Connection to Metabase API
-    #         targets (list[int]): list of cards to query
-
-    #     Returns:
-    #         list[CardQueryResult]: Results of queries
-    #     """
-    #     results = cls._request_list(
-    #         http_method="POST",
-    #         adapter=adapter,
-    #         endpoint="/card/{id}/query",
-    #         source=payloads,
-    #     )
-    #     return [CardQueryResult(**result) for result in results]
