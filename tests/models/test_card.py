@@ -47,9 +47,11 @@ def test_card_create_many(api: MetabaseApi, new_card_def: dict):
 def test_card_update_one(api: MetabaseApi, run_id: str):
     item = api.cards.get(targets=[1])[0]
     item_change = {"id": item.id, "description": f"Updated {run_id}"}
-    new_item = item.update(adapter=api, payload=item_change)
+    new_item = item.update(payload=item_change)
     assert isinstance(new_item, CardItem)
     assert new_item.description == f"Updated {run_id}"
+    assert item._adapter is not None
+    assert new_item._adapter is not None
 
 
 def test_card_update_many(api: MetabaseApi, run_id: str):
@@ -69,7 +71,8 @@ def test_card_update_many(api: MetabaseApi, run_id: str):
 
 def test_card_archive_one(api: MetabaseApi):
     card_to_archive = [1]
-    change_result = CardItem.archive(adapter=api, target=card_to_archive)
+    card = api.cards.get(targets=card_to_archive)[0]
+    change_result = card.archive(adapter=api, unarchive=False)
     assert isinstance(change_result, list)
     assert all(isinstance(card, CardItem) for card in change_result)
     assert all(card.archived is True for card in change_result)

@@ -9,7 +9,7 @@ from uuid import UUID
 from pydantic import BaseModel
 from pydantic.fields import Field
 
-from metabase_tools.common import log_call
+from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.collection_model import Collection
 from metabase_tools.models.generic_model import Item
 from metabase_tools.models.user_model import User
@@ -50,39 +50,27 @@ class CardItem(Item):
     dashboard_count: Optional[int]
     is_favorite: Optional[bool] = Field(alias="favorite")
 
-    @classmethod
-    def update(
-        cls: type[CardItem], adapter: MetabaseApi, payload: dict[str, Any]
-    ) -> CardItem:
-        return super().update(adapter=adapter, payload=payload)
+    def set_adapter(self, adapter: MetabaseApi) -> None:
+        super().set_adapter(adapter=adapter)
 
-    @classmethod
-    def archive(
-        cls: type[CardItem], adapter: MetabaseApi, target: int, unarchive: bool = False
-    ) -> CardItem:
-        return super().archive(adapter=adapter, target=target, unarchive=unarchive)
+    def update(self: CardItem, payload: dict[str, Any]) -> CardItem:
+        return super().update(payload=payload)
 
-    @classmethod
-    def related(
-        cls: type[CardItem], adapter: MetabaseApi, targets: list[int]
-    ) -> list[dict[str, Any]]:
+    def archive(self: CardItem, unarchive: bool = False) -> CardItem:
+        return super().archive(unarchive=unarchive)
+
+    def related(self: CardItem) -> dict[str, Any]:
         """Objects related to target
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-            targets (int): Card ID to pull
 
         Returns:
             dict: Dict with related objects for target
         """
-        results = []
-        for target in targets:
-            new = {"card_id": target}
-            result = adapter.get(endpoint=f"/card/{target}/related")
+        new = {"card_id": self.id}
+        if self._adapter:
+            result = self._adapter.get(endpoint=f"/card/{self.id}/related")
             if isinstance(result, dict):
-                new |= result
-            results.append(new)
-        return results
+                return new | result
+        raise InvalidParameters
 
 
 class CardQueryResult(BaseModel):

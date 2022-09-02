@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import TYPE_CHECKING, Any, ClassVar, TypeVar
+from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, PrivateAttr
 
 from metabase_tools.exceptions import InvalidParameters
 
@@ -21,11 +21,15 @@ class Item(BaseModel, ABC, extra="forbid"):
 
     _BASE_EP: ClassVar[str]
 
+    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
+
     id: int | str
     name: str
 
-    @classmethod
-    def update(cls: type[T], adapter: MetabaseApi, payload: dict[str, Any]) -> T:
+    def set_adapter(self, adapter: MetabaseApi) -> None:
+        self._adapter = adapter
+
+    def update(self: T, payload: dict[str, Any]) -> T:
         """Generic method for updating an object
 
         Args:
@@ -38,18 +42,17 @@ class Item(BaseModel, ABC, extra="forbid"):
         Returns:
             list[Self]: List of objects of the relevant type
         """
-        result = adapter.put(endpoint=cls._BASE_EP.format(**payload), json=payload)
-        if isinstance(result, dict):
-            return cls(**result)
+        if self._adapter:
+            result = self._adapter.put(
+                endpoint=self._BASE_EP.format(**payload), json=payload
+            )
+            if isinstance(result, dict):
+                obj = self.__class__(**result)
+                obj.set_adapter(adapter=self._adapter)
+                return obj
         raise InvalidParameters("Invalid target(s)")
 
-    @classmethod
-    def archive(
-        cls: type[T],
-        adapter: MetabaseApi,
-        target: int,
-        unarchive: bool = False,
-    ) -> T:
+    def archive(self: T, unarchive: bool = False) -> T:
         """Generic method for archiving an of object
 
         Args:
@@ -63,10 +66,13 @@ class Item(BaseModel, ABC, extra="forbid"):
         Returns:
             list[Self]: List of objects of the relevant type
         """
-        payload = {"id": target, "archived": not unarchive}
-        result = adapter.put(endpoint=cls._BASE_EP.format(**payload), json=payload)
-        if isinstance(result, dict):
-            return cls(**result)  #
+        payload = {"id": self.id, "archived": not unarchive}
+        if self._adapter:
+            result = self._adapter.put(
+                endpoint=self._BASE_EP.format(**payload), json=payload
+            )
+            if isinstance(result, dict):
+                return self.__class__(**result)
         raise InvalidParameters("Invalid target(s)")
 
     # @classmethod

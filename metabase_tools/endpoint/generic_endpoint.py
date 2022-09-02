@@ -3,7 +3,6 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, ClassVar, Generic, Optional, TypeVar
 
-from metabase_tools.common import log_call
 from metabase_tools.exceptions import EmptyDataReceived, InvalidParameters
 from metabase_tools.models.generic_model import Item
 
@@ -89,7 +88,10 @@ class Endpoint(ABC, Generic[T]):
                 endpoint=self._BASE_EP + "/{id}",
                 source=targets,
             )
-            return [self._STD_OBJ(**result) for result in results]
+            objs = [self._STD_OBJ(**result) for result in results]
+            for obj in objs:
+                obj.set_adapter(self._adapter)
+            return objs
 
         if targets is None:
             # If no targets are provided, all objects of that type should be returned
@@ -97,7 +99,7 @@ class Endpoint(ABC, Generic[T]):
             if isinstance(response, list):  # Validate data was returned
                 # Unpack data into instances of the class and return
                 return [
-                    self._STD_OBJ(**record)
+                    self._STD_OBJ(self._adapter, **record)
                     for record in response
                     if isinstance(record, dict)
                 ]
