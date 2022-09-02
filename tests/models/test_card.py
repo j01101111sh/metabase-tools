@@ -252,8 +252,8 @@ def test_card_invalid_delete(cards: list[CardItem]):
         _ = card.delete()  # type: ignore
 
 
-def test_card_invalid_archive(cards: list[CardItem]):
-    card = cards[0]
+def test_card_invalid_archive(api: MetabaseApi):
+    card = api.cards.get()[0]
     card.id = -1
     with pytest.raises(RequestFailure):
         _ = card.archive()  # type: ignore
