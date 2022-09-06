@@ -51,8 +51,8 @@ class Collections(Endpoint[CollectionItem]):
         Args:
             search_params (list[dict]): Each dict contains search criteria and returns\
                  1 result
-            search_list (list[CollectionItem], optional): Provide to search an existing \
-                list, by default pulls from API
+            search_list (list[CollectionItem], optional): Provide to search an existing\
+                 list, by default pulls from API
 
         Returns:
             list[CollectionItem]: List of cards of the relevant type
