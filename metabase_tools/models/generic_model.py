@@ -92,7 +92,7 @@ class Item(BaseModel, ABC, extra="forbid"):
             dict: Results
         """
         if self._adapter:
-            result = self._adapter.delete(endpoint=self._BASE_EP)
+            result = self._adapter.delete(endpoint=self._BASE_EP.format(**self.dict()))
             if isinstance(result, dict):
                 final = {self.id: result}
                 return final
