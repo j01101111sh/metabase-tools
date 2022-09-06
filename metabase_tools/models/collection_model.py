@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class CollectionItem(Item):
     """Collection object class with related methods"""
 
-    _BASE_EP: ClassVar[str] = "/collection"
+    _BASE_EP: ClassVar[str] = "/collection/{id}"
 
     _adapter: Optional[MetabaseApi] = PrivateAttr(None)
 
@@ -32,11 +32,38 @@ class CollectionItem(Item):
     can_write: Optional[bool]
     parent_id: Optional[int]
 
-    @classmethod
+    def update(self: CollectionItem, payload: dict[str, Any]) -> CollectionItem:
+        """Method for updating a collection
+
+        Args:
+            payload (dict): Details of update
+
+        Returns:
+            CollectionItem: Object of the relevant type
+        """
+        return super().update(payload=payload)
+
+    def archive(self: CollectionItem, unarchive: bool = False) -> CollectionItem:
+        """Method for archiving a collection
+
+        Args:
+            unarchive (bool): Whether object should be unarchived instead of archived
+
+        Returns:
+            CollectionItem: Object of the relevant type
+        """
+        return super().archive(unarchive=unarchive)
+
+    def delete(self: CollectionItem) -> dict[int | str, dict[str, Any]]:
+        """DEPRECATED; use archive instead
+
+        Returns:
+            dict[int | str, dict[str, Any]]
+        """
+        raise NotImplementedError
+
     def get_contents(
-        cls,
-        adapter: MetabaseApi,
-        collection_id: int,
+        self,
         model_type: Optional[str] = None,
         archived: bool = False,
     ) -> list[dict[str, Any]]:
@@ -60,25 +87,13 @@ class CollectionItem(Item):
         if model_type:
             params["model"] = model_type
 
-        response = adapter.get(
-            endpoint=f"/collection/{collection_id}/items",
-            params=params,
-        )
-
-        if isinstance(response, list) and all(
-            isinstance(record, dict) for record in response
-        ):
-            return response
-        raise EmptyDataReceived
-
-    @classmethod
-    def graph(cls, adapter: MetabaseApi) -> dict[str, Any]:
-        """Graph of collection
-
-        Returns:
-            dict: graph of collection
-        """
-        result = adapter.get(endpoint="/collection/graph")
-        if isinstance(result, dict):
-            return result
+        if self._adapter:
+            response = self._adapter.get(
+                endpoint=f"/collection/{self.id}/items",
+                params=params,
+            )
+            if isinstance(response, list) and all(
+                isinstance(record, dict) for record in response
+            ):
+                return response
         raise EmptyDataReceived

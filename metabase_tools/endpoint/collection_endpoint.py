@@ -134,3 +134,15 @@ class Collections(Endpoint[CollectionItem]):
             )
             folders.extend(Collections._flatten_tree(root_folder))
         return folders
+
+    def graph(self) -> dict[str, Any]:
+        """Graph of collection permissions
+
+        Returns:
+            dict: graph of collection
+        """
+        if self._adapter:
+            result = self._adapter.get(endpoint="/collection/graph")
+            if isinstance(result, dict):
+                return result
+        raise EmptyDataReceived
