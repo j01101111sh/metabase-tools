@@ -67,7 +67,7 @@ class UserItem(Item):
             UserItem: User with a resent invite
         """
         if self._adapter:
-            result = self._adapter.put(endpoint=f"/user/{self.id}/send_invite")
+            result = self._adapter.post(endpoint=f"/user/{self.id}/send_invite")
             if isinstance(result, dict):
                 return result
         raise InvalidParameters
@@ -98,7 +98,7 @@ class UserItem(Item):
             UserItem: User with query builder toggle set
         """
         if self._adapter:
-            result = self._adapter.put(endpoint=f"/user/{self.id}/send_invite")
+            result = self._adapter.put(endpoint=f"/user/{self.id}/qbnewb")
             if isinstance(result, dict):
                 return result
         raise InvalidParameters

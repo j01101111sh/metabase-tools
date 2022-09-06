@@ -1,3 +1,5 @@
+import random
+
 import pytest
 
 from metabase_tools import MetabaseApi, UserItem
@@ -17,7 +19,7 @@ def new_def():
 
 @pytest.fixture(scope="module")
 def users(api: MetabaseApi) -> list[UserItem]:
-    return api.users.get()
+    return api.users.get()[1:]
 
 
 def test_user_create_one(api: MetabaseApi, new_def: dict):
@@ -42,7 +44,7 @@ def test_user_create_many(api: MetabaseApi, new_def: dict):
 
 
 def test_user_update_one(users: list[UserItem]):
-    item = users[0]
+    item = random.choice(users)
     new_name = random_string(6)
     change = {"id": item.id, "first_name": new_name}
     results = item.update(payload=change)
@@ -50,94 +52,72 @@ def test_user_update_one(users: list[UserItem]):
     assert results.first_name == new_name
 
 
-def test_user_update_many(api: MetabaseApi):
-    new_name = random_string(6)
-    change_one = {"id": 3, "first_name": new_name}
-    change_two = {"id": 4, "first_name": new_name}
-    new_defs = [change_one, change_two]
-    results = UserItem.update(adapter=api, payload=new_defs)
-    assert isinstance(results, list)
-    assert all(isinstance(o, UserItem) for o in results)
-    assert all(o.first_name == new_name for o in results)
-
-
-def test_user_disable_one(api: MetabaseApi):
-    targets = [2]
-    results = UserItem.disable(adapter=api, targets=targets)
+def test_user_disable_one(users: list[UserItem]):
+    item = random.choice(users)
+    try:
+        _ = item.enable()
+    except:
+        pass
+    results = item.disable()
     assert isinstance(results, dict)
-    assert all(isinstance(v, dict) for _, v in results.items())
-    assert all(v["success"] for _, v in results.items())
+    assert all(isinstance(v, dict) for v in results.values())
+    assert all(v["success"] is True for v in results.values())
 
 
-def test_user_disable_many(api: MetabaseApi):
-    targets = [3, 4]
-    results = UserItem.disable(adapter=api, targets=targets)
-    assert isinstance(results, dict)
-    assert all(isinstance(v, dict) for _, v in results.items())
-    assert all(v["success"] for _, v in results.items())
-
-
-def test_user_enable_one(api: MetabaseApi):
-    targets = [2]
-    results = UserItem.disable(adapter=api, targets=targets)
-    results = UserItem.enable(adapter=api, targets=targets)
-    assert isinstance(results, list)
-    assert all(isinstance(o, UserItem) for o in results)
-    assert all(o.is_active for o in results)
-
-
-def test_user_enable_many(api: MetabaseApi):
-    targets = [3, 4]
-    results = UserItem.disable(adapter=api, targets=targets)
-    results = UserItem.enable(adapter=api, targets=targets)
-    assert isinstance(results, list)
-    assert all(isinstance(o, UserItem) for o in results)
-    assert all(o.is_active for o in results)
+def test_user_enable_one(users: list[UserItem]):
+    item = random.choice(users)
+    try:
+        _ = item.disable()
+    except:
+        pass
+    results = item.enable()
+    assert isinstance(results, UserItem)
+    assert results.is_active is True
 
 
 def test_user_get_one(api: MetabaseApi):
     user_to_get = [1]
-    user = UserItem.get(adapter=api, targets=user_to_get)
+    user = api.users.get(targets=user_to_get)
     assert isinstance(user, list)
     assert all(isinstance(u, UserItem) for u in user)
+    assert len(user_to_get) == len(user)
 
 
 def test_user_get_many(api: MetabaseApi):
-    users_to_get = [1, 2, 3]
-    users = UserItem.get(adapter=api, targets=users_to_get)
-    assert isinstance(users, list)
-    assert all(isinstance(user, UserItem) for user in users)
+    targets = [1, 2, 3]
+    results = api.users.get(targets=targets)
+    assert isinstance(results, list)
+    assert all(isinstance(user, UserItem) for user in results)
+    assert len(targets) == len(results)
 
 
 def test_user_get_all(api: MetabaseApi):
-    users = UserItem.get(adapter=api)
+    users = api.users.get()
     assert isinstance(users, list)
     assert all(isinstance(user, UserItem) for user in users)
 
 
 def test_user_current(api: MetabaseApi):
-    user = UserItem.current(adapter=api)
+    user = api.users.current()
     assert isinstance(user, UserItem)
 
 
-def test_user_resend(api: MetabaseApi):
-    targets = [2]
-    result = UserItem.resend_invite(adapter=api, targets=targets)
-    assert isinstance(result, list)
-    assert all(isinstance(r, dict) for r in result)
+def test_user_resend(users: list[UserItem]):
+    item = random.choice(users)
+    result = item.resend_invite()
+    assert isinstance(result, dict)
+    assert result["success"] is True
 
 
-def test_user_reset_password(api: MetabaseApi):
-    payloads = [{"id": 2, "password": "asdfoin33kn23fkmsdf"}]
-    result = UserItem.update_password(adapter=api, payload=payloads)
-    assert isinstance(result, list)
-    assert all(isinstance(r, UserItem) for r in result)
-    assert len(payloads) == len(result)
+def test_user_reset_password(users: list[UserItem]):
+    item = random.choice(users)
+    payload = {"id": 2, "password": "asdfoin33kn23fkmsdf"}
+    result = item.update_password(payload=payload)
+    assert isinstance(result, UserItem)
 
 
-def test_user_qbnewb(api: MetabaseApi):
-    targets = [2]
-    result = UserItem.qbnewb(adapter=api, targets=targets)
-    assert isinstance(result, list)
-    assert all(isinstance(r, dict) for r in result)
-    assert len(targets) == len(result)
+def test_user_qbnewb(users: list[UserItem]):
+    item = random.choice(users)
+    result = item.qbnewb()
+    assert isinstance(result, dict)
+    assert result["success"] is True
