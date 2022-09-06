@@ -1,18 +1,25 @@
 """Classes related to user endpoints
 """
+from __future__ import annotations
 
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
-from pydantic.fields import Field
+from pydantic.fields import Field, PrivateAttr
 
+from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.generic_model import Item
 
+if TYPE_CHECKING:
+    from metabase_tools.metabase import MetabaseApi
 
-class User(Item):
+
+class UserItem(Item):
     """User object class with related methods"""
 
-    BASE_EP: ClassVar[str] = "/user"
+    _BASE_EP: ClassVar[str] = "/user/{id}"
+
+    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
 
     name: str = Field(alias="common_name")
     email: str
@@ -31,113 +38,67 @@ class User(Item):
     login_attributes: Optional[list[dict[str, Any]]]
     personal_collection_id: Optional[int]
 
-    # @classmethod
-    # def current(cls: type[GWA], adapter: MetabaseApi) -> GWA:
-    #     """Current user details
+    def disable(self) -> dict[int, Any]:
+        """Disables user
 
-    #     Args:
-    #         adapter (MetabaseApi): Connection to Metabase API
+        Returns:
+            dict: Results
+        """
+        return super().delete()  # type: ignore
 
-    #     Raises:
-    #         RequestFailure: Invalid response from API
+    def enable(self) -> UserItem:
+        """Enable user
 
-    #     Returns:
-    #         User: Current user details
-    #     """
-    #     response = adapter.get(endpoint="/user/current")
-    #     if isinstance(response, dict):
-    #         return cls(**response)
-    #     raise RequestFailure
+        Returns:
+            UserItem: Enabled users
+        """
+        if self._adapter:
+            result = self._adapter.put(endpoint=f"/user/{self.id}/reactivate")
+            if isinstance(result, dict):
+                obj = self.__class__(**result)
+                obj.set_adapter(adapter=self._adapter)
+                return obj
+        raise InvalidParameters
 
-    # @classmethod
-    # def disable(cls, adapter: MetabaseApi, targets: list[int]) -> dict[int, Any]:
-    #     """Disables user(s) provided
+    def resend_invite(self) -> dict[str, bool]:
+        """Resent user invites
 
-    #     Args:
-    #         adapter (MetabaseApi): Connection to Metabase API
-    #         targets (list[int]): List of users to disable
+        Returns:
+            UserItem: User with a resent invite
+        """
+        if self._adapter:
+            result = self._adapter.put(endpoint=f"/user/{self.id}/send_invite")
+            if isinstance(result, dict):
+                return result
+        raise InvalidParameters
 
-    #     Returns:
-    #         dict: Dict of users that were disabled with results
-    #     """
-    #     return super(User, cls).delete(adapter=adapter, targets=targets)
+    def update_password(self: UserItem, payload: dict[str, Any]) -> UserItem:
+        """Updates passwords for users
 
-    # @classmethod
-    # def enable(cls: type[GWA], adapter: MetabaseApi, targets: list[int]) -> list[GWA]:
-    #     """Enable user(s) provided
+        Args:
+            payload (dict): New password
 
-    #     Args:
-    #         adapter (MetabaseApi): Connection to Metabase API
-    #         targets (list[int]): List of users to enable
+        Returns:
+            UserItem: User with reset passwords
+        """
+        if self._adapter:
+            result = self._adapter.put(
+                endpoint=f"/user/{self.id}/password", json=payload
+            )
+            if isinstance(result, dict):
+                obj = self.__class__(**result)
+                obj.set_adapter(adapter=self._adapter)
+                return obj
+        raise InvalidParameters
 
-    #     Returns:
-    #         list[User]: Enabled users
-    #     """
-    #     results = cls._request_list(
-    #         http_method="PUT",
-    #         adapter=adapter,
-    #         endpoint="/user/{id}/reactivate",
-    #         source=[{"id": target} for target in targets],
-    #     )
-    #     return [cls(**result) for result in results]
+    def qbnewb(self) -> dict[str, bool]:
+        """Indicate that a user has been informed about Query Builder.
 
-    # @classmethod
-    # def resend_invite(
-    #     cls: type[GWA], adapter: MetabaseApi, targets: list[int]
-    # ) -> list[dict[str, bool]]:
-    #     """Resent user invites
-
-    #     Args:
-    #         adapter (MetabaseApi): Connection to Metabase API
-    #         targets (list[int]): List of users to resend invites for
-
-    #     Returns:
-    #         list[User]: Users with a resent invite
-    #     """
-    #     return cls._request_list(
-    #         http_method="POST",
-    #         adapter=adapter,
-    #         endpoint="/user/{id}/send_invite",
-    #         source=[{"id": target} for target in targets],
-    #     )
-
-    # @classmethod
-    # def update_password(
-    #     cls: type[GWA], adapter: MetabaseApi, payloads: list[dict[str, Any]]
-    # ) -> list[GWA]:
-    #     """Updates passwords for users
-
-    #     Args:
-    #         adapter (MetabaseApi): Connection to Metabase API
-    #         payloads (list[dict]): List of users and passwords to update
-
-    #     Returns:
-    #         list[User]: List of users with reset passwords
-    #     """
-    #     results = cls._request_list(
-    #         http_method="PUT",
-    #         adapter=adapter,
-    #         endpoint="/user/{id}/password",
-    #         source=payloads,
-    #     )
-    #     return [cls(**result) for result in results]
-
-    # @classmethod
-    # def qbnewb(
-    #     cls: type[GWA], adapter: MetabaseApi, targets: list[int]
-    # ) -> list[dict[str, bool]]:
-    #     """Indicate that a user has been informed about Query Builder.
-
-    #     Args:
-    #         adapter (MetabaseApi): Connection to Metabase API
-    #         targets (list[int]): List of users to toggle
-
-    #     Returns:
-    #         list[Self]: Users with query builder toggle set
-    #     """
-    #     return cls._request_list(
-    #         http_method="PUT",
-    #         adapter=adapter,
-    #         endpoint="/user/{id}/qbnewb",
-    #         source=[{"id": target} for target in targets],
-    #     )
+        Returns:
+            UserItem: User with query builder toggle set
+        """
+        if self._adapter:
+            result = self._adapter.put(endpoint=f"/user/{self.id}/send_invite")
+            if isinstance(result, dict):
+                return result
+        raise InvalidParameters
