@@ -32,6 +32,14 @@ class CollectionItem(Item):
     can_write: Optional[bool]
     parent_id: Optional[int]
 
+    def set_adapter(self, adapter: MetabaseApi) -> None:
+        """Sets the adapter on an object
+
+        Args:
+            adapter (MetabaseApi): Connection to MetabaseApi
+        """
+        super().set_adapter(adapter=adapter)
+
     def update(self: CollectionItem, payload: dict[str, Any]) -> CollectionItem:
         """Method for updating a collection
 

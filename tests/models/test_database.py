@@ -1,23 +1,23 @@
 import pytest
 
-from metabase_tools import Database, MetabaseApi
+from metabase_tools import DatabaseItem, MetabaseApi
 
 
 def test_database_get_one(api: MetabaseApi):
     db_to_get = [1]
-    db = Database.get(adapter=api, targets=db_to_get)
+    db = api.databases.get(targets=db_to_get)
     assert isinstance(db, list)
-    assert all(isinstance(d, Database) for d in db)
+    assert all(isinstance(d, DatabaseItem) for d in db)
 
 
 def test_database_get_many(api: MetabaseApi):
     dbs_to_get = [1, 1]
-    dbs = Database.get(adapter=api, targets=dbs_to_get)
+    dbs = api.databases.get(targets=dbs_to_get)
     assert isinstance(dbs, list)
-    assert all(isinstance(d, Database) for d in dbs)
+    assert all(isinstance(d, DatabaseItem) for d in dbs)
 
 
 def test_database_get_all(api: MetabaseApi):
-    dbs = Database.get(adapter=api)
+    dbs = api.databases.get()
     assert isinstance(dbs, list)
-    assert all(isinstance(d, Database) for d in dbs)
+    assert all(isinstance(d, DatabaseItem) for d in dbs)

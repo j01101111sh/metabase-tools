@@ -15,7 +15,7 @@ from metabase_tools.exceptions import (
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.card_model import CardItem
 from metabase_tools.models.collection_model import CollectionItem
-from metabase_tools.models.database_model import Database
+from metabase_tools.models.database_model import DatabaseItem
 
 
 class MetabaseTools(MetabaseApi):
@@ -216,7 +216,7 @@ class MetabaseTools(MetabaseApi):
             ) from error_raised
 
         mapping_details["database_id"] = card.database_id
-        mapping_details["database_name"] = Database.search(
+        mapping_details["database_name"] = DatabaseItem.search(
             adapter=self, search_params=[{"id": card.database_id}]
         )[0].name
 
@@ -267,7 +267,7 @@ class MetabaseTools(MetabaseApi):
             dev_query = file.read()
         db_id = [
             database.id
-            for database in Database.get(adapter=self)
+            for database in DatabaseItem.get(adapter=self)
             if card["database_name"] == database.name
         ][0]
 

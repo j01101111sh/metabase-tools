@@ -1,16 +1,24 @@
 """Classes related to database endpoints
 """
+from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, ClassVar, Optional
+
+from pydantic import PrivateAttr
 
 from metabase_tools.models.generic_model import Item
 
+if TYPE_CHECKING:
+    from metabase_tools.metabase import MetabaseApi
 
-class Database(Item):
+
+class DatabaseItem(Item):
     """Database object class with related methods"""
 
-    BASE_EP: ClassVar[str] = "/database"
+    _BASE_EP: ClassVar[str] = "/database/{id}"
+
+    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
 
     description: Optional[str]
     features: list[str]
@@ -31,3 +39,22 @@ class Database(Item):
     created_at: datetime
     points_of_interest: Optional[str]
     schedules: Optional[dict[str, Any]]
+
+    def delete(self: DatabaseItem) -> dict[int | str, dict[str, Any]]:
+        """Deletes the database
+
+        Returns:
+            dict[int | str, dict[str, Any]]
+        """
+        return super().delete()
+
+    def update(self: DatabaseItem, payload: dict[str, Any]) -> DatabaseItem:
+        """Method for updating a database
+
+        Args:
+            payloads (dict): Details of update
+
+        Returns:
+            DatabaseItem: Object of the relevant type
+        """
+        return super().update(payload=payload)

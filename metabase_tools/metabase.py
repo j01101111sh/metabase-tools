@@ -13,6 +13,7 @@ from requests.exceptions import RequestException
 
 from metabase_tools.endpoint.cards_endpoint import Cards
 from metabase_tools.endpoint.collection_endpoint import Collections
+from metabase_tools.endpoint.database_endpoint import Databases
 from metabase_tools.endpoint.user_endpoint import Users
 from metabase_tools.exceptions import (
     AuthenticationFailure,
@@ -52,6 +53,7 @@ class MetabaseApi:
 
         self.cards = Cards(self)
         self.collections = Collections(self)
+        self.databases = Databases(self)
         self.users = Users(self)
 
     def _validate_base_url(self, url: str) -> str:
