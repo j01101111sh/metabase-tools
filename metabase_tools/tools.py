@@ -14,8 +14,6 @@ from metabase_tools.exceptions import (
 )
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.card_model import CardItem
-from metabase_tools.models.collection_model import CollectionItem
-from metabase_tools.models.database_model import DatabaseItem
 
 
 class MetabaseTools(MetabaseApi):
@@ -47,7 +45,7 @@ class MetabaseTools(MetabaseApi):
         # Download list of cards from Metabase API and filter to only native queries
         cards = [
             card
-            for card in CardItem.get(adapter=self)
+            for card in self.cards.get()
             if (
                 card.query_type == "native"
                 and card.collection
@@ -184,7 +182,11 @@ class MetabaseTools(MetabaseApi):
     ) -> list[dict[str, Any]] | dict[str, Any]:
         results = []
         if len(changes["updates"]) > 0:
-            update_results = CardItem.update(adapter=self, payload=changes["updates"])
+            update_results = []
+            for update in changes["updates"]:
+                card = self.cards.get(update["id"])[0]
+                update_results.append(card.update(payload=update))
+
             if isinstance(update_results, list):
                 for result in update_results:
                     results.append(
@@ -192,7 +194,7 @@ class MetabaseTools(MetabaseApi):
                     )
 
         if len(changes["creates"]) > 0:
-            create_results = CardItem.create(adapter=self, payloads=changes["creates"])
+            create_results = self.cards.create(payloads=changes["creates"])
             if isinstance(create_results, list):
                 for result in create_results:
                     results.append(
@@ -216,8 +218,8 @@ class MetabaseTools(MetabaseApi):
             ) from error_raised
 
         mapping_details["database_id"] = card.database_id
-        mapping_details["database_name"] = DatabaseItem.search(
-            adapter=self, search_params=[{"id": card.database_id}]
+        mapping_details["database_name"] = self.databases.search(
+            search_params=[{"id": card.database_id}]
         )[0].name
 
         return mapping_details
@@ -232,14 +234,13 @@ class MetabaseTools(MetabaseApi):
             file.write(sql_code)
 
     def _get_collections_dict(self, key: str) -> dict[Any, Any]:
-        collections = CollectionItem.get_flat_list(adapter=self)
+        collections = self.collections.get_flat_list()
         non_keys = [k for k in collections[0].keys() if k != key]
         return {item[key]: {nk: item[nk] for nk in non_keys} for item in collections}
 
     def _find_card_id(self, card_name: str, collection_id: int) -> int:
-        collection_items = CollectionItem.get_contents(
-            adapter=self, collection_id=collection_id, model_type="card", archived=False
-        )
+        collection = self.collections.get(targets=[collection_id])[0]
+        collection_items = collection.get_contents(model_type="card", archived=False)
         for item in collection_items:
             if item["name"] == card_name and isinstance(item["id"], int):
                 return item["id"]
@@ -250,7 +251,7 @@ class MetabaseTools(MetabaseApi):
         card_id: int,
         card_path: Path | str,
     ) -> dict[str, Any]:
-        prod_card = CardItem.get(adapter=self, targets=[card_id])[0]
+        prod_card = self.cards.get(targets=[card_id])[0]
         with open(card_path, "r", newline="", encoding="utf-8") as file:
             dev_code = file.read()
         if dev_code != prod_card.dataset_query["native"]["query"]:
@@ -267,7 +268,7 @@ class MetabaseTools(MetabaseApi):
             dev_query = file.read()
         db_id = [
             database.id
-            for database in DatabaseItem.get(adapter=self)
+            for database in self.databases.get()
             if card["database_name"] == database.name
         ][0]
 
