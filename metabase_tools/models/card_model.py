@@ -10,7 +10,7 @@ from pydantic import BaseModel, PrivateAttr
 from pydantic.fields import Field
 
 from metabase_tools.exceptions import InvalidParameters
-from metabase_tools.models.collection_model import Collection
+from metabase_tools.models.collection_model import CollectionItem
 from metabase_tools.models.generic_model import Item
 from metabase_tools.models.user_model import UserItem
 
@@ -44,7 +44,7 @@ class CardItem(Item):
     display: str
     last_edit_info: Optional[dict[str, Any]] = Field(alias="last-edit-info")
     visualization_settings: dict[str, Any]
-    collection: Optional[Collection]
+    collection: Optional[CollectionItem]
     dataset: Optional[int]
     created_at: datetime
     public_uuid: Optional[UUID]

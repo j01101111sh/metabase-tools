@@ -4,6 +4,8 @@ from __future__ import annotations  # Included for support of |
 
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
+from pydantic import PrivateAttr
+
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.generic_model import Item
 
@@ -11,10 +13,12 @@ if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
 
 
-class Collection(Item):
+class CollectionItem(Item):
     """Collection object class with related methods"""
 
-    BASE_EP: ClassVar[str] = "/collection"
+    _BASE_EP: ClassVar[str] = "/collection"
+
+    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
 
     description: Optional[str]
     archived: Optional[bool]
@@ -27,84 +31,6 @@ class Collection(Item):
     effective_ancestors: Optional[list[dict[str, Any]]]
     can_write: Optional[bool]
     parent_id: Optional[int]
-
-    @classmethod
-    def get_tree(cls: type[GA], adapter: MetabaseApi) -> list[dict[str, Any]]:
-        """Collection tree
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-
-        Raises:
-            EmptyDataReceived: No data returned from API
-
-        Returns:
-            list[dict]: Representation of collection tree
-        """
-        response = adapter.get(endpoint="/collection/tree")
-        if isinstance(response, list) and all(
-            isinstance(record, dict) for record in response
-        ):
-            return response
-        raise EmptyDataReceived
-
-    @staticmethod
-    def _flatten_tree(parent: dict[str, Any], path: str = "/") -> list[dict[str, Any]]:
-        """Recursive function to flatten collection tree to show the full path for all\
-             collections
-
-        Args:
-            parent (dict): Parent collection
-            path (str, optional): Path to parent collection. Defaults to "/".
-
-        Returns:
-            list[dict]: Flattened list
-        """
-        children = []
-        for child in parent["children"]:
-            children.append(
-                {
-                    "id": child["id"],
-                    "name": child["name"],
-                    "path": f'{path}/{parent["name"]}/{child["name"]}'.replace(
-                        "//", "/"
-                    ),
-                }
-            )
-            if "children" in child and len(child["children"]) > 0:
-                grandchildren = Collection._flatten_tree(
-                    child, f'{path}/{parent["name"]}'.replace("//", "/")
-                )
-                if isinstance(grandchildren, list):
-                    children.extend(grandchildren)
-                else:
-                    children.append(grandchildren)
-        return children
-
-    @classmethod
-    def get_flat_list(cls, adapter: MetabaseApi) -> list[dict[str, Any]]:
-        """Flattens collection tree so the full path of each collection is shown
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
-
-        Returns:
-            list[dict]: Flattened collection tree
-        """
-        tree = cls.get_tree(adapter=adapter)
-        folders = []
-        for root_folder in tree:
-            if root_folder["personal_owner_id"] is not None:  # Skips personal folders
-                continue
-            folders.append(
-                {
-                    "id": root_folder["id"],
-                    "name": root_folder["name"],
-                    "path": f'/{root_folder["name"]}',
-                }
-            )
-            folders.extend(Collection._flatten_tree(root_folder))
-        return folders
 
     @classmethod
     def get_contents(
@@ -148,9 +74,6 @@ class Collection(Item):
     @classmethod
     def graph(cls, adapter: MetabaseApi) -> dict[str, Any]:
         """Graph of collection
-
-        Args:
-            adapter (MetabaseApi): Connection to Metabase API
 
         Returns:
             dict: graph of collection

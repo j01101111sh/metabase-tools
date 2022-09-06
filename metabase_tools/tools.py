@@ -14,7 +14,7 @@ from metabase_tools.exceptions import (
 )
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.card_model import CardItem
-from metabase_tools.models.collection_model import Collection
+from metabase_tools.models.collection_model import CollectionItem
 from metabase_tools.models.database_model import Database
 
 
@@ -232,12 +232,12 @@ class MetabaseTools(MetabaseApi):
             file.write(sql_code)
 
     def _get_collections_dict(self, key: str) -> dict[Any, Any]:
-        collections = Collection.get_flat_list(adapter=self)
+        collections = CollectionItem.get_flat_list(adapter=self)
         non_keys = [k for k in collections[0].keys() if k != key]
         return {item[key]: {nk: item[nk] for nk in non_keys} for item in collections}
 
     def _find_card_id(self, card_name: str, collection_id: int) -> int:
-        collection_items = Collection.get_contents(
+        collection_items = CollectionItem.get_contents(
             adapter=self, collection_id=collection_id, model_type="card", archived=False
         )
         for item in collection_items:

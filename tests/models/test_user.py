@@ -6,6 +6,11 @@ from metabase_tools import MetabaseApi, UserItem
 from tests.helpers import random_string
 
 
+@pytest.fixture(scope="module")
+def users(api: MetabaseApi) -> list[UserItem]:
+    return api.users.get()[1:]
+
+
 @pytest.fixture(scope="function")
 def new_def():
     first_name = random_string(6)
@@ -15,11 +20,6 @@ def new_def():
         "email": f"{first_name}@DunderMifflin.com",
         "password": random_string(20),
     }
-
-
-@pytest.fixture(scope="module")
-def users(api: MetabaseApi) -> list[UserItem]:
-    return api.users.get()[1:]
 
 
 def test_user_create_one(api: MetabaseApi, new_def: dict):
