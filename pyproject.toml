@@ -52,7 +52,7 @@ python_files = "*.py"
 python_functions = "test_*"
 
 log_cli = true
-log_cli_level = "INFO"
+log_cli_level = "WARNING"
 log_cli_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcName)s - %(name)s\n\t%(message)s"
 
 log_file_level = "DEBUG"
