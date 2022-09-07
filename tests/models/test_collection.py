@@ -107,3 +107,23 @@ def test_collection_search(api: MetabaseApi):
     assert isinstance(result, list)
     assert all(isinstance(coll, CollectionItem) for coll in result)
     assert len(search_params) == len(result)
+
+
+def test_collection_delete(collections: list[CollectionItem]):
+    coll = collections[0]
+    with pytest.raises(NotImplementedError):
+        coll.delete()
+
+
+def test_collection_contents(collections: list[CollectionItem]):
+    coll = collections[0]
+    contents = coll.get_contents()
+    assert isinstance(contents, list)
+    assert all(isinstance(item, dict) for item in contents)
+
+
+def test_collection_contents_archived(collections: list[CollectionItem]):
+    coll = collections[0]
+    contents = coll.get_contents(archived=True)
+    assert isinstance(contents, list)
+    assert all(isinstance(item, dict) for item in contents)
