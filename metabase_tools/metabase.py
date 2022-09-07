@@ -8,6 +8,7 @@ from json import JSONDecodeError
 from pathlib import Path
 from typing import Any, Optional
 
+import packaging.version
 from requests import Response, Session
 from requests.exceptions import RequestException
 
@@ -26,7 +27,7 @@ from metabase_tools.tools import MetabaseTools
 class MetabaseApi:
     """Metabase API adapter"""
 
-    server_version: str
+    server_version: packaging.version.Version
 
     cards: Cards
     collections: Collections
@@ -354,4 +355,4 @@ class MetabaseApi:
         """
         result = self.get("/session/properties")
         if isinstance(result, dict):
-            self.server_version = result["version"]["tag"]
+            self.server_version = packaging.version.Version(result["version"]["tag"])
