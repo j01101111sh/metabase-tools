@@ -96,6 +96,14 @@ def test_flatten_tree(api: MetabaseApi):
     assert all(isinstance(collection, dict) for collection in collections)
 
 
-def test_graph(api: MetabaseApi):
+def test_collection_graph(api: MetabaseApi):
     graph = api.collections.graph()
     assert isinstance(graph, dict)
+
+
+def test_collection_search(api: MetabaseApi):
+    search_params = [{"name": "Development"}]
+    result = api.collections.search(search_params=search_params)
+    assert isinstance(result, list)
+    assert all(isinstance(coll, CollectionItem) for coll in result)
+    assert len(search_params) == len(result)
