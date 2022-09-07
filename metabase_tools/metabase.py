@@ -26,6 +26,8 @@ from metabase_tools.tools import MetabaseTools
 class MetabaseApi:
     """Metabase API adapter"""
 
+    server_version: str
+
     cards: Cards
     collections: Collections
     databases: Databases
@@ -54,10 +56,16 @@ class MetabaseApi:
         # Authenticate
         self._authenticate(token_path=token_path, credentials=credentials)
 
+        # Cache token, if set during init
         if cache_token:
             save_path = Path(token_path or "metabase.token")
             self.save_token(save_path=save_path)
 
+        # Set server version for compatability checks
+        self._set_server_version()
+        self._logger.info("Server version: %s", self.server_version)
+
+        # Create endpoints
         self.cards = Cards(self)
         self.collections = Collections(self)
         self.databases = Databases(self)
@@ -337,3 +345,13 @@ class MetabaseApi:
         return self.generic_request(
             http_method="PUT", endpoint=endpoint, params=params, json=json
         )
+
+    def _set_server_version(self) -> None:
+        """Get the Metabase version running on the server
+
+        Returns:
+            str: version string
+        """
+        result = self.get("/session/properties")
+        if isinstance(result, dict):
+            self.server_version = result["version"]["tag"]
