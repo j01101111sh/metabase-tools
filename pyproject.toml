@@ -1,8 +1,27 @@
 [tool.poetry]
 name = "metabase-tools"
-version = "0.7.0"
+version = "0.8.0"
 description = "Unofficial API wrapper for Metabase plus additional helper tools"
+license = "MIT"
 authors = ["Josh Odell <j01101111sh@gmail.com>"]
+maintainers = ["Josh Odell <j01101111sh@gmail.com>"]
+readme = "README.md"
+homepage = "https://j01101111sh.github.io/metabase-tools/"
+repository = "https://github.com/j01101111sh/metabase-tools"
+documentation = "https://j01101111sh.github.io/metabase-tools/"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Cython",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Typing :: Typed"
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
