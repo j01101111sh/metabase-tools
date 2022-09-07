@@ -6,15 +6,17 @@ from __future__ import annotations  # Included for support of |
 import logging
 from json import dumps, loads
 from pathlib import Path
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 from metabase_tools.exceptions import (
     EmptyDataReceived,
     ItemInPersonalCollection,
     ItemNotFound,
 )
-from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.card_model import CardItem
+
+if TYPE_CHECKING:
+    from metabase_tools.metabase import MetabaseApi
 
 logger = logging.getLogger(__name__)
 
