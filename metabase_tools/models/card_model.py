@@ -82,11 +82,8 @@ class CardItem(Item):
         """
         return super().update(payload=payload)
 
-    def archive(self: CardItem, unarchive: bool = False) -> CardItem:
+    def archive(self: CardItem) -> CardItem:
         """Method for archiving a card
-
-        Args:
-            unarchive (bool): Whether object should be unarchived instead of archived
 
         Raises:
             InvalidParameters: Targets and jsons are both None
@@ -94,7 +91,18 @@ class CardItem(Item):
         Returns:
             CardItem: Object of the relevant type
         """
-        return super().archive(unarchive=unarchive)
+        return super().archive()
+
+    def unarchive(self: CardItem) -> CardItem:
+        """Method for unarchiving a card
+
+        Raises:
+            InvalidParameters: Targets and jsons are both None
+
+        Returns:
+            CardItem: Object of the relevant type
+        """
+        return super().unarchive()
 
     def related(self: CardItem) -> dict[str, Any]:
         """Objects related to target
