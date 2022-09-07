@@ -54,17 +54,11 @@ class Endpoint(ABC, Generic[T]):
                 )
             elif isinstance(item, dict):
                 item_ep = endpoint.format(**item)
-                if http_method == "PUT":
-                    response = self._adapter.put(
-                        endpoint=item_ep,
-                        json=item,
-                    )
-                else:
-                    response = self._adapter.generic_request(
-                        http_method=http_method,
-                        endpoint=item_ep,
-                        json=item,
-                    )
+                response = self._adapter.generic_request(
+                    http_method=http_method,
+                    endpoint=item_ep,
+                    json=item,
+                )
             else:
                 raise InvalidParameters
             if isinstance(response, dict):
