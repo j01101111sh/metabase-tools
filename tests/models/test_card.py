@@ -239,13 +239,6 @@ def test_card_invalid_create(api: MetabaseApi):
         _ = api.cards.create(payloads=payloads)  # type: ignore
 
 
-def test_card_invalid_update(cards: list[CardItem]):
-    card = cards[0]
-    payloads = {}
-    with pytest.raises(InvalidParameters):
-        _ = card.update(payload=payloads)  # type: ignore
-
-
 def test_card_invalid_delete(cards: list[CardItem]):
     card = cards[0]
     with pytest.raises(NotImplementedError):
