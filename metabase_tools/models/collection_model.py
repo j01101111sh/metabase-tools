@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
 from pydantic import PrivateAttr
 
+from metabase_tools.common import log_call
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.generic_model import Item
 
@@ -43,6 +44,7 @@ class CollectionItem(Item):
         """
         super().set_adapter(adapter=adapter)
 
+    @log_call
     def update(self: CollectionItem, payload: dict[str, Any]) -> CollectionItem:
         """Method for updating a collection
 
@@ -54,6 +56,7 @@ class CollectionItem(Item):
         """
         return super().update(payload=payload)
 
+    @log_call
     def archive(self: CollectionItem, unarchive: bool = False) -> CollectionItem:
         """Method for archiving a collection
 
@@ -65,6 +68,7 @@ class CollectionItem(Item):
         """
         return super().archive(unarchive=unarchive)
 
+    @log_call
     def delete(self: CollectionItem) -> dict[int | str, dict[str, Any]]:
         """DEPRECATED; use archive instead
 
@@ -73,6 +77,7 @@ class CollectionItem(Item):
         """
         raise NotImplementedError
 
+    @log_call
     def get_contents(
         self,
         model_type: Optional[str] = None,

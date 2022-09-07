@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
 from pydantic.fields import Field, PrivateAttr
 
+from metabase_tools.common import log_call
 from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.generic_model import Item
 
@@ -41,6 +42,7 @@ class UserItem(Item):
     login_attributes: Optional[list[dict[str, Any]]]
     personal_collection_id: Optional[int]
 
+    @log_call
     def disable(self) -> dict[int, Any]:
         """Disables user
 
@@ -49,6 +51,7 @@ class UserItem(Item):
         """
         return super().delete()  # type: ignore
 
+    @log_call
     def enable(self) -> UserItem:
         """Enable user
 
@@ -63,6 +66,7 @@ class UserItem(Item):
                 return obj
         raise InvalidParameters
 
+    @log_call
     def resend_invite(self) -> dict[str, bool]:
         """Resent user invites
 
@@ -75,6 +79,7 @@ class UserItem(Item):
                 return result
         raise InvalidParameters
 
+    @log_call
     def update_password(self: UserItem, payload: dict[str, Any]) -> UserItem:
         """Updates passwords for users
 
@@ -94,6 +99,7 @@ class UserItem(Item):
                 return obj
         raise InvalidParameters
 
+    @log_call
     def qbnewb(self) -> dict[str, bool]:
         """Indicate that a user has been informed about Query Builder.
 

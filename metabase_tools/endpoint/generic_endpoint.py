@@ -7,6 +7,7 @@ import logging
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, ClassVar, Generic, Optional, TypeVar
 
+from metabase_tools.common import log_call
 from metabase_tools.exceptions import EmptyDataReceived, InvalidParameters
 from metabase_tools.models.generic_model import Item
 
@@ -28,6 +29,7 @@ class Endpoint(ABC, Generic[T]):
     def __init__(self, adapter: MetabaseApi):
         self._adapter = adapter
 
+    @log_call
     def _request_list(
         self,
         http_method: str,
@@ -70,6 +72,7 @@ class Endpoint(ABC, Generic[T]):
             return results
         raise EmptyDataReceived("No data returned")
 
+    @log_call
     @abstractmethod
     def get(self, targets: Optional[list[int]] = None) -> list[T]:
         """Generic method for returning an object or list of objects
@@ -114,6 +117,7 @@ class Endpoint(ABC, Generic[T]):
         # If response.data was empty, raise error
         raise EmptyDataReceived("No data returned")
 
+    @log_call
     @abstractmethod
     def create(self, payloads: list[dict[str, Any]]) -> list[T]:
         """Generic method for creating a list of objects
@@ -141,6 +145,7 @@ class Endpoint(ABC, Generic[T]):
         # If something other than dict or list[dict], raise error
         raise InvalidParameters("Invalid target(s)")
 
+    @log_call
     @abstractmethod
     def search(
         self,

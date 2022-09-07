@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
 
 from pydantic import BaseModel, PrivateAttr
 
+from metabase_tools.common import log_call
 from metabase_tools.exceptions import InvalidParameters
 
 if TYPE_CHECKING:
@@ -36,6 +37,7 @@ class Item(BaseModel, ABC, extra="forbid"):
         """
         self._adapter = adapter
 
+    @log_call
     def update(self: T, payload: dict[str, Any]) -> T:
         """Generic method for updating an object
 
@@ -58,6 +60,7 @@ class Item(BaseModel, ABC, extra="forbid"):
                 return obj
         raise InvalidParameters("Invalid target(s)")
 
+    @log_call
     def archive(self: T, unarchive: bool = False) -> T:
         """Generic method for archiving an object
 
@@ -81,6 +84,7 @@ class Item(BaseModel, ABC, extra="forbid"):
                 return obj
         raise InvalidParameters("Invalid target(s)")
 
+    @log_call
     def delete(self) -> dict[int | str, dict[str, Any]]:
         """Method to delete an object
 
