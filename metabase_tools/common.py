@@ -22,7 +22,9 @@ def log_call(func: Callable[..., T]) -> Callable[..., T]:
                 [f"{key}: {value}" for key, value in kwargs.items()],
             ),
         )
-        return func(*args, **kwargs)
+        return_ = func(*args, **kwargs)
+        logger.debug("Returning: %s", return_)
+        return return_
 
     return wrapper
 
@@ -42,6 +44,8 @@ def untested(func: Callable[..., T]) -> Callable[..., T]:
                 [f"{key}: {value}" for key, value in kwargs.items()],
             ),
         )
-        return func(*args, **kwargs)
+        return_ = func(*args, **kwargs)
+        logger.debug("Returning: %s", return_)
+        return return_
 
     return wrapper
