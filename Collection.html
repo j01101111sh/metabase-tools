@@ -47,7 +47,7 @@
   
   
   
-    <title>Collection &#8212; metabase-tools 0.5.0 documentation</title>
+    <title>Collection &#8212; metabase-tools 0.7.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/material.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -82,7 +82,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex navheader">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="index.html" title="metabase-tools 0.5.0 documentation"
+        <a href="index.html" title="metabase-tools 0.7.0 documentation"
            class="md-header-nav__button md-logo">
           
             &nbsp;
@@ -94,7 +94,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">metabase-tools 0.5.0 documentation</span>
+          <span class="md-header-nav__topic">metabase-tools 0.7.0 documentation</span>
           <span class="md-header-nav__topic"> Collection </span>
         </div>
       </div>
@@ -151,7 +151,7 @@
   <nav class="md-tabs" data-md-component="tabs">
     <div class="md-tabs__inner md-grid">
       <ul class="md-tabs__list">
-          <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">metabase-tools 0.5.0 documentation</a></li>
+          <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">metabase-tools 0.7.0 documentation</a></li>
       </ul>
     </div>
   </nav>
@@ -163,13 +163,13 @@
               <div class="md-sidebar__inner">
                 <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="index.html" title="metabase-tools 0.5.0 documentation" class="md-nav__button md-logo">
+    <a href="index.html" title="metabase-tools 0.7.0 documentation" class="md-nav__button md-logo">
       
         <img src="_static/" alt=" logo" width="48" height="48">
       
     </a>
     <a href="index.html"
-       title="metabase-tools 0.5.0 documentation">metabase-tools 0.5.0 documentation</a>
+       title="metabase-tools 0.7.0 documentation">metabase-tools 0.7.0 documentation</a>
   </label>
   
 
@@ -197,186 +197,8 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  <section id="module-metabase_tools.models.collection">
-<span id="collection"></span><h1 id="collection--page-root">Collection<a class="headerlink" href="#collection--page-root" title="Permalink to this heading">¶</a></h1>
-<p>Classes related to collections endpoints</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="metabase_tools.models.collection.Collection">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.models.collection.</span></span><span class="sig-name descname"><span class="pre">Collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archived</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slug</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">personal_owner_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">effective_location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">effective_ancestors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">can_write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.collection.Collection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Collection object class with related methods</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.collection.Collection.archive">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unarchive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.collection.Collection.archive" title="Permalink to this definition">¶</a></dt>
-<dd><p>Archive collections</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>targets</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – Collection IDs to archive</p></li>
-<li><p><strong>unarchive</strong> (<em>bool</em><em>, </em><em>optional</em>) – Unarchive targets. Defaults to False.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of archived collections</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.collection.Collection" title="metabase_tools.models.collection.Collection">Collection</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.collection.Collection.get">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.collection.Collection.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch a list of collections using the provided MetabaseAPI</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>targets</strong> (<em>list</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Collection IDs to fetch or returns all</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of collections requested</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.collection.Collection" title="metabase_tools.models.collection.Collection">Collection</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.collection.Collection.get_contents">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_contents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archived</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#metabase_tools.models.collection.Collection.get_contents" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the contents of the provided collection</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>collection_id</strong> (<em>int</em>) – ID of the requested collection</p></li>
-<li><p><strong>model_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Filter to provided model. Defaults to all.</p></li>
-<li><p><strong>archived</strong> (<em>bool</em><em>, </em><em>optional</em>) – Archived objects. Defaults to False.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.EmptyDataReceived" title="metabase_tools.exceptions.EmptyDataReceived"><strong>EmptyDataReceived</strong></a> – No results from API</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Contents of collection</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.collection.Collection.get_flat_list">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_flat_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.collection.Collection.get_flat_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Flattens collection tree so the full path of each collection is shown</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Flattened collection tree</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[dict]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.collection.Collection.get_tree">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.collection.Collection.get_tree" title="Permalink to this definition">¶</a></dt>
-<dd><p>Collection tree</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.EmptyDataReceived" title="metabase_tools.exceptions.EmptyDataReceived"><strong>EmptyDataReceived</strong></a> – No data returned from API</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Representation of collection tree</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[dict]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.collection.Collection.graph">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#metabase_tools.models.collection.Collection.graph" title="Permalink to this definition">¶</a></dt>
-<dd><p>Graph of collection</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>graph of collection</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.collection.Collection.post">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">payloads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.collection.Collection.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create new collections</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>payloads</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – Details of collections to create</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of collections created</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.collection.Collection" title="metabase_tools.models.collection.Collection">Collection</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.collection.Collection.put">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">payloads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.collection.Collection.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update existing collections</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>payloads</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – Details of collections to update</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of updated collections</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.collection.Collection" title="metabase_tools.models.collection.Collection">Collection</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.collection.Collection.search">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.collection.Collection.search" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search for collection based on provided criteria</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>search_params</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – Search criteria; 1 result per</p></li>
-<li><p><strong>search_list</strong> (<em>list</em><em>, </em><em>optional</em>) – Search existing list or pulls from API</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of collections from results</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.collection.Collection" title="metabase_tools.models.collection.Collection">Collection</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-</dd></dl>
+  <section id="collection">
+<h1 id="collection--page-root">Collection<a class="headerlink" href="#collection--page-root" title="Permalink to this heading">¶</a></h1>
 </section>
 
 

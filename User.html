@@ -47,7 +47,7 @@
   
   
   
-    <title>User &#8212; metabase-tools 0.5.0 documentation</title>
+    <title>User &#8212; metabase-tools 0.7.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/material.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -82,7 +82,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex navheader">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="index.html" title="metabase-tools 0.5.0 documentation"
+        <a href="index.html" title="metabase-tools 0.7.0 documentation"
            class="md-header-nav__button md-logo">
           
             &nbsp;
@@ -94,7 +94,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">metabase-tools 0.5.0 documentation</span>
+          <span class="md-header-nav__topic">metabase-tools 0.7.0 documentation</span>
           <span class="md-header-nav__topic"> User </span>
         </div>
       </div>
@@ -151,7 +151,7 @@
   <nav class="md-tabs" data-md-component="tabs">
     <div class="md-tabs__inner md-grid">
       <ul class="md-tabs__list">
-          <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">metabase-tools 0.5.0 documentation</a></li>
+          <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">metabase-tools 0.7.0 documentation</a></li>
       </ul>
     </div>
   </nav>
@@ -163,13 +163,13 @@
               <div class="md-sidebar__inner">
                 <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="index.html" title="metabase-tools 0.5.0 documentation" class="md-nav__button md-logo">
+    <a href="index.html" title="metabase-tools 0.7.0 documentation" class="md-nav__button md-logo">
       
         <img src="_static/" alt=" logo" width="48" height="48">
       
     </a>
     <a href="index.html"
-       title="metabase-tools 0.5.0 documentation">metabase-tools 0.5.0 documentation</a>
+       title="metabase-tools 0.7.0 documentation">metabase-tools 0.7.0 documentation</a>
   </label>
   
 
@@ -197,205 +197,8 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  <section id="module-metabase_tools.models.user">
-<span id="user"></span><h1 id="user--page-root">User<a class="headerlink" href="#user--page-root" title="Permalink to this heading">¶</a></h1>
-<p>Classes related to user endpoints</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="metabase_tools.models.user.User">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.models.user.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">common_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updated_at</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_qbnewb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ldap_auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">google_auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">login_attributes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">personal_collection_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user.User" title="Permalink to this definition">¶</a></dt>
-<dd><p>User object class with related methods</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.user.User.current">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#metabase_tools.models.user.User.current" title="Permalink to this definition">¶</a></dt>
-<dd><p>Current user details</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.RequestFailure" title="metabase_tools.exceptions.RequestFailure"><strong>RequestFailure</strong></a> – Invalid response from API</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Current user details</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metabase_tools.models.user.User" title="metabase_tools.models.user.User">User</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.user.User.disable">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#metabase_tools.models.user.User.disable" title="Permalink to this definition">¶</a></dt>
-<dd><p>Disables user(s) provided</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>targets</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – List of users to disable</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dict of users that were disabled with results</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.user.User.enable">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.user.User.enable" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enable user(s) provided</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>targets</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – List of users to enable</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Enabled users</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.user.User" title="metabase_tools.models.user.User">User</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.user.User.get">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.user.User.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch a list of users using the provided MetabaseAPI</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>targets</strong> (<em>list</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – User IDs to fetch or returns all</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of users requested</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.user.User" title="metabase_tools.models.user.User">User</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.user.User.post">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">payloads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.user.User.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create new users</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>payloads</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – Details of users to create</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of users created</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.user.User" title="metabase_tools.models.user.User">User</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.user.User.put">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">payloads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.user.User.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update existing users</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>payloads</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – Details of users to update</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of updated users</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.user.User" title="metabase_tools.models.user.User">User</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.user.User.qbnewb">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">qbnewb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.user.User.qbnewb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Indicate that a user has been informed about Query Builder.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>targets</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – List of users to toggle</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Users with query builder toggle set</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[Self]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.user.User.resend_invite">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resend_invite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.user.User.resend_invite" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resent user invites</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>targets</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – List of users to resend invites for</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Users with a resent invite</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.user.User" title="metabase_tools.models.user.User">User</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.user.User.search">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.user.User.search" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search for users based on provided criteria</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>search_params</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – Search criteria; 1 result per</p></li>
-<li><p><strong>search_list</strong> (<em>list</em><em>, </em><em>optional</em>) – Search existing list or pulls from API</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of users from results</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.user.User" title="metabase_tools.models.user.User">User</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.user.User.update_password">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">payloads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.user.User.update_password" title="Permalink to this definition">¶</a></dt>
-<dd><p>Updates passwords for users</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>payloads</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – List of users and passwords to update</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of users with reset passwords</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.user.User" title="metabase_tools.models.user.User">User</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-</dd></dl>
+  <section id="user">
+<h1 id="user--page-root">User<a class="headerlink" href="#user--page-root" title="Permalink to this heading">¶</a></h1>
 </section>
 
 

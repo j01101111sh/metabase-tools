@@ -47,7 +47,7 @@
   
   
   
-    <title>MetabaseGeneric &#8212; metabase-tools 0.5.0 documentation</title>
+    <title>MetabaseGeneric &#8212; metabase-tools 0.7.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/material.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -82,7 +82,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex navheader">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="index.html" title="metabase-tools 0.5.0 documentation"
+        <a href="index.html" title="metabase-tools 0.7.0 documentation"
            class="md-header-nav__button md-logo">
           
             &nbsp;
@@ -94,7 +94,7 @@
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-          <span class="md-header-nav__topic">metabase-tools 0.5.0 documentation</span>
+          <span class="md-header-nav__topic">metabase-tools 0.7.0 documentation</span>
           <span class="md-header-nav__topic"> MetabaseGeneric </span>
         </div>
       </div>
@@ -151,7 +151,7 @@
   <nav class="md-tabs" data-md-component="tabs">
     <div class="md-tabs__inner md-grid">
       <ul class="md-tabs__list">
-          <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">metabase-tools 0.5.0 documentation</a></li>
+          <li class="md-tabs__item"><a href="index.html" class="md-tabs__link">metabase-tools 0.7.0 documentation</a></li>
       </ul>
     </div>
   </nav>
@@ -163,13 +163,13 @@
               <div class="md-sidebar__inner">
                 <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="index.html" title="metabase-tools 0.5.0 documentation" class="md-nav__button md-logo">
+    <a href="index.html" title="metabase-tools 0.7.0 documentation" class="md-nav__button md-logo">
       
         <img src="_static/" alt=" logo" width="48" height="48">
       
     </a>
     <a href="index.html"
-       title="metabase-tools 0.5.0 documentation">metabase-tools 0.5.0 documentation</a>
+       title="metabase-tools 0.7.0 documentation">metabase-tools 0.7.0 documentation</a>
   </label>
   
 
@@ -197,148 +197,8 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  <section id="module-metabase_tools.models.generic">
-<span id="metabasegeneric"></span><h1 id="metabasegeneric--page-root">MetabaseGeneric<a class="headerlink" href="#metabasegeneric--page-root" title="Permalink to this heading">¶</a></h1>
-<p>MetabaseGeneric class to provide generic methods for objects following this pattern</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="metabase_tools.models.generic.MetabaseGeneric">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.models.generic.</span></span><span class="sig-name descname"><span class="pre">MetabaseGeneric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.generic.MetabaseGeneric" title="Permalink to this definition">¶</a></dt>
-<dd><p>Provides generic methods for objects following generic pattern</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.generic.MetabaseGeneric.archive">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unarchive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.generic.MetabaseGeneric.archive" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generic method for archiving a list of objects</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>targets</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – List of objects to archive</p></li>
-<li><p><strong>unarchive</strong> (<em>bool</em>) – Whether object should be unarchived instead of archived</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.InvalidParameters" title="metabase_tools.exceptions.InvalidParameters"><strong>InvalidParameters</strong></a> – Targets and jsons are both None</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of objects of the relevant type</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[Self]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.generic.MetabaseGeneric.delete">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#metabase_tools.models.generic.MetabaseGeneric.delete" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to delete a list of objects</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>targets</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – List of objects to delete</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.InvalidParameters" title="metabase_tools.exceptions.InvalidParameters"><strong>InvalidParameters</strong></a> – Targets is not a list of ints</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>_description_</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.generic.MetabaseGeneric.get">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.generic.MetabaseGeneric.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generic method for returning an object or list of objects</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>targets</strong> (<em>list</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – IDs of the objects being requested</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.InvalidParameters" title="metabase_tools.exceptions.InvalidParameters"><strong>InvalidParameters</strong></a> – Targets are not None or list[int]</p></li>
-<li><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.EmptyDataReceived" title="metabase_tools.exceptions.EmptyDataReceived"><strong>EmptyDataReceived</strong></a> – No data is received from the API</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of objects of the relevant type</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[Self]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.generic.MetabaseGeneric.post">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">payloads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.generic.MetabaseGeneric.post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generic method for creating a list of objects</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>payloads</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – List of json payloads</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.InvalidParameters" title="metabase_tools.exceptions.InvalidParameters"><strong>InvalidParameters</strong></a> – Targets and jsons are both None</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of objects of the relevant type</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[Self]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.generic.MetabaseGeneric.put">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">payloads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.generic.MetabaseGeneric.put" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generic method for updating a list of objects</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>payloads</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – List of json payloads</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.InvalidParameters" title="metabase_tools.exceptions.InvalidParameters"><strong>InvalidParameters</strong></a> – Targets and jsons are both None</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of objects of the relevant type</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[Self]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.models.generic.MetabaseGeneric.search">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><span class="pre">MetabaseApi</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">typing_extensions.Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#metabase_tools.models.generic.MetabaseGeneric.search" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to search a list of objects meeting a list of parameters</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>adapter</strong> (<a class="reference internal" href="MetabaseApi.html#metabase_tools.metabase.MetabaseApi" title="metabase_tools.metabase.MetabaseApi"><em>MetabaseApi</em></a>) – Connection to Metabase API</p></li>
-<li><p><strong>search_params</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – Each dict contains search criteria and returns                 1 result</p></li>
-<li><p><strong>search_list</strong> (<em>list</em><em>[</em><em>Self</em><em>]</em><em>, </em><em>optional</em>) – Provide to search against an existing                 list, by default pulls from API</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of objects of the relevant type</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[Self]</p>
-</dd>
-</dl>
-</dd></dl>
-</dd></dl>
+  <section id="metabasegeneric">
+<h1 id="metabasegeneric--page-root">MetabaseGeneric<a class="headerlink" href="#metabasegeneric--page-root" title="Permalink to this heading">¶</a></h1>
 </section>
 
 
