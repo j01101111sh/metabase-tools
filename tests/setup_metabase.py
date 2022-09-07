@@ -171,9 +171,21 @@ def create_cards(session: requests.Session):
     return responses
 
 
+def create_databases(session: requests.Session):
+    new_db = {
+        "name": "Test DB",
+        "engine": "h2",
+        "details": {
+            "db": "zip:/app/metabase.jar!/sample-dataset.db;USER=GUEST;PASSWORD=guest"
+        },
+    }
+    return session.post(f"{HOST}/api/database", json=new_db)
+
+
 if __name__ == "__main__":
     setup_response = initial_setup()
     session = get_session()
     user_responses = create_users(session)
     coll_responses = create_collections(session)
     card_responses = create_cards(session)
+    db_responses = create_databases(session)
