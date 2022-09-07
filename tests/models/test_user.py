@@ -3,7 +3,7 @@ import random
 import pytest
 
 from metabase_tools import MetabaseApi, UserItem
-from tests.helpers import random_string
+from tests.helpers import PASSWORD, random_string
 
 
 @pytest.fixture(scope="module")
@@ -59,6 +59,7 @@ def test_user_disable_one(users: list[UserItem]):
     except:
         pass
     results = item.disable()
+    _ = item.enable()
     assert isinstance(results, dict)
     assert all(isinstance(v, dict) for v in results.values())
     assert all(v["success"] is True for v in results.values())
@@ -111,7 +112,7 @@ def test_user_resend(users: list[UserItem]):
 
 def test_user_reset_password(users: list[UserItem]):
     item = random.choice(users)
-    payload = {"id": item.id, "password": "asdfoin33kn23fkmsdf"}
+    payload = {"id": item.id, "password": PASSWORD}
     result = item.update_password(payload=payload)
     assert isinstance(result, UserItem)
 
