@@ -111,10 +111,10 @@ class MetabaseApi:
     def _auth_with_cached_token(self, token_path: Path) -> bool:
         with open(token_path, "r", encoding="utf-8") as file:
             token = file.read()
-        logger.debug("Attempting authentication with token file")
+        logger.info("Attempting authentication with token file")
         self._add_token_to_header(token=token)
         authed = self.test_for_auth()
-        logger.debug(
+        logger.info(
             "Authenticated with token file"
             if authed
             else "Failed to authenticate with token file"
@@ -122,10 +122,10 @@ class MetabaseApi:
         return authed
 
     def _auth_with_passed_token(self, credentials: dict[str, str]) -> bool:
-        logger.debug("Attempting authentication with token passed")
+        logger.info("Attempting authentication with token passed")
         self._add_token_to_header(token=credentials["token"])
         authed = self.test_for_auth()
-        logger.debug(
+        logger.info(
             "Authenticated with token passed"
             if authed
             else "Failed to authenticate with token passed"
@@ -139,13 +139,13 @@ class MetabaseApi:
             credentials (dict): Username and password
         """
         try:
-            logger.debug("Attempting authentication with username and password")
+            logger.info("Attempting authentication with username and password")
             response = self._session.post(
                 f"{self.metabase_url}/session", json=credentials
             )
             self._add_token_to_header(token=response.json()["id"])
             authed = self.test_for_auth()
-            logger.debug(
+            logger.info(
                 "Authenticated with login"
                 if authed
                 else "Failed to authenticate with login"
@@ -205,7 +205,7 @@ class MetabaseApi:
         """
         log_line_pre = f"{method=}, {url=}, {params=}"
         try:
-            logger.debug(log_line_pre)
+            logger.info(log_line_pre)
             return self._session.request(
                 method=method, url=url, params=params, json=json
             )
@@ -250,7 +250,7 @@ class MetabaseApi:
 
         is_success = 299 >= response.status_code >= 200
         if is_success:
-            logger.debug(
+            logger.info(
                 log_line_post, is_success, response.status_code, response.reason
             )
             try:
