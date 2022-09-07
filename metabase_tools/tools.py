@@ -184,7 +184,7 @@ class MetabaseTools(MetabaseApi):
         if len(changes["updates"]) > 0:
             update_results = []
             for update in changes["updates"]:
-                card = self.cards.get(update["id"])[0]
+                card = self.cards.get([update["id"]])[0]
                 update_results.append(card.update(payload=update))
 
             if isinstance(update_results, list):
