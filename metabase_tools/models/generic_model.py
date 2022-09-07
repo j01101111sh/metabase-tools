@@ -47,12 +47,9 @@ class Item(BaseModel, ABC, extra="forbid"):
             T: Object of the relevant type
         """
         if self._adapter:
-            try:
-                result = self._adapter.put(
-                    endpoint=self._BASE_EP.format(**payload), json=payload
-                )
-            except KeyError:
-                result = None
+            result = self._adapter.put(
+                endpoint=self._BASE_EP.format(id=self.id), json=payload
+            )
             if isinstance(result, dict):
                 obj = self.__class__(**result)
                 obj.set_adapter(adapter=self._adapter)
@@ -74,7 +71,7 @@ class Item(BaseModel, ABC, extra="forbid"):
         payload = {"id": self.id, "archived": not unarchive}
         if self._adapter:
             result = self._adapter.put(
-                endpoint=self._BASE_EP.format(**payload), json=payload
+                endpoint=self._BASE_EP.format(id=self.id), json=payload
             )
             if isinstance(result, dict):
                 obj = self.__class__(**result)
@@ -92,7 +89,7 @@ class Item(BaseModel, ABC, extra="forbid"):
             dict: Results
         """
         if self._adapter:
-            result = self._adapter.delete(endpoint=self._BASE_EP.format(**self.dict()))
+            result = self._adapter.delete(endpoint=self._BASE_EP.format(id=self.id))
             if isinstance(result, dict):
                 final = {self.id: result}
                 return final
