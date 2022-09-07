@@ -4,35 +4,23 @@ from pathlib import Path
 
 import pytest
 
-from metabase_tools import MetabaseTools
+from metabase_tools import MetabaseApi, MetabaseTools
 from tests.helpers import random_string
 
 
-@pytest.fixture(scope="module")
-def tools(host: str, credentials: dict, result_path, run_id) -> MetabaseTools:
-    token_path = f"{result_path}/{run_id}_tools.token"
-    tools = MetabaseTools(
-        metabase_url=host,
-        credentials=credentials,
-        cache_token=True,
-        token_path=token_path,
-    )
-    return tools
+def test_auth(api: MetabaseApi):
+    assert api.test_for_auth()
 
 
-def test_auth(tools: MetabaseTools):
-    assert tools.test_for_auth()
-
-
-def test_download_native_queries(tools: MetabaseTools, result_path):
-    file = tools.download_native_queries(root_folder=f"{result_path}/data/")
+def test_download_native_queries(api: MetabaseApi, result_path):
+    file = api.tools.download_native_queries(root_folder=f"{result_path}/data/")
     assert file.stat().st_size > 0  # File size greater than 0
     assert (
         file.stat().st_ctime - datetime.now().timestamp() < 2
     )  # file was created in the last 2 seconds
 
 
-def test_upload_existing(tools: MetabaseTools):
+def test_upload_existing(api: MetabaseApi):
     mapping_path = Path("./tests/data/mapping.json")
     test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
     with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -40,7 +28,7 @@ def test_upload_existing(tools: MetabaseTools):
     with open(test_card_path, "a", newline="", encoding="utf-8") as file:
         file.write("\n-- " + random_string(6))
     try:
-        results = tools.upload_native_queries(
+        results = api.tools.upload_native_queries(
             mapping_path=mapping_path,
             file_extension="sql",
             dry_run=False,
@@ -56,7 +44,7 @@ def test_upload_existing(tools: MetabaseTools):
     assert all(result["is_success"] for result in results)
 
 
-def test_upload_existing_dry(tools: MetabaseTools):
+def test_upload_existing_dry(api: MetabaseApi):
     mapping_path = Path("./tests/data/mapping.json")
     test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
     with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -64,7 +52,7 @@ def test_upload_existing_dry(tools: MetabaseTools):
     with open(test_card_path, "a", newline="", encoding="utf-8") as file:
         file.write("\n-- " + random_string(6))
     try:
-        results = tools.upload_native_queries(
+        results = api.tools.upload_native_queries(
             mapping_path=mapping_path,
             file_extension="sql",
             dry_run=True,
@@ -81,7 +69,7 @@ def test_upload_existing_dry(tools: MetabaseTools):
     assert "errors" in results
 
 
-def test_upload_existing_stop(tools: MetabaseTools):
+def test_upload_existing_stop(api: MetabaseApi):
     mapping_path = Path("./tests/data/mapping.json")
     test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
     with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -89,7 +77,7 @@ def test_upload_existing_stop(tools: MetabaseTools):
     with open(test_card_path, "a", newline="", encoding="utf-8") as file:
         file.write("\n-- " + random_string(6))
     with pytest.raises(FileNotFoundError):
-        _ = tools.upload_native_queries(
+        _ = api.tools.upload_native_queries(
             mapping_path=mapping_path,
             file_extension="sql",
             dry_run=False,
@@ -99,7 +87,7 @@ def test_upload_existing_stop(tools: MetabaseTools):
         file.write(current)
 
 
-def test_upload_existing_dry_stop(tools: MetabaseTools):
+def test_upload_existing_dry_stop(api: MetabaseApi):
     mapping_path = Path("./tests/data/mapping.json")
     test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
     with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -107,7 +95,7 @@ def test_upload_existing_dry_stop(tools: MetabaseTools):
     with open(test_card_path, "a", newline="", encoding="utf-8") as file:
         file.write("\n-- " + random_string(6))
     with pytest.raises(FileNotFoundError):
-        _ = tools.upload_native_queries(
+        _ = api.tools.upload_native_queries(
             mapping_path=mapping_path,
             file_extension="sql",
             dry_run=True,
@@ -117,7 +105,7 @@ def test_upload_existing_dry_stop(tools: MetabaseTools):
         file.write(current)
 
 
-def test_upload_new(tools: MetabaseTools):
+def test_upload_new(api: MetabaseApi):
     # Set parameters
     mapping_path = Path("./tests/data/mapping.json")
     test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
@@ -145,7 +133,7 @@ def test_upload_new(tools: MetabaseTools):
         file.write(dumps(n_map, indent=2))
     # Run upload
     try:
-        results = tools.upload_native_queries(
+        results = api.tools.upload_native_queries(
             mapping_path=mapping_path,
             file_extension="sql",
             dry_run=False,

@@ -111,7 +111,7 @@ def test_user_resend(users: list[UserItem]):
 
 def test_user_reset_password(users: list[UserItem]):
     item = random.choice(users)
-    payload = {"id": 2, "password": "asdfoin33kn23fkmsdf"}
+    payload = {"id": item.id, "password": "asdfoin33kn23fkmsdf"}
     result = item.update_password(payload=payload)
     assert isinstance(result, UserItem)
 
