@@ -37,7 +37,6 @@ class Item(BaseModel, ABC, extra="forbid"):
         """
         self._adapter = adapter
 
-    @log_call
     def update(self: T, payload: dict[str, Any]) -> T:
         """Generic method for updating an object
 
@@ -60,7 +59,6 @@ class Item(BaseModel, ABC, extra="forbid"):
                 return obj
         raise InvalidParameters("Invalid target(s)")
 
-    @log_call
     def archive(self: T, unarchive: bool = False) -> T:
         """Generic method for archiving an object
 
