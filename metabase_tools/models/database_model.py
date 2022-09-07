@@ -23,7 +23,7 @@ class DatabaseItem(Item):
     description: Optional[str]
     features: list[str]
     cache_field_values_schedule: str
-    timezone: str
+    timezone: Optional[str]
     auto_run_queries: bool
     metadata_sync_schedule: str
     caveats: Optional[str]
