@@ -20,10 +20,17 @@ from metabase_tools.exceptions import (
     InvalidDataReceived,
     RequestFailure,
 )
+from metabase_tools.tools import MetabaseTools
 
 
 class MetabaseApi:
     """Metabase API adapter"""
+
+    cards: Cards
+    collections: Collections
+    databases: Databases
+    tools: MetabaseTools
+    users: Users
 
     def __init__(
         self,
@@ -54,6 +61,7 @@ class MetabaseApi:
         self.cards = Cards(self)
         self.collections = Collections(self)
         self.databases = Databases(self)
+        self.tools = MetabaseTools(self)
         self.users = Users(self)
 
     def _validate_base_url(self, url: str) -> str:
