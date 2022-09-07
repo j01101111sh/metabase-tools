@@ -11,15 +11,26 @@ from typing import Any, Optional
 from requests import Response, Session
 from requests.exceptions import RequestException
 
+from metabase_tools.endpoint.cards_endpoint import Cards
+from metabase_tools.endpoint.collection_endpoint import Collections
+from metabase_tools.endpoint.database_endpoint import Databases
+from metabase_tools.endpoint.user_endpoint import Users
 from metabase_tools.exceptions import (
     AuthenticationFailure,
     InvalidDataReceived,
     RequestFailure,
 )
+from metabase_tools.tools import MetabaseTools
 
 
 class MetabaseApi:
     """Metabase API adapter"""
+
+    cards: Cards
+    collections: Collections
+    databases: Databases
+    tools: MetabaseTools
+    users: Users
 
     def __init__(
         self,
@@ -46,6 +57,12 @@ class MetabaseApi:
         if cache_token:
             save_path = Path(token_path or "metabase.token")
             self.save_token(save_path=save_path)
+
+        self.cards = Cards(self)
+        self.collections = Collections(self)
+        self.databases = Databases(self)
+        self.tools = MetabaseTools(self)
+        self.users = Users(self)
 
     def _validate_base_url(self, url: str) -> str:
         if url[-1] == "/":
@@ -227,6 +244,9 @@ class MetabaseApi:
         )
 
         # If status_code in 200-299 range, return Result, else raise exception
+        if response.status_code == 204 and http_method == "DELETE":
+            return {}
+
         is_success = 299 >= response.status_code >= 200
         if is_success:
             self._logger.debug(

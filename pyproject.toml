@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "metabase-tools"
-version = "0.6.0"
+version = "0.7.0"
 description = "Unofficial API wrapper for Metabase plus additional helper tools"
 authors = ["Josh Odell <j01101111sh@gmail.com>"]
 
@@ -9,16 +9,25 @@ python = "^3.10"
 requests = "^2.28.1"
 pydantic = "^1.9.1"
 types-requests = "^2.28.9"
+wrapt = "^1.14.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
 pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
 pylint = "^2.14.5"
 black = "^22.6.0"
 isort = "^5.10.1"
+mypy = "^0.971"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
 Sphinx = "^5.1.1"
 sphinx-material = "^0.0.35"
-mypy = "^0.971"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -32,6 +41,7 @@ profile = 'black'
 
 [tool.pylint.main]
 extension-pkg-whitelist = ["pydantic"]
+disable=["useless-parent-delegation","too-many-instance-attributes"]
 
 [tool.pylint.format]
 max-line-length = "88"
@@ -49,7 +59,6 @@ log_file_level = "DEBUG"
 log_file_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcName)s - %(name)s\n\t%(message)s"
 
 [tool.coverage.report]
-fail_under = 80
 omit = ["tests/*.py"]
-exclude_lines = ["def _","except RequestException", "elif response.status_code == 401:"]
+exclude_lines = ["def _","except RequestException", "elif response.status_code == 401:", "EmptyDataReceived", "RequestFailure", "if TYPE_CHECKING:","InvalidParameters"]
 show_missing = true
