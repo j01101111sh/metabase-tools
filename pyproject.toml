@@ -41,7 +41,7 @@ profile = 'black'
 
 [tool.pylint.main]
 extension-pkg-whitelist = ["pydantic"]
-disable=["useless-parent-delegation"]
+disable=["useless-parent-delegation","too-many-instance-attributes"]
 
 [tool.pylint.format]
 max-line-length = "88"
