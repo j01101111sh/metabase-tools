@@ -58,21 +58,3 @@ class Databases(Endpoint[DatabaseItem]):
             list[DatabaseItem]: List of databases of the relevant type
         """
         return super().search(search_params=search_params, search_list=search_list)
-
-    def embeddable(self) -> list[DatabaseItem]:
-        """Fetch list of databases with embedding enabled
-
-        Raises:
-            EmptyDataReceived: If no databases have embedding enabled
-
-        Returns:
-            list[DatabaseItem]: List of databases with embedding enabled
-        """
-        databases = self._adapter.get(endpoint="/database/embeddable")
-        if databases:
-            return [
-                DatabaseItem(**database)
-                for database in databases
-                if isinstance(database, dict)
-            ]
-        raise EmptyDataReceived
