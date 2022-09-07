@@ -1,3 +1,5 @@
+from venv import create
+
 import pytest
 
 from metabase_tools import DatabaseItem, MetabaseApi
@@ -51,3 +53,23 @@ def test_database_delete(api: MetabaseApi):
     assert isinstance(db, DatabaseItem)
     result = db.delete()
     assert isinstance(result, dict)
+    new_db = {
+        "name": "Test DB",
+        "engine": "h2",
+        "details": {
+            "db": "zip:/app/metabase.jar!/sample-dataset.db;USER=GUEST;PASSWORD=guest"
+        },
+    }
+    created_db = api.databases.create(payloads=[new_db])[0]
+    assert isinstance(created_db, DatabaseItem)
+
+
+def test_database_update(api: MetabaseApi):
+    params = [{"name": "Test DB"}]
+    db = api.databases.search(search_params=params)[0]
+    assert isinstance(db, DatabaseItem)
+    update = {"id": db.id, "name": f"Test DB - {random_string(6)}"}
+    result = db.update(payload=update)
+    assert isinstance(result, DatabaseItem)
+    update = {"id": db.id, "name": "Test DB"}
+    result = db.update(payload=update)
