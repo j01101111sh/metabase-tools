@@ -6,6 +6,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 from uuid import UUID
 
+import packaging.version
 from pydantic import BaseModel, PrivateAttr
 from pydantic.fields import Field
 
@@ -24,6 +25,7 @@ class CardItem(Item):
     _BASE_EP: ClassVar[str] = "/card/{id}"
 
     _adapter: Optional[MetabaseApi] = PrivateAttr(None)
+    _server_version: Optional[packaging.version.Version] = PrivateAttr(None)
 
     description: Optional[str]
     archived: bool
@@ -51,6 +53,14 @@ class CardItem(Item):
     can_write: Optional[bool]
     dashboard_count: Optional[int]
     is_favorite: Optional[bool] = Field(alias="favorite")
+
+    average_query_time: Optional[int]
+    collection_preview: Optional[bool]
+    entity_id: Optional[str]
+    last_query_start: Optional[datetime]
+    moderation_reviews: Optional[list[Any]]
+    parameter_mappings: Optional[list[Any]]
+    parameters: Optional[list[Any]]
 
     def set_adapter(self, adapter: MetabaseApi) -> None:
         """Sets the adapter on an object
@@ -115,6 +125,10 @@ class CardItem(Item):
         Returns:
             dict: Result of favoriting operation
         """
+        if self._server_version and self._server_version > packaging.version.Version(
+            "v0.39.1"
+        ):
+            raise NotImplementedError("This function was deprecated in Metabase v0.X.Y")
         if self._adapter:
             result = self._adapter.post(endpoint=f"/card/{self.id}/favorite")
             if isinstance(result, dict):
@@ -127,6 +141,10 @@ class CardItem(Item):
         Returns:
             dict: Result of unfavoriting operation
         """
+        if self._server_version and self._server_version > packaging.version.Version(
+            "v0.39.1"
+        ):
+            raise NotImplementedError("This function was deprecated in Metabase v0.X.Y")
         if self._adapter:
             result = self._adapter.delete(endpoint=f"/card/{self.id}/favorite")
             if isinstance(result, dict):

@@ -32,6 +32,9 @@ class CollectionItem(Item):
     can_write: Optional[bool]
     parent_id: Optional[int]
 
+    authority_level: Optional[Any]
+    entity_id: Optional[str]
+
     def set_adapter(self, adapter: MetabaseApi) -> None:
         """Sets the adapter on an object
 

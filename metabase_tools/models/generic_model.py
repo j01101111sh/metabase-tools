@@ -6,6 +6,7 @@ from __future__ import annotations
 from abc import ABC
 from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
 
+import packaging.version
 from pydantic import BaseModel, PrivateAttr
 
 from metabase_tools.exceptions import InvalidParameters
@@ -22,6 +23,7 @@ class Item(BaseModel, ABC, extra="forbid"):
     _BASE_EP: ClassVar[str]
 
     _adapter: Optional[MetabaseApi] = PrivateAttr(None)
+    _server_version: Optional[packaging.version.Version] = PrivateAttr(None)
 
     id: int | str
     name: str
@@ -33,6 +35,7 @@ class Item(BaseModel, ABC, extra="forbid"):
             adapter (MetabaseApi): Connection to MetabaseApi
         """
         self._adapter = adapter
+        self._server_version = adapter.server_version
 
     def update(self: T, payload: dict[str, Any]) -> T:
         """Generic method for updating an object

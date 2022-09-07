@@ -31,6 +31,11 @@ def api(host, credentials):
     )
 
 
+@pytest.fixture(scope="package")
+def server_version(api: MetabaseApi):
+    return api.server_version
+
+
 @pytest.fixture(scope="session")
 def credentials():
     return helpers.CREDENTIALS
