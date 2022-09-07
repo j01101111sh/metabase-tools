@@ -258,13 +258,14 @@ class MetabaseApi:
                 if isinstance(return_, (list, dict)):
                     return return_
             except JSONDecodeError as error_raised:
+                logger.error(log_line_post, False, response.status_code, response.text)
                 raise InvalidDataReceived from error_raised
         elif response.status_code == 401:
             logger.error(log_line_post, False, response.status_code, response.text)
             raise AuthenticationFailure(f"{response.status_code} - {response.reason}")
 
-        error_line = f"{response.status_code} - {response.reason}"
-        logger.error(log_line_post)
+        error_line = f"{response.status_code} - {response.reason} - {response.text}"
+        logger.error(log_line_post, False, response.status_code, response.text)
         raise RequestFailure(error_line)
 
     def get(
