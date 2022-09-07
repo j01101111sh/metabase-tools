@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "metabase-tools"
-version = "0.7.0"
+version = "0.8.0"
 description = "Unofficial API wrapper for Metabase plus additional helper tools"
 authors = ["Josh Odell <j01101111sh@gmail.com>"]
 
