@@ -2,6 +2,7 @@
 """
 from __future__ import annotations
 
+import logging
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
@@ -12,6 +13,8 @@ from metabase_tools.models.generic_model import Item
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
+
+logger = logging.getLogger(__name__)
 
 
 class UserItem(Item):

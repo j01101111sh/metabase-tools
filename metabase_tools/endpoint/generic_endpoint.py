@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import logging
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, ClassVar, Generic, Optional, TypeVar
 
@@ -13,6 +14,8 @@ if TYPE_CHECKING:
     from metabase_tools import MetabaseApi
 
 T = TypeVar("T", bound=Item)
+
+logger = logging.getLogger(__name__)
 
 
 class Endpoint(ABC, Generic[T]):

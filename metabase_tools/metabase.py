@@ -22,6 +22,8 @@ from metabase_tools.exceptions import (
 )
 from metabase_tools.tools import MetabaseTools
 
+logger = logging.getLogger(__name__)
+
 
 class MetabaseApi:
     """Metabase API adapter"""
@@ -39,7 +41,6 @@ class MetabaseApi:
         cache_token: bool = False,
         token_path: Optional[Path | str] = None,
     ):
-        self._logger = logging.getLogger(__name__)
         if not credentials and not token_path:
             raise AuthenticationFailure("No authentication method provided")
         credentials = credentials or {}
@@ -90,7 +91,7 @@ class MetabaseApi:
             authed = self._auth_with_login(credentials=credentials)
         # Raise error if still not authenticated
         if not authed:
-            self._logger.error("Failed to authenticate")
+            logger.error("Failed to authenticate")
             raise AuthenticationFailure(
                 "Failed to authenticate with credentials provided"
             )
@@ -104,16 +105,16 @@ class MetabaseApi:
 
     def _delete_cached_token(self, token_path: Path) -> None:
         if token_path.exists():
-            self._logger.warning("Deleting token file")
+            logger.warning("Deleting token file")
             token_path.unlink()
 
     def _auth_with_cached_token(self, token_path: Path) -> bool:
         with open(token_path, "r", encoding="utf-8") as file:
             token = file.read()
-        self._logger.debug("Attempting authentication with token file")
+        logger.debug("Attempting authentication with token file")
         self._add_token_to_header(token=token)
         authed = self.test_for_auth()
-        self._logger.debug(
+        logger.debug(
             "Authenticated with token file"
             if authed
             else "Failed to authenticate with token file"
@@ -121,10 +122,10 @@ class MetabaseApi:
         return authed
 
     def _auth_with_passed_token(self, credentials: dict[str, str]) -> bool:
-        self._logger.debug("Attempting authentication with token passed")
+        logger.debug("Attempting authentication with token passed")
         self._add_token_to_header(token=credentials["token"])
         authed = self.test_for_auth()
-        self._logger.debug(
+        logger.debug(
             "Authenticated with token passed"
             if authed
             else "Failed to authenticate with token passed"
@@ -138,20 +139,20 @@ class MetabaseApi:
             credentials (dict): Username and password
         """
         try:
-            self._logger.debug("Attempting authentication with username and password")
+            logger.debug("Attempting authentication with username and password")
             response = self._session.post(
                 f"{self.metabase_url}/session", json=credentials
             )
             self._add_token_to_header(token=response.json()["id"])
             authed = self.test_for_auth()
-            self._logger.debug(
+            logger.debug(
                 "Authenticated with login"
                 if authed
                 else "Failed to authenticate with login"
             )
             return authed
         except KeyError as error_raised:
-            self._logger.warning(
+            logger.warning(
                 "Exception encountered during attempt to authenticate with login \
                     passed: %s",
                 error_raised,
@@ -204,12 +205,12 @@ class MetabaseApi:
         """
         log_line_pre = f"{method=}, {url=}, {params=}"
         try:
-            self._logger.debug(log_line_pre)
+            logger.debug(log_line_pre)
             return self._session.request(
                 method=method, url=url, params=params, json=json
             )
         except RequestException as error_raised:
-            self._logger.error(str(error_raised))
+            logger.error(str(error_raised))
             raise RequestFailure("Request failed") from error_raised
 
     def generic_request(
@@ -249,7 +250,7 @@ class MetabaseApi:
 
         is_success = 299 >= response.status_code >= 200
         if is_success:
-            self._logger.debug(
+            logger.debug(
                 log_line_post, is_success, response.status_code, response.reason
             )
             try:
@@ -259,13 +260,11 @@ class MetabaseApi:
             except JSONDecodeError as error_raised:
                 raise InvalidDataReceived from error_raised
         elif response.status_code == 401:
-            self._logger.error(
-                log_line_post, False, response.status_code, response.text
-            )
+            logger.error(log_line_post, False, response.status_code, response.text)
             raise AuthenticationFailure(f"{response.status_code} - {response.reason}")
 
         error_line = f"{response.status_code} - {response.reason}"
-        self._logger.error(log_line_post)
+        logger.error(log_line_post)
         raise RequestFailure(error_line)
 
     def get(

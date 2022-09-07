@@ -2,6 +2,7 @@
 """
 from __future__ import annotations
 
+import logging
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 from uuid import UUID
@@ -16,6 +17,8 @@ from metabase_tools.models.user_model import UserItem
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
+
+logger = logging.getLogger(__name__)
 
 
 class CardItem(Item):

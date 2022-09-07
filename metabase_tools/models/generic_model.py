@@ -3,6 +3,7 @@
 """
 from __future__ import annotations
 
+import logging
 from abc import ABC
 from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
 
@@ -14,6 +15,7 @@ if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
 
 T = TypeVar("T", bound="Item")
+logger = logging.getLogger(__name__)
 
 
 class Item(BaseModel, ABC, extra="forbid"):
