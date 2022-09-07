@@ -122,3 +122,11 @@ def test_user_qbnewb(users: list[UserItem]):
     result = item.qbnewb()
     assert isinstance(result, dict)
     assert result["success"] is True
+
+
+def test_user_search(api: MetabaseApi):
+    search_params = [{"email": "dev@dundermifflin.com"}]
+    result = api.users.search(search_params=search_params)
+    assert isinstance(result, list)
+    assert all(isinstance(r, UserItem) for r in result)
+    assert len(result) == len(search_params)
