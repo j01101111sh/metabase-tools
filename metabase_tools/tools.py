@@ -3,23 +3,27 @@ MetabaseTools extends MetabaseApi with additional complex functions
 """
 from __future__ import annotations  # Included for support of |
 
+import logging
 from json import dumps, loads
 from pathlib import Path
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
-from metabase_tools.exceptions import (
-    EmptyDataReceived,
-    ItemInPersonalCollection,
-    ItemNotFound,
-)
-from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.card import Card
-from metabase_tools.models.collection import Collection
-from metabase_tools.models.database import Database
+from metabase_tools.exceptions import EmptyDataReceived, ItemNotFound
+from metabase_tools.models.card_model import CardItem
+
+if TYPE_CHECKING:
+    from metabase_tools.metabase import MetabaseApi
+
+logger = logging.getLogger(__name__)
 
 
-class MetabaseTools(MetabaseApi):
+class MetabaseTools:
     """Extends MetabaseApi with additional complex functions"""
+
+    _adapter: MetabaseApi
+
+    def __init__(self, adapter: MetabaseApi):
+        self._adapter = adapter
 
     def download_native_queries(
         self,
@@ -47,20 +51,18 @@ class MetabaseTools(MetabaseApi):
         # Download list of cards from Metabase API and filter to only native queries
         cards = [
             card
-            for card in Card.get(adapter=self)
+            for card in self._adapter.cards.get()
             if (
                 card.query_type == "native"
                 and card.collection
                 and card.collection.personal_owner_id is None
             )
         ]
-        self._logger.debug("Found %s cards with native queries", len(cards))
+        logger.debug("Found %s cards with native queries", len(cards))
 
         # Create dictionary of collections for file paths
         collections_by_id = self._get_collections_dict(key="id")
-        self._logger.debug(
-            "Generated flat list of %s collections", len(collections_by_id)
-        )
+        logger.debug("Generated flat list of %s collections", len(collections_by_id))
 
         # Format filtered list
         cards_to_write = []
@@ -78,9 +80,9 @@ class MetabaseTools(MetabaseApi):
                     file_extension=file_extension,
                 )
             except OSError:
-                self._logger.warning("Skipping %s (name error)", card.name)
+                logger.warning("Skipping %s (name error)", card.name)
                 continue
-            self._logger.debug(
+            logger.debug(
                 "%s saved to %s",
                 card.name,
                 f"{root_folder}/{new_card['path']}",
@@ -90,9 +92,7 @@ class MetabaseTools(MetabaseApi):
         mapping_path = Path(f"{root_folder}")
         mapping_path.mkdir(parents=True, exist_ok=True)
         mapping_path /= save_file
-        self._logger.debug(
-            "Completed iterating through list, saving file: %s", mapping_path
-        )
+        logger.debug("Completed iterating through list, saving file: %s", mapping_path)
         with open(mapping_path, "w", newline="", encoding="utf-8") as file:
             file.write(dumps(cards_to_write, indent=2))
 
@@ -149,7 +149,7 @@ class MetabaseTools(MetabaseApi):
                     EmptyDataReceived,
                     ItemNotFound,
                 ):  # No items in collection or not found
-                    self._logger.debug(
+                    logger.debug(
                         "%s not found in listed location, creating", card["name"]
                     )
                     card_id = None
@@ -168,7 +168,7 @@ class MetabaseTools(MetabaseApi):
                         changes["creates"].append(card_result)
 
             else:  # File does not exist
-                self._logger.error("Skipping %s (file not found)", card["name"])
+                logger.error("Skipping %s (file not found)", card["name"])
                 if stop_on_error:
                     raise FileNotFoundError(f"{card_path} not found")
                 changes["errors"].append(card)
@@ -184,7 +184,11 @@ class MetabaseTools(MetabaseApi):
     ) -> list[dict[str, Any]] | dict[str, Any]:
         results = []
         if len(changes["updates"]) > 0:
-            update_results = Card.update(adapter=self, payloads=changes["updates"])
+            update_results = []
+            for update in changes["updates"]:
+                card = self._adapter.cards.get([update["id"]])[0]
+                update_results.append(card.update(payload=update))
+
             if isinstance(update_results, list):
                 for result in update_results:
                     results.append(
@@ -192,7 +196,7 @@ class MetabaseTools(MetabaseApi):
                     )
 
         if len(changes["creates"]) > 0:
-            create_results = Card.create(adapter=self, payloads=changes["creates"])
+            create_results = self._adapter.cards.create(payloads=changes["creates"])
             if isinstance(create_results, list):
                 for result in create_results:
                     results.append(
@@ -202,27 +206,22 @@ class MetabaseTools(MetabaseApi):
         return results
 
     def _get_mapping_details(
-        self, card: Card, collections_by_id: dict[Any, Any]
+        self, card: CardItem, collections_by_id: dict[Any, Any]
     ) -> dict[str, Any]:
-        try:
-            mapping_details = {
-                "name": card.name,
-                "collection_id": card.collection_id,
-                "path": collections_by_id[card.collection_id]["path"],
-            }
-        except KeyError as error_raised:
-            raise ItemInPersonalCollection(
-                "Item in personal collection"
-            ) from error_raised
+        mapping_details = {
+            "name": card.name,
+            "collection_id": card.collection_id,
+            "path": collections_by_id[card.collection_id]["path"],
+        }
 
         mapping_details["database_id"] = card.database_id
-        mapping_details["database_name"] = Database.search(
-            adapter=self, search_params=[{"id": card.database_id}]
+        mapping_details["database_name"] = self._adapter.databases.search(
+            search_params=[{"id": card.database_id}]
         )[0].name
 
         return mapping_details
 
-    def _save_query(self, card: Card, save_path: str, file_extension: str) -> None:
+    def _save_query(self, card: CardItem, save_path: str, file_extension: str) -> None:
         # SQL file creation
         sql_code = card.dataset_query["native"]["query"]
         sql_path = Path(f"{save_path}")
@@ -232,14 +231,13 @@ class MetabaseTools(MetabaseApi):
             file.write(sql_code)
 
     def _get_collections_dict(self, key: str) -> dict[Any, Any]:
-        collections = Collection.get_flat_list(adapter=self)
+        collections = self._adapter.collections.get_flat_list()
         non_keys = [k for k in collections[0].keys() if k != key]
         return {item[key]: {nk: item[nk] for nk in non_keys} for item in collections}
 
     def _find_card_id(self, card_name: str, collection_id: int) -> int:
-        collection_items = Collection.get_contents(
-            adapter=self, collection_id=collection_id, model_type="card", archived=False
-        )
+        collection = self._adapter.collections.get(targets=[collection_id])[0]
+        collection_items = collection.get_contents(model_type="card", archived=False)
         for item in collection_items:
             if item["name"] == card_name and isinstance(item["id"], int):
                 return item["id"]
@@ -250,7 +248,7 @@ class MetabaseTools(MetabaseApi):
         card_id: int,
         card_path: Path | str,
     ) -> dict[str, Any]:
-        prod_card = Card.get(adapter=self, targets=[card_id])[0]
+        prod_card = self._adapter.cards.get(targets=[card_id])[0]
         with open(card_path, "r", newline="", encoding="utf-8") as file:
             dev_code = file.read()
         if dev_code != prod_card.dataset_query["native"]["query"]:
@@ -267,7 +265,7 @@ class MetabaseTools(MetabaseApi):
             dev_query = file.read()
         db_id = [
             database.id
-            for database in Database.get(adapter=self)
+            for database in self._adapter.databases.get()
             if card["database_name"] == database.name
         ][0]
 
