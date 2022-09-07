@@ -7,7 +7,9 @@ from metabase_tools import CollectionItem, MetabaseApi
 
 @pytest.fixture(scope="module")
 def collections(api: MetabaseApi) -> list[CollectionItem]:
-    return api.collections.get()[1:]
+    collections = api.collections.get()[1:]
+    collections = [coll for coll in collections if coll.personal_owner_id is None]
+    return collections
 
 
 @pytest.fixture(scope="module")
@@ -42,10 +44,11 @@ def test_collection_update_one(collections: list[CollectionItem], run_id: str):
 def test_collection_archive_one(collections: list[CollectionItem]):
     coll_to_archive = random.choice(collections)
     try:
-        change_result = coll_to_archive.archive(unarchive=True)
+        _ = coll_to_archive.archive(unarchive=True)
     except:
         pass
     change_result = coll_to_archive.archive()
+    _ = coll_to_archive.archive(unarchive=True)
     assert isinstance(change_result, CollectionItem)
     assert change_result.archived is True
 
@@ -53,7 +56,7 @@ def test_collection_archive_one(collections: list[CollectionItem]):
 def test_collection_unarchive_one(collections: list[CollectionItem]):
     coll_to_archive = random.choice(collections)
     try:
-        change_result = coll_to_archive.archive()
+        _ = coll_to_archive.archive()
     except:
         pass
     change_result = coll_to_archive.archive(unarchive=True)
