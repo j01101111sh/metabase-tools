@@ -43,3 +43,11 @@ def test_database_search(api: MetabaseApi):
     assert isinstance(result, list)
     assert all(isinstance(r, DatabaseItem) for r in result)
     assert len(result) == len(search_params)
+
+
+def test_database_delete(api: MetabaseApi):
+    params = [{"name": "Test DB"}]
+    db = api.databases.search(search_params=params)[0]
+    assert isinstance(db, DatabaseItem)
+    result = db.delete()
+    assert isinstance(result, dict)
