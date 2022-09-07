@@ -8,11 +8,7 @@ from json import dumps, loads
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Optional
 
-from metabase_tools.exceptions import (
-    EmptyDataReceived,
-    ItemInPersonalCollection,
-    ItemNotFound,
-)
+from metabase_tools.exceptions import EmptyDataReceived, ItemNotFound
 from metabase_tools.models.card_model import CardItem
 
 if TYPE_CHECKING:
@@ -212,16 +208,11 @@ class MetabaseTools:
     def _get_mapping_details(
         self, card: CardItem, collections_by_id: dict[Any, Any]
     ) -> dict[str, Any]:
-        try:
-            mapping_details = {
-                "name": card.name,
-                "collection_id": card.collection_id,
-                "path": collections_by_id[card.collection_id]["path"],
-            }
-        except KeyError as error_raised:
-            raise ItemInPersonalCollection(
-                "Item in personal collection"
-            ) from error_raised
+        mapping_details = {
+            "name": card.name,
+            "collection_id": card.collection_id,
+            "path": collections_by_id[card.collection_id]["path"],
+        }
 
         mapping_details["database_id"] = card.database_id
         mapping_details["database_name"] = self._adapter.databases.search(
