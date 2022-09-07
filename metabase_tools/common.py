@@ -34,6 +34,14 @@ def untested(func: Callable[..., T]) -> Callable[..., T]:
     def wrapper(*args: Any, **kwargs: Any) -> T:
         logger = logging.getLogger(func.__module__)
         logger.warning("Calling untested function: %s", func.__name__)
+        logger.debug(
+            "%s called\n\targs: %s\n\tkwargs: %s",
+            func.__name__,
+            "\n\t\t".join([str(s) for s in args]),
+            "\n\t\t".join(
+                [f"{key}: {value}" for key, value in kwargs.items()],
+            ),
+        )
         return func(*args, **kwargs)
 
     return wrapper
