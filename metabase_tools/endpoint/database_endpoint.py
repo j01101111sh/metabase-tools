@@ -7,7 +7,6 @@ import logging
 from typing import Any, ClassVar, Optional
 
 from metabase_tools.endpoint.generic_endpoint import Endpoint
-from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.database_model import DatabaseItem
 
 logger = logging.getLogger(__name__)
