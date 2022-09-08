@@ -1,13 +1,28 @@
 from datetime import datetime
 from pathlib import Path
+from platform import python_version
 
 import pytest
 
 from metabase_tools import MetabaseApi
 from tests import helpers
 
+
+def get_metabase_version():
+    api = MetabaseApi(
+        metabase_url=helpers.HOST,
+        credentials=helpers.CREDENTIALS,
+        cache_token=True,
+    )
+    return api.server_version.base_version
+
+
 _run_id = datetime.now().strftime("%y%m%dT%H%M%S")
-_result_path = Path(f"./temp/test-{_run_id}")
+_python_version = python_version().replace(".", "_")
+_metabase_version = get_metabase_version().replace(".", "_")
+_result_path = Path(
+    f"./temp/test-{_run_id}/python_{_python_version}/metabase_{_metabase_version}"
+)
 
 
 @pytest.fixture(scope="session")
