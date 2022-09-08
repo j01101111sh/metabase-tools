@@ -12,9 +12,9 @@ from requests import Response, Session
 from requests.exceptions import RequestException
 
 from metabase_tools.endpoints.cards_endpoint import Cards
-from metabase_tools.endpoints.collection_endpoint import Collections
-from metabase_tools.endpoints.database_endpoint import Databases
-from metabase_tools.endpoints.user_endpoint import Users
+from metabase_tools.endpoints.collections_endpoint import Collections
+from metabase_tools.endpoints.databases_endpoint import Databases
+from metabase_tools.endpoints.users_endpoint import Users
 from metabase_tools.exceptions import (
     AuthenticationFailure,
     InvalidDataReceived,
