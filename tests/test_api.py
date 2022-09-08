@@ -54,9 +54,11 @@ def test_auth_token_fail(host):
         _ = api.get(endpoint="/user/current")
 
 
-def test_auth_token_file_success(host, token):
-    api = MetabaseApi(metabase_url=host, credentials=token)
-    assert api.test_for_auth()
+def test_auth_token_file_success(api, host, result_path, run_id):
+    _ = api
+    token_path = Path(f"{result_path}/{run_id}.token")
+    new_api = MetabaseApi(metabase_url=host, token_path=token_path)
+    assert new_api.test_for_auth()
 
 
 def test_auth_token_file_fail(host):
