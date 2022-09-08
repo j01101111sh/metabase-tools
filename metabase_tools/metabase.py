@@ -65,7 +65,7 @@ class MetabaseApi:
 
         # Set server version for compatability checks
         self._set_server_version()
-        self._logger.info("Server version: %s", self.server_version)
+        logger.info("Server version: %s", self.server_version)
 
         # Create endpoints
         self.cards = Cards(self)
