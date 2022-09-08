@@ -9,7 +9,6 @@ Welcome to metabase-tools's documentation!
 .. toctree::
    Install
    MetabaseApi
-   MetabaseGeneric
    Card
    Collection
    Database
