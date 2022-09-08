@@ -1,7 +1,3 @@
-from venv import create
-
-import pytest
-
 from metabase_tools import DatabaseItem, MetabaseApi
 from tests.helpers import random_string
 

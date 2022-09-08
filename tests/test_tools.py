@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from metabase_tools import MetabaseApi, MetabaseTools
+from metabase_tools import MetabaseApi
 from tests.helpers import random_string
 
 

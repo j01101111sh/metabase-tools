@@ -9,7 +9,7 @@ from metabase_tools.exceptions import AuthenticationFailure
 @pytest.fixture
 def token(host, credentials, result_path, run_id):
     token_path = f"{result_path}/{run_id}.token"
-    api = MetabaseApi(
+    _ = MetabaseApi(
         metabase_url=host,
         credentials=credentials,
         cache_token=True,
@@ -29,7 +29,7 @@ def test_auth_credential_success(host, credentials):
 def test_auth_credential_fail(host, email):
     bad_credentials = {"username": email, "password": "badpass"}
     with pytest.raises(AuthenticationFailure):
-        api = MetabaseApi(
+        _ = MetabaseApi(
             metabase_url=host, credentials=bad_credentials, token_path="./missing.token"
         )
 
@@ -51,7 +51,7 @@ def test_auth_token_fail(host):
         api = MetabaseApi(
             metabase_url=host, credentials=bad_credentials, token_path="./missing.token"
         )
-        test_data = api.get(endpoint="/user/current")
+        _ = api.get(endpoint="/user/current")
 
 
 def test_auth_token_file_success(host, token):
@@ -61,7 +61,7 @@ def test_auth_token_file_success(host, token):
 
 def test_auth_token_file_fail(host):
     with pytest.raises(AuthenticationFailure):
-        api = MetabaseApi(metabase_url=host, token_path="./missing.token")
+        _ = MetabaseApi(metabase_url=host, token_path="./missing.token")
 
 
 def test_auth_without_protocol(host, credentials):
@@ -85,7 +85,7 @@ def test_cache_token(host, credentials, result_path, run_id, token):
 
 def test_fail_on_no_credentials(host):
     with pytest.raises(AuthenticationFailure):
-        api = MetabaseApi(metabase_url=host)
+        _ = MetabaseApi(metabase_url=host)
 
 
 def test_url_ends_in_slash(host, credentials):

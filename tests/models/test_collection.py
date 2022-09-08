@@ -44,11 +44,11 @@ def test_collection_update_one(collections: list[CollectionItem], run_id: str):
 def test_collection_archive_one(collections: list[CollectionItem]):
     coll_to_archive = random.choice(collections)
     try:
-        _ = coll_to_archive.archive(unarchive=True)
+        _ = coll_to_archive.unarchive()
     except:
         pass
     change_result = coll_to_archive.archive()
-    _ = coll_to_archive.archive(unarchive=True)
+    _ = coll_to_archive.unarchive()
     assert isinstance(change_result, CollectionItem)
     assert change_result.archived is True
 
@@ -59,7 +59,7 @@ def test_collection_unarchive_one(collections: list[CollectionItem]):
         _ = coll_to_archive.archive()
     except:
         pass
-    change_result = coll_to_archive.archive(unarchive=True)
+    change_result = coll_to_archive.unarchive()
     assert isinstance(change_result, CollectionItem)
     assert change_result.archived is False
 

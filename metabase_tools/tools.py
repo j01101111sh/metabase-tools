@@ -8,6 +8,7 @@ from json import dumps, loads
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Optional
 
+from metabase_tools.common import log_call
 from metabase_tools.exceptions import EmptyDataReceived, ItemNotFound
 from metabase_tools.models.card_model import CardItem
 
@@ -25,6 +26,7 @@ class MetabaseTools:
     def __init__(self, adapter: MetabaseApi):
         self._adapter = adapter
 
+    @log_call
     def download_native_queries(
         self,
         save_file: Optional[Path | str] = None,
@@ -99,6 +101,7 @@ class MetabaseTools:
         # Returns path to file saved
         return mapping_path
 
+    @log_call
     def upload_native_queries(
         self,
         mapping_path: Path | str,
@@ -179,6 +182,7 @@ class MetabaseTools:
             return self._execute_changes(changes)
         return changes
 
+    @log_call
     def _execute_changes(
         self, changes: dict[str, list[dict[str, Any]]]
     ) -> list[dict[str, Any]] | dict[str, Any]:
@@ -205,6 +209,7 @@ class MetabaseTools:
 
         return results
 
+    @log_call
     def _get_mapping_details(
         self, card: CardItem, collections_by_id: dict[Any, Any]
     ) -> dict[str, Any]:
@@ -221,6 +226,7 @@ class MetabaseTools:
 
         return mapping_details
 
+    @log_call
     def _save_query(self, card: CardItem, save_path: str, file_extension: str) -> None:
         # SQL file creation
         sql_code = card.dataset_query["native"]["query"]
@@ -230,11 +236,13 @@ class MetabaseTools:
         with open(sql_path, "w", newline="", encoding="utf-8") as file:
             file.write(sql_code)
 
+    @log_call
     def _get_collections_dict(self, key: str) -> dict[Any, Any]:
         collections = self._adapter.collections.get_flat_list()
         non_keys = [k for k in collections[0].keys() if k != key]
         return {item[key]: {nk: item[nk] for nk in non_keys} for item in collections}
 
+    @log_call
     def _find_card_id(self, card_name: str, collection_id: int) -> int:
         collection = self._adapter.collections.get(targets=[collection_id])[0]
         collection_items = collection.get_contents(model_type="card", archived=False)
@@ -243,6 +251,7 @@ class MetabaseTools:
                 return item["id"]
         raise ItemNotFound
 
+    @log_call
     def _update_existing_card(
         self,
         card_id: int,
@@ -258,6 +267,7 @@ class MetabaseTools:
             return dev_def
         return {}
 
+    @log_call
     def _create_new_card(
         self, card: dict[str, Any], card_path: Path, dev_coll_id: int
     ) -> dict[str, Any]:

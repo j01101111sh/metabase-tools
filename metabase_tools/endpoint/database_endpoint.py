@@ -6,6 +6,7 @@ from __future__ import annotations
 import logging
 from typing import Any, ClassVar, Optional
 
+from metabase_tools.common import log_call
 from metabase_tools.endpoint.generic_endpoint import Endpoint
 from metabase_tools.models.database_model import DatabaseItem
 
@@ -18,6 +19,7 @@ class Databases(Endpoint[DatabaseItem]):
     _BASE_EP: ClassVar[str] = "/database"
     _STD_OBJ: ClassVar[type] = DatabaseItem
 
+    @log_call
     def get(self, targets: Optional[list[int]] = None) -> list[DatabaseItem]:
         """Fetch list of databases
 
@@ -29,6 +31,7 @@ class Databases(Endpoint[DatabaseItem]):
         """
         return super().get(targets=targets)
 
+    @log_call
     def create(self, payloads: list[dict[str, Any]]) -> list[DatabaseItem]:
         """Create new database(s)
 
@@ -40,6 +43,7 @@ class Databases(Endpoint[DatabaseItem]):
         """
         return super().create(payloads=payloads)
 
+    @log_call
     def search(
         self,
         search_params: list[dict[str, Any]],
