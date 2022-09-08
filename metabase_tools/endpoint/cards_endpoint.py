@@ -6,6 +6,7 @@ from __future__ import annotations
 import logging
 from typing import Any, ClassVar, Optional
 
+from metabase_tools.common import log_call, untested
 from metabase_tools.endpoint.generic_endpoint import Endpoint
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.card_model import CardItem
@@ -19,6 +20,7 @@ class Cards(Endpoint[CardItem]):
     _BASE_EP: ClassVar[str] = "/card"
     _STD_OBJ: ClassVar[type] = CardItem
 
+    @log_call
     def get(self, targets: Optional[list[int]] = None) -> list[CardItem]:
         """Fetch list of cards
 
@@ -30,6 +32,7 @@ class Cards(Endpoint[CardItem]):
         """
         return super().get(targets=targets)
 
+    @log_call
     def create(self, payloads: list[dict[str, Any]]) -> list[CardItem]:
         """Create new card(s)
 
@@ -41,6 +44,7 @@ class Cards(Endpoint[CardItem]):
         """
         return super().create(payloads=payloads)
 
+    @log_call
     def search(
         self,
         search_params: list[dict[str, Any]],
@@ -59,6 +63,7 @@ class Cards(Endpoint[CardItem]):
         """
         return super().search(search_params=search_params, search_list=search_list)
 
+    @untested
     def embeddable(self) -> list[CardItem]:
         """Fetch list of cards with embedding enabled
 

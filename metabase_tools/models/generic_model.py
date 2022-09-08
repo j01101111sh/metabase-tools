@@ -3,17 +3,20 @@
 """
 from __future__ import annotations
 
+import logging
 from abc import ABC
 from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
 
 from pydantic import BaseModel, PrivateAttr
 
+from metabase_tools.common import log_call
 from metabase_tools.exceptions import InvalidParameters
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
 
 T = TypeVar("T", bound="Item")
+logger = logging.getLogger(__name__)
 
 
 class Item(BaseModel, ABC, extra="forbid"):
@@ -96,6 +99,7 @@ class Item(BaseModel, ABC, extra="forbid"):
                 return obj
         raise InvalidParameters("Invalid target(s)")
 
+    @log_call
     def delete(self) -> dict[int | str, dict[str, Any]]:
         """Method to delete an object
 
