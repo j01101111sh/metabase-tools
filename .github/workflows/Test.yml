@@ -65,6 +65,7 @@ jobs:
           name: html-docs
           path: docs/build/html/
       - name: Upload log artifacts
+        if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
           name: logs
