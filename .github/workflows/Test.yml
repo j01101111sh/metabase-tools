@@ -10,7 +10,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python-version: ["3.10", "3.11-dev"]
-        metabase-version: ["0.39.0.1"]
+        metabase-version: ["v0.39.0.1","latest"]
 
     runs-on: ${{ matrix.os }}
 
@@ -18,8 +18,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Initialize docker container
         run: |
-          docker pull metabase/metabase:v${{ matrix.metabase-version }}
-          docker run -d -p 3000:3000 metabase/metabase:v${{ matrix.metabase-version }}
+          docker pull metabase/metabase:${{ matrix.metabase-version }}
+          docker run -d -p 3000:3000 metabase/metabase:${{ matrix.metabase-version }}
       - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
         uses: actions/setup-python@v3
         with:
