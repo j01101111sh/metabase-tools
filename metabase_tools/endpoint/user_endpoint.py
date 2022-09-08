@@ -6,6 +6,7 @@ from __future__ import annotations
 import logging
 from typing import Any, ClassVar, Optional
 
+from metabase_tools.common import log_call
 from metabase_tools.endpoint.generic_endpoint import Endpoint
 from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.user_model import UserItem
@@ -19,6 +20,7 @@ class Users(Endpoint[UserItem]):
     _BASE_EP: ClassVar[str] = "/user"
     _STD_OBJ: ClassVar[type] = UserItem
 
+    @log_call
     def get(self, targets: Optional[list[int]] = None) -> list[UserItem]:
         """Fetch list of users
 
@@ -30,6 +32,7 @@ class Users(Endpoint[UserItem]):
         """
         return super().get(targets=targets)
 
+    @log_call
     def create(self, payloads: list[dict[str, Any]]) -> list[UserItem]:
         """Create new card(s)
 
@@ -41,6 +44,7 @@ class Users(Endpoint[UserItem]):
         """
         return super().create(payloads=payloads)
 
+    @log_call
     def search(
         self,
         search_params: list[dict[str, Any]],
@@ -59,6 +63,7 @@ class Users(Endpoint[UserItem]):
         """
         return super().search(search_params=search_params, search_list=search_list)
 
+    @log_call
     def current(self) -> UserItem:
         """Current user details
 

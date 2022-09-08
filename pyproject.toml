@@ -2,7 +2,26 @@
 name = "metabase-tools"
 version = "0.8.0"
 description = "Unofficial API wrapper for Metabase plus additional helper tools"
+license = "MIT"
 authors = ["Josh Odell <j01101111sh@gmail.com>"]
+maintainers = ["Josh Odell <j01101111sh@gmail.com>"]
+readme = "README.md"
+homepage = "https://j01101111sh.github.io/metabase-tools/"
+repository = "https://github.com/j01101111sh/metabase-tools"
+documentation = "https://j01101111sh.github.io/metabase-tools/"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Cython",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Typing :: Typed"
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -53,7 +72,7 @@ python_files = "*.py"
 python_functions = "test_*"
 
 log_cli = true
-log_cli_level = "INFO"
+log_cli_level = "WARNING"
 log_cli_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcName)s - %(name)s\n\t%(message)s"
 
 log_file_level = "DEBUG"
@@ -61,5 +80,13 @@ log_file_format = "%(asctime)s - %(levelname)s - %(module)s:%(lineno)s %(funcNam
 
 [tool.coverage.report]
 omit = ["tests/*.py"]
-exclude_lines = ["def _","except RequestException", "elif response.status_code == 401:", "EmptyDataReceived", "RequestFailure", "if TYPE_CHECKING:","InvalidParameters"]
+exclude_lines = [
+    "def _","except RequestException",
+    "elif response.status_code == 401:",
+    "EmptyDataReceived",
+    "RequestFailure",
+    "if TYPE_CHECKING:",
+    "InvalidParameters",
+    "def untested"
+]
 show_missing = true

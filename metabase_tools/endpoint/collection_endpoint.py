@@ -6,6 +6,7 @@ from __future__ import annotations
 import logging
 from typing import Any, ClassVar, Optional
 
+from metabase_tools.common import log_call
 from metabase_tools.endpoint.generic_endpoint import Endpoint
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.collection_model import CollectionItem
@@ -19,6 +20,7 @@ class Collections(Endpoint[CollectionItem]):
     _BASE_EP: ClassVar[str] = "/collection"
     _STD_OBJ: ClassVar[type] = CollectionItem
 
+    @log_call
     def get(self, targets: Optional[list[int]] = None) -> list[CollectionItem]:
         """Fetch list of collections
 
@@ -30,6 +32,7 @@ class Collections(Endpoint[CollectionItem]):
         """
         return super().get(targets=targets)
 
+    @log_call
     def create(self, payloads: list[dict[str, Any]]) -> list[CollectionItem]:
         """Create new collection(s)
 
@@ -41,6 +44,7 @@ class Collections(Endpoint[CollectionItem]):
         """
         return super().create(payloads=payloads)
 
+    @log_call
     def search(
         self,
         search_params: list[dict[str, Any]],
@@ -59,6 +63,7 @@ class Collections(Endpoint[CollectionItem]):
         """
         return super().search(search_params=search_params, search_list=search_list)
 
+    @log_call
     def get_tree(self) -> list[dict[str, Any]]:
         """Collection tree
 
@@ -111,6 +116,7 @@ class Collections(Endpoint[CollectionItem]):
                     children.append(grandchildren)
         return children
 
+    @log_call
     def get_flat_list(self) -> list[dict[str, Any]]:
         """Flattens collection tree so the full path of each collection is shown
 
@@ -135,6 +141,7 @@ class Collections(Endpoint[CollectionItem]):
             folders.extend(Collections._flatten_tree(root_folder))
         return folders
 
+    @log_call
     def graph(self) -> dict[str, Any]:
         """Graph of collection permissions
 

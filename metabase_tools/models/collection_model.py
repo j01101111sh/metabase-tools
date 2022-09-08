@@ -2,15 +2,19 @@
 """
 from __future__ import annotations  # Included for support of |
 
+import logging
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
 from pydantic import PrivateAttr
 
+from metabase_tools.common import log_call
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.generic_model import Item
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
+
+logger = logging.getLogger(__name__)
 
 
 class CollectionItem(Item):
@@ -43,6 +47,7 @@ class CollectionItem(Item):
         """
         super().set_adapter(adapter=adapter)
 
+    @log_call
     def update(self: CollectionItem, payload: dict[str, Any]) -> CollectionItem:
         """Method for updating a collection
 
@@ -54,17 +59,24 @@ class CollectionItem(Item):
         """
         return super().update(payload=payload)
 
-    def archive(self: CollectionItem, unarchive: bool = False) -> CollectionItem:
+    @log_call
+    def archive(self: CollectionItem) -> CollectionItem:
         """Method for archiving a collection
-
-        Args:
-            unarchive (bool): Whether object should be unarchived instead of archived
 
         Returns:
             CollectionItem: Object of the relevant type
         """
-        return super().archive(unarchive=unarchive)
+        return super().archive()
 
+    def unarchive(self: CollectionItem) -> CollectionItem:
+        """Method for unarchiving a collection
+
+        Returns:
+            CollectionItem: Object of the relevant type
+        """
+        return super().unarchive()
+
+    @log_call
     def delete(self: CollectionItem) -> dict[int | str, dict[str, Any]]:
         """DEPRECATED; use archive instead
 
@@ -73,6 +85,7 @@ class CollectionItem(Item):
         """
         raise NotImplementedError
 
+    @log_call
     def get_contents(
         self,
         model_type: Optional[str] = None,

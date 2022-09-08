@@ -83,7 +83,7 @@ def test_card_update_many(cards: list[CardItem], run_id: str):
 
 def test_card_archive_one(cards: list[CardItem]):
     card = cards[0]
-    change_result = card.archive(unarchive=False)
+    change_result = card.archive()
     assert isinstance(change_result, CardItem)
     assert change_result.archived is True
     assert change_result._adapter is not None
@@ -91,7 +91,7 @@ def test_card_archive_one(cards: list[CardItem]):
 
 def test_card_archive_many(cards: list[CardItem]):
     items = cards[:2]
-    change_result = [item.archive(unarchive=False) for item in items]
+    change_result = [item.archive() for item in items]
     assert isinstance(change_result, list)
     assert all(isinstance(card, CardItem) for card in change_result)
     assert all(card.archived is True for card in change_result)
@@ -100,7 +100,7 @@ def test_card_archive_many(cards: list[CardItem]):
 
 def test_card_unarchive_one(cards: list[CardItem]):
     card = cards[0]
-    change_result = card.archive(unarchive=True)
+    change_result = card.unarchive()
     assert isinstance(change_result, CardItem)
     assert change_result.archived is False
     assert change_result._adapter is not None
@@ -108,7 +108,7 @@ def test_card_unarchive_one(cards: list[CardItem]):
 
 def test_card_unarchive_many(cards: list[CardItem]):
     items = cards[:2]
-    change_result = [item.archive(unarchive=True) for item in items]
+    change_result = [item.unarchive() for item in items]
     assert isinstance(change_result, list)
     assert all(isinstance(card, CardItem) for card in change_result)
     assert all(card.archived is False for card in change_result)
