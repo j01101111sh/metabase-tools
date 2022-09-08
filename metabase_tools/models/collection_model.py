@@ -57,16 +57,21 @@ class CollectionItem(Item):
         return super().update(payload=payload)
 
     @log_call
-    def archive(self: CollectionItem, unarchive: bool = False) -> CollectionItem:
+    def archive(self: CollectionItem) -> CollectionItem:
         """Method for archiving a collection
-
-        Args:
-            unarchive (bool): Whether object should be unarchived instead of archived
 
         Returns:
             CollectionItem: Object of the relevant type
         """
-        return super().archive(unarchive=unarchive)
+        return super().archive()
+
+    def unarchive(self: CollectionItem) -> CollectionItem:
+        """Method for unarchiving a collection
+
+        Returns:
+            CollectionItem: Object of the relevant type
+        """
+        return super().unarchive()
 
     @log_call
     def delete(self: CollectionItem) -> dict[int | str, dict[str, Any]]:

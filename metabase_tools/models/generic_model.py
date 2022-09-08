@@ -59,11 +59,8 @@ class Item(BaseModel, ABC, extra="forbid"):
                 return obj
         raise InvalidParameters("Invalid target(s)")
 
-    def archive(self: T, unarchive: bool = False) -> T:
+    def archive(self: T) -> T:
         """Generic method for archiving an object
-
-        Args:
-            unarchive (bool): Whether object should be unarchived instead of archived
 
         Raises:
             InvalidParameters: Targets and jsons are both None
@@ -71,7 +68,27 @@ class Item(BaseModel, ABC, extra="forbid"):
         Returns:
             T: Object of the relevant type
         """
-        payload = {"id": self.id, "archived": not unarchive}
+        payload = {"id": self.id, "archived": True}
+        if self._adapter:
+            result = self._adapter.put(
+                endpoint=self._BASE_EP.format(id=self.id), json=payload
+            )
+            if isinstance(result, dict):
+                obj = self.__class__(**result)
+                obj.set_adapter(self._adapter)
+                return obj
+        raise InvalidParameters("Invalid target(s)")
+
+    def unarchive(self: T) -> T:
+        """Generic method for unarchiving an object
+
+        Raises:
+            InvalidParameters: Targets and jsons are both None
+
+        Returns:
+            T: Object of the relevant type
+        """
+        payload = {"id": self.id, "archived": False}
         if self._adapter:
             result = self._adapter.put(
                 endpoint=self._BASE_EP.format(id=self.id), json=payload
