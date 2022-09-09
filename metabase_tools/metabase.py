@@ -164,7 +164,7 @@ class MetabaseApi:
             the current user
 
         Returns:
-            bool: Successful authentication
+            bool: Authentication success status
         """
         return (
             200
