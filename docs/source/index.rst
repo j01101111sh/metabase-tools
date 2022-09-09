@@ -8,8 +8,8 @@ Welcome to metabase-tools's documentation!
 
 
 .. toctree::
-   Install
-   MetabaseApi
+   Core
+   Basic Usage
    Card
    Collection
    Database
