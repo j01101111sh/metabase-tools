@@ -40,7 +40,7 @@ The following methods are supported for all current objects:
 
 You will need to access these methods through the appropriate member of MetabaseApi after initialization, as seen here:
 
-.. literalinclude:: ./examples/Basic Usage/get_cards.py
+.. literalinclude:: ./examples/basic_usage/get_cards.py
     :language: python
 
 Type 2 - Single, existing object methods
@@ -48,12 +48,12 @@ Type 2 - Single, existing object methods
 
 If a method acts on a single, existing object, you need to get an instance of that object first and call the method from that object, as seen here:
 
-.. literalinclude:: ./examples/Basic Usage/archive_card.py
+.. literalinclude:: ./examples/basic_usage/archive_card.py
     :language: python
 
 If you need to apply an action to many objects at once, you can loop through them in a list comprehension:
 
-.. literalinclude:: ./examples/Basic Usage/archive_many_cards.py
+.. literalinclude:: ./examples/basic_usage/archive_many_cards.py
     :language: python
     :emphasize-lines: 9
     :linenos:

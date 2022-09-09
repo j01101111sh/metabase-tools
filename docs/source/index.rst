@@ -9,7 +9,7 @@ Welcome to metabase-tools's documentation!
 
 .. toctree::
    Core
-   Basic Usage
+   basic_usage
    Card
    Collection
    Database

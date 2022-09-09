@@ -15,7 +15,7 @@ Option 1 - Username and password dictionary (recommended)
 
 This option involves passing a username and password in a dictionary to authenticate.
 
-.. literalinclude:: ./examples/Core/auth_with_password.py
+.. literalinclude:: ./examples/core/auth_with_password.py
     :language: python
     :linenos:
     :emphasize-lines: 4-5
@@ -25,7 +25,7 @@ Option 2 - Token file
 
 This option is best when you've previously authenticated with username and password and wish to reuse the same token. You can pass the path as a string or a pathlib.Path object.
 
-.. literalinclude:: ./examples/Core/auth_with_token_file.py
+.. literalinclude:: ./examples/core/auth_with_token_file.py
     :language: python
     :linenos:
     :emphasize-lines: 4-5
@@ -39,7 +39,7 @@ Option 3 - Token dictionary
 
 This option involves getting the token string from your Metabase cookie so is much more involved than the other two.
 
-.. literalinclude:: ./examples/Core/auth_with_token_dict.py
+.. literalinclude:: ./examples/core/auth_with_token_dict.py
     :language: python
     :linenos:
     :emphasize-lines: 4-5
@@ -50,7 +50,7 @@ Caching Tokens
 
 If you would like to cache your token for future runs to speed things up, simply set ``cache_token`` option to ``True``. This option works regardless of which authentication method was used. The token will be saved to ``token_path``.
 
-.. literalinclude:: ./examples/Core/caching_tokens.py
+.. literalinclude:: ./examples/core/caching_tokens.py
     :language: python
     :linenos:
     :emphasize-lines: 4-7
