@@ -7,7 +7,7 @@ import logging
 from typing import Any, ClassVar, Optional
 
 from metabase_tools.common import log_call, untested
-from metabase_tools.endpoint.generic_endpoint import Endpoint
+from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.card_model import CardItem
 
