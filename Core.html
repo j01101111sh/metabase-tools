@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Exceptions" href="Exceptions.html" /><link rel="prev" title="User" href="User.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Basic Usage" href="basic_usage.html" /><link rel="prev" title="Welcome to metabase-tools’s documentation!" href="index.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Tools - metabase-tools 0.8.0 documentation</title>
+        <title>Core - MetabaseApi - metabase-tools 0.8.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -134,7 +134,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -155,13 +155,13 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Core.html">Core - MetabaseApi</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Core - MetabaseApi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Card.html">Card</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Collection.html">Collection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Database.html">Database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="User.html">User</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tools.html">Tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Exceptions.html">Exceptions</a></li>
 </ul>
 
@@ -190,72 +190,93 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          <section id="module-metabase_tools.tools">
-<span id="tools"></span><h1>Tools<a class="headerlink" href="#module-metabase_tools.tools" title="Permalink to this heading">#</a></h1>
-<p>MetabaseTools extends MetabaseApi with additional complex functions</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="metabase_tools.tools.MetabaseTools">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.tools.</span></span><span class="sig-name descname"><span class="pre">MetabaseTools</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.tools.MetabaseTools" title="Permalink to this definition">#</a></dt>
-<dd><p>Extends MetabaseApi with additional complex functions</p>
+          <section id="core-metabaseapi">
+<h1>Core - MetabaseApi<a class="headerlink" href="#core-metabaseapi" title="Permalink to this heading">#</a></h1>
+<p>The MetabaseApi class is the core component of the API wrapper and you’ll need to get it started before you do anything else.</p>
+<section id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">#</a></h2>
+<p>There are 3 authentication options currently supported:</p>
+<section id="option-1-username-and-password-dictionary-recommended">
+<h3>Option 1 - Username and password dictionary (recommended)<a class="headerlink" href="#option-1-username-and-password-dictionary-recommended" title="Permalink to this heading">#</a></h3>
+<p>This option involves passing a username and password in a dictionary to authenticate.</p>
+</section>
+<section id="option-2-token-file">
+<h3>Option 2 - Token file<a class="headerlink" href="#option-2-token-file" title="Permalink to this heading">#</a></h3>
+<p>This option is best when you’ve previously authenticated with username and password and wish to reuse the same token. You can pass the path as a string or a pathlib.Path object.</p>
+<p>Contents of metabase.token:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">6117922</span><span class="n">c</span><span class="o">-</span><span class="mi">541</span><span class="n">b</span><span class="o">-</span><span class="mi">4</span><span class="n">f58</span><span class="o">-</span><span class="mf">815e-637</span><span class="n">c6f362920</span>
+</pre></div>
+</div>
+</section>
+<section id="option-3-token-dictionary">
+<h3>Option 3 - Token dictionary<a class="headerlink" href="#option-3-token-dictionary" title="Permalink to this heading">#</a></h3>
+<p>This option involves getting the token string from your Metabase cookie so is much more involved than the other two.</p>
+</section>
+</section>
+<section id="caching-tokens">
+<h2>Caching Tokens<a class="headerlink" href="#caching-tokens" title="Permalink to this heading">#</a></h2>
+<p>If you would like to cache your token for future runs to speed things up, simply set <code class="docutils literal notranslate"><span class="pre">cache_token</span></code> option to <code class="docutils literal notranslate"><span class="pre">True</span></code>. This option works regardless of which authentication method was used. The token will be saved to <code class="docutils literal notranslate"><span class="pre">token_path</span></code>.</p>
+</section>
+<section id="other-public-methods">
+<h2>Other Public Methods<a class="headerlink" href="#other-public-methods" title="Permalink to this heading">#</a></h2>
+<section id="testing-for-successful-authentication">
+<h3>Testing for successful authentication<a class="headerlink" href="#testing-for-successful-authentication" title="Permalink to this heading">#</a></h3>
+<p>Authentication will be tested during initialization but if you would like to test after that, you can call the <code class="docutils literal notranslate"><span class="pre">test_for_auth</span></code> method. This will make a test call to the Metabase API and return <code class="docutils literal notranslate"><span class="pre">True</span></code> if it completed without issue or <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="metabase_tools.MetabaseApi.test_for_auth">
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">test_for_auth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.test_for_auth" title="Permalink to this definition">#</a></dt>
+<dd><p>Validates successful authentication by attempting to retrieve data about             the current user</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>adapter</strong> (<em>MetabaseApi</em>) – </p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Authentication success status</p>
 </dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.tools.MetabaseTools.download_native_queries">
-<span class="sig-name descname"><span class="pre">download_native_queries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sql'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.tools.MetabaseTools.download_native_queries" title="Permalink to this definition">#</a></dt>
-<dd><p>Downloads all native queries into a JSON file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>save_file</strong> (<em>Path</em><em> | </em><em>str</em><em>, </em><em>optional</em>) – Path to save mapping file, defaults to                 mapping_{timestamp}.json</p></li>
-<li><p><strong>root_folder</strong> (<em>Path</em><em> | </em><em>str</em><em>, </em><em>optional</em>) – Root folder to save queries, by                 default “.”</p></li>
-<li><p><strong>file_extension</strong> (<em>str</em><em>, </em><em>optional</em>) – File extension to save the queries, by                 default “sql”</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Path to save file</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Path</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="metabase_tools.tools.MetabaseTools.upload_native_queries">
-<span class="sig-name descname"><span class="pre">upload_native_queries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_extension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_on_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.tools.MetabaseTools.upload_native_queries" title="Permalink to this definition">#</a></dt>
-<dd><p>Uploads queries to Metabase</p>
+</section>
+<section id="making-generic-requests">
+<h3>Making generic requests<a class="headerlink" href="#making-generic-requests" title="Permalink to this heading">#</a></h3>
+<p>To make custom calls to the Metabase API, you can use the <code class="docutils literal notranslate"><span class="pre">generic_request</span></code> method. In general, it’s better to use class-specific methods to call the methods you need but this can be used for unsupported endpoints while still utilizing the cached authentication of the wrapper.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="metabase_tools.MetabaseApi.generic_request">
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">generic_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http_method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.generic_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Method for dispatching HTTP requests</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mapping_path</strong> (<em>Path</em><em> | </em><em>str</em>) – Path to the mapping configuration file, by                 default None</p></li>
-<li><p><strong>dry_run</strong> (<em>bool</em><em>, </em><em>optional</em>) – Execute task as a dry run (i.e. do not make                 any changes), by default True</p></li>
-<li><p><strong>stop_on_error</strong> (<em>bool</em><em>, </em><em>optional</em>) – Raise error and stop if an error is                 encountered. Defaults to False.</p></li>
-<li><p><strong>file_extension</strong> (<em>str</em>) – </p></li>
+<li><p><strong>http_method</strong> (<em>str</em>) – GET or POST or PUT or DELETE</p></li>
+<li><p><strong>endpoint</strong> (<em>str</em>) – URL endpoint</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – Endpoint parameters</p></li>
+<li><p><strong>json</strong> (<em>dict</em><em>, </em><em>optional</em>) – Data payload</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>FileNotFoundError</strong> – The file referenced was not found</p>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.InvalidDataReceived" title="metabase_tools.exceptions.InvalidDataReceived"><strong>InvalidDataReceived</strong></a> – Unable to decode response from API</p></li>
+<li><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.AuthenticationFailure" title="metabase_tools.exceptions.AuthenticationFailure"><strong>AuthenticationFailure</strong></a> – Auth failure received from API</p></li>
+<li><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.RequestFailure" title="metabase_tools.exceptions.RequestFailure"><strong>RequestFailure</strong></a> – Other failure during request</p></li>
+</ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Results of upload</p>
+<dd class="field-odd"><p>Response from API</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[dict] | dict</p>
+<dd class="field-even"><p>list[dict[str, Any]] | dict[str, Any]</p>
 </dd>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
+</section>
+</section>
 </section>
 
         </article>
@@ -263,23 +284,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="Exceptions.html">
+          <a class="next-page" href="basic_usage.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Exceptions</div>
+                <div class="title">Basic Usage</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="User.html">
+          <a class="prev-page" href="index.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">User</div>
+                <div class="title">Home</div>
                 
               </div>
             </a>
@@ -303,8 +324,38 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Core - MetabaseApi</a><ul>
+<li><a class="reference internal" href="#authentication">Authentication</a><ul>
+<li><a class="reference internal" href="#option-1-username-and-password-dictionary-recommended">Option 1 - Username and password dictionary (recommended)</a></li>
+<li><a class="reference internal" href="#option-2-token-file">Option 2 - Token file</a></li>
+<li><a class="reference internal" href="#option-3-token-dictionary">Option 3 - Token dictionary</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#caching-tokens">Caching Tokens</a></li>
+<li><a class="reference internal" href="#other-public-methods">Other Public Methods</a><ul>
+<li><a class="reference internal" href="#testing-for-successful-authentication">Testing for successful authentication</a></li>
+<li><a class="reference internal" href="#making-generic-requests">Making generic requests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
