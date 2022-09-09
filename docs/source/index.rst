@@ -1,3 +1,4 @@
+==========================================
 Welcome to metabase-tools's documentation!
 ==========================================
 
@@ -16,10 +17,9 @@ Welcome to metabase-tools's documentation!
    Tools
    Exceptions
 
-
-Indices and tables
-==================
+=======
+Indices
+=======
 
 * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`
