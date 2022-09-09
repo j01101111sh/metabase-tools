@@ -57,7 +57,7 @@ class MetabaseApi:
 
         if cache_token:
             save_path = Path(token_path or "metabase.token")
-            self.save_token(save_path=save_path)
+            self._save_token(save_path=save_path)
 
         self.cards = Cards(self)
         self.collections = Collections(self)
@@ -172,7 +172,7 @@ class MetabaseApi:
             <= 299
         )
 
-    def save_token(self, save_path: Path | str) -> None:
+    def _save_token(self, save_path: Path | str) -> None:
         """Writes active token to the specified file
 
         Args:
