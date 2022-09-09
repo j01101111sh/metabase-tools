@@ -57,7 +57,7 @@ jobs:
           chmod +x codecov
           ./codecov -t ${CODECOV_TOKEN}
       - name: Build HTML
-        run: poetry run sphinx-build -b html docs/source/ docs/build/html
+        run: poetry run sphinx-build -a -E -b html docs/source/ docs/build/html
       - name: Upload sphinx artifacts
         uses: actions/upload-artifact@v3
         with:
