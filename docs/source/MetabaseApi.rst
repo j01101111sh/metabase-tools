@@ -28,7 +28,7 @@ This option is best when you've previously authenticated with username and passw
 
 Contents of metabase.token:
 
-.. literalinclude:: ./examples/metabase.token
+.. literalinclude:: ./examples/metabase_token
 
 Option 3 - Token dictionary
 ===========================
