@@ -1,4 +1,6 @@
+import shutil
 from json import loads
+from pathlib import Path
 from time import sleep
 
 import requests
@@ -182,7 +184,32 @@ def create_databases(session: requests.Session):
     return session.post(f"{HOST}/api/database", json=new_db)
 
 
+def cleanup_cache_and_logs():
+    cleanup_targets = [
+        Path("./.mypy_cache/"),
+        Path("./.pytest_cache/"),
+        Path("./docs/build/"),
+        Path("./htmlcov/"),
+        Path("./metabase_tools/__pycache__/"),
+        Path("./metabase_tools/endpoints/__pycache__/"),
+        Path("./metabase_tools/models/__pycache__/"),
+        Path("./temp/"),
+        Path("./tests/__pycache__/"),
+        Path("./tests/models/__pycache__/"),
+        Path("./.coverage"),
+    ]
+    for item in cleanup_targets:
+        if item.exists() and item.is_dir():
+            shutil.rmtree(item, ignore_errors=True)
+        elif item.exists():
+            item.unlink()
+        else:
+            pass
+    pass
+
+
 if __name__ == "__main__":
+    cleanup_cache_and_logs()
     setup_response = initial_setup()
     session = get_session()
     user_responses = create_users(session)
