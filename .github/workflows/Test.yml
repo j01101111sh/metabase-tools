@@ -37,9 +37,8 @@ jobs:
           command: |
             poetry install --no-interaction --no-root --with dev,docs
             poetry install --no-interaction
-      - if: ${{ matrix.python-version }} == '3.11-dev'
-        name: Fix dependency errors
-        run: poetry add wrapt
+      - name: Fix dependency errors
+        run: if [ ${{ matrix.python-version }} == '3.11-dev' ]; then poetry add wrapt; fi
       - name: Enforce code formatting
         run: poetry run black .
       - name: Enforce code style
