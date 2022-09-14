@@ -116,12 +116,12 @@ class ServerSettings(BaseModel, alias_generator=replace_hyphens, extra="ignore")
     enable_xrays: Setting
     engines: Setting
     field_filter_operators_enabled: Optional[Setting] = Field(
-        ..., alias="field-filter-operators-enabled?"
+        alias="field-filter-operators-enabled?"
     )
     ga_code: Setting
     google_auth_auto_create_accounts_domain: Setting
     google_auth_client_id: Setting
-    has_sample_dataset: Optional[Setting] = Field(..., alias="has-sample-dataset?")
+    has_sample_dataset: Optional[Setting] = Field(alias="has-sample-dataset?")
     hide_embed_branding: Setting = Field(..., alias="hide-embed-branding?")
     humanization_strategy: Setting
     landing_page: Setting
