@@ -1,3 +1,5 @@
+"""Classes related to server settings for Metabase"""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Optional
@@ -10,8 +12,17 @@ if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
 
 
-def replace_hyphens(s: str) -> str:
-    return s.replace("_", "-")
+def replace_hyphens(python_member_name: str) -> str:
+    """Used as an alias generator to convert Metabase settings names to Python-friendl\
+        y names
+
+    Args:
+        python_member_name (str): Python friendly name
+
+    Returns:
+        str: Metabase setting name
+    """
+    return python_member_name.replace("_", "-")
 
 
 class Setting(BaseModel):
@@ -35,6 +46,18 @@ class Setting(BaseModel):
         self._adapter = adapter
 
     def update(self, new_value: Any) -> dict[str, Any]:
+        """Updates the setting to the provided value after testing basic compatibility
+
+        Args:
+            new_value (Any): Desired value for the setting
+
+        Raises:
+            TypeError: new_value was not the same type as current value
+            MetabaseApiException
+
+        Returns:
+            dict[str, Any]: Status of setting change
+        """
         if not self._value_type_compatible(new_value):
             raise TypeError
         if self._adapter:
@@ -53,7 +76,7 @@ class Setting(BaseModel):
         return False
 
 
-class ServerSettings(BaseModel):
+class ServerSettings(BaseModel, alias_generator=replace_hyphens, extra="ignore"):
     """Settings for a Metabase server"""
 
     _adapter: MetabaseApi = PrivateAttr(None)
@@ -145,10 +168,6 @@ class ServerSettings(BaseModel):
     version: Setting
     version_info: Setting
     version_info_last_checked: Setting
-
-    class Config:
-        alias_generator = replace_hyphens
-        extra = "ignore"
 
     def set_adapter(self, adapter: MetabaseApi) -> None:
         """Sets the adapter on an object
