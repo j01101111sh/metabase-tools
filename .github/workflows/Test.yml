@@ -1,6 +1,4 @@
 name: Test
-env:
-  METABASE_DETAILS: ${{ secrets.METABASE_DETAILS }}
 on: [pull_request]
 
 jobs:
