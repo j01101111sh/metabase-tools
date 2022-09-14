@@ -115,13 +115,13 @@ class ServerSettings(BaseModel, alias_generator=replace_hyphens, extra="ignore")
     enable_whitelabeling: Setting = Field(..., alias="enable-whitelabeling?")
     enable_xrays: Setting
     engines: Setting
-    field_filter_operators_enabled: Setting = Field(
+    field_filter_operators_enabled: Optional[Setting] = Field(
         ..., alias="field-filter-operators-enabled?"
     )
     ga_code: Setting
     google_auth_auto_create_accounts_domain: Setting
     google_auth_client_id: Setting
-    has_sample_dataset: Setting = Field(..., alias="has-sample-dataset?")
+    has_sample_dataset: Optional[Setting] = Field(..., alias="has-sample-dataset?")
     hide_embed_branding: Setting = Field(..., alias="hide-embed-branding?")
     humanization_strategy: Setting
     landing_page: Setting
@@ -141,7 +141,7 @@ class ServerSettings(BaseModel, alias_generator=replace_hyphens, extra="ignore")
     ldap_user_base: Setting
     ldap_user_filter: Setting
     map_tile_server_url: Setting
-    metabot_enabled: Setting
+    metabot_enabled: Optional[Setting]
     password_complexity: Setting
     premium_embedding_token: Setting
     premium_features: Optional[Setting]
