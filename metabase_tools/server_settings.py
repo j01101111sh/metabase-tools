@@ -144,13 +144,13 @@ class ServerSettings(BaseModel, alias_generator=replace_hyphens, extra="ignore")
     metabot_enabled: Setting
     password_complexity: Setting
     premium_embedding_token: Setting
-    premium_features: Setting
+    premium_features: Optional[Setting]
     query_caching_max_kb: Setting
     query_caching_max_ttl: Setting
     query_caching_min_ttl: Setting
     query_caching_ttl_ratio: Setting
     redirect_all_requests_to_https: Setting
-    redshift_fetch_size: Setting
+    redshift_fetch_size: Optional[Setting]
     report_timezone: Setting
     report_timezone_short: Setting
     search_typeahead_enabled: Setting
