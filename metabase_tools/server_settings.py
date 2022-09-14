@@ -178,4 +178,5 @@ class ServerSettings(BaseModel, alias_generator=replace_hyphens, extra="ignore")
         self._adapter = adapter
 
         for setting in self.__dict__.values():
-            setting.set_adapter(adapter)
+            if isinstance(setting, Setting):
+                setting.set_adapter(adapter)
