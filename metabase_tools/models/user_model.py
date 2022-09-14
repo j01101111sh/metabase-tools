@@ -47,6 +47,7 @@ class UserItem(Item):
     first_login: Optional[datetime]
     has_question_and_dashboard: Optional[bool]
     is_installer: Optional[bool]
+    sso_source: Optional[str]
 
     @log_call
     def disable(self) -> dict[int, Any]:
