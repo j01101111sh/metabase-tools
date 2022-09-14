@@ -1,7 +1,7 @@
 """
 Rest adapter for the Metabase API
 """
-from __future__ import annotations  # Included for support of |
+from __future__ import annotations
 
 import logging
 from json import JSONDecodeError
@@ -18,8 +18,10 @@ from metabase_tools.endpoints.users_endpoint import Users
 from metabase_tools.exceptions import (
     AuthenticationFailure,
     InvalidDataReceived,
+    MetabaseApiException,
     RequestFailure,
 )
+from metabase_tools.server_settings import ServerSettings, Setting
 from metabase_tools.tools import MetabaseTools
 
 logger = logging.getLogger(__name__)
@@ -31,6 +33,7 @@ class MetabaseApi:
     cards: Cards
     collections: Collections
     databases: Databases
+    settings: ServerSettings
     tools: MetabaseTools
     users: Users
 
@@ -62,6 +65,7 @@ class MetabaseApi:
         self.cards = Cards(self)
         self.collections = Collections(self)
         self.databases = Databases(self)
+        self.settings = self._fetch_settings()
         self.tools = MetabaseTools(self)
         self.users = Users(self)
 
@@ -258,6 +262,8 @@ class MetabaseApi:
                 if isinstance(return_, (list, dict)):
                     return return_
             except JSONDecodeError as error_raised:
+                if response.status_code == 204:
+                    return {"success": True}
                 logger.error(log_line_post, False, response.status_code, response.text)
                 raise InvalidDataReceived from error_raised
         elif response.status_code == 401:
@@ -337,3 +343,14 @@ class MetabaseApi:
         return self.generic_request(
             http_method="PUT", endpoint=endpoint, params=params, json=json
         )
+
+    def _fetch_settings(self) -> ServerSettings:
+        """Retrieves settings from Metabase server"""
+        settings = self.get("/setting")
+        if isinstance(settings, list):
+            settings = {setting["key"]: Setting(**setting) for setting in settings}
+            server_settings = ServerSettings(**settings)
+            server_settings.set_adapter(self)
+            return server_settings
+
+        raise MetabaseApiException("Invalid settings response")
