@@ -38,7 +38,8 @@ jobs:
             poetry install --no-interaction --no-root --with dev,docs
             poetry install --no-interaction
       - name: Fix dependency errors
-        run: .\.venv\Scripts\pip.exe install wrapt
+        if: ${{ matrix.python-version }} == "3.11-dev"
+        run: .\.venv\Scripts\pip install wrapt
       - name: Enforce code formatting
         run: poetry run black .
       - name: Enforce code style
