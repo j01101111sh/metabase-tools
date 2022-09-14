@@ -14,7 +14,7 @@ sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 project = "metabase-tools"
 copyright = "2022, Josh Odell"
 author = "Josh Odell"
-release = "0.8.0"
+release = "0.9.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -28,9 +28,11 @@ extensions = [
 templates_path = ["_templates"]
 exclude_patterns = []
 
+autodoc_member_order = "groupwise"
+autodoc_typehints = "description"
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "sphinx_material"
+html_theme = "furo"
 html_static_path = ["_static"]

@@ -1,7 +1,7 @@
 """Unofficial API wrapper for Metabase
 """
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"
 
 from metabase_tools.exceptions import (
     AuthenticationFailure,
@@ -19,6 +19,7 @@ from metabase_tools.models.card_model import CardItem, CardQueryResult
 from metabase_tools.models.collection_model import CollectionItem
 from metabase_tools.models.database_model import DatabaseItem
 from metabase_tools.models.user_model import UserItem
+from metabase_tools.server_settings import ServerSettings, Setting
 from metabase_tools.tools import MetabaseTools
 
 __all__ = (
@@ -38,4 +39,6 @@ __all__ = (
     "DatabaseItem",
     "UserItem",
     "MetabaseTools",
+    "ServerSettings",
+    "Setting",
 )

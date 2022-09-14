@@ -4,7 +4,7 @@ on:
     tags:
       - "v*.*.*"
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,7 +23,7 @@ jobs:
           poetry install --no-interaction --no-root --with dev,docs
           poetry install --no-interaction
       - name: Build HTML
-        run: "poetry run sphinx-build -b html docs/source/ docs/build/html"
+        run: poetry run sphinx-build -a -E -b html docs/source/ docs/build/html
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
