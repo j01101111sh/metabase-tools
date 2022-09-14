@@ -44,6 +44,9 @@ class DatabaseItem(Item):
     points_of_interest: Optional[str]
     schedules: Optional[dict[str, Any]]
     cache_ttl: Optional[int]
+    creator_id: Optional[int]
+    initial_sync_status: Optional[str]
+    settings: Optional[Any]
 
     @log_call
     def delete(self: DatabaseItem) -> dict[int | str, dict[str, Any]]:
