@@ -267,9 +267,13 @@ class MetabaseApi:
                 log_line_post, is_success, response.status_code, response.reason
             )
             try:
-                return_ = response.json()
-                if isinstance(return_, (list, dict)):
-                    return return_
+                result = response.json()
+                if isinstance(result, dict) and all(
+                    key in result for key in ["data", "total"]
+                ):
+                    result = result["data"]
+                if isinstance(result, (list, dict)):
+                    return result
             except JSONDecodeError as error_raised:
                 if response.status_code == 204:
                     return {"success": True}
