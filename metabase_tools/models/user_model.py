@@ -43,6 +43,10 @@ class UserItem(Item):
     login_attributes: Optional[list[dict[str, Any]]]
     personal_collection_id: Optional[int]
     has_invited_second_user: Optional[bool]
+    user_group_memberships: Optional[list[dict[str, int]]]
+    first_login: Optional[datetime]
+    has_question_and_dashboard: Optional[bool]
+    is_installer: Optional[bool]
 
     @log_call
     def disable(self) -> dict[int, Any]:
