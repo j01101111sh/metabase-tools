@@ -4,27 +4,27 @@
     "collection_id": 2,
     "path": "/Development",
     "database_id": 1,
-    "database_name": "Sample Dataset"
+    "database_name": "Test DB"
   },
   {
     "name": "Test Card",
     "collection_id": 5,
     "path": "/Development/Accounting",
     "database_id": 1,
-    "database_name": "Sample Dataset"
+    "database_name": "Test DB"
   },
   {
     "name": "Test Create",
     "collection_id": 2,
     "path": "/Development",
     "database_id": 1,
-    "database_name": "Sample Dataset"
+    "database_name": "Test DB"
   },
   {
     "name": "Does not exist",
     "collection_id": 2,
     "path": "/Development",
     "database_id": 1,
-    "database_name": "Sample Dataset"
+    "database_name": "Test DB"
   }
 ]
