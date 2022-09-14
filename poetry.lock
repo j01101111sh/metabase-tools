@@ -632,14 +632,14 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 name = "wrapt"
 version = "1.14.1"
 description = "Module for decorators, wrappers and monkey patching."
-category = "dev"
+category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "a54d164e7744911f8f5f003ea1a90c25a68aea1ebcd3c3ce5c2d6c24188e473d"
+content-hash = "9a0a168a83470b0b001f35b23940b6aaa69d32b84363d7079bdab38b886f3b92"
 
 [metadata.files]
 alabaster = [
