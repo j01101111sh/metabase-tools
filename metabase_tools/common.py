@@ -3,22 +3,20 @@
 
 import logging
 from functools import wraps
-from typing import Any, Callable, TypeVar
+from typing import Any, Callable, TypeVar, cast
 
-T = TypeVar("T")
+F = TypeVar("F", bound=Callable[..., Any])
 
 
-def log_details(
-    logger: logging.Logger, func: Callable[..., T], *args: Any, **kwargs: Any
-) -> T:
+def log_details(logger: logging.Logger, func: F, *args: Any, **kwargs: Any) -> F:
     """Logs details of a function call
 
     Args:
         logger (logging.Logger)
-        func (Callable[..., T])
+        func (F)
 
     Returns:
-        T
+        F
     """
     logger = logging.getLogger(func.__module__)
     logger.debug(
@@ -31,27 +29,27 @@ def log_details(
     )
     return_ = func(*args, **kwargs)
     logger.debug("Returning: %s", return_)
-    return return_
+    return cast(F, return_)
 
 
-def log_call(func: Callable[..., T]) -> Callable[..., T]:
+def log_call(func: F) -> F:
     """Used to log calls to the function provided"""
 
     @wraps(func)
-    def wrapper(*args: Any, **kwargs: Any) -> T:
+    def wrapper(*args, **kwargs):  # type: ignore
         logger = logging.getLogger(func.__module__)
         return log_details(logger, func, *args, **kwargs)
 
-    return wrapper
+    return cast(F, wrapper)
 
 
-def untested(func: Callable[..., T]) -> Callable[..., T]:
+def untested(func: F) -> F:
     """Used to log a warning that the decorated function has not been tested"""
 
     @wraps(func)
-    def wrapper(*args: Any, **kwargs: Any) -> T:
+    def wrapper(*args, **kwargs):  # type: ignore
         logger = logging.getLogger(func.__module__)
         logger.warning("Calling untested function: %s", func.__name__)
         return log_details(logger=logger, func=func, args=args, kwargs=kwargs)
 
-    return wrapper
+    return cast(F, wrapper)
