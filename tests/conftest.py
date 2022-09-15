@@ -14,7 +14,7 @@ def get_metabase_version():
     api = MetabaseApi(
         metabase_url=helpers.HOST,
         credentials=helpers.CREDENTIALS,
-        cache_token=True,
+        cache_token=False,
     )
     return api.server_version.base_version
 
