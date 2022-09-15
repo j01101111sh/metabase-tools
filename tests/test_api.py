@@ -1,10 +1,7 @@
-from pathlib import Path
-
 import packaging.version
 import pytest
 
 from metabase_tools import MetabaseApi
-from metabase_tools.exceptions import AuthenticationFailure
 
 
 @pytest.fixture
