@@ -9,12 +9,12 @@ from tests import helpers
 
 
 def get_metabase_version():
-    api = MetabaseApi(
+    api_for_version = MetabaseApi(
         metabase_url=helpers.HOST,
         credentials=helpers.CREDENTIALS,
         cache_token=True,
     )
-    return api.server_version.base_version
+    return api_for_version.server_version.base_version
 
 
 _run_id = datetime.now().strftime("%y%m%dT%H%M%S")
