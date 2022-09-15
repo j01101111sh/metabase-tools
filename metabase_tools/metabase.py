@@ -366,6 +366,8 @@ class MetabaseApi:
         result = self.get("/session/properties")
         if isinstance(result, dict):
             self.server_version = packaging.version.Version(result["version"]["tag"])
+        else:
+            raise MetabaseApiException
 
     def _fetch_settings(self) -> ServerSettings:
         """Retrieves settings from Metabase server"""
