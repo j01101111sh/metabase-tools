@@ -34,14 +34,8 @@ jobs:
           timeout_seconds: 120
           max_attempts: 3
           command: |
-            poetry install --no-interaction --no-root --with dev,docs
+            poetry install --no-interaction --no-root --with dev
             poetry install --no-interaction
-      - name: Enforce code formatting
-        run: poetry run black .
-      - name: Enforce code style
-        run: poetry run pylint $(git ls-files './metabase_tools/*.py')
-      - name: Enforce type hinting
-        run: poetry run mypy --strict $(git ls-files './metabase_tools/*.py')
       - name: Setup Metabase
         uses: nick-fields/retry@v2
         with:
@@ -50,18 +44,6 @@ jobs:
           command: poetry run python ./tests/setup_metabase.py
       - name: Test with pytest
         run: poetry run pytest --cov=metabase_tools --cov-report=xml --cov-fail-under=95
-      - name: Upload coverage to Codecov
-        run: |
-          curl -Os https://uploader.codecov.io/latest/linux/codecov
-          chmod +x codecov
-          ./codecov -t ${CODECOV_TOKEN}
-      - name: Build HTML
-        run: poetry run sphinx-build -a -E -b html docs/source/ docs/build/html
-      - name: Upload sphinx artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: html-docs
-          path: docs/build/html/
       - name: Upload log artifacts
         if: success() || failure()
         uses: actions/upload-artifact@v3
