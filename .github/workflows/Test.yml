@@ -53,12 +53,17 @@ jobs:
           max_attempts: 3
           command: poetry run python ./tests/setup_metabase.py
       - name: Test with pytest
-        run: poetry run pytest --cov=metabase_tools --cov-report=xml --cov-fail-under=95
+        run: poetry run pytest --cov=metabase_tools --cov-report=xml --cov-report=html --cov-fail-under=95
       - name: Upload coverage to Codecov
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
           ./codecov -t ${CODECOV_TOKEN}
+      - name: Upload HTML coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-coverage
+          path: htmlcov/
       - name: Install final dependencies
         uses: nick-fields/retry@v2
         with:
