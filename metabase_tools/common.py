@@ -34,11 +34,11 @@ def log_details(
     return return_
 
 
-def log_call(func: Callable[..., T]) -> Callable[..., T]:
+def log_call(func):  # type: ignore
     """Used to log calls to the function provided"""
 
     @wraps(func)
-    def wrapper(*args: Any, **kwargs: Any) -> T:
+    def wrapper(*args, **kwargs):  # type: ignore
         logger = logging.getLogger(func.__module__)
         return log_details(logger, func, *args, **kwargs)
 
