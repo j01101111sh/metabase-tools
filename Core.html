@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Basic Usage" href="basic_usage.html" /><link rel="prev" title="Welcome to metabase-tools’s documentation!" href="index.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Core - MetabaseApi - metabase-tools 0.8.0 documentation</title>
+        <title>Core - MetabaseApi - metabase-tools 0.9.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">metabase-tools 0.8.0 documentation</div></a>
+      <a href="index.html"><div class="brand">metabase-tools 0.9.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">metabase-tools 0.8.0 documentation</span>
+  <span class="sidebar-brand-text">metabase-tools 0.9.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -205,10 +205,24 @@
 <section id="option-1-username-and-password-dictionary-recommended">
 <h3>Option 1 - Username and password dictionary (recommended)<a class="headerlink" href="#option-1-username-and-password-dictionary-recommended" title="Permalink to this heading">#</a></h3>
 <p>This option involves passing a username and password in a dictionary to authenticate.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">metabase_tools</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">metabase_url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:3000&quot;</span>
+<span class="hll"><span class="linenos">4</span><span class="n">credentials</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;jim@dundermifflin.com&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;BAZouVa3saWgW89z&quot;</span><span class="p">}</span>
+</span><span class="hll"><span class="linenos">5</span><span class="n">api</span> <span class="o">=</span> <span class="n">metabase_tools</span><span class="o">.</span><span class="n">MetabaseApi</span><span class="p">(</span><span class="n">metabase_url</span><span class="o">=</span><span class="n">metabase_url</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+</span></pre></div>
+</div>
 </section>
 <section id="option-2-token-file">
 <h3>Option 2 - Token file<a class="headerlink" href="#option-2-token-file" title="Permalink to this heading">#</a></h3>
 <p>This option is best when you’ve previously authenticated with username and password and wish to reuse the same token. You can pass the path as a string or a pathlib.Path object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">metabase_tools</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">metabase_url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:3000&quot;</span>
+<span class="hll"><span class="linenos">4</span><span class="n">token_path</span> <span class="o">=</span> <span class="s2">&quot;./metabase.token&quot;</span>
+</span><span class="hll"><span class="linenos">5</span><span class="n">api</span> <span class="o">=</span> <span class="n">metabase_tools</span><span class="o">.</span><span class="n">MetabaseApi</span><span class="p">(</span><span class="n">metabase_url</span><span class="o">=</span><span class="n">metabase_url</span><span class="p">,</span> <span class="n">token_path</span><span class="o">=</span><span class="n">token_path</span><span class="p">)</span>
+</span></pre></div>
+</div>
 <p>Contents of metabase.token:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">6117922</span><span class="n">c</span><span class="o">-</span><span class="mi">541</span><span class="n">b</span><span class="o">-</span><span class="mi">4</span><span class="n">f58</span><span class="o">-</span><span class="mf">815e-637</span><span class="n">c6f362920</span>
 </pre></div>
@@ -217,11 +231,27 @@
 <section id="option-3-token-dictionary">
 <h3>Option 3 - Token dictionary<a class="headerlink" href="#option-3-token-dictionary" title="Permalink to this heading">#</a></h3>
 <p>This option involves getting the token string from your Metabase cookie so is much more involved than the other two.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">metabase_tools</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">metabase_url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:3000&quot;</span>
+<span class="hll"><span class="linenos">4</span><span class="n">credentials</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="s2">&quot;6117922c-541b-4f58-815e-637c6f362920&quot;</span><span class="p">}</span>
+</span><span class="hll"><span class="linenos">5</span><span class="n">api</span> <span class="o">=</span> <span class="n">metabase_tools</span><span class="o">.</span><span class="n">MetabaseApi</span><span class="p">(</span><span class="n">metabase_url</span><span class="o">=</span><span class="n">metabase_url</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+</span></pre></div>
+</div>
 </section>
 </section>
 <section id="caching-tokens">
 <h2>Caching Tokens<a class="headerlink" href="#caching-tokens" title="Permalink to this heading">#</a></h2>
 <p>If you would like to cache your token for future runs to speed things up, simply set <code class="docutils literal notranslate"><span class="pre">cache_token</span></code> option to <code class="docutils literal notranslate"><span class="pre">True</span></code>. This option works regardless of which authentication method was used. The token will be saved to <code class="docutils literal notranslate"><span class="pre">token_path</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">metabase_tools</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">metabase_url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:3000&quot;</span>
+<span class="hll"><span class="linenos">4</span><span class="n">credentials</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;jim@dundermifflin.com&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;BAZouVa3saWgW89z&quot;</span><span class="p">}</span>
+</span><span class="hll"><span class="linenos">5</span><span class="n">api</span> <span class="o">=</span> <span class="n">metabase_tools</span><span class="o">.</span><span class="n">MetabaseApi</span><span class="p">(</span>
+</span><span class="hll"><span class="linenos">6</span>    <span class="n">metabase_url</span><span class="o">=</span><span class="n">metabase_url</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">cache_token</span><span class="o">=</span><span class="kc">True</span>
+</span><span class="hll"><span class="linenos">7</span><span class="p">)</span>
+</span></pre></div>
+</div>
 </section>
 <section id="other-public-methods">
 <h2>Other Public Methods<a class="headerlink" href="#other-public-methods" title="Permalink to this heading">#</a></h2>
