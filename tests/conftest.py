@@ -1,30 +1,17 @@
+import os
 from datetime import datetime
-from json import dumps, loads
 from pathlib import Path
 from platform import python_version
 
-import packaging.version
 import pytest
 
 from metabase_tools import MetabaseApi
 from tests import helpers
 
-
-def get_metabase_version():
-    api = MetabaseApi(
-        metabase_url=helpers.HOST,
-        credentials=helpers.CREDENTIALS,
-        cache_token=True,
-    )
-    return api.server_version.base_version
-
-
-_run_id = datetime.now().strftime("%y%m%dT%H%M%S")
+_run_id = os.environ.get("GITHUB_RUN_ID", datetime.now().strftime("%y%m%dT%H%M%S"))
 _python_version = python_version().replace(".", "_")
-_metabase_version = get_metabase_version().replace(".", "_")
-_result_path = Path(
-    f"./temp/test-{_run_id}/python_{_python_version}/metabase_{_metabase_version}"
-)
+_mb_verison = os.environ.get("MB_VERSION", "unknown").replace(".", "_")
+_result_path = Path(f"./temp/test-{_run_id}/py_{_python_version}/mb_{_mb_verison}")
 
 
 @pytest.fixture(scope="session")
