@@ -210,9 +210,6 @@ def cleanup_cache_and_logs():
             shutil.rmtree(item, ignore_errors=True)
         elif item.exists():
             item.unlink()
-        else:
-            pass
-    pass
 
 
 def get_server_version(session: requests.Session) -> packaging.version.Version:
