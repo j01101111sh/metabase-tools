@@ -1,9 +1,7 @@
 from datetime import datetime
-from json import dumps, loads
 from pathlib import Path
 from platform import python_version
 
-import packaging.version
 import pytest
 
 from metabase_tools import MetabaseApi
