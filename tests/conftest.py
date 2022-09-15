@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from pathlib import Path
 from platform import python_version
@@ -9,7 +10,8 @@ from tests import helpers
 
 _run_id = datetime.now().strftime("%y%m%dT%H%M%S")
 _python_version = python_version().replace(".", "_")
-_result_path = Path(f"./temp/test-{_run_id}/python_{_python_version}")
+_mb_verison = os.environ.get("MB_VERSION", "unknown").replace(".", "_")
+_result_path = Path(f"./temp/test-{_run_id}/py_{_python_version}/mb_{_mb_verison}")
 
 
 @pytest.fixture(scope="session")
