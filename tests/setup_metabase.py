@@ -191,27 +191,6 @@ def create_databases(
     return session.post(f"{HOST}/api/database", json=new_db)
 
 
-def cleanup_cache_and_logs():
-    cleanup_targets = [
-        Path("./.mypy_cache/"),
-        Path("./.pytest_cache/"),
-        Path("./docs/build/"),
-        Path("./htmlcov/"),
-        Path("./metabase_tools/__pycache__/"),
-        Path("./metabase_tools/endpoints/__pycache__/"),
-        Path("./metabase_tools/models/__pycache__/"),
-        Path("./temp/"),
-        Path("./tests/__pycache__/"),
-        Path("./tests/models/__pycache__/"),
-        Path("./.coverage"),
-    ]
-    for item in cleanup_targets:
-        if item.exists() and item.is_dir():
-            shutil.rmtree(item, ignore_errors=True)
-        elif item.exists():
-            item.unlink()
-
-
 def get_server_version(session: requests.Session) -> packaging.version.Version:
     result = session.get(f"{HOST}/api/session/properties").json()
     if isinstance(result, dict):
@@ -220,7 +199,6 @@ def get_server_version(session: requests.Session) -> packaging.version.Version:
 
 
 if __name__ == "__main__":
-    cleanup_cache_and_logs()
     setup_response = initial_setup()
     api_connection = get_session()
     server_version = get_server_version(api_connection)
