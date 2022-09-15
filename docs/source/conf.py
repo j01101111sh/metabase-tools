@@ -26,7 +26,7 @@ extensions = [
 ]
 
 templates_path = ["_templates"]
-exclude_patterns = []
+exclude_patterns = ["*.token"]
 
 autodoc_member_order = "groupwise"
 autodoc_typehints = "description"
