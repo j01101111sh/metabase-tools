@@ -3,6 +3,7 @@ import pytest
 from metabase_tools import CardItem, InvalidParameters, MetabaseApi
 from metabase_tools.exceptions import RequestFailure
 from metabase_tools.models.card_model import CardQueryResult
+from tests.conftest import server_version
 from tests.helpers import random_string
 
 
@@ -159,6 +160,7 @@ def test_card_embeddable(api: MetabaseApi):
     assert all(card._adapter is not None for card in embeddable)
 
 
+@pytest.mark.xfail(raises=NotImplementedError)
 def test_card_favorite_one(cards: list[CardItem]):
     card_to_favorite = cards[0]
     try:
@@ -170,6 +172,7 @@ def test_card_favorite_one(cards: list[CardItem]):
     assert isinstance(favorite, dict)
 
 
+@pytest.mark.xfail(raises=NotImplementedError)
 def test_card_favorite_many(cards: list[CardItem]):
     card_to_favorite = cards[:2]
     favorites = []
@@ -185,6 +188,7 @@ def test_card_favorite_many(cards: list[CardItem]):
     assert all(isinstance(card, dict) for card in favorites)
 
 
+@pytest.mark.xfail(raises=NotImplementedError)
 def test_card_unfavorite_one(cards: list[CardItem]):
     card_to_unfavorite = cards[0]
     try:
@@ -196,6 +200,7 @@ def test_card_unfavorite_one(cards: list[CardItem]):
     assert isinstance(favorite, dict)
 
 
+@pytest.mark.xfail(raises=NotImplementedError)
 def test_card_unfavorite_many(cards: list[CardItem]):
     card_to_unfavorite = cards[:2]
     unfavorites = []

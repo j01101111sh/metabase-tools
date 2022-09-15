@@ -117,6 +117,7 @@ def test_user_reset_password(users: list[UserItem]):
     assert isinstance(result, UserItem)
 
 
+@pytest.mark.xfail(raises=NotImplementedError)
 def test_user_qbnewb(users: list[UserItem]):
     item = random.choice(users)
     result = item.qbnewb()

@@ -3,6 +3,7 @@ from json import loads
 from pathlib import Path
 from time import sleep
 
+import packaging.version
 import requests
 
 from tests.helpers import (
@@ -173,7 +174,9 @@ def create_cards(session: requests.Session):
     return responses
 
 
-def create_databases(session: requests.Session):
+def create_databases(
+    session: requests.Session, server_version: packaging.version.Version
+):
     new_db = {
         "name": "Test DB",
         "engine": "h2",
@@ -181,6 +184,10 @@ def create_databases(session: requests.Session):
             "db": "zip:/app/metabase.jar!/sample-dataset.db;USER=GUEST;PASSWORD=guest"
         },
     }
+    if server_version >= packaging.version.Version("v0.42"):
+        new_db["details"]["db"] = new_db["details"]["db"].replace(
+            "sample-dataset", "sample-database"
+        )
     return session.post(f"{HOST}/api/database", json=new_db)
 
 
@@ -208,11 +215,19 @@ def cleanup_cache_and_logs():
     pass
 
 
+def get_server_version(session: requests.Session) -> packaging.version.Version:
+    result = session.get(f"{HOST}/api/session/properties").json()
+    if isinstance(result, dict):
+        return packaging.version.Version(result["version"]["tag"])
+    raise ValueError
+
+
 if __name__ == "__main__":
     cleanup_cache_and_logs()
     setup_response = initial_setup()
     session = get_session()
+    server_version = get_server_version(session)
     user_responses = create_users(session)
     coll_responses = create_collections(session)
     card_responses = create_cards(session)
-    db_responses = create_databases(session)
+    db_responses = create_databases(session, server_version)

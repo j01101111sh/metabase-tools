@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import packaging.version
 import pytest
 
 from metabase_tools import MetabaseApi
@@ -131,3 +132,7 @@ def test_bad_passed_token_with_fallback(host, credentials, caplog):
     assert api.test_for_auth()
     assert "Failed to authenticate with token passed" in caplog.text
     assert "Authenticated with login" in caplog.text
+
+
+def test_server_version(api: MetabaseApi):
+    assert isinstance(api.server_version, packaging.version.Version)

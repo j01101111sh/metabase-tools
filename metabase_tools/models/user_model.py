@@ -6,6 +6,7 @@ import logging
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
+import packaging.version
 from pydantic.fields import Field, PrivateAttr
 
 from metabase_tools.common import log_call
@@ -41,6 +42,12 @@ class UserItem(Item):
     group_ids: Optional[list[int]]
     login_attributes: Optional[list[dict[str, Any]]]
     personal_collection_id: Optional[int]
+    has_invited_second_user: Optional[bool]
+    user_group_memberships: Optional[list[dict[str, int]]]
+    first_login: Optional[datetime]
+    has_question_and_dashboard: Optional[bool]
+    is_installer: Optional[bool]
+    sso_source: Optional[str]
 
     @log_call
     def disable(self) -> dict[int, Any]:
@@ -106,6 +113,10 @@ class UserItem(Item):
         Returns:
             UserItem: User with query builder toggle set
         """
+        if self._server_version and self._server_version >= packaging.version.Version(
+            "v0.42"
+        ):
+            raise NotImplementedError("This function was deprecated in Metabase v0.42")
         if self._adapter:
             result = self._adapter.put(endpoint=f"/user/{self.id}/qbnewb")
             if isinstance(result, dict):

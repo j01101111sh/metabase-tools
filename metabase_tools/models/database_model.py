@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
-from pydantic import PrivateAttr
+from pydantic import Field, PrivateAttr
 
 from metabase_tools.common import log_call
 from metabase_tools.models.generic_model import Item
@@ -43,6 +43,11 @@ class DatabaseItem(Item):
     created_at: datetime
     points_of_interest: Optional[str]
     schedules: Optional[dict[str, Any]]
+    cache_ttl: Optional[int]
+    creator_id: Optional[int]
+    initial_sync_status: Optional[str]
+    settings: Optional[Any]
+    can_manage: Optional[bool] = Field(alias="can-manage")
 
     @log_call
     def delete(self: DatabaseItem) -> dict[int | str, dict[str, Any]]:

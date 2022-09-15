@@ -2,6 +2,7 @@ from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
 
+import packaging.version
 import pytest
 
 from metabase_tools import MetabaseApi
@@ -105,7 +106,7 @@ def test_upload_existing_dry_stop(api: MetabaseApi):
         file.write(current)
 
 
-def test_upload_new(api: MetabaseApi):
+def test_upload_new(api: MetabaseApi, server_version: packaging.version.Version):
     # Set parameters
     mapping_path = Path("./tests/data/mapping.json")
     test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
@@ -128,6 +129,10 @@ def test_upload_new(api: MetabaseApi):
         "database_id": 1,
         "database_name": "Sample Dataset",
     }
+    if server_version >= packaging.version.Version("v0.42"):
+        new_card_map["database_name"] = new_card_map["database_name"].replace(
+            "Sample Dataset", "Sample Database"
+        )
     n_map.append(new_card_map)
     with open(mapping_path, "w", encoding="utf-8") as file:
         file.write(dumps(n_map, indent=2))

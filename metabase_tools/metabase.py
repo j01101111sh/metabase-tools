@@ -8,6 +8,7 @@ from json import JSONDecodeError
 from pathlib import Path
 from typing import Any, Optional
 
+import packaging.version
 from requests import Response, Session
 from requests.exceptions import RequestException
 
@@ -29,6 +30,8 @@ logger = logging.getLogger(__name__)
 
 class MetabaseApi:
     """Metabase API adapter"""
+
+    server_version: packaging.version.Version
 
     cards: Cards
     collections: Collections
@@ -58,10 +61,16 @@ class MetabaseApi:
         # Authenticate
         self._authenticate(token_path=token_path, credentials=credentials)
 
+        # Cache token, if set during init
         if cache_token:
             save_path = Path(token_path or "metabase.token")
             self._save_token(save_path=save_path)
 
+        # Set server version for compatability checks
+        self._set_server_version()
+        logger.info("Server version: %s", self.server_version)
+
+        # Create endpoints
         self.cards = Cards(self)
         self.collections = Collections(self)
         self.databases = Databases(self)
@@ -258,9 +267,13 @@ class MetabaseApi:
                 log_line_post, is_success, response.status_code, response.reason
             )
             try:
-                return_ = response.json()
-                if isinstance(return_, (list, dict)):
-                    return return_
+                result = response.json()
+                if isinstance(result, dict) and all(
+                    key in result for key in ["data", "total"]
+                ):
+                    result = result["data"]
+                if isinstance(result, (list, dict)):
+                    return result
             except JSONDecodeError as error_raised:
                 if response.status_code == 204:
                     return {"success": True}
@@ -343,6 +356,18 @@ class MetabaseApi:
         return self.generic_request(
             http_method="PUT", endpoint=endpoint, params=params, json=json
         )
+
+    def _set_server_version(self) -> None:
+        """Get the Metabase version running on the server
+
+        Returns:
+            str: version string
+        """
+        result = self.get("/session/properties")
+        if isinstance(result, dict):
+            self.server_version = packaging.version.Version(result["version"]["tag"])
+        else:
+            raise MetabaseApiException
 
     def _fetch_settings(self) -> ServerSettings:
         """Retrieves settings from Metabase server"""
