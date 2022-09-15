@@ -22,10 +22,8 @@ def host():
 
 @pytest.fixture(scope="package")
 def api(host, credentials):
-    token_path = f"{_result_path}/{_run_id}.token"
     return MetabaseApi(
         metabase_url=host,
         credentials=credentials,
         cache_token=True,
-        token_path=token_path,
     )
