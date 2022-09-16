@@ -76,6 +76,6 @@ def test_database_update(api: MetabaseApi):
     params = [{"name": "Test DB"}]
     db = api.databases.search(search_params=params)[0]
     assert isinstance(db, DatabaseItem)
-    result = db.update(name=f"Test DB - {random_string(6)}")
-    assert isinstance(result, DatabaseItem)
-    result = db.update(name="Test DB")
+    renamed = db.update(name=f"Test DB - {random_string(6)}")
+    assert isinstance(renamed, DatabaseItem)
+    _ = renamed.update(name="Test DB")
