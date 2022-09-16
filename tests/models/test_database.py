@@ -78,5 +78,4 @@ def test_database_update(api: MetabaseApi):
     assert isinstance(db, DatabaseItem)
     result = db.update(name=f"Test DB - {random_string(6)}")
     assert isinstance(result, DatabaseItem)
-    update = {"name": "Test DB"}
-    result = db.update(payload=update)
+    result = db.update(name="Test DB")
