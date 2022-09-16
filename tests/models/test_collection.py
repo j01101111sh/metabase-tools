@@ -36,8 +36,7 @@ def test_collection_create_many(api: MetabaseApi, new_coll_def: dict):
 
 def test_collection_update_one(collections: list[CollectionItem], run_id: str):
     coll = random.choice(collections)
-    coll_change = {"id": 3, "description": f"Updated {run_id}"}
-    change_result = coll.update(payload=coll_change)
+    change_result = coll.update(description=f"Updated {run_id}")
     assert isinstance(change_result, CollectionItem)
 
 

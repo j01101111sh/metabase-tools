@@ -11,7 +11,7 @@ from pydantic.fields import Field, PrivateAttr
 
 from metabase_tools.common import log_call
 from metabase_tools.exceptions import InvalidParameters
-from metabase_tools.models.generic_model import Item
+from metabase_tools.models.generic_model import Item, MissingParam
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
@@ -122,3 +122,55 @@ class UserItem(Item):
             if isinstance(result, dict):
                 return result
         raise InvalidParameters
+
+    def _make_update(self: UserItem, **kwargs: Any) -> UserItem:
+        """Makes update request
+
+        Args:
+            self (UserItem)
+
+        Returns:
+            UserItem: self
+        """
+        return super()._make_update(**kwargs)
+
+    @log_call
+    def update(
+        self: UserItem,
+        email: Optional[str | MissingParam] = MissingParam(),
+        first_name: Optional[str | MissingParam] = MissingParam(),
+        is_group_manager: Optional[bool | MissingParam] = MissingParam(),
+        locale: Optional[str | MissingParam] = MissingParam(),
+        user_group_memberships: Optional[list[int] | MissingParam] = MissingParam(),
+        is_superuser: Optional[bool | MissingParam] = MissingParam(),
+        login_attributes: Optional[str | MissingParam] = MissingParam(),
+        last_name: Optional[str | MissingParam] = MissingParam(),
+        **kwargs: Any,
+    ) -> UserItem:
+        """Updates a user using the provided parameters
+
+        Args:
+            self (UserItem)
+            email (str, optional)
+            first_name (str, optional)
+            is_group_manager (bool, optional)
+            locale (str, optional)
+            user_group_memberships (list[int], optional)
+            is_superuser (bool, optional)
+            login_attributes (str, optional)
+            last_name (str, optional)
+
+        Returns:
+            UserItem
+        """
+        return self._make_update(
+            email=email,
+            first_name=first_name,
+            is_group_manager=is_group_manager,
+            locale=locale,
+            user_group_memberships=user_group_memberships,
+            is_superuser=is_superuser,
+            login_attributes=login_attributes,
+            last_name=last_name,
+            **kwargs,
+        )

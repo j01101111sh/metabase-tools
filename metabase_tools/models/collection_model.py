@@ -9,7 +9,7 @@ from pydantic import PrivateAttr
 
 from metabase_tools.common import log_call
 from metabase_tools.exceptions import EmptyDataReceived
-from metabase_tools.models.generic_model import Item
+from metabase_tools.models.generic_model import Item, MissingParam
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
@@ -47,17 +47,48 @@ class CollectionItem(Item):
         """
         super().set_adapter(adapter=adapter)
 
-    @log_call
-    def update(self: CollectionItem, payload: dict[str, Any]) -> CollectionItem:
-        """Method for updating a collection
+    def _make_update(self: CollectionItem, **kwargs: Any) -> CollectionItem:
+        """Makes update request
 
         Args:
-            payload (dict): Details of update
+            self (CollectionItem)
 
         Returns:
-            CollectionItem: Object of the relevant type
+            CollectionItem: self
         """
-        return super().update(payload=payload)
+        return super()._make_update(**kwargs)
+
+    @log_call
+    def update(
+        self: CollectionItem,
+        name: Optional[str | MissingParam] = MissingParam(),
+        color: Optional[str | MissingParam] = MissingParam(),
+        description: Optional[str | MissingParam] = MissingParam(),
+        archived: Optional[bool | MissingParam] = MissingParam(),
+        parent_id: Optional[int | MissingParam] = MissingParam(),
+        **kwargs: Any,
+    ) -> CollectionItem:
+        """Updates a collection using the provided parameters
+
+        Args:
+            self (CollectionItem)
+            name (str, optional)
+            color (str, optional)
+            description (str, optional)
+            archived (bool, optional)
+            parent_id (int, optional)
+
+        Returns:
+            CollectionItem
+        """
+        return self._make_update(
+            name=name,
+            color=color,
+            description=description,
+            archived=archived,
+            parent_id=parent_id,
+            **kwargs,
+        )
 
     @log_call
     def archive(self: CollectionItem) -> CollectionItem:

@@ -46,8 +46,7 @@ def test_user_create_many(api: MetabaseApi, new_def: dict):
 def test_user_update_one(users: list[UserItem]):
     item = random.choice(users)
     new_name = random_string(6)
-    change = {"id": item.id, "first_name": new_name}
-    results = item.update(payload=change)
+    results = item.update(first_name=new_name)
     assert isinstance(results, UserItem)
     assert results.first_name == new_name
 
