@@ -173,17 +173,17 @@ class CardItem(Item):
         return super().unarchive()
 
     @log_call
-    def related(self: CardItem) -> dict[str, Any]:
+    def related(self: CardItem) -> CardRelatedObjects:
         """Objects related to target
 
         Returns:
-            dict: Dict with related objects for target
+            CardRelatedObjects
         """
-        new = {"card_id": self.id}
         if self._adapter:
             result = self._adapter.get(endpoint=f"/card/{self.id}/related")
             if isinstance(result, dict):
-                return new | result
+                result["card_id"] = self.id
+                return CardRelatedObjects(**result)
         raise InvalidParameters
 
     @log_call
@@ -272,3 +272,17 @@ class CardQueryResult(BaseModel):
     context: str
     row_count: int
     running_time: int
+
+
+class CardRelatedObjects(BaseModel):
+    """Objects related to the specified card"""
+
+    card_id: int
+    table: Optional[str]
+    metrics: list[dict[str, int]]
+    segments: list[dict[str, int]]
+    dashboard_mates: list[dict[str, int]] = Field(alias="dashboard-mates")
+    similar_questions: list[dict[str, int]] = Field(alias="similar-questions")
+    canonical_metric: Optional[str] = Field(alias="canonical-metric")
+    dashboards: list[dict[str, int]]
+    collections: list[dict[str, int]]

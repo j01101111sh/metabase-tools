@@ -1,8 +1,12 @@
 import pytest
 
-from metabase_tools import CardItem, InvalidParameters, MetabaseApi
-from metabase_tools.exceptions import RequestFailure
-from metabase_tools.models.card_model import CardQueryResult
+from metabase_tools.exceptions import InvalidParameters, RequestFailure
+from metabase_tools.metabase import MetabaseApi
+from metabase_tools.models.card_model import (
+    CardItem,
+    CardQueryResult,
+    CardRelatedObjects,
+)
 from tests.conftest import server_version
 from tests.helpers import random_string
 
@@ -134,7 +138,7 @@ def test_card_get_all(api: MetabaseApi):
 def test_card_related_one(cards: list[CardItem]):
     card = cards[0]
     related = card.related()
-    assert isinstance(related, dict)
+    assert isinstance(related, CardRelatedObjects)
 
 
 def test_card_related_many(cards: list[CardItem]):
@@ -142,7 +146,7 @@ def test_card_related_many(cards: list[CardItem]):
     related = [card.related() for card in items]
     assert isinstance(related, list)
     assert len(related) == len(items)
-    assert all(isinstance(item, dict) for item in related)
+    assert all(isinstance(item, CardRelatedObjects) for item in related)
 
 
 @pytest.mark.skip(reason="Not implemented in test environment")
