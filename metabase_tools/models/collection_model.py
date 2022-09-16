@@ -67,7 +67,20 @@ class CollectionItem(Item):
         archived: Optional[bool | MissingParam] = MissingParam(),
         parent_id: Optional[int | MissingParam] = MissingParam(),
         **kwargs: Any,
-    ) -> CollectionItem:  # TODO add validator
+    ) -> CollectionItem:
+        """Updates a collection using the provided parameters
+
+        Args:
+            self (CollectionItem)
+            name (str, optional)
+            color (str, optional)
+            description (str, optional)
+            archived (bool, optional)
+            parent_id (int, optional)
+
+        Returns:
+            CollectionItem
+        """
         return self._make_update(
             name=name,
             color=color,

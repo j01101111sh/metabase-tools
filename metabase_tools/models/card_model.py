@@ -112,7 +112,27 @@ class CardItem(Item):
         dataset_query: Optional[dict[str, Any] | MissingParam] = MissingParam(),
         display: Optional[str | MissingParam] = MissingParam(),
         **kwargs: Any,
-    ) -> CardItem:  # TODO add validator
+    ) -> CardItem:
+        """Updates a card using the provided parameters
+
+        Args:
+            self (CardItem)
+            visualization_settings (dict[str, str], optional)
+            description (str, optional)
+            archived (bool, optional)
+            collection_position (int, optional)
+            result_metadata (list[dict[str, str]], optional)
+            metadata_checksum (str, optional)
+            enable_embedding (str, optional)
+            collection_id (int, optional)
+            name (str, optional)
+            embedding_params (dict[str, str], optional)
+            dataset_query (dict[str, Any], optional)
+            display (str, optional)
+
+        Returns:
+            CardItem: _description_
+        """
         return self._make_update(
             visualization_settings=visualization_settings,
             description=description,

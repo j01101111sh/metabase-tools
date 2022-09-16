@@ -82,7 +82,24 @@ class DatabaseItem(Item):
         cache_ttl: Optional[int | MissingParam] = MissingParam(),
         details: Optional[dict[str, Any] | MissingParam] = MissingParam(),
         **kwargs: Any,
-    ) -> DatabaseItem:  # TODO add validator
+    ) -> DatabaseItem:
+        """Updates a database using the provided parameters
+
+        Args:
+            self (DatabaseItem)
+            engine (str, optional)
+            schedules (dict[str, Any], optional)
+            refingerprint (bool, optional)
+            points_of_interest (str, optional)
+            description (str, optional)
+            name (str, optional)
+            caveats (str, optional)
+            cache_ttl (int, optional)
+            details (dict[str, Any], optional)
+
+        Returns:
+            DatabaseItem
+        """
         return self._make_update(
             engine=engine,
             schedules=schedules,

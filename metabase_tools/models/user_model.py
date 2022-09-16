@@ -146,7 +146,23 @@ class UserItem(Item):
         login_attributes: Optional[str | MissingParam] = MissingParam(),
         last_name: Optional[str | MissingParam] = MissingParam(),
         **kwargs: Any,
-    ) -> UserItem:  # TODO add validator
+    ) -> UserItem:
+        """Updates a user using the provided parameters
+
+        Args:
+            self (UserItem)
+            email (str, optional)
+            first_name (str, optional)
+            is_group_manager (bool, optional)
+            locale (str, optional)
+            user_group_memberships (list[int], optional)
+            is_superuser (bool, optional)
+            login_attributes (str, optional)
+            last_name (str, optional)
+
+        Returns:
+            UserItem
+        """
         return self._make_update(
             email=email,
             first_name=first_name,
