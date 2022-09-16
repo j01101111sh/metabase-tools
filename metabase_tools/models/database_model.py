@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional
 from pydantic import Field, PrivateAttr
 
 from metabase_tools.common import log_call
-from metabase_tools.models.generic_model import Item
+from metabase_tools.models.generic_model import Item, MissingParam
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
@@ -58,14 +58,40 @@ class DatabaseItem(Item):
         """
         return super().delete()
 
-    @log_call
-    def update(self: DatabaseItem, payload: dict[str, Any]) -> DatabaseItem:
-        """Method for updating a database
+    def _make_update(self: DatabaseItem, **kwargs: Any) -> DatabaseItem:
+        """Makes update request
 
         Args:
-            payloads (dict): Details of update
+            self (DatabaseItem)
 
         Returns:
-            DatabaseItem: Object of the relevant type
+            DatabaseItem: self
         """
-        return super().update(payload=payload)
+        return super()._make_update(**kwargs)
+
+    @log_call
+    def update(
+        self: DatabaseItem,
+        engine: Optional[str | MissingParam] = MissingParam(),
+        schedules: Optional[dict[str, Any] | MissingParam] = MissingParam(),
+        refingerprint: Optional[bool | MissingParam] = MissingParam(),
+        points_of_interest: Optional[str | MissingParam] = MissingParam(),
+        description: Optional[str | MissingParam] = MissingParam(),
+        name: Optional[str | MissingParam] = MissingParam(),
+        caveats: Optional[str | MissingParam] = MissingParam(),
+        cache_ttl: Optional[int | MissingParam] = MissingParam(),
+        details: Optional[dict[str, Any] | MissingParam] = MissingParam(),
+        **kwargs: Any,
+    ) -> DatabaseItem:  # TODO add validator
+        return self._make_update(
+            engine=engine,
+            schedules=schedules,
+            refingerprint=refingerprint,
+            points_of_interest=points_of_interest,
+            description=description,
+            name=name,
+            caveats=caveats,
+            cache_ttl=cache_ttl,
+            details=details,
+            **kwargs,
+        )

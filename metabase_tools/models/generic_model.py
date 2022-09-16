@@ -20,6 +20,10 @@ T = TypeVar("T", bound="Item")
 logger = logging.getLogger(__name__)
 
 
+class MissingParam(BaseModel):
+    """Used for parameters that were not supplied during an update or object creation"""
+
+
 class Item(BaseModel, ABC, extra="forbid"):
     """Base class for all Metabase objects. Provides generic fields and methods."""
 
@@ -40,7 +44,7 @@ class Item(BaseModel, ABC, extra="forbid"):
         self._adapter = adapter
         self._server_version = adapter.server_version
 
-    def update(self: T, payload: dict[str, Any]) -> T:
+    def _make_update(self: T, **kwargs: Any) -> T:
         """Generic method for updating an object
 
         Args:
@@ -53,8 +57,24 @@ class Item(BaseModel, ABC, extra="forbid"):
             T: Object of the relevant type
         """
         if self._adapter:
+            # Eliminate parameters that were not provided
+            changes = {
+                k: v for k, v in kwargs.items() if not isinstance(v, MissingParam)
+            }
+
+            # Determine if there are any differences to update
+            current_definition = self.dict()
+            changes = {
+                k: v
+                for k, v in changes.items()
+                if k in current_definition and v != current_definition[k]
+            }
+
+            if len(changes) == 0:
+                return self
+
             result = self._adapter.put(
-                endpoint=self._BASE_EP.format(id=self.id), json=payload
+                endpoint=self._BASE_EP.format(id=self.id), json=changes
             )
             if isinstance(result, dict):
                 obj = self.__class__(**result)

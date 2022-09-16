@@ -56,8 +56,7 @@ def test_card_create_many(api: MetabaseApi, new_card_def: dict):
 
 def test_card_update_one(cards: list[CardItem], run_id: str):
     item = cards[0]
-    item_change = {"id": item.id, "description": f"Updated {run_id}"}
-    new_item = item.update(payload=item_change)
+    new_item = item.update(description=f"Updated {run_id}")
     assert isinstance(new_item, CardItem)
     assert new_item.description == f"Updated {run_id}"
     assert item._adapter is not None
@@ -65,15 +64,9 @@ def test_card_update_one(cards: list[CardItem], run_id: str):
 
 
 def test_card_update_many(cards: list[CardItem], run_id: str):
-    card_changes = {"id": 1, "description": f"Updated {run_id}"}
     cards_to_update = cards[:2]
-    updates = []
-    for card in [card.id for card in cards_to_update]:
-        new_card = card_changes.copy()
-        new_card.update(id=card)
-        updates.append(new_card)
     change_result = [
-        card.update(payload=update) for card, update in zip(cards_to_update, updates)
+        card.update(description=f"Updated {run_id}") for card in cards_to_update
     ]
     assert isinstance(change_result, list)
     assert all(isinstance(card, CardItem) for card in change_result)

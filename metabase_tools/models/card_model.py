@@ -14,7 +14,7 @@ from pydantic.fields import Field
 from metabase_tools.common import log_call, untested
 from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.collection_model import CollectionItem
-from metabase_tools.models.generic_model import Item
+from metabase_tools.models.generic_model import Item, MissingParam
 from metabase_tools.models.user_model import UserItem
 
 if TYPE_CHECKING:
@@ -83,20 +83,51 @@ class CardItem(Item):
         """
         raise NotImplementedError
 
-    @log_call
-    def update(self: CardItem, payload: dict[str, Any]) -> CardItem:
-        """Method for updating a card
+    def _make_update(self: CardItem, **kwargs: Any) -> CardItem:
+        """Makes update request
 
         Args:
-            payloads (dict): Details of update
-
-        Raises:
-            InvalidParameters: Targets and jsons are both None
+            self (CardItem)
 
         Returns:
-            CardItem: Object of the relevant type
+            CardItem: self
         """
-        return super().update(payload=payload)
+        return super()._make_update(**kwargs)
+
+    @log_call
+    def update(
+        self: CardItem,
+        visualization_settings: Optional[
+            dict[str, str] | MissingParam
+        ] = MissingParam(),
+        description: Optional[str | MissingParam] = MissingParam(),
+        archived: Optional[bool | MissingParam] = MissingParam(),
+        collection_position: Optional[int | MissingParam] = MissingParam(),
+        result_metadata: Optional[list[dict[str, str]] | MissingParam] = MissingParam(),
+        metadata_checksum: Optional[str | MissingParam] = MissingParam(),
+        enable_embedding: Optional[str | MissingParam] = MissingParam(),
+        collection_id: Optional[int | MissingParam] = MissingParam(),
+        name: Optional[str | MissingParam] = MissingParam(),
+        embedding_params: Optional[dict[str, str] | MissingParam] = MissingParam(),
+        dataset_query: Optional[dict[str, Any] | MissingParam] = MissingParam(),
+        display: Optional[str | MissingParam] = MissingParam(),
+        **kwargs: Any,
+    ) -> CardItem:  # TODO add validator
+        return self._make_update(
+            visualization_settings=visualization_settings,
+            description=description,
+            archived=archived,
+            collection_position=collection_position,
+            result_metadata=result_metadata,
+            metadata_checksum=metadata_checksum,
+            enable_embedding=enable_embedding,
+            collection_id=collection_id,
+            name=name,
+            embedding_params=embedding_params,
+            dataset_query=dataset_query,
+            display=display,
+            **kwargs,
+        )
 
     @log_call
     def archive(self: CardItem) -> CardItem:
