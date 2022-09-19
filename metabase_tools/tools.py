@@ -191,7 +191,7 @@ class MetabaseTools:
             update_results = []
             for update in changes["updates"]:
                 card = self._adapter.cards.get([update["id"]])[0]
-                update_results.append(card.update(payload=update))
+                update_results.append(card.update(**update))
 
             if isinstance(update_results, list):
                 for result in update_results:
@@ -199,8 +199,11 @@ class MetabaseTools:
                         {"id": result.id, "name": result.name, "is_success": True}
                     )
 
+        create_results = []
         if len(changes["creates"]) > 0:
-            create_results = self._adapter.cards.create(payloads=changes["creates"])
+            create_results = [
+                self._adapter.cards.create(**details) for details in changes["creates"]
+            ]
             if isinstance(create_results, list):
                 for result in create_results:
                     results.append(
