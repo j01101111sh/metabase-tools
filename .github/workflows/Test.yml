@@ -52,7 +52,7 @@ jobs:
       - name: Setup Metabase
         uses: nick-fields/retry@v2
         with:
-          timeout_seconds: 150
+          timeout_seconds: 15
           max_attempts: 3
           command: poetry run python ./tests/setup_metabase.py
       - name: Test with pytest
