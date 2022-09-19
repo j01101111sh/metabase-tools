@@ -277,8 +277,6 @@ class MetabaseApi:
             except JSONDecodeError as error_raised:
                 if response.status_code == 204:
                     return {"success": True}
-                if response.status_code == 200:
-                    return {"value": response.text}
                 logger.error(log_line_post, False, response.status_code, response.text)
                 raise InvalidDataReceived from error_raised
         elif response.status_code == 401:

@@ -50,6 +50,6 @@ def untested(func: F) -> F:
     def wrapper(*args, **kwargs):  # type: ignore
         logger = logging.getLogger(func.__module__)
         logger.warning("Calling untested function: %s", func.__name__)
-        return log_details(logger=logger, func=func, args=args, kwargs=kwargs)
+        return log_details(logger, func, *args, **kwargs)
 
     return cast(F, wrapper)

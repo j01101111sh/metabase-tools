@@ -65,7 +65,11 @@ class Setting(BaseModel):
                 endpoint=f"/setting/{self.key}", json={"value": new_value}
             )
             if isinstance(result, dict):
-                new_def = self._adapter.get(endpoint=f"/setting/{self.key}")
+                new_def = {
+                    setting["key"]: setting
+                    for setting in self._adapter.get(endpoint="/setting")
+                    if isinstance(setting, dict)
+                }[self.key]
                 if isinstance(new_def, dict):
                     self.value = new_def["value"]
                 return result

@@ -136,8 +136,10 @@ def test_card_related_many(cards: list[CardItem]):
     assert all(isinstance(item, CardRelatedObjects) for item in related)
 
 
-@pytest.mark.skip(reason="Not implemented in test environment")
-def test_card_embeddable(api: MetabaseApi):
+def test_card_embeddable(api: MetabaseApi, cards: list[CardItem]):
+    _ = api.settings.enable_embedding.update(True)
+    card = cards[0]
+    _ = card.update(enable_embedding=True)
     embeddable = api.cards.embeddable()
     assert isinstance(embeddable, list)
     assert all(isinstance(card, CardItem) for card in embeddable)
