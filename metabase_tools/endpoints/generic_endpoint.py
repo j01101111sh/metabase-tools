@@ -35,7 +35,7 @@ class Endpoint(ABC, Generic[T]):
         self,
         http_method: str,
         endpoint: str,
-        source: list[int] | list[dict[str, Any]],
+        source: list[int],
     ) -> list[dict[str, Any]]:
         """Sends requests to API based on a list of objects
 
@@ -57,13 +57,6 @@ class Endpoint(ABC, Generic[T]):
             if isinstance(item, int):
                 response = self._adapter.generic_request(
                     http_method=http_method, endpoint=endpoint.format(id=item)
-                )
-            elif isinstance(item, dict):
-                item_ep = endpoint.format(**item)
-                response = self._adapter.generic_request(
-                    http_method=http_method,
-                    endpoint=item_ep,
-                    json=item,
                 )
             else:
                 raise InvalidParameters
