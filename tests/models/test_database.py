@@ -36,9 +36,8 @@ def test_database_create(api: MetabaseApi, server_version: packaging.version.Ver
         new_db["details"]["db"] = new_db["details"]["db"].replace(
             "sample-dataset", "sample-database"
         )
-    result = api.databases.create(payloads=[new_db])
-    assert isinstance(result, list)
-    assert all(isinstance(r, DatabaseItem) for r in result)
+    result = api.databases.create(**new_db)
+    assert isinstance(result, DatabaseItem)
 
 
 def test_database_search(api: MetabaseApi, server_version: packaging.version.Version):
@@ -68,7 +67,7 @@ def test_database_delete(api: MetabaseApi, server_version: packaging.version.Ver
         new_db["details"]["db"] = new_db["details"]["db"].replace(
             "sample-dataset", "sample-database"
         )
-    created_db = api.databases.create(payloads=[new_db])[0]
+    created_db = api.databases.create(**new_db)
     assert isinstance(created_db, DatabaseItem)
 
 

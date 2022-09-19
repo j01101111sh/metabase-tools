@@ -40,22 +40,9 @@ def new_card_def():
 def test_card_create_one(api: MetabaseApi, new_card_def: dict):
     card_one = new_card_def.copy()
     card_one["name"] = "Test Card - " + random_string(6, True)
-    new_card_obj = api.cards.create(payloads=[card_one])
-    assert isinstance(new_card_obj, list)
-    assert all(isinstance(card, CardItem) for card in new_card_obj)
-    assert all(card._adapter is not None for card in new_card_obj)
-
-
-def test_card_create_many(api: MetabaseApi, new_card_def: dict):
-    card_one = new_card_def.copy()
-    card_one["name"] = "Test Card - " + random_string(6, True)
-    card_two = new_card_def.copy()
-    card_two["name"] = "Test Card - " + random_string(6, True)
-    new_cards = [card_one, card_two]
-    new_card_objs = api.cards.create(payloads=new_cards)
-    assert isinstance(new_card_objs, list)
-    assert all(isinstance(card, CardItem) for card in new_card_objs)
-    assert all(card._adapter is not None for card in new_card_objs)
+    new_card_obj = api.cards.create(**card_one)
+    assert isinstance(new_card_obj, CardItem)
+    assert new_card_obj._adapter is not None
 
 
 def test_card_update_one(cards: list[CardItem], run_id: str):
@@ -236,9 +223,8 @@ def test_card_invalid_get(api: MetabaseApi):
 
 
 def test_card_invalid_create(api: MetabaseApi):
-    payloads = {}
     with pytest.raises(InvalidParameters):
-        _ = api.cards.create(payloads=payloads)  # type: ignore
+        _ = api.cards.create(name="Test fail")  # type: ignore
 
 
 def test_card_invalid_delete(cards: list[CardItem]):

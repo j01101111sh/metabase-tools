@@ -9,6 +9,7 @@ from typing import Any, ClassVar, Optional
 from metabase_tools.common import log_call
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.exceptions import InvalidParameters
+from metabase_tools.models.generic_model import MissingParam
 from metabase_tools.models.user_model import UserItem
 
 logger = logging.getLogger(__name__)
@@ -19,6 +20,12 @@ class Users(Endpoint[UserItem]):
 
     _BASE_EP: ClassVar[str] = "/user"
     _STD_OBJ: ClassVar[type] = UserItem
+    _required_params: ClassVar[list[str]] = [
+        "first_name",
+        "last_name",
+        "email",
+        "password",
+    ]
 
     @log_call
     def get(self, targets: Optional[list[int]] = None) -> list[UserItem]:
@@ -32,17 +39,50 @@ class Users(Endpoint[UserItem]):
         """
         return super().get(targets=targets)
 
-    @log_call
-    def create(self, payloads: list[dict[str, Any]]) -> list[UserItem]:
-        """Create new card(s)
+    def _make_create(self, **kwargs: Any) -> UserItem:
+        """Makes create request
 
         Args:
-            payloads (list[dict[str, Any]]): User details
+            self (UserItem)
 
         Returns:
-            list[UserItem]: Created users
+            UserItem: self
         """
-        return super().create(payloads=payloads)
+        return super()._make_create(**kwargs)
+
+    @log_call
+    def create(
+        self,
+        first_name: str | MissingParam = MissingParam(),
+        last_name: str | MissingParam = MissingParam(),
+        email: str | MissingParam = MissingParam(),
+        password: str | MissingParam = MissingParam(),
+        group_ids: Optional[list[int] | MissingParam] = MissingParam(),
+        login_attributes: Optional[str | MissingParam] = MissingParam(),
+        **kwargs: Any,
+    ) -> UserItem:
+        """_summary_
+
+        Args:
+            first_name (str, optional)
+            last_name (str, optional)
+            email (str, optional)
+            password (str, optional)
+            group_ids (list[int], optional)
+            login_attributes (str, optional)
+
+        Returns:
+            UserItem: _description_
+        """
+        return super()._make_create(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            group_ids=group_ids,
+            login_attributes=login_attributes,
+            **kwargs,
+        )
 
     @log_call
     def search(

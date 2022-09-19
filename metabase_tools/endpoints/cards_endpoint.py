@@ -10,6 +10,7 @@ from metabase_tools.common import log_call, untested
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.card_model import CardItem
+from metabase_tools.models.generic_model import MissingParam
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +20,13 @@ class Cards(Endpoint[CardItem]):
 
     _BASE_EP: ClassVar[str] = "/card"
     _STD_OBJ: ClassVar[type] = CardItem
+
+    _required_params: ClassVar[list[str]] = [
+        "visualization_settings",
+        "name",
+        "dataset_query",
+        "display",
+    ]
 
     @log_call
     def get(self, targets: Optional[list[int]] = None) -> list[CardItem]:
@@ -32,17 +40,59 @@ class Cards(Endpoint[CardItem]):
         """
         return super().get(targets=targets)
 
-    @log_call
-    def create(self, payloads: list[dict[str, Any]]) -> list[CardItem]:
-        """Create new card(s)
+    def _make_create(self, **kwargs: Any) -> CardItem:
+        """Makes create request
 
         Args:
-            payloads (list[dict[str, Any]]): Card details
+            self (CardItem)
 
         Returns:
-            list[CardItem]: Created cards
+            CardItem: self
         """
-        return super().create(payloads=payloads)
+        return super()._make_create(**kwargs)
+
+    @log_call
+    def create(
+        self,
+        visualization_settings: dict[str, Any] | MissingParam = MissingParam(),
+        name: str | MissingParam = MissingParam(),
+        dataset_query: dict[str, Any] | MissingParam = MissingParam(),
+        display: str | MissingParam = MissingParam(),
+        description: Optional[str | MissingParam] = MissingParam(),
+        collection_position: Optional[int | MissingParam] = MissingParam(),
+        result_metadata: Optional[list[dict[str, Any]] | MissingParam] = MissingParam(),
+        metadata_checksum: Optional[str | MissingParam] = MissingParam(),
+        collection_id: Optional[int | MissingParam] = MissingParam(),
+        **kwargs: Any,
+    ) -> CardItem:
+        """Creates a new card
+
+        Args:
+            visualization_settings (dict[str, Any])
+            name (str)
+            dataset_query (dict[str, Any])
+            display (str)
+            description (str, optional)
+            collection_position (int, optional)
+            result_metadata (list[dict[str, Any]], optional)
+            metadata_checksum (str, optional)
+            collection_id (int, optional)
+
+        Returns:
+            CardItem
+        """
+        return self._make_create(
+            visualization_settings=visualization_settings,
+            description=description,
+            collection_position=collection_position,
+            result_metadata=result_metadata,
+            metadata_checksum=metadata_checksum,
+            collection_id=collection_id,
+            name=name,
+            dataset_query=dataset_query,
+            display=display,
+            **kwargs,
+        )
 
     @log_call
     def search(

@@ -25,22 +25,8 @@ def new_def():
 def test_user_create_one(api: MetabaseApi, new_def: dict):
     def_one = new_def.copy()
     def_one["name"] = "Test " + random_string(6)
-    new_obj = api.users.create(payloads=[def_one])
-    assert isinstance(new_obj, list)
-    assert all(isinstance(o, UserItem) for o in new_obj)
-
-
-def test_user_create_many(api: MetabaseApi, new_def: dict):
-    def_one = new_def.copy()
-    def_one["first_name"] = random_string(6)
-    def_one["email"] = f"{def_one['first_name']}@DunderMifflin.com"
-    def_two = new_def.copy()
-    def_two["first_name"] = random_string(6)
-    def_two["email"] = f"{def_two['first_name']}@DunderMifflin.com"
-    new_defs = [def_one, def_two]
-    new_objs = api.users.create(payloads=new_defs)
-    assert isinstance(new_objs, list)
-    assert all(isinstance(o, UserItem) for o in new_objs)
+    new_obj = api.users.create(**def_one)
+    assert isinstance(new_obj, UserItem)
 
 
 def test_user_update_one(users: list[UserItem]):

@@ -22,16 +22,8 @@ def new_coll_def():
 
 
 def test_collection_create_one(api: MetabaseApi, new_coll_def: dict):
-    new_coll_objs = api.collections.create(payloads=[new_coll_def])
-    assert isinstance(new_coll_objs, list)
-    assert all(isinstance(coll, CollectionItem) for coll in new_coll_objs)
-
-
-def test_collection_create_many(api: MetabaseApi, new_coll_def: dict):
-    new_colls = [new_coll_def, new_coll_def]
-    new_coll_objs = api.collections.create(payloads=new_colls)
-    assert isinstance(new_coll_objs, list)
-    assert all(isinstance(coll, CollectionItem) for coll in new_coll_objs)
+    new_coll_objs = api.collections.create(**new_coll_def)
+    assert isinstance(new_coll_objs, CollectionItem)
 
 
 def test_collection_update_one(collections: list[CollectionItem], run_id: str):

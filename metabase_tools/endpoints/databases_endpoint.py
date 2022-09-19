@@ -9,6 +9,7 @@ from typing import Any, ClassVar, Optional
 from metabase_tools.common import log_call
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.models.database_model import DatabaseItem
+from metabase_tools.models.generic_model import MissingParam
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,7 @@ class Databases(Endpoint[DatabaseItem]):
 
     _BASE_EP: ClassVar[str] = "/database"
     _STD_OBJ: ClassVar[type] = DatabaseItem
+    _required_params: ClassVar[list[str]] = ["name", "engine", "details"]
 
     @log_call
     def get(self, targets: Optional[list[int]] = None) -> list[DatabaseItem]:
@@ -31,17 +33,53 @@ class Databases(Endpoint[DatabaseItem]):
         """
         return super().get(targets=targets)
 
-    @log_call
-    def create(self, payloads: list[dict[str, Any]]) -> list[DatabaseItem]:
-        """Create new database(s)
+    def _make_create(self, **kwargs: Any) -> DatabaseItem:
+        """Makes create request
 
         Args:
-            payloads (list[dict[str, Any]]): database details
+            self (DatabaseItem)
 
         Returns:
-            list[DatabaseItem]: Created databases
+            DatabaseItem: self
         """
-        return super().create(payloads=payloads)
+        return super()._make_create(**kwargs)
+
+    @log_call
+    def create(
+        self,
+        name: str | MissingParam = MissingParam(),
+        engine: str | MissingParam = MissingParam(),
+        details: dict[str, Any] | MissingParam = MissingParam(),
+        is_full_sync: Optional[bool | MissingParam] = MissingParam(),
+        is_on_demand: Optional[bool | MissingParam] = MissingParam(),
+        schedules: Optional[dict[str, Any] | MissingParam] = MissingParam(),
+        auto_run_queries: Optional[bool | MissingParam] = MissingParam(),
+        **kwargs: Any,
+    ) -> DatabaseItem:
+        """Create a new database
+
+        Args:
+            name (str, optional)
+            engine (str, optional)
+            details (dict[str, Any], optional)
+            is_full_sync (bool, optional)
+            is_on_demand (bool, optional)
+            schedules (dict[str, Any], optional)
+            auto_run_queries (bool, optional)
+
+        Returns:
+            DatabaseItem
+        """
+        return super()._make_create(
+            name=name,
+            engine=engine,
+            details=details,
+            is_full_sync=is_full_sync,
+            is_on_demand=is_on_demand,
+            schedules=schedules,
+            auto_run_queries=auto_run_queries,
+            **kwargs,
+        )
 
     @log_call
     def search(

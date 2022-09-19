@@ -5,11 +5,11 @@ from __future__ import annotations
 
 import logging
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, ClassVar, Generic, Optional, TypeVar
+from typing import TYPE_CHECKING, Any, ClassVar, Generic, Optional, TypeVar, cast
 
 from metabase_tools.common import log_call
 from metabase_tools.exceptions import EmptyDataReceived, InvalidParameters
-from metabase_tools.models.generic_model import Item
+from metabase_tools.models.generic_model import Item, MissingParam
 
 if TYPE_CHECKING:
     from metabase_tools import MetabaseApi
@@ -24,6 +24,7 @@ class Endpoint(ABC, Generic[T]):
 
     _BASE_EP: ClassVar[str]
     _STD_OBJ: ClassVar[type]
+    _required_params: ClassVar[list[str]]
     _adapter: MetabaseApi
 
     def __init__(self, adapter: MetabaseApi):
@@ -117,30 +118,37 @@ class Endpoint(ABC, Generic[T]):
         raise EmptyDataReceived("No data returned")
 
     @abstractmethod
-    def create(self, payloads: list[dict[str, Any]]) -> list[T]:
-        """Generic method for creating a list of objects
-
-        Args:
-            payloads (list[dict]): List of json payloads
+    def _make_create(self, **kwargs: Any) -> T:
+        """Generic method for creating an object
 
         Raises:
             InvalidParameters: Targets and jsons are both None
 
         Returns:
-            list[T]: List of objects of the relevant type
+            T: Object of the relevant type
         """
-        if isinstance(payloads, list) and all(isinstance(t, dict) for t in payloads):
-            # If a list of targets is provided, return a list of objects
-            results = self._request_list(
-                http_method="POST",
-                endpoint=self._BASE_EP,
-                source=payloads,
-            )
-            objs = [self._STD_OBJ(**result) for result in results]
-            for obj in objs:
-                obj.set_adapter(self._adapter)
-            return objs
-        # If something other than dict or list[dict], raise error
+        if self._adapter:
+            # Validate all required parameters were provided
+            missing_params = [
+                param
+                for param in self._required_params
+                if isinstance(kwargs[param], MissingParam)
+            ]
+            if len(missing_params) > 0:
+                raise InvalidParameters(
+                    f"Missing required parameters: {''.join(missing_params)}"
+                )
+
+            # Eliminate parameters that were not provided
+            details = {
+                k: v for k, v in kwargs.items() if not isinstance(v, MissingParam)
+            }
+
+            result = self._adapter.post(endpoint=self._BASE_EP, json=details)
+            if isinstance(result, dict):
+                obj = self._STD_OBJ(**result)
+                obj.set_adapter(adapter=self._adapter)
+                return cast(T, obj)
         raise InvalidParameters("Invalid target(s)")
 
     @abstractmethod

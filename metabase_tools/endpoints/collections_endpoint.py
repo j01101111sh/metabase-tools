@@ -10,6 +10,7 @@ from metabase_tools.common import log_call
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.collection_model import CollectionItem
+from metabase_tools.models.generic_model import MissingParam
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +20,7 @@ class Collections(Endpoint[CollectionItem]):
 
     _BASE_EP: ClassVar[str] = "/collection"
     _STD_OBJ: ClassVar[type] = CollectionItem
+    _required_params: ClassVar[list[str]] = ["name", "color"]
 
     @log_call
     def get(self, targets: Optional[list[int]] = None) -> list[CollectionItem]:
@@ -32,17 +34,47 @@ class Collections(Endpoint[CollectionItem]):
         """
         return super().get(targets=targets)
 
-    @log_call
-    def create(self, payloads: list[dict[str, Any]]) -> list[CollectionItem]:
-        """Create new collection(s)
+    def _make_create(self, **kwargs: Any) -> CollectionItem:
+        """Makes create request
 
         Args:
-            payloads (list[dict[str, Any]]): Collection details
+            self (CollectionItem)
 
         Returns:
-            list[CollectionItem]: Created collections
+            CollectionItem: self
         """
-        return super().create(payloads=payloads)
+        return super()._make_create(**kwargs)
+
+    @log_call
+    def create(
+        self,
+        name: str | MissingParam = MissingParam(),
+        color: str | MissingParam = MissingParam(),
+        description: Optional[str | MissingParam] = MissingParam(),
+        parent_id: Optional[int | MissingParam] = MissingParam(),
+        namespace: Optional[str | MissingParam] = MissingParam(),
+        **kwargs: Any,
+    ) -> CollectionItem:
+        """Creates a new collection
+
+        Args:
+            name (str, optional)
+            color (str, optional)
+            description (str, optional)
+            parent_id (int, optional)
+            namespace (str, optional)
+
+        Returns:
+            CollectionItem
+        """
+        return self._make_create(
+            name=name,
+            color=color,
+            description=description,
+            parent_id=parent_id,
+            namespace=namespace,
+            **kwargs,
+        )
 
     @log_call
     def search(
