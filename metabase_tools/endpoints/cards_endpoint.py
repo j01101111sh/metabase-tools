@@ -8,7 +8,6 @@ from typing import Any, ClassVar, Optional
 
 from metabase_tools.common import log_call, untested
 from metabase_tools.endpoints.generic_endpoint import Endpoint
-from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.card_model import CardItem
 from metabase_tools.models.generic_model import MissingParam
 
@@ -124,6 +123,6 @@ class Cards(Endpoint[CardItem]):
             list[CardItem]: List of cards with embedding enabled
         """
         cards = self._adapter.get(endpoint="/card/embeddable")
-        if cards:
-            return [CardItem(**card) for card in cards if isinstance(card, dict)]
-        raise EmptyDataReceived
+        card_ids = [card["id"] for card in cards if isinstance(card, dict)]
+        result = self._adapter.cards.get(card_ids)
+        return result
