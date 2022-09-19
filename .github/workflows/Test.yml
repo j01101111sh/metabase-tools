@@ -20,16 +20,17 @@ jobs:
         run: |
           docker pull metabase/metabase:${{ matrix.metabase-version }}
           docker run -d -p 3000:3000 metabase/metabase:${{ matrix.metabase-version }}
-      - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           poetry --version
           poetry config virtualenvs.in-project true
           poetry config installer.parallel true
+      - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'poetry'
       - name: Install dependencies
         uses: nick-fields/retry@v2
         with:
