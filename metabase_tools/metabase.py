@@ -274,6 +274,8 @@ class MetabaseApi:
                     result = result["data"]
                 if isinstance(result, (list, dict)):
                     return result
+                if isinstance(result, bool):
+                    return {"value": result}
             except JSONDecodeError as error_raised:
                 if response.status_code == 204:
                     return {"success": True}
