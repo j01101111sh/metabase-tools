@@ -6,7 +6,7 @@ from __future__ import annotations
 import logging
 from typing import Any, ClassVar, Optional
 
-from metabase_tools.common import log_call, untested
+from metabase_tools.common import log_call
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.models.card_model import CardItem
 from metabase_tools.models.generic_model import MissingParam
@@ -112,7 +112,7 @@ class Cards(Endpoint[CardItem]):
         """
         return super().search(search_params=search_params, search_list=search_list)
 
-    @untested
+    @log_call
     def embeddable(self) -> list[CardItem]:
         """Fetch list of cards with embedding enabled
 

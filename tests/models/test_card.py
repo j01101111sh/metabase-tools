@@ -155,7 +155,7 @@ def test_card_favorite_one(cards: list[CardItem]):
         pass
     finally:
         favorite = card_to_favorite.favorite()
-    assert isinstance(favorite, dict)
+    assert isinstance(favorite, CardItem)
 
 
 @pytest.mark.xfail(raises=NotImplementedError)
@@ -171,7 +171,7 @@ def test_card_favorite_many(cards: list[CardItem]):
             new = card.favorite()
             favorites.append(new)
     assert isinstance(favorites, list)
-    assert all(isinstance(card, dict) for card in favorites)
+    assert all(isinstance(card, CardItem) for card in favorites)
 
 
 @pytest.mark.xfail(raises=NotImplementedError)
@@ -183,7 +183,7 @@ def test_card_unfavorite_one(cards: list[CardItem]):
         pass
     finally:
         favorite = card_to_unfavorite.unfavorite()
-    assert isinstance(favorite, dict)
+    assert isinstance(favorite, CardItem)
 
 
 @pytest.mark.xfail(raises=NotImplementedError)
@@ -199,23 +199,16 @@ def test_card_unfavorite_many(cards: list[CardItem]):
             new = card.favorite()
             unfavorites.append(new)
     assert isinstance(unfavorites, list)
-    assert all(isinstance(card, dict) for card in unfavorites)
+    assert all(isinstance(card, CardItem) for card in unfavorites)
 
 
-@pytest.mark.skip(reason="Not implemented in test environment")
-def test_card_share_one(cards: list[CardItem]):
-    card_to_share = cards[0]
-    shared = card_to_share.share()
-    assert isinstance(shared, dict)
-
-
-@pytest.mark.skip(reason="Not implemented in test environment")
-def test_card_unshare_one(cards: list[CardItem]):
-    items = cards[:2]
-    related = [card.related() for card in items]
-    assert isinstance(related, list)
-    assert len(related) == len(items)
-    assert all(isinstance(item, dict) for item in related)
+def test_card_share_one(api: MetabaseApi, cards: list[CardItem]):
+    _ = api.settings.enable_public_sharing.update(True)
+    card = cards[0]
+    shared = card.share()
+    assert isinstance(shared, CardItem)
+    unshared = card.unshare()
+    assert isinstance(unshared, CardItem)
 
 
 def test_card_invalid_get(api: MetabaseApi):

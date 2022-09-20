@@ -11,7 +11,7 @@ import packaging.version
 from pydantic import BaseModel, PrivateAttr
 from pydantic.fields import Field
 
-from metabase_tools.common import log_call, untested
+from metabase_tools.common import log_call
 from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.collection_model import CollectionItem
 from metabase_tools.models.generic_model import Item, MissingParam
@@ -73,6 +73,14 @@ class CardItem(Item):
             adapter (MetabaseApi): Connection to MetabaseApi
         """
         super().set_adapter(adapter=adapter)
+
+    def refresh(self: CardItem) -> CardItem:
+        """Returns refreshed copy of the card
+
+        Returns:
+            CardItem: self
+        """
+        return super().refresh()
 
     @log_call
     def delete(self: CardItem) -> dict[int | str, dict[str, Any]]:
@@ -187,41 +195,41 @@ class CardItem(Item):
         raise InvalidParameters
 
     @log_call
-    def favorite(self: CardItem) -> dict[str, Any]:
+    def favorite(self: CardItem) -> CardItem:
         """Mark card as favorite
 
         Returns:
             dict: Result of favoriting operation
         """
-        if self._server_version and self._server_version > packaging.version.Version(
-            "v0.39"
+        if self._server_version and self._server_version >= packaging.version.Version(
+            "v0.40"
         ):
             raise NotImplementedError("This function was deprecated in Metabase v0.40")
         if self._adapter:
             result = self._adapter.post(endpoint=f"/card/{self.id}/favorite")
             if isinstance(result, dict):
-                return result
+                return self.refresh()
         raise InvalidParameters
 
     @log_call
-    def unfavorite(self: CardItem) -> dict[str, Any]:
+    def unfavorite(self: CardItem) -> CardItem:
         """Unfavorite card
 
         Returns:
             dict: Result of unfavoriting operation
         """
-        if self._server_version and self._server_version > packaging.version.Version(
-            "v0.39"
+        if self._server_version and self._server_version >= packaging.version.Version(
+            "v0.40"
         ):
             raise NotImplementedError("This function was deprecated in Metabase v0.40")
         if self._adapter:
             result = self._adapter.delete(endpoint=f"/card/{self.id}/favorite")
             if isinstance(result, dict):
-                return result
+                return self.refresh()
         raise InvalidParameters
 
-    @untested
-    def share(self: CardItem) -> dict[str, Any]:
+    @log_call
+    def share(self: CardItem) -> CardItem:
         """Generate publicly-accessible link for card
 
         Returns:
@@ -229,12 +237,12 @@ class CardItem(Item):
         """
         if self._adapter:
             result = self._adapter.post(endpoint=f"/card/{self.id}/public_link")
-            if isinstance(result, dict):
-                return result
+            if isinstance(result, dict) and "uuid" in result:
+                return self.refresh()
         raise InvalidParameters
 
-    @untested
-    def unshare(self: CardItem) -> dict[str, Any]:
+    @log_call
+    def unshare(self: CardItem) -> CardItem:
         """Remove publicly-accessible links for card
 
         Returns:
@@ -242,8 +250,9 @@ class CardItem(Item):
         """
         if self._adapter:
             result = self._adapter.delete(endpoint=f"/card/{self.id}/public_link")
-            if isinstance(result, dict):
-                return result
+            if isinstance(result, dict) and isinstance(self.id, int):
+                card = self._adapter.cards.get([self.id])[0]
+                return card
         raise InvalidParameters
 
     @log_call
