@@ -202,11 +202,13 @@ def test_card_unfavorite_many(cards: list[CardItem]):
     assert all(isinstance(card, dict) for card in unfavorites)
 
 
-@pytest.mark.skip(reason="Not implemented in test environment")
-def test_card_share_one(cards: list[CardItem]):
-    card_to_share = cards[0]
-    shared = card_to_share.share()
+def test_card_share_one(api: MetabaseApi, cards: list[CardItem]):
+    _ = api.settings.enable_public_sharing.update(True)
+    card = cards[0]
+    shared = card.share()
     assert isinstance(shared, dict)
+    unshared = card.unshare()
+    assert isinstance(unshared, dict)
 
 
 def test_card_invalid_get(api: MetabaseApi):

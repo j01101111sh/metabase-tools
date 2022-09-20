@@ -11,7 +11,7 @@ import packaging.version
 from pydantic import BaseModel, PrivateAttr
 from pydantic.fields import Field
 
-from metabase_tools.common import log_call, untested
+from metabase_tools.common import log_call
 from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.collection_model import CollectionItem
 from metabase_tools.models.generic_model import Item, MissingParam
@@ -220,7 +220,7 @@ class CardItem(Item):
                 return result
         raise InvalidParameters
 
-    @untested
+    @log_call
     def share(self: CardItem) -> dict[str, Any]:
         """Generate publicly-accessible link for card
 
@@ -233,7 +233,7 @@ class CardItem(Item):
                 return result
         raise InvalidParameters
 
-    @untested
+    @log_call
     def unshare(self: CardItem) -> dict[str, Any]:
         """Remove publicly-accessible links for card
 
