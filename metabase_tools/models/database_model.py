@@ -49,6 +49,14 @@ class DatabaseItem(Item):
     settings: Optional[Any]
     can_manage: Optional[bool] = Field(alias="can-manage")
 
+    def refresh(self: DatabaseItem) -> DatabaseItem:
+        """Returns refreshed copy of the database
+
+        Returns:
+            DatabaseItem: self
+        """
+        return super().refresh()
+
     @log_call
     def delete(self: DatabaseItem) -> dict[int | str, dict[str, Any]]:
         """Deletes the database

@@ -74,6 +74,14 @@ class CardItem(Item):
         """
         super().set_adapter(adapter=adapter)
 
+    def refresh(self: CardItem) -> CardItem:
+        """Returns refreshed copy of the card
+
+        Returns:
+            CardItem: self
+        """
+        return super().refresh()
+
     @log_call
     def delete(self: CardItem) -> dict[int | str, dict[str, Any]]:
         """DEPRECATED; use archive instead
@@ -229,13 +237,8 @@ class CardItem(Item):
         """
         if self._adapter:
             result = self._adapter.post(endpoint=f"/card/{self.id}/public_link")
-            if (
-                isinstance(result, dict)
-                and "uuid" in result
-                and isinstance(self.id, int)
-            ):
-                card = self._adapter.cards.get([self.id])[0]
-                return card
+            if isinstance(result, dict) and "uuid" in result:
+                return self.refresh()
         raise InvalidParameters
 
     @log_call
