@@ -58,13 +58,9 @@ class UserItem(Item):
         return super().refresh()
 
     @log_call
-    def disable(self) -> dict[int, Any]:
-        """Disables user
-
-        Returns:
-            dict: Results
-        """
-        return super().delete()  # type: ignore
+    def disable(self) -> None:
+        """Disables user"""
+        return super().delete()
 
     @log_call
     def enable(self) -> UserItem:
