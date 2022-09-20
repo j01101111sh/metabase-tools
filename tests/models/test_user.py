@@ -43,11 +43,8 @@ def test_user_disable_one(users: list[UserItem]):
         _ = item.enable()
     except:
         pass
-    results = item.disable()
+    item.disable()
     _ = item.enable()
-    assert isinstance(results, dict)
-    assert all(isinstance(v, dict) for v in results.values())
-    assert all(v["success"] is True for v in results.values())
 
 
 def test_user_enable_one(users: list[UserItem]):

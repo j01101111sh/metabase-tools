@@ -58,12 +58,8 @@ class DatabaseItem(Item):
         return super().refresh()
 
     @log_call
-    def delete(self: DatabaseItem) -> dict[int | str, dict[str, Any]]:
-        """Deletes the database
-
-        Returns:
-            dict[int | str, dict[str, Any]]
-        """
+    def delete(self: DatabaseItem) -> None:
+        """Deletes the database"""
         return super().delete()
 
     def _make_update(self: DatabaseItem, **kwargs: Any) -> DatabaseItem:

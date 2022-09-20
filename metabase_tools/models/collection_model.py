@@ -116,12 +116,8 @@ class CollectionItem(Item):
         return super().unarchive()
 
     @log_call
-    def delete(self: CollectionItem) -> dict[int | str, dict[str, Any]]:
-        """DEPRECATED; use archive instead
-
-        Returns:
-            dict[int | str, dict[str, Any]]
-        """
+    def delete(self: CollectionItem) -> None:
+        """DEPRECATED; use archive instead"""
         raise NotImplementedError
 
     @log_call

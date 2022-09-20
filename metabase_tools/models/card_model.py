@@ -83,12 +83,8 @@ class CardItem(Item):
         return super().refresh()
 
     @log_call
-    def delete(self: CardItem) -> dict[int | str, dict[str, Any]]:
-        """DEPRECATED; use archive instead
-
-        Returns:
-            dict[int | str, dict[str, Any]]: _description_
-        """
+    def delete(self: CardItem) -> None:
+        """DEPRECATED; use archive instead"""
         raise NotImplementedError
 
     def _make_update(self: CardItem, **kwargs: Any) -> CardItem:

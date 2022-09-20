@@ -54,8 +54,7 @@ def test_database_delete(api: MetabaseApi, server_version: packaging.version.Ver
     params = [{"name": "Test DB"}]
     db = api.databases.search(search_params=params)[0]
     assert isinstance(db, DatabaseItem)
-    result = db.delete()
-    assert isinstance(result, dict)
+    db.delete()
     new_db = {
         "name": "Test DB",
         "engine": "h2",
