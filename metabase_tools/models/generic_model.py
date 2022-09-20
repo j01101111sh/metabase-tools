@@ -137,18 +137,11 @@ class Item(BaseModel, ABC, extra="forbid"):
         raise InvalidParameters("Invalid target(s)")
 
     @log_call
-    def delete(self) -> dict[int | str, dict[str, Any]]:
+    def delete(self) -> None:
         """Method to delete an object
 
         Raises:
             InvalidParameters: Invalid target
-
-        Returns:
-            dict: Results
         """
         if self._adapter:
-            result = self._adapter.delete(endpoint=self._BASE_EP.format(id=self.id))
-            if isinstance(result, dict):
-                final = {self.id: result}
-                return final
-        raise InvalidParameters("Invalid target(s)")
+            _ = self._adapter.delete(endpoint=self._BASE_EP.format(id=self.id))
