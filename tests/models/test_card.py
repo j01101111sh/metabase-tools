@@ -206,9 +206,9 @@ def test_card_share_one(api: MetabaseApi, cards: list[CardItem]):
     _ = api.settings.enable_public_sharing.update(True)
     card = cards[0]
     shared = card.share()
-    assert isinstance(shared, dict)
+    assert isinstance(shared, CardItem)
     unshared = card.unshare()
-    assert isinstance(unshared, dict)
+    assert isinstance(unshared, CardItem)
 
 
 def test_card_invalid_get(api: MetabaseApi):
