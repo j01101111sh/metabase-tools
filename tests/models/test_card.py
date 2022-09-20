@@ -209,15 +209,6 @@ def test_card_share_one(cards: list[CardItem]):
     assert isinstance(shared, dict)
 
 
-@pytest.mark.skip(reason="Not implemented in test environment")
-def test_card_unshare_one(cards: list[CardItem]):
-    items = cards[:2]
-    related = [card.related() for card in items]
-    assert isinstance(related, list)
-    assert len(related) == len(items)
-    assert all(isinstance(item, dict) for item in related)
-
-
 def test_card_invalid_get(api: MetabaseApi):
     targets = {}
     with pytest.raises(InvalidParameters):
