@@ -222,11 +222,17 @@ def get_server_version(session: requests.Session) -> packaging.version.Version:
     raise ValueError
 
 
+def set_server_settings(session: requests.Session) -> list[requests.Response]:
+    embed_result = session.put(f"{HOST}/api/setting/enable-embedding")
+    return [embed_result]
+
+
 if __name__ == "__main__":
     cleanup_cache_and_logs()
     setup_response = initial_setup()
     session = get_session()
     server_version = get_server_version(session)
+    server_settings = set_server_settings(session)
     user_responses = create_users(session)
     coll_responses = create_collections(session)
     card_responses = create_cards(session)

@@ -105,7 +105,7 @@ class CardItem(Item):
         collection_position: Optional[int | MissingParam] = MissingParam(),
         result_metadata: Optional[list[dict[str, str]] | MissingParam] = MissingParam(),
         metadata_checksum: Optional[str | MissingParam] = MissingParam(),
-        enable_embedding: Optional[str | MissingParam] = MissingParam(),
+        enable_embedding: Optional[bool | MissingParam] = MissingParam(),
         collection_id: Optional[int | MissingParam] = MissingParam(),
         name: Optional[str | MissingParam] = MissingParam(),
         embedding_params: Optional[dict[str, str] | MissingParam] = MissingParam(),
@@ -123,7 +123,7 @@ class CardItem(Item):
             collection_position (int, optional)
             result_metadata (list[dict[str, str]], optional)
             metadata_checksum (str, optional)
-            enable_embedding (str, optional)
+            enable_embedding (bool, optional)
             collection_id (int, optional)
             name (str, optional)
             embedding_params (dict[str, str], optional)
