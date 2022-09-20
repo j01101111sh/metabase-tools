@@ -155,7 +155,7 @@ def test_card_favorite_one(cards: list[CardItem]):
         pass
     finally:
         favorite = card_to_favorite.favorite()
-    assert isinstance(favorite, dict)
+    assert isinstance(favorite, CardItem)
 
 
 @pytest.mark.xfail(raises=NotImplementedError)
@@ -171,7 +171,7 @@ def test_card_favorite_many(cards: list[CardItem]):
             new = card.favorite()
             favorites.append(new)
     assert isinstance(favorites, list)
-    assert all(isinstance(card, dict) for card in favorites)
+    assert all(isinstance(card, CardItem) for card in favorites)
 
 
 @pytest.mark.xfail(raises=NotImplementedError)
@@ -183,7 +183,7 @@ def test_card_unfavorite_one(cards: list[CardItem]):
         pass
     finally:
         favorite = card_to_unfavorite.unfavorite()
-    assert isinstance(favorite, dict)
+    assert isinstance(favorite, CardItem)
 
 
 @pytest.mark.xfail(raises=NotImplementedError)
@@ -199,7 +199,7 @@ def test_card_unfavorite_many(cards: list[CardItem]):
             new = card.favorite()
             unfavorites.append(new)
     assert isinstance(unfavorites, list)
-    assert all(isinstance(card, dict) for card in unfavorites)
+    assert all(isinstance(card, CardItem) for card in unfavorites)
 
 
 def test_card_share_one(api: MetabaseApi, cards: list[CardItem]):

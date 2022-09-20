@@ -187,37 +187,37 @@ class CardItem(Item):
         raise InvalidParameters
 
     @log_call
-    def favorite(self: CardItem) -> dict[str, Any]:
+    def favorite(self: CardItem) -> CardItem:
         """Mark card as favorite
 
         Returns:
             dict: Result of favoriting operation
         """
-        if self._server_version and self._server_version > packaging.version.Version(
-            "v0.39"
+        if self._server_version and self._server_version >= packaging.version.Version(
+            "v0.40"
         ):
             raise NotImplementedError("This function was deprecated in Metabase v0.40")
         if self._adapter:
             result = self._adapter.post(endpoint=f"/card/{self.id}/favorite")
             if isinstance(result, dict):
-                return result
+                return self.refresh()
         raise InvalidParameters
 
     @log_call
-    def unfavorite(self: CardItem) -> dict[str, Any]:
+    def unfavorite(self: CardItem) -> CardItem:
         """Unfavorite card
 
         Returns:
             dict: Result of unfavoriting operation
         """
-        if self._server_version and self._server_version > packaging.version.Version(
-            "v0.39"
+        if self._server_version and self._server_version >= packaging.version.Version(
+            "v0.40"
         ):
             raise NotImplementedError("This function was deprecated in Metabase v0.40")
         if self._adapter:
             result = self._adapter.delete(endpoint=f"/card/{self.id}/favorite")
             if isinstance(result, dict):
-                return result
+                return self.refresh()
         raise InvalidParameters
 
     @log_call
