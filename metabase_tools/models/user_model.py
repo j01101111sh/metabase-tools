@@ -49,6 +49,14 @@ class UserItem(Item):
     is_installer: Optional[bool]
     sso_source: Optional[str]
 
+    def refresh(self: UserItem) -> UserItem:
+        """Returns refreshed copy of the user
+
+        Returns:
+            UserItem: self
+        """
+        return super().refresh()
+
     @log_call
     def disable(self) -> dict[int, Any]:
         """Disables user
