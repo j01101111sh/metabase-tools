@@ -47,14 +47,6 @@ class CollectionItem(Item):
         """
         super().set_adapter(adapter=adapter)
 
-    def refresh(self: CollectionItem) -> CollectionItem:
-        """Returns refreshed copy of the collection
-
-        Returns:
-            CollectionItem: self
-        """
-        return super().refresh()
-
     def _make_update(self: CollectionItem, **kwargs: Any) -> CollectionItem:
         """Makes update request
 
