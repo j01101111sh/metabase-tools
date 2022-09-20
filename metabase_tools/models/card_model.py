@@ -195,7 +195,7 @@ class CardItem(Item):
         raise InvalidParameters
 
     @log_call
-    def favorite(self: CardItem) -> dict[str, Any]:
+    def favorite(self: CardItem) -> CardItem:
         """Mark card as favorite
 
         Returns:
@@ -208,11 +208,11 @@ class CardItem(Item):
         if self._adapter:
             result = self._adapter.post(endpoint=f"/card/{self.id}/favorite")
             if isinstance(result, dict):
-                return result
+                return self.refresh()
         raise InvalidParameters
 
     @log_call
-    def unfavorite(self: CardItem) -> dict[str, Any]:
+    def unfavorite(self: CardItem) -> CardItem:
         """Unfavorite card
 
         Returns:
@@ -225,7 +225,7 @@ class CardItem(Item):
         if self._adapter:
             result = self._adapter.delete(endpoint=f"/card/{self.id}/favorite")
             if isinstance(result, dict):
-                return result
+                return self.refresh()
         raise InvalidParameters
 
     @log_call
