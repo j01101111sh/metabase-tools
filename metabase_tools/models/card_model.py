@@ -221,7 +221,7 @@ class CardItem(Item):
         raise InvalidParameters
 
     @log_call
-    def share(self: CardItem) -> dict[str, Any]:
+    def share(self: CardItem) -> CardItem:
         """Generate publicly-accessible link for card
 
         Returns:
@@ -229,12 +229,17 @@ class CardItem(Item):
         """
         if self._adapter:
             result = self._adapter.post(endpoint=f"/card/{self.id}/public_link")
-            if isinstance(result, dict):
-                return result
+            if (
+                isinstance(result, dict)
+                and "uuid" in result
+                and isinstance(self.id, int)
+            ):
+                card = self._adapter.cards.get([self.id])[0]
+                return card
         raise InvalidParameters
 
     @log_call
-    def unshare(self: CardItem) -> dict[str, Any]:
+    def unshare(self: CardItem) -> CardItem:
         """Remove publicly-accessible links for card
 
         Returns:
@@ -242,8 +247,9 @@ class CardItem(Item):
         """
         if self._adapter:
             result = self._adapter.delete(endpoint=f"/card/{self.id}/public_link")
-            if isinstance(result, dict):
-                return result
+            if isinstance(result, dict) and isinstance(self.id, int):
+                card = self._adapter.cards.get([self.id])[0]
+                return card
         raise InvalidParameters
 
     @log_call
