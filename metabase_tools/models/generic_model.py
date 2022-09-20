@@ -44,6 +44,20 @@ class Item(BaseModel, ABC, extra="forbid"):
         self._adapter = adapter
         self._server_version = adapter.server_version
 
+    def refresh(self: T) -> T:
+        """Returns new copy of item from API
+
+        Returns:
+            T: self
+        """
+        if self._adapter:
+            result = self._adapter.get(endpoint=self._BASE_EP.format(id=self.id))
+            if isinstance(result, dict):
+                obj = self.__class__(**result)
+                obj.set_adapter(adapter=self._adapter)
+                return obj
+        return self
+
     def _make_update(self: T, **kwargs: Any) -> T:
         """Generic method for updating an object
 
