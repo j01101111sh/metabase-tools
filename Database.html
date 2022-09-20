@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="User" href="User.html" /><link rel="prev" title="Collection" href="Collection.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Database - metabase-tools 0.9.0 documentation</title>
+        <title>Database - metabase-tools 0.10.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">metabase-tools 0.9.0 documentation</div></a>
+      <a href="index.html"><div class="brand">metabase-tools 0.10.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">metabase-tools 0.9.0 documentation</span>
+  <span class="sidebar-brand-text">metabase-tools 0.10.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -303,14 +303,11 @@ the new model: you should trust this data</p></li>
 <span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.database_model.DatabaseItem.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes the database</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[int | str, dict[str, Any]]</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.database_model.DatabaseItem" title="metabase_tools.models.database_model.DatabaseItem"><em>DatabaseItem</em></a>) – </p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.database_model.DatabaseItem" title="metabase_tools.models.database_model.DatabaseItem"><em>DatabaseItem</em></a>) – </p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[int | str, dict[str, <em>Any</em>]]</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -364,6 +361,23 @@ the new model: you should trust this data</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="metabase_tools.models.database_model.DatabaseItem.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.database_model.DatabaseItem.refresh" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns refreshed copy of the database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#metabase_tools.models.database_model.DatabaseItem" title="metabase_tools.models.database_model.DatabaseItem">DatabaseItem</a></p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.database_model.DatabaseItem" title="metabase_tools.models.database_model.DatabaseItem"><em>DatabaseItem</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.database_model.DatabaseItem.set_adapter">
 <span class="sig-name descname"><span class="pre">set_adapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.database_model.DatabaseItem.set_adapter" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the adapter on an object</p>
@@ -399,21 +413,29 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.database_model.DatabaseItem.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.database_model.DatabaseItem.update" title="Permalink to this definition">#</a></dt>
-<dd><p>Method for updating a database</p>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schedules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refingerprint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points_of_interest</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caveats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_ttl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.database_model.DatabaseItem.update" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates a database using the provided parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>payloads</strong> (<em>dict</em>) – Details of update</p></li>
 <li><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.database_model.DatabaseItem" title="metabase_tools.models.database_model.DatabaseItem"><em>DatabaseItem</em></a>) – </p></li>
-<li><p><strong>payload</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – </p></li>
+<li><p><strong>engine</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>schedules</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>refingerprint</strong> (<em>bool</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>points_of_interest</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>description</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>caveats</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>cache_ttl</strong> (<em>int</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>details</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Object of the relevant type</p>
+<dd class="field-even"><p>DatabaseItem</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metabase_tools.models.database_model.DatabaseItem" title="metabase_tools.models.database_model.DatabaseItem">DatabaseItem</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#metabase_tools.models.database_model.DatabaseItem" title="metabase_tools.models.database_model.DatabaseItem"><em>DatabaseItem</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -446,17 +468,26 @@ the new model: you should trust this data</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.endpoints.databases_endpoint.Databases.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payloads</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.databases_endpoint.Databases.create" title="Permalink to this definition">#</a></dt>
-<dd><p>Create new database(s)</p>
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_full_sync</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_on_demand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schedules</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_run_queries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.databases_endpoint.Databases.create" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a new database</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>payloads</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – database details</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>engine</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>details</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>is_full_sync</strong> (<em>bool</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>is_on_demand</strong> (<em>bool</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>schedules</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>auto_run_queries</strong> (<em>bool</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – </p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Created databases</p>
+<dd class="field-even"><p>DatabaseItem</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.database_model.DatabaseItem" title="metabase_tools.models.database_model.DatabaseItem">DatabaseItem</a>]</p>
+<dd class="field-odd"><p><a class="reference internal" href="#metabase_tools.models.database_model.DatabaseItem" title="metabase_tools.models.database_model.DatabaseItem"><em>DatabaseItem</em></a></p>
 </dd>
 </dl>
 </dd></dl>

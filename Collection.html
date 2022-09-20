@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Database" href="Database.html" /><link rel="prev" title="Card" href="Card.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Collection - metabase-tools 0.9.0 documentation</title>
+        <title>Collection - metabase-tools 0.10.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">metabase-tools 0.9.0 documentation</div></a>
+      <a href="index.html"><div class="brand">metabase-tools 0.10.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">metabase-tools 0.9.0 documentation</span>
+  <span class="sidebar-brand-text">metabase-tools 0.10.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -289,14 +289,11 @@ the new model: you should trust this data</p></li>
 <span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.collection_model.CollectionItem.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>DEPRECATED; use archive instead</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[int | str, dict[str, Any]]</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.collection_model.CollectionItem" title="metabase_tools.models.collection_model.CollectionItem"><em>CollectionItem</em></a>) – </p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.collection_model.CollectionItem" title="metabase_tools.models.collection_model.CollectionItem"><em>CollectionItem</em></a>) – </p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[int | str, dict[str, <em>Any</em>]]</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -375,6 +372,23 @@ the new model: you should trust this data</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="metabase_tools.models.collection_model.CollectionItem.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.collection_model.CollectionItem.refresh" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns refreshed copy of the collection</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#metabase_tools.models.collection_model.CollectionItem" title="metabase_tools.models.collection_model.CollectionItem">CollectionItem</a></p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.collection_model.CollectionItem" title="metabase_tools.models.collection_model.CollectionItem"><em>CollectionItem</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.collection_model.CollectionItem.set_adapter">
 <span class="sig-name descname"><span class="pre">set_adapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.collection_model.CollectionItem.set_adapter" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the adapter on an object</p>
@@ -407,20 +421,25 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.collection_model.CollectionItem.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.collection_model.CollectionItem.update" title="Permalink to this definition">#</a></dt>
-<dd><p>Method for updating a collection</p>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archived</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.collection_model.CollectionItem.update" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates a collection using the provided parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>payload</strong> (<em>dict</em>) – Details of update</p></li>
 <li><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.collection_model.CollectionItem" title="metabase_tools.models.collection_model.CollectionItem"><em>CollectionItem</em></a>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>description</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>archived</strong> (<em>bool</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>parent_id</strong> (<em>int</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Object of the relevant type</p>
+<dd class="field-even"><p>CollectionItem</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metabase_tools.models.collection_model.CollectionItem" title="metabase_tools.models.collection_model.CollectionItem">CollectionItem</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#metabase_tools.models.collection_model.CollectionItem" title="metabase_tools.models.collection_model.CollectionItem"><em>CollectionItem</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -453,17 +472,24 @@ the new model: you should trust this data</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.endpoints.collections_endpoint.Collections.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payloads</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.collections_endpoint.Collections.create" title="Permalink to this definition">#</a></dt>
-<dd><p>Create new collection(s)</p>
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.collections_endpoint.Collections.create" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a new collection</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>payloads</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – Collection details</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>description</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>parent_id</strong> (<em>int</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>namespace</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – </p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Created collections</p>
+<dd class="field-even"><p>CollectionItem</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.collection_model.CollectionItem" title="metabase_tools.models.collection_model.CollectionItem">CollectionItem</a>]</p>
+<dd class="field-odd"><p><a class="reference internal" href="#metabase_tools.models.collection_model.CollectionItem" title="metabase_tools.models.collection_model.CollectionItem"><em>CollectionItem</em></a></p>
 </dd>
 </dl>
 </dd></dl>

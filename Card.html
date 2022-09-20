@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Collection" href="Collection.html" /><link rel="prev" title="Basic Usage" href="basic_usage.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Card - metabase-tools 0.9.0 documentation</title>
+        <title>Card - metabase-tools 0.10.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">metabase-tools 0.9.0 documentation</div></a>
+      <a href="index.html"><div class="brand">metabase-tools 0.10.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">metabase-tools 0.9.0 documentation</span>
+  <span class="sidebar-brand-text">metabase-tools 0.10.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -312,14 +312,11 @@ the new model: you should trust this data</p></li>
 <span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardItem.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>DEPRECATED; use archive instead</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>_description_</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict[int | str, dict[str, Any]]</p>
-</dd>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.card_model.CardItem" title="metabase_tools.models.card_model.CardItem"><em>CardItem</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -407,18 +404,35 @@ the new model: you should trust this data</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="metabase_tools.models.card_model.CardItem.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardItem.refresh" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns refreshed copy of the card</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#metabase_tools.models.card_model.CardItem" title="metabase_tools.models.card_model.CardItem">CardItem</a></p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.card_model.CardItem" title="metabase_tools.models.card_model.CardItem"><em>CardItem</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.card_model.CardItem.related">
 <span class="sig-name descname"><span class="pre">related</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardItem.related" title="Permalink to this definition">#</a></dt>
 <dd><p>Objects related to target</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dict with related objects for target</p>
+<dd class="field-odd"><p>CardRelatedObjects</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.card_model.CardItem" title="metabase_tools.models.card_model.CardItem"><em>CardItem</em></a>) – </p>
 </dd>
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.card_model.CardItem" title="metabase_tools.models.card_model.CardItem"><em>CardItem</em></a>) – </p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#metabase_tools.models.card_model.CardRelatedObjects" title="metabase_tools.models.card_model.CardRelatedObjects"><em>CardRelatedObjects</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -510,24 +524,32 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.card_model.CardItem.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardItem.update" title="Permalink to this definition">#</a></dt>
-<dd><p>Method for updating a card</p>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visualization_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archived</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata_checksum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_embedding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardItem.update" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates a card using the provided parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>payloads</strong> (<em>dict</em>) – Details of update</p></li>
 <li><p><strong>self</strong> (<a class="reference internal" href="#metabase_tools.models.card_model.CardItem" title="metabase_tools.models.card_model.CardItem"><em>CardItem</em></a>) – </p></li>
-<li><p><strong>payload</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – </p></li>
+<li><p><strong>visualization_settings</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>description</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>archived</strong> (<em>bool</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>collection_position</strong> (<em>int</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>result_metadata</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>metadata_checksum</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>enable_embedding</strong> (<em>bool</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>collection_id</strong> (<em>int</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>embedding_params</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>dataset_query</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>display</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.InvalidParameters" title="metabase_tools.exceptions.InvalidParameters"><strong>InvalidParameters</strong></a> – Targets and jsons are both None</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Object of the relevant type</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metabase_tools.models.card_model.CardItem" title="metabase_tools.models.card_model.CardItem">CardItem</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#metabase_tools.models.card_model.CardItem" title="metabase_tools.models.card_model.CardItem">CardItem</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -674,6 +696,130 @@ the new model: you should trust this data</p></li>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="metabase_tools.models.card_model.CardRelatedObjects">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.models.card_model.</span></span><span class="sig-name descname"><span class="pre">CardRelatedObjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">card_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dashboards</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collections</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardRelatedObjects" title="Permalink to this definition">#</a></dt>
+<dd><p>Objects related to the specified card</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>card_id</strong> (<em>int</em>) – </p></li>
+<li><p><strong>table</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>metrics</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>segments</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>dashboards</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>collections</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>extra_data</strong> (<em>Any</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="metabase_tools.models.card_model.CardRelatedObjects.construct">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fields_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardRelatedObjects.construct" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.
+Default values are respected, but no other validation is performed.
+Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all passed values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_fields_set</strong> (<em>Optional</em><em>[</em><em>SetStr</em><em>]</em>) – </p></li>
+<li><p><strong>values</strong> (<em>Any</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metabase_tools.models.card_model.CardRelatedObjects.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardRelatedObjects.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Duplicate a model, optionally choose which fields to include, exclude and change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – fields to include in new model</p></li>
+<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – fields to exclude from new model, as with values this takes precedence over include</p></li>
+<li><p><strong>update</strong> (<em>Optional</em><em>[</em><em>DictStrAny</em><em>]</em>) – values to change/add in the new model. Note: the data is not validated before creating
+the new model: you should trust this data</p></li>
+<li><p><strong>deep</strong> (<em>bool</em>) – set to <cite>True</cite> to make a deep copy of the model</p></li>
+<li><p><strong>self</strong> (<em>Model</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>new model instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metabase_tools.models.card_model.CardRelatedObjects.dict">
+<span class="sig-name descname"><span class="pre">dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardRelatedObjects.dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>by_alias</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>skip_defaults</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
+<li><p><strong>exclude_unset</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>exclude_defaults</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>exclude_none</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>DictStrAny</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metabase_tools.models.card_model.CardRelatedObjects.json">
+<span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">models_as_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardRelatedObjects.json" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate a JSON representation of the model, <cite>include</cite> and <cite>exclude</cite> arguments as per <cite>dict()</cite>.</p>
+<p><cite>encoder</cite> is an optional function to supply as <cite>default</cite> to json.dumps(), other arguments as per <cite>json.dumps()</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>by_alias</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>skip_defaults</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
+<li><p><strong>exclude_unset</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>exclude_defaults</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>exclude_none</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>encoder</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>models_as_dict</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>dumps_kwargs</strong> (<em>Any</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>unicode</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metabase_tools.models.card_model.CardRelatedObjects.update_forward_refs">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_forward_refs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">localns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardRelatedObjects.update_forward_refs" title="Permalink to this definition">#</a></dt>
+<dd><p>Try to update ForwardRefs on fields based on this Model, globalns and localns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>localns</strong> (<em>Any</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <span class="target" id="module-metabase_tools.endpoints.cards_endpoint"></span><p>Classes related to card endpoints</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="metabase_tools.endpoints.cards_endpoint.Cards">
@@ -686,17 +832,28 @@ the new model: you should trust this data</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.endpoints.cards_endpoint.Cards.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payloads</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.cards_endpoint.Cards.create" title="Permalink to this definition">#</a></dt>
-<dd><p>Create new card(s)</p>
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visualization_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata_checksum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.cards_endpoint.Cards.create" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a new card</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>payloads</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – Card details</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>visualization_settings</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>dataset_query</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – </p></li>
+<li><p><strong>display</strong> (<em>str</em>) – </p></li>
+<li><p><strong>description</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>collection_position</strong> (<em>int</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>result_metadata</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>metadata_checksum</strong> (<em>str</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>collection_id</strong> (<em>int</em><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – </p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Created cards</p>
+<dd class="field-even"><p>CardItem</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.card_model.CardItem" title="metabase_tools.models.card_model.CardItem">CardItem</a>]</p>
+<dd class="field-odd"><p><a class="reference internal" href="#metabase_tools.models.card_model.CardItem" title="metabase_tools.models.card_model.CardItem"><em>CardItem</em></a></p>
 </dd>
 </dl>
 </dd></dl>
