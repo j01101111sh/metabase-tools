@@ -8,9 +8,9 @@ from json import dumps, loads
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Optional
 
-from metabase_tools.common import log_call
 from metabase_tools.exceptions import EmptyDataReceived, ItemNotFound
 from metabase_tools.models.card_model import CardItem
+from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi

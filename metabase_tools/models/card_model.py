@@ -11,11 +11,11 @@ import packaging.version
 from pydantic import BaseModel, PrivateAttr
 from pydantic.fields import Field
 
-from metabase_tools.common import log_call
 from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.collection_model import CollectionItem
 from metabase_tools.models.generic_model import Item, MissingParam
 from metabase_tools.models.user_model import UserItem
+from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi

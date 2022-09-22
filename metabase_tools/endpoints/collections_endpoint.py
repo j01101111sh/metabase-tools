@@ -6,11 +6,11 @@ from __future__ import annotations
 import logging
 from typing import Any, ClassVar, Optional
 
-from metabase_tools.common import log_call
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.collection_model import CollectionItem
 from metabase_tools.models.generic_model import MissingParam
+from metabase_tools.utils.logging_utils import log_call
 
 logger = logging.getLogger(__name__)
 

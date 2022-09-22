@@ -1,7 +1,7 @@
 import pytest
 
 from metabase_tools import MetabaseApi
-from metabase_tools.server_settings import ServerSettings, Setting
+from metabase_tools.models import ServerSettings, Setting
 
 
 def test_update_site_name(api: MetabaseApi):
