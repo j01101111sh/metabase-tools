@@ -29,7 +29,7 @@ def check_status_code(response: requests.Response) -> requests.Response:
 def initial_setup():
     MAX_ATTEMPTS = 12
     TIMEOUT = 5
-    WAIT_INTERVAL = 1
+    WAIT_INTERVAL = 5
     token_response = None
     for _ in range(MAX_ATTEMPTS + 1):
         try:
