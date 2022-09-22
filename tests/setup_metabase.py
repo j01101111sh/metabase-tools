@@ -27,16 +27,24 @@ def check_status_code(response: requests.Response) -> requests.Response:
 
 
 def initial_setup():
-    MAX_ATTEMPTS = 10
-    WAIT_INTERVAL = 10
+    MAX_ATTEMPTS = 12
+    TIMEOUT = 5
+    WAIT_INTERVAL = 5
     token_response = None
-    for _ in range(MAX_ATTEMPTS + 1):
+    for x in range(MAX_ATTEMPTS + 1):
+        print(f"Attempt #{x+1}:")
         try:
-            token_response = requests.get(HOST + "/api/session/properties")
+            token_response = requests.get(
+                HOST + "/api/session/properties", timeout=TIMEOUT
+            )
+            print("Success!")
             break
         except requests.exceptions.ConnectionError:
             # Wait and try again if connection doesn't work the first time
+            print(f"ConnectionError encountered. Waiting {WAIT_INTERVAL} seconds...")
             sleep(WAIT_INTERVAL)
+        except requests.exceptions.ReadTimeout:
+            print(f"ReadTimeout encountered. Trying again...")
 
     if not token_response:
         raise requests.exceptions.ConnectionError
