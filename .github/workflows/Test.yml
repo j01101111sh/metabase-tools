@@ -1,5 +1,5 @@
 name: Test
-on: [push]
+on: [pull_request]
 
 jobs:
   test:
@@ -26,6 +26,7 @@ jobs:
           poetry --version
           poetry config virtualenvs.in-project true
           poetry config installer.parallel true
+          poetry check
       - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
         uses: actions/setup-python@v4
         with:
