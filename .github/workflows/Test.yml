@@ -16,11 +16,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        id: checkout
       - name: Initialize docker container
+        id: docker
         run: |
           docker pull metabase/metabase:${{ matrix.metabase-version }}
           docker run -d -p 3000:3000 metabase/metabase:${{ matrix.metabase-version }}
       - name: Install Poetry
+        id: poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           poetry --version
@@ -28,63 +31,71 @@ jobs:
           poetry config installer.parallel true
           poetry check
       - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
+        id: python_setup
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
           cache: "poetry"
       - name: Install dependencies
-        uses: nick-fields/retry@v2
-        with:
-          timeout_seconds: 120
-          max_attempts: 3
-          command: |
-            poetry install --no-interaction --no-root --with dev
-            poetry install --no-interaction
+        id: dependencies
+        run: poetry install --no-interaction --with dev
       - name: Fix dependency errors
+        id: dependency_errors
         run: |
           poetry install --no-interaction --no-root --with dev
       - name: Enforce code formatting
+        id: black
+        continue-on-error: true
         run: poetry run black .
       - name: Enforce code style
+        id: pylint
+        continue-on-error: true
         run: poetry run pylint $(git ls-files './metabase_tools/*.py')
       - name: Enforce type hinting
+        id: mypy
+        continue-on-error: true
         run: poetry run mypy --strict $(git ls-files './metabase_tools/*.py')
       - name: Setup Metabase
-        uses: nick-fields/retry@v2
-        with:
-          timeout_seconds: 15
-          max_attempts: 3
-          command: poetry run python ./tests/setup_metabase.py
+        id: setup
+        run: poetry run python ./tests/setup_metabase.py
       - name: Test with pytest
+        id: pytest
+        continue-on-error: true
         run: poetry run pytest --cov=metabase_tools --cov-report=xml --cov-report=html --cov-fail-under=95
       - name: Upload coverage to Codecov
+        id: codecov
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
           ./codecov -t ${CODECOV_TOKEN}
       - name: Upload HTML coverage report
+        id: coverage_upload
         uses: actions/upload-artifact@v3
         with:
           name: html-coverage
           path: htmlcov/
       - name: Install final dependencies
-        uses: nick-fields/retry@v2
-        with:
-          timeout_seconds: 120
-          max_attempts: 3
-          command: |
-            poetry install --no-interaction --no-root --with docs
-            poetry install --no-interaction
+        id: dependencies_docs
+        run: poetry install --no-interaction --no-root --with docs
       - name: Build HTML
+        id: sphinx
         run: poetry run sphinx-build -a -E -b html docs/source/ docs/build/html
       - name: Upload sphinx artifacts
+        id: sphinx_upload
         uses: actions/upload-artifact@v3
         with:
           name: html-docs
           path: docs/build/html/
       - name: Upload log artifacts
-        if: success() || failure()
+        id: log_upload
         uses: actions/upload-artifact@v3
         with:
           name: logs
           path: temp/
+      - name: Determine failure or success
+        id: resolve
+        run: |
+          if [[ ${{ steps.black.outcome }} == "failure" ]]; then echo 'black failure'; exit 1; fi
+          if [[ ${{ steps.pylint.outcome }} == "failure" ]]; then echo 'pylint failure'; exit 1; fi
+          if [[ ${{ steps.mypy.outcome }} == "failure" ]]; then echo 'mypy failure'; exit 1; fi
+          if [[ ${{ steps.pytest.outcome }} == "failure" ]]; then echo 'pytest failure'; exit 1; fi
