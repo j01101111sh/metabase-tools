@@ -40,6 +40,8 @@ def initial_setup():
         except requests.exceptions.ConnectionError:
             # Wait and try again if connection doesn't work the first time
             sleep(WAIT_INTERVAL)
+        except requests.exceptions.ReadTimeout:
+            pass
 
     if not token_response:
         raise requests.exceptions.ConnectionError
