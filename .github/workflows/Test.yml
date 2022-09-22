@@ -38,6 +38,9 @@ jobs:
         run: |
           if [ ${{ matrix.python-version }} == '3.11-dev' ]; then poetry add wrapt; fi
           poetry install --no-interaction --with dev
+      - name: test failure
+        continue-on-error: true
+        run: exit 1
       - name: Enforce code formatting
         run: poetry run black .
       - name: Enforce code style
