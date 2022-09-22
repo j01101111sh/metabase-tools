@@ -38,9 +38,6 @@ jobs:
         run: |
           if [ ${{ matrix.python-version }} == '3.11-dev' ]; then poetry add wrapt; fi
           poetry install --no-interaction --with dev
-      - name: test failure
-        continue-on-error: true
-        run: exit 1
       - name: Enforce code formatting
         run: poetry run black .
       - name: Enforce code style
@@ -48,11 +45,7 @@ jobs:
       - name: Enforce type hinting
         run: poetry run mypy --strict $(git ls-files './metabase_tools/*.py')
       - name: Setup Metabase
-        uses: nick-fields/retry@v2
-        with:
-          timeout_seconds: 10
-          max_attempts: 3
-          command: poetry run python ./tests/setup_metabase.py
+        run: poetry run python ./tests/setup_metabase.py
       - name: Test with pytest
         run: poetry run pytest --cov=metabase_tools --cov-report=xml --cov-report=html --cov-fail-under=95
       - name: Upload coverage to Codecov
