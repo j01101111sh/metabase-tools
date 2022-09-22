@@ -73,3 +73,13 @@ Making generic requests
 To make custom calls to the Metabase API, you can use the ``generic_request`` method. In general, it's better to use class-specific methods to call the methods you need but this can be used for unsupported endpoints while still utilizing the cached authentication of the wrapper.
 
 .. autofunction:: metabase_tools.MetabaseApi.generic_request
+
+For convenience, there are also methods to utilize for ``get``, ``delete``, ``post``, and ``put`` HTTP verbs:
+
+.. autofunction:: metabase_tools.MetabaseApi.get
+
+.. autofunction:: metabase_tools.MetabaseApi.delete
+
+.. autofunction:: metabase_tools.MetabaseApi.post
+
+.. autofunction:: metabase_tools.MetabaseApi.put
