@@ -33,17 +33,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: "poetry"
       - name: Install dependencies
-        uses: nick-fields/retry@v2
-        with:
-          timeout_seconds: 120
-          max_attempts: 3
-          command: |
-            poetry install --no-interaction --no-root --with dev
-            poetry install --no-interaction
+        run: poetry install --no-interaction --with dev
       - name: Fix dependency errors
         run: |
           if [ ${{ matrix.python-version }} == '3.11-dev' ]; then poetry add wrapt; fi
-          poetry install --no-interaction --no-root --with dev
+          poetry install --no-interaction --with dev
       - name: Enforce code formatting
         run: poetry run black .
       - name: Enforce code style
@@ -69,13 +63,7 @@ jobs:
           name: html-coverage
           path: htmlcov/
       - name: Install final dependencies
-        uses: nick-fields/retry@v2
-        with:
-          timeout_seconds: 120
-          max_attempts: 3
-          command: |
-            poetry install --no-interaction --no-root --with docs
-            poetry install --no-interaction
+        run: poetry install --no-interaction --no-root --with docs
       - name: Build HTML
         run: poetry run sphinx-build -a -E -b html docs/source/ docs/build/html
       - name: Upload sphinx artifacts
