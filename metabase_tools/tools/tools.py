@@ -171,9 +171,10 @@ class MetabaseTools:
                         changes["creates"].append(card_result)
 
             else:  # File does not exist
-                logger.error("Skipping %s (file not found)", card["name"])
                 if stop_on_error:
+                    logger.error("Unable to process %s (file not found)", card["name"])
                     raise FileNotFoundError(f"{card_path} not found")
+                logger.warning("Skipping %s (file not found)", card["name"])
                 changes["errors"].append(card)
 
         # Loop exit before pushing changes to Metabase in case errors are encountered
