@@ -22,8 +22,8 @@ from metabase_tools.exceptions import (
     MetabaseApiException,
     RequestFailure,
 )
-from metabase_tools.server_settings import ServerSettings, Setting
-from metabase_tools.tools import MetabaseTools
+from metabase_tools.models.server_settings import ServerSettings, Setting
+from metabase_tools.tools.tools import MetabaseTools
 
 logger = logging.getLogger(__name__)
 

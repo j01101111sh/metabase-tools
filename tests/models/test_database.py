@@ -1,6 +1,7 @@
 import packaging.version
 
-from metabase_tools import DatabaseItem, MetabaseApi
+from metabase_tools import MetabaseApi
+from metabase_tools.models import DatabaseItem
 from tests.helpers import random_string
 
 

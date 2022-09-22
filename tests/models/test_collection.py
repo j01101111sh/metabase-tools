@@ -2,7 +2,8 @@ import random
 
 import pytest
 
-from metabase_tools import CollectionItem, MetabaseApi
+from metabase_tools import MetabaseApi
+from metabase_tools.models import CollectionItem
 
 
 @pytest.fixture(scope="module")

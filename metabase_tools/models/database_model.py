@@ -8,8 +8,8 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
 from pydantic import Field, PrivateAttr
 
-from metabase_tools.common import log_call
 from metabase_tools.models.generic_model import Item, MissingParam
+from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi

@@ -2,7 +2,8 @@ import random
 
 import pytest
 
-from metabase_tools import MetabaseApi, UserItem
+from metabase_tools import MetabaseApi
+from metabase_tools.models import UserItem
 from tests.helpers import PASSWORD, random_string
 
 
