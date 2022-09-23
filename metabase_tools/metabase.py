@@ -6,7 +6,7 @@ from __future__ import annotations
 import logging
 from json import JSONDecodeError
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 import packaging.version
 from requests import Response, Session
@@ -227,7 +227,7 @@ class MetabaseApi:
 
     def generic_request(
         self,
-        http_method: str,
+        http_verb: Literal["GET", "POST", "PUT", "DELETE"],
         endpoint: str,
         params: Optional[dict[str, Any]] = None,
         json: Optional[dict[str, Any]] = None,
@@ -250,7 +250,7 @@ class MetabaseApi:
         """
         log_line_post = "Request result: success=%s, status_code=%s, message=%s"
         response = self._make_request(
-            method=http_method,
+            method=http_verb,
             url=self.metabase_url + endpoint,
             params=params,
             json=json,
@@ -292,7 +292,7 @@ class MetabaseApi:
         Returns:
             list[dict[str, Any]] | dict[str, Any]: Response from API
         """
-        return self.generic_request(http_method="GET", endpoint=endpoint, params=params)
+        return self.generic_request(http_verb="GET", endpoint=endpoint, params=params)
 
     def post(
         self,
@@ -311,7 +311,7 @@ class MetabaseApi:
             list[dict[str, Any]] | dict[str, Any]: Response from API
         """
         return self.generic_request(
-            http_method="POST", endpoint=endpoint, params=params, json=json
+            http_verb="POST", endpoint=endpoint, params=params, json=json
         )
 
     def delete(
@@ -327,7 +327,7 @@ class MetabaseApi:
             list[dict[str, Any]] | dict[str, Any]: Response from API
         """
         return self.generic_request(
-            http_method="DELETE", endpoint=endpoint, params=params
+            http_verb="DELETE", endpoint=endpoint, params=params
         )
 
     def put(
@@ -347,7 +347,7 @@ class MetabaseApi:
             list[dict[str, Any]] | dict[str, Any]: Response from API
         """
         return self.generic_request(
-            http_method="PUT", endpoint=endpoint, params=params, json=json
+            http_verb="PUT", endpoint=endpoint, params=params, json=json
         )
 
     def _set_server_version(self) -> None:
