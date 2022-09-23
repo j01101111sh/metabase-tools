@@ -13,6 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       MB_VERSION: ${{ matrix.metabase-version }}
+      SKIP: pylint,mypy
 
     steps:
       - uses: actions/checkout@v3
@@ -44,9 +45,9 @@ jobs:
         run: |
           poetry install --no-interaction --no-root --with dev
       - name: Enforce code formatting
-        id: black
+        id: precommit
         continue-on-error: true
-        run: poetry run black .
+        run: poetry run pre-commit run --all-files
       - name: Enforce code style
         id: pylint
         continue-on-error: true
@@ -79,7 +80,7 @@ jobs:
         run: poetry install --no-interaction --no-root --with docs
       - name: Build HTML
         id: sphinx
-        run: poetry run sphinx-build -a -E -b html docs/source/ docs/build/html
+        run: poetry run sphinx-build -W -a -E -b html docs/source/ docs/build/html
       - name: Upload sphinx artifacts
         id: sphinx_upload
         uses: actions/upload-artifact@v3
@@ -95,7 +96,7 @@ jobs:
       - name: Determine failure or success
         id: resolve
         run: |
-          if [[ ${{ steps.black.outcome }} == "failure" ]]; then echo 'black failure'; exit 1; fi
+          if [[ ${{ steps.precommit.outcome }} == "failure" ]]; then echo 'precommit failure'; exit 1; fi
           if [[ ${{ steps.pylint.outcome }} == "failure" ]]; then echo 'pylint failure'; exit 1; fi
           if [[ ${{ steps.mypy.outcome }} == "failure" ]]; then echo 'mypy failure'; exit 1; fi
           if [[ ${{ steps.pytest.outcome }} == "failure" ]]; then echo 'pytest failure'; exit 1; fi

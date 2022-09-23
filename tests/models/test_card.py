@@ -7,7 +7,6 @@ from metabase_tools.models.card_model import (
     CardQueryResult,
     CardRelatedObjects,
 )
-from tests.conftest import server_version
 from tests.helpers import random_string
 
 

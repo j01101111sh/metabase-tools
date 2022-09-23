@@ -10,8 +10,8 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
 import packaging.version
 from pydantic import BaseModel, PrivateAttr
 
-from metabase_tools.common import log_call
 from metabase_tools.exceptions import InvalidParameters
+from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
