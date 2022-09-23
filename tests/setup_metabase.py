@@ -3,7 +3,7 @@ from json import loads
 from pathlib import Path
 from time import sleep
 
-import packaging.version
+from packaging.version import Version
 import requests
 
 from tests.helpers import (
@@ -182,9 +182,7 @@ def create_cards(session: requests.Session):
     return responses
 
 
-def create_databases(
-    session: requests.Session, server_version: packaging.version.Version
-):
+def create_databases(session: requests.Session, server_version: Version):
     new_db = {
         "name": "Test DB",
         "engine": "h2",
@@ -192,7 +190,7 @@ def create_databases(
             "db": "zip:/app/metabase.jar!/sample-dataset.db;USER=GUEST;PASSWORD=guest"
         },
     }
-    if server_version >= packaging.version.Version("v0.42"):
+    if server_version >= Version("v0.42"):
         new_db["details"]["db"] = new_db["details"]["db"].replace(
             "sample-dataset", "sample-database"
         )
@@ -223,10 +221,10 @@ def cleanup_cache_and_logs():
     pass
 
 
-def get_server_version(session: requests.Session) -> packaging.version.Version:
+def get_server_version(session: requests.Session) -> Version:
     result = session.get(f"{HOST}/api/session/properties").json()
     if isinstance(result, dict):
-        return packaging.version.Version(result["version"]["tag"])
+        return Version(result["version"]["tag"])
     raise ValueError
 
 

@@ -7,7 +7,7 @@ import logging
 from abc import ABC
 from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
 
-import packaging.version
+from packaging.version import Version
 from pydantic import BaseModel, PrivateAttr
 
 from metabase_tools.exceptions import InvalidParameters
@@ -30,7 +30,7 @@ class Item(BaseModel, ABC, extra="forbid"):
     _BASE_EP: ClassVar[str]
 
     _adapter: Optional[MetabaseApi] = PrivateAttr(None)
-    _server_version: Optional[packaging.version.Version] = PrivateAttr(None)
+    _server_version: Optional[Version] = PrivateAttr(None)
 
     id: int | str
     name: str
