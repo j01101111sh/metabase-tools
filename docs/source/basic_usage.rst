@@ -22,7 +22,7 @@ To use metabase-tools, first install it using pip or poetry:
 General Use
 ***********
 
-The most basic use of the wrapper is to call a Metabase API endpoint so you do not need to manage authentication yourself. 
+The most basic use of the wrapper is to call a Metabase API endpoint so you do not need to manage authentication yourself.
 
 There are two kinds of endpoints currently supported:
 - Endpoints that either create new objects or deal with groups (i.e. lists) of existing objects (e.g. getting a list)
