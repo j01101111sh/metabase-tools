@@ -39,6 +39,7 @@ jobs:
           cache: "poetry"
       - name: Install dependencies
         id: dependencies
+        continue-on-error: true
         run: poetry install --no-interaction --with dev
       - name: Fix dependency errors
         id: dependency_errors
