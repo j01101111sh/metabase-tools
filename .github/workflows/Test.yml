@@ -13,6 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       MB_VERSION: ${{ matrix.metabase-version }}
+      SKIP: pylint,mypy
 
     steps:
       - uses: actions/checkout@v3
@@ -45,9 +46,9 @@ jobs:
           if [ ${{ matrix.python-version }} == '3.11-dev' ]; then poetry add wrapt; fi
           poetry install --no-interaction --with dev
       - name: Enforce code formatting
-        id: black
+        id: precommit
         continue-on-error: true
-        run: poetry run black .
+        run: poetry run pre-commit run --all-files
       - name: Enforce code style
         id: pylint
         continue-on-error: true
@@ -96,7 +97,7 @@ jobs:
       - name: Determine failure or success
         id: resolve
         run: |
-          if [[ ${{ steps.black.outcome }} == "failure" ]]; then echo 'black failure'; exit 1; fi
+          if [[ ${{ steps.precommit.outcome }} == "failure" ]]; then echo 'precommit failure'; exit 1; fi
           if [[ ${{ steps.pylint.outcome }} == "failure" ]]; then echo 'pylint failure'; exit 1; fi
           if [[ ${{ steps.mypy.outcome }} == "failure" ]]; then echo 'mypy failure'; exit 1; fi
           if [[ ${{ steps.pytest.outcome }} == "failure" ]]; then echo 'pytest failure'; exit 1; fi
