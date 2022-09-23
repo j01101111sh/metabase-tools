@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-import logging
+from logging import getLogger
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, ClassVar, Generic, Optional, TypeVar, cast
 
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 T = TypeVar("T", bound=Item)
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class Endpoint(ABC, Generic[T]):

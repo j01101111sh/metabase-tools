@@ -3,7 +3,7 @@ Rest adapter for the Metabase API
 """
 from __future__ import annotations
 
-import logging
+from logging import getLogger
 from json import JSONDecodeError
 from pathlib import Path
 from typing import Any, Optional
@@ -25,7 +25,7 @@ from metabase_tools.exceptions import (
 from metabase_tools.models.server_settings import ServerSettings, Setting
 from metabase_tools.tools.tools import MetabaseTools
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class MetabaseApi:
