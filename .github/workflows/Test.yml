@@ -81,7 +81,7 @@ jobs:
         run: poetry install --no-interaction --no-root --with docs
       - name: Build HTML
         id: sphinx
-        run: poetry run sphinx-build -a -E -b -W html docs/source/ docs/build/html
+        run: poetry run sphinx-build -W -a -E -b html docs/source/ docs/build/html
       - name: Upload sphinx artifacts
         id: sphinx_upload
         uses: actions/upload-artifact@v3
