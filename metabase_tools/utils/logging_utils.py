@@ -1,14 +1,14 @@
 """Module for common tools used throughout the project
 """
 
-import logging
 from functools import wraps
+from logging import Logger, getLogger
 from typing import Any, Callable, TypeVar, cast
 
 F = TypeVar("F", bound=Callable[..., Any])
 
 
-def log_details(logger: logging.Logger, func: F, *args: Any, **kwargs: Any) -> F:
+def log_details(logger: Logger, func: F, *args: Any, **kwargs: Any) -> F:
     """Logs details of a function call
 
     Args:
@@ -18,7 +18,7 @@ def log_details(logger: logging.Logger, func: F, *args: Any, **kwargs: Any) -> F
     Returns:
         F
     """
-    logger = logging.getLogger(func.__module__)
+    logger = getLogger(func.__module__)
     logger.debug(
         "%s called\n\targs: %s\n\tkwargs: %s",
         func.__name__,
@@ -37,7 +37,7 @@ def log_call(func: F) -> F:
 
     @wraps(func)
     def wrapper(*args, **kwargs):  # type: ignore
-        logger = logging.getLogger(func.__module__)
+        logger = getLogger(func.__module__)
         return log_details(logger, func, *args, **kwargs)
 
     return cast(F, wrapper)
@@ -48,7 +48,7 @@ def untested(func: F) -> F:
 
     @wraps(func)
     def wrapper(*args, **kwargs):  # type: ignore
-        logger = logging.getLogger(func.__module__)
+        logger = getLogger(func.__module__)
         logger.warning("Calling untested function: %s", func.__name__)
         return log_details(logger, func, *args, **kwargs)
 
