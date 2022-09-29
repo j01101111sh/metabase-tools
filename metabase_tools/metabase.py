@@ -3,12 +3,12 @@ Rest adapter for the Metabase API
 """
 from __future__ import annotations
 
-import logging
+from logging import getLogger
 from json import JSONDecodeError
 from pathlib import Path
 from typing import Any, Optional
 
-import packaging.version
+from packaging.version import Version
 from requests import Response, Session
 from requests.exceptions import RequestException
 
@@ -25,13 +25,13 @@ from metabase_tools.exceptions import (
 from metabase_tools.models.server_settings import ServerSettings, Setting
 from metabase_tools.tools.tools import MetabaseTools
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class MetabaseApi:
     """Metabase API adapter"""
 
-    server_version: packaging.version.Version
+    server_version: Version
 
     cards: Cards
     collections: Collections
@@ -365,7 +365,7 @@ class MetabaseApi:
         """
         result = self.get("/session/properties")
         if isinstance(result, dict):
-            self.server_version = packaging.version.Version(result["version"]["tag"])
+            self.server_version = Version(result["version"]["tag"])
         else:
             raise MetabaseApiException
 

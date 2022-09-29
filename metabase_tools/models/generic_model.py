@@ -3,11 +3,11 @@
 """
 from __future__ import annotations
 
-import logging
+from logging import getLogger
 from abc import ABC
 from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
 
-import packaging.version
+from packaging.version import Version
 from pydantic import BaseModel, PrivateAttr
 
 from metabase_tools.exceptions import InvalidParameters
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
 
 T = TypeVar("T", bound="Item")
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class MissingParam(BaseModel):
@@ -30,7 +30,7 @@ class Item(BaseModel, ABC, extra="forbid"):
     _BASE_EP: ClassVar[str]
 
     _adapter: Optional[MetabaseApi] = PrivateAttr(None)
-    _server_version: Optional[packaging.version.Version] = PrivateAttr(None)
+    _server_version: Optional[Version] = PrivateAttr(None)
 
     id: int | str
     name: str
