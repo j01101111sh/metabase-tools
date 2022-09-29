@@ -1,121 +1,223 @@
 import random
 
 import pytest
+from packaging.version import Version
 
-from metabase_tools import MetabaseApi
-from metabase_tools.models import CollectionItem
-
-
-@pytest.fixture(scope="module")
-def collections(api: MetabaseApi) -> list[CollectionItem]:
-    collections = api.collections.get()[1:]
-    collections = [coll for coll in collections if coll.personal_owner_id is None]
-    return collections
+from metabase_tools.exceptions import InvalidParameters, RequestFailure
+from metabase_tools.metabase import MetabaseApi
+from metabase_tools.models.collection_model import CollectionItem
+from tests.helpers import random_string
 
 
 @pytest.fixture(scope="module")
-def new_coll_def():
-    new_coll_def = {
-        "name": "API Created",
-        "color": "#FFFFFF",
-    }
-    return new_coll_def
+def items(api: MetabaseApi) -> list[CollectionItem]:
+    return [
+        item
+        for item in api.collections.get()
+        if item.id != "root" and item.personal_owner_id is None
+    ]
 
 
-def test_collection_create_one(api: MetabaseApi, new_coll_def: dict):
-    new_coll_objs = api.collections.create(**new_coll_def)
-    assert isinstance(new_coll_objs, CollectionItem)
+class TestModelMethodsCommonPass:
+    def test_update(self, items: list[CollectionItem], run_id: str):
+        target = random.choice(items)
+        result = target.update(description=f"Updated {run_id}")
+        assert isinstance(result, CollectionItem)  # check item class
+        assert result.description == f"Updated {run_id}"  # check action result
+        assert target.id == result.id  # check action result
+        assert isinstance(result._adapter, MetabaseApi)  # check adapter set
+        assert isinstance(
+            result._adapter.server_version, Version
+        )  # check adapter initialized
+
+    def test_archive(self, items: list[CollectionItem]):
+        target = random.choice(items)
+        result = target.archive()
+        assert isinstance(result, CollectionItem)  # check item class
+        assert result.archived is True  # check action result
+        assert isinstance(result._adapter, MetabaseApi)  # check adapter set
+        assert isinstance(
+            result._adapter.server_version, Version
+        )  # check adapter initialized
+
+    def test_unarchive(self, items: list[CollectionItem]):
+        target = random.choice(items)
+        result = target.unarchive()
+        assert isinstance(result, CollectionItem)  # check item class
+        assert result.archived is False  # check action result
+        assert isinstance(result._adapter, MetabaseApi)  # check adapter set
+        assert isinstance(
+            result._adapter.server_version, Version
+        )  # check adapter initialized
+
+    def test_refresh(self, items: list[CollectionItem]):
+        target = random.choice(items)
+        result = target.update(description="Updated " + random_string(5))
+        target = target.refresh()
+        assert isinstance(target, CollectionItem)  # check item class
+        assert target.description == result.description  # check action result
+        assert isinstance(target._adapter, MetabaseApi)  # check adapter set
+        assert isinstance(
+            target._adapter.server_version, Version
+        )  # check adapter initialized
 
 
-def test_collection_update_one(collections: list[CollectionItem], run_id: str):
-    coll = random.choice(collections)
-    change_result = coll.update(description=f"Updated {run_id}")
-    assert isinstance(change_result, CollectionItem)
+class TestModelMethodsCommonFail:
+    def test_update_fail(self, items: list[CollectionItem]):
+        target = random.choice(items)
+        with pytest.raises(RequestFailure):
+            _ = target.update(color=3)  # type: ignore
+
+    def test_archive_fail(self, api: MetabaseApi):
+        target = api.collections.get()[0]
+        target.id = -1
+        with pytest.raises(RequestFailure):
+            _ = target.archive()  # type: ignore
+
+    def test_unarchive_fail(self, api: MetabaseApi):
+        target = api.collections.get()[0]
+        target.id = -1
+        with pytest.raises(RequestFailure):
+            _ = target.unarchive()  # type: ignore
+
+    def test_delete_fail(self, items: list[CollectionItem]):
+        target = random.choice(items)
+        with pytest.raises(NotImplementedError):
+            _ = target.delete()  # type: ignore
 
 
-def test_collection_archive_one(collections: list[CollectionItem]):
-    coll_to_archive = random.choice(collections)
-    try:
-        _ = coll_to_archive.unarchive()
-    except:
-        pass
-    change_result = coll_to_archive.archive()
-    _ = coll_to_archive.unarchive()
-    assert isinstance(change_result, CollectionItem)
-    assert change_result.archived is True
+class TestEndpointMethodsCommonPass:
+    def test_create(self, api: MetabaseApi):
+        name = "Test - " + random_string(6, True)
+        definition = {
+            "name": name,
+            "color": "#FFFFFF",
+        }
+        result = api.collections.create(**definition)
+        assert isinstance(result, CollectionItem)  # check item class
+        assert result.name == name  # check action result
+        assert isinstance(result._adapter, MetabaseApi)  # check adapter set
+        assert isinstance(
+            result._adapter.server_version, Version
+        )  # check adapter is initialized correctly
+
+    def test_get_one(self, api: MetabaseApi, items: list[CollectionItem]):
+        item_ids = [item.id for item in items if isinstance(item.id, int)]
+        target = random.sample(item_ids, 1)
+        result = api.collections.get(targets=target)
+        assert isinstance(result, list)  # check item class
+        assert all(
+            isinstance(item, CollectionItem) for item in result
+        )  # check item class
+        assert all(item.id in target for item in result)  # check action result
+        assert len(result) == len(target)  # check action result
+        assert all(
+            isinstance(item._adapter, MetabaseApi) for item in result
+        )  # check adapter set
+        assert all(
+            item._adapter and isinstance(item._adapter.server_version, Version)
+            for item in result
+        )  # check adapter initialized
+
+    def test_get_many(self, api: MetabaseApi, items: list[CollectionItem]):
+        item_ids = [item.id for item in items if isinstance(item.id, int)]
+        target = random.sample(item_ids, 2)
+        result = api.collections.get(targets=target)
+        assert isinstance(result, list)  # check item class
+        assert all(
+            isinstance(item, CollectionItem) for item in result
+        )  # check item class
+        assert all(item.id in target for item in result)  # check action result
+        assert len(result) == len(target)  # check action result
+        assert all(
+            isinstance(item._adapter, MetabaseApi) for item in result
+        )  # check adapter set
+        assert all(
+            item._adapter and isinstance(item._adapter.server_version, Version)
+            for item in result
+        )  # check adapter initialized
+
+    def test_get_all(self, api: MetabaseApi):
+        result = api.collections.get()
+        assert isinstance(result, list)  # check item class
+        assert all(
+            isinstance(item, CollectionItem) for item in result
+        )  # check item class
+        assert len(result) >= 1  # check action result
+        assert all(
+            isinstance(item._adapter, MetabaseApi) for item in result
+        )  # check adapter set
+        assert all(
+            item._adapter and isinstance(item._adapter.server_version, Version)
+            for item in result
+        )  # check adapter initialized
+
+    def test_search(self, api: MetabaseApi, items: list[CollectionItem]):
+        params = [{"name": random.choice(items).name}]
+        result = api.collections.search(search_params=params, search_list=items)
+        assert isinstance(result, list)  # check item class
+        assert all(
+            isinstance(result, CollectionItem) for result in result
+        )  # check item class
+        assert len(result) == len(params)  # check action result
+        assert all(
+            isinstance(item._adapter, MetabaseApi) for item in result
+        )  # check adapter set
+        assert all(
+            item._adapter and isinstance(item._adapter.server_version, Version)
+            for item in result
+        )  # check adapter initialized
 
 
-def test_collection_unarchive_one(collections: list[CollectionItem]):
-    coll_to_archive = random.choice(collections)
-    try:
-        _ = coll_to_archive.archive()
-    except:
-        pass
-    change_result = coll_to_archive.unarchive()
-    assert isinstance(change_result, CollectionItem)
-    assert change_result.archived is False
+class TestEndpointMethodsCommonFail:
+    def test_create_fail(self, api: MetabaseApi):
+        with pytest.raises(InvalidParameters):
+            _ = api.collections.create(name="Test fail")  # type: ignore
+
+    def test_get_fail(self, api: MetabaseApi):
+        target = {"id": 1}
+        with pytest.raises(InvalidParameters):
+            _ = api.collections.get(targets=target)  # type: ignore
+
+    def test_search_fail(self, api: MetabaseApi, items: list[CollectionItem]):
+        params = [{"name": random.choice(items).name + "z"}]
+        result = api.collections.search(search_params=params, search_list=items)
+        assert len(result) == 0
 
 
-def test_collection_get_one(api: MetabaseApi):
-    coll_to_get = 2
-    coll = api.collections.get(targets=[coll_to_get])
-    assert isinstance(coll, list)
-    assert all(isinstance(c, CollectionItem) for c in coll)
+class TestEndpointMethodsUniquePass:
+    def test_get_collection_tree(self, api: MetabaseApi):
+        coll_tree = api.collections.get_tree()
+        assert isinstance(coll_tree, list)
+        assert all(isinstance(coll, dict) for coll in coll_tree)
+
+    def test_flatten_tree(self, api: MetabaseApi):
+        collections = api.collections.get_flat_list()
+        assert isinstance(collections, list)
+        assert all(isinstance(collection, dict) for collection in collections)
+
+    def test_collection_graph(self, api: MetabaseApi):
+        graph = api.collections.graph()
+        assert isinstance(graph, dict)
 
 
-def test_collection_get_many(api: MetabaseApi):
-    colls_to_get = [3, 4]
-    colls = api.collections.get(targets=colls_to_get)
-    assert isinstance(colls, list)
-    assert all(isinstance(coll, CollectionItem) for coll in colls)
+class TestEndpointMethodsUniqueFail:
+    pass
 
 
-def test_collection_get_all(api: MetabaseApi):
-    colls = api.collections.get()
-    assert isinstance(colls, list)
-    assert all(isinstance(coll, CollectionItem) for coll in colls)
+class TestModelMethodsUniquePass:
+    def test_collection_contents(self, items: list[CollectionItem]):
+        item = random.choice(items)
+        result = item.get_contents()
+        assert isinstance(result, list)
+        assert all(isinstance(record, dict) for record in result)
+
+    def test_collection_contents_archived(self, items: list[CollectionItem]):
+        item = random.choice(items)
+        result = item.get_contents(archived=True)
+        assert isinstance(result, list)
+        assert all(isinstance(record, dict) for record in result)
 
 
-def test_get_collection_tree(api: MetabaseApi):
-    coll_tree = api.collections.get_tree()
-    assert isinstance(coll_tree, list)
-    assert all(isinstance(coll, dict) for coll in coll_tree)
-
-
-def test_flatten_tree(api: MetabaseApi):
-    collections = api.collections.get_flat_list()
-    assert isinstance(collections, list)
-    assert all(isinstance(collection, dict) for collection in collections)
-
-
-def test_collection_graph(api: MetabaseApi):
-    graph = api.collections.graph()
-    assert isinstance(graph, dict)
-
-
-def test_collection_search(api: MetabaseApi):
-    search_params = [{"name": "Development"}]
-    result = api.collections.search(search_params=search_params)
-    assert isinstance(result, list)
-    assert all(isinstance(coll, CollectionItem) for coll in result)
-    assert len(search_params) == len(result)
-
-
-def test_collection_delete(collections: list[CollectionItem]):
-    coll = collections[0]
-    with pytest.raises(NotImplementedError):
-        coll.delete()
-
-
-def test_collection_contents(collections: list[CollectionItem]):
-    coll = collections[0]
-    contents = coll.get_contents()
-    assert isinstance(contents, list)
-    assert all(isinstance(item, dict) for item in contents)
-
-
-def test_collection_contents_archived(collections: list[CollectionItem]):
-    coll = collections[0]
-    contents = coll.get_contents(archived=True)
-    assert isinstance(contents, list)
-    assert all(isinstance(item, dict) for item in contents)
+class TestModelMethodsUniqueFail:
+    pass

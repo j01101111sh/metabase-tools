@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import packaging.version
+from packaging.version import Version
 import pytest
 
 from metabase_tools import MetabaseApi
@@ -135,4 +135,4 @@ def test_bad_passed_token_with_fallback(host, credentials, caplog):
 
 
 def test_server_version(api: MetabaseApi):
-    assert isinstance(api.server_version, packaging.version.Version)
+    assert isinstance(api.server_version, Version)

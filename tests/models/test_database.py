@@ -1,4 +1,4 @@
-import packaging.version
+from packaging.version import Version
 
 from metabase_tools import MetabaseApi
 from metabase_tools.models import DatabaseItem
@@ -25,7 +25,7 @@ def test_database_get_all(api: MetabaseApi):
     assert all(isinstance(d, DatabaseItem) for d in dbs)
 
 
-def test_database_create(api: MetabaseApi, server_version: packaging.version.Version):
+def test_database_create(api: MetabaseApi, server_version: Version):
     new_db = {
         "name": f"API DB - {random_string(6)}",
         "engine": "h2",
@@ -33,7 +33,7 @@ def test_database_create(api: MetabaseApi, server_version: packaging.version.Ver
             "db": "zip:/app/metabase.jar!/sample-dataset.db;USER=GUEST;PASSWORD=guest"
         },
     }
-    if server_version >= packaging.version.Version("v0.42"):
+    if server_version >= Version("v0.42"):
         new_db["details"]["db"] = new_db["details"]["db"].replace(
             "sample-dataset", "sample-database"
         )
@@ -41,9 +41,9 @@ def test_database_create(api: MetabaseApi, server_version: packaging.version.Ver
     assert isinstance(result, DatabaseItem)
 
 
-def test_database_search(api: MetabaseApi, server_version: packaging.version.Version):
+def test_database_search(api: MetabaseApi, server_version: Version):
     search_params = [{"name": "Sample Dataset"}]
-    if server_version >= packaging.version.Version("v0.42"):
+    if server_version >= Version("v0.42"):
         search_params = [{"name": "Sample Database"}]
     result = api.databases.search(search_params=search_params)
     assert isinstance(result, list)
@@ -51,7 +51,7 @@ def test_database_search(api: MetabaseApi, server_version: packaging.version.Ver
     assert len(result) == len(search_params)
 
 
-def test_database_delete(api: MetabaseApi, server_version: packaging.version.Version):
+def test_database_delete(api: MetabaseApi, server_version: Version):
     params = [{"name": "Test DB"}]
     db = api.databases.search(search_params=params)[0]
     assert isinstance(db, DatabaseItem)
@@ -63,7 +63,7 @@ def test_database_delete(api: MetabaseApi, server_version: packaging.version.Ver
             "db": "zip:/app/metabase.jar!/sample-dataset.db;USER=GUEST;PASSWORD=guest"
         },
     }
-    if server_version >= packaging.version.Version("v0.42"):
+    if server_version >= Version("v0.42"):
         new_db["details"]["db"] = new_db["details"]["db"].replace(
             "sample-dataset", "sample-database"
         )
