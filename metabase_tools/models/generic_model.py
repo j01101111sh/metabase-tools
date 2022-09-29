@@ -3,8 +3,8 @@
 """
 from __future__ import annotations
 
-from logging import getLogger
 from abc import ABC
+from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
 
 from packaging.version import Version
@@ -50,12 +50,20 @@ class Item(BaseModel, ABC, extra="forbid"):
         Returns:
             T: self
         """
-        if self._adapter:
+        if self._adapter and self._adapter.server_version >= Version("v0.40"):
             result = self._adapter.get(endpoint=self._BASE_EP.format(id=self.id))
             if isinstance(result, dict):
                 obj = self.__class__(**result)
                 obj.set_adapter(adapter=self._adapter)
                 return obj
+        elif self._adapter:
+            # In version 0.39 less information is returned when using specific ids
+            result = self._adapter.get(endpoint=self._BASE_EP.replace("{id}", ""))
+            for item in result:
+                if isinstance(item, dict) and self.id == item["id"]:
+                    obj = self.__class__(**item)
+                    obj.set_adapter(adapter=self._adapter)
+                    return obj
         return self
 
     def _make_update(self: T, **kwargs: Any) -> T:
