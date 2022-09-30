@@ -18,7 +18,7 @@ def log_details(logger: Logger, func: F, *args: Any, **kwargs: Any) -> F:
     Returns:
         F
     """
-    logger = getLogger(func.__module__)
+    logger = logger or getLogger(func.__module__)
     logger.debug(
         "%s called\n\targs: %s\n\tkwargs: %s",
         func.__name__,
