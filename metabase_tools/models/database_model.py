@@ -2,8 +2,8 @@
 """
 from __future__ import annotations
 
-from logging import getLogger
 from datetime import datetime
+from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
 from pydantic import Field, PrivateAttr
@@ -49,6 +49,7 @@ class DatabaseItem(Item):
     settings: Optional[Any]
     can_manage: Optional[bool] = Field(alias="can-manage")
 
+    @log_call
     def refresh(self: DatabaseItem) -> DatabaseItem:
         """Returns refreshed copy of the database
 

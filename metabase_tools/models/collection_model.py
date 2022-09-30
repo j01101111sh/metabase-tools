@@ -39,6 +39,7 @@ class CollectionItem(Item):
     authority_level: Optional[Any]
     entity_id: Optional[str]
 
+    @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
         """Sets the adapter on an object
 
@@ -47,6 +48,7 @@ class CollectionItem(Item):
         """
         super().set_adapter(adapter=adapter)
 
+    @log_call
     def refresh(self: CollectionItem) -> CollectionItem:
         """Returns refreshed copy of the collection
 
@@ -107,6 +109,7 @@ class CollectionItem(Item):
         """
         return super().archive()
 
+    @log_call
     def unarchive(self: CollectionItem) -> CollectionItem:
         """Method for unarchiving a collection
 

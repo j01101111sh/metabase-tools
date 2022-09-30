@@ -2,8 +2,8 @@
 """
 from __future__ import annotations
 
-from logging import getLogger
 from datetime import datetime
+from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
 from packaging.version import Version
@@ -49,6 +49,7 @@ class UserItem(Item):
     is_installer: Optional[bool]
     sso_source: Optional[str]
 
+    @log_call
     def refresh(self: UserItem) -> UserItem:
         """Returns refreshed copy of the user
 
