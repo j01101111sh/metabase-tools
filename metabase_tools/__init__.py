@@ -1,7 +1,7 @@
 """Unofficial API wrapper for Metabase
 """
 
-__version__ = "0.11.0"
+__version__ = "0.11.1"
 
 from metabase_tools.exceptions import (
     AuthenticationFailure,
