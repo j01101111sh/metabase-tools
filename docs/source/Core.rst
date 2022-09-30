@@ -55,6 +55,12 @@ If you would like to cache your token for future runs to speed things up, simply
     :linenos:
     :emphasize-lines: 4-7
 
+**********************
+Custom Session objects
+**********************
+
+If you need to make use of a proxy or other feature supported by the requests module's Session class, you can pass it in to the adapter on creation using the ``session`` keyword argument.
+
 ********************
 Other Public Methods
 ********************
@@ -73,3 +79,13 @@ Making generic requests
 To make custom calls to the Metabase API, you can use the ``generic_request`` method. In general, it's better to use class-specific methods to call the methods you need but this can be used for unsupported endpoints while still utilizing the cached authentication of the wrapper.
 
 .. autofunction:: metabase_tools.MetabaseApi.generic_request
+
+For convenience, there are also methods to utilize for ``get``, ``delete``, ``post``, and ``put`` HTTP verbs:
+
+.. autofunction:: metabase_tools.MetabaseApi.get
+
+.. autofunction:: metabase_tools.MetabaseApi.delete
+
+.. autofunction:: metabase_tools.MetabaseApi.post
+
+.. autofunction:: metabase_tools.MetabaseApi.put
