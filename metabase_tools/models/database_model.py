@@ -2,19 +2,19 @@
 """
 from __future__ import annotations
 
-import logging
 from datetime import datetime
+from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
 from pydantic import Field, PrivateAttr
 
-from metabase_tools.common import log_call
 from metabase_tools.models.generic_model import Item, MissingParam
+from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class DatabaseItem(Item):
@@ -49,6 +49,7 @@ class DatabaseItem(Item):
     settings: Optional[Any]
     can_manage: Optional[bool] = Field(alias="can-manage")
 
+    @log_call
     def refresh(self: DatabaseItem) -> DatabaseItem:
         """Returns refreshed copy of the database
 

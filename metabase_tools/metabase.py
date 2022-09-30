@@ -3,12 +3,12 @@ Rest adapter for the Metabase API
 """
 from __future__ import annotations
 
-import logging
+from logging import getLogger
 from json import JSONDecodeError
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
-import packaging.version
+from packaging.version import Version
 from requests import Response, Session
 from requests.exceptions import RequestException
 
@@ -22,16 +22,16 @@ from metabase_tools.exceptions import (
     MetabaseApiException,
     RequestFailure,
 )
-from metabase_tools.server_settings import ServerSettings, Setting
-from metabase_tools.tools import MetabaseTools
+from metabase_tools.models.server_settings import ServerSettings, Setting
+from metabase_tools.tools.tools import MetabaseTools
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class MetabaseApi:
     """Metabase API adapter"""
 
-    server_version: packaging.version.Version
+    server_version: Version
 
     cards: Cards
     collections: Collections
@@ -68,7 +68,6 @@ class MetabaseApi:
 
         # Set server version for compatability checks
         self._set_server_version()
-        logger.info("Server version: %s", self.server_version)
 
         # Create endpoints
         self.cards = Cards(self)
@@ -191,6 +190,7 @@ class MetabaseApi:
         Args:
             save_path (Path | str): Name of file to write
         """
+        logger.debug("Saving token to %s", save_path)
         token = str(self._session.headers.get("X-Metabase-Session"))
         with open(save_path, "w", encoding="utf-8") as file:
             file.write(token)
@@ -216,19 +216,18 @@ class MetabaseApi:
         Returns:
             Response: Response from the API
         """
-        log_line_pre = f"{method=}, {url=}, {params=}"
         try:
-            logger.info(log_line_pre)
+            logger.info("Making HTTP request: %s:%s:%s", method, url, params)
             return self._session.request(
                 method=method, url=url, params=params, json=json
             )
         except RequestException as error_raised:
             logger.error(str(error_raised))
-            raise RequestFailure("Request failed") from error_raised
+            raise RequestFailure from error_raised
 
     def generic_request(
         self,
-        http_method: str,
+        http_verb: Literal["GET", "POST", "PUT", "DELETE"],
         endpoint: str,
         params: Optional[dict[str, Any]] = None,
         json: Optional[dict[str, Any]] = None,
@@ -249,23 +248,17 @@ class MetabaseApi:
         Returns:
             list[dict[str, Any]] | dict[str, Any]: Response from API
         """
-        log_line_post = "success=%s, status_code=%s, message=%s"
+        log_line_post = "Request result: success=%s, status_code=%s, message=%s"
         response = self._make_request(
-            method=http_method,
+            method=http_verb,
             url=self.metabase_url + endpoint,
             params=params,
             json=json,
         )
 
         # If status_code in 200-299 range, return Result, else raise exception
-        if response.status_code == 204 and http_method == "DELETE":
-            return {}
-
-        is_success = 299 >= response.status_code >= 200
-        if is_success:
-            logger.info(
-                log_line_post, is_success, response.status_code, response.reason
-            )
+        if 299 >= response.status_code >= 200:
+            logger.info(log_line_post, True, response.status_code, response.reason)
             try:
                 result = response.json()
                 if isinstance(result, dict) and all(
@@ -299,7 +292,7 @@ class MetabaseApi:
         Returns:
             list[dict[str, Any]] | dict[str, Any]: Response from API
         """
-        return self.generic_request(http_method="GET", endpoint=endpoint, params=params)
+        return self.generic_request(http_verb="GET", endpoint=endpoint, params=params)
 
     def post(
         self,
@@ -318,7 +311,7 @@ class MetabaseApi:
             list[dict[str, Any]] | dict[str, Any]: Response from API
         """
         return self.generic_request(
-            http_method="POST", endpoint=endpoint, params=params, json=json
+            http_verb="POST", endpoint=endpoint, params=params, json=json
         )
 
     def delete(
@@ -334,7 +327,7 @@ class MetabaseApi:
             list[dict[str, Any]] | dict[str, Any]: Response from API
         """
         return self.generic_request(
-            http_method="DELETE", endpoint=endpoint, params=params
+            http_verb="DELETE", endpoint=endpoint, params=params
         )
 
     def put(
@@ -354,7 +347,7 @@ class MetabaseApi:
             list[dict[str, Any]] | dict[str, Any]: Response from API
         """
         return self.generic_request(
-            http_method="PUT", endpoint=endpoint, params=params, json=json
+            http_verb="PUT", endpoint=endpoint, params=params, json=json
         )
 
     def _set_server_version(self) -> None:
@@ -365,9 +358,11 @@ class MetabaseApi:
         """
         result = self.get("/session/properties")
         if isinstance(result, dict):
-            self.server_version = packaging.version.Version(result["version"]["tag"])
+            self.server_version = Version(result["version"]["tag"])
+            logger.info("Server version: %s", self.server_version)
         else:
-            raise MetabaseApiException
+            logger.error("Unable to fetch server version")
+            raise MetabaseApiException("Unable to fetch server version")
 
     def _fetch_settings(self) -> ServerSettings:
         """Retrieves settings from Metabase server"""
@@ -377,5 +372,5 @@ class MetabaseApi:
             server_settings = ServerSettings(**settings)
             server_settings.set_adapter(self)
             return server_settings
-
-        raise MetabaseApiException("Invalid settings response")
+        logger.error("Unable to fetch settings")
+        raise MetabaseApiException("Unable to fetch settings")

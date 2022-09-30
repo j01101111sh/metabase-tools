@@ -2,21 +2,21 @@
 """
 from __future__ import annotations
 
-import logging
 from datetime import datetime
+from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
-import packaging.version
+from packaging.version import Version
 from pydantic.fields import Field, PrivateAttr
 
-from metabase_tools.common import log_call
 from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.generic_model import Item, MissingParam
+from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class UserItem(Item):
@@ -49,6 +49,7 @@ class UserItem(Item):
     is_installer: Optional[bool]
     sso_source: Optional[str]
 
+    @log_call
     def refresh(self: UserItem) -> UserItem:
         """Returns refreshed copy of the user
 
@@ -117,9 +118,7 @@ class UserItem(Item):
         Returns:
             UserItem: User with query builder toggle set
         """
-        if self._server_version and self._server_version >= packaging.version.Version(
-            "v0.42"
-        ):
+        if self._server_version and self._server_version >= Version("v0.42"):
             raise NotImplementedError("This function was deprecated in Metabase v0.42")
         if self._adapter:
             result = self._adapter.put(endpoint=f"/user/{self.id}/qbnewb")

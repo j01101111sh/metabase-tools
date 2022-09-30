@@ -2,19 +2,19 @@
 """
 from __future__ import annotations  # Included for support of |
 
-import logging
+from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
 from pydantic import PrivateAttr
 
-from metabase_tools.common import log_call
 from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.generic_model import Item, MissingParam
+from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class CollectionItem(Item):
@@ -39,6 +39,7 @@ class CollectionItem(Item):
     authority_level: Optional[Any]
     entity_id: Optional[str]
 
+    @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
         """Sets the adapter on an object
 
@@ -47,6 +48,7 @@ class CollectionItem(Item):
         """
         super().set_adapter(adapter=adapter)
 
+    @log_call
     def refresh(self: CollectionItem) -> CollectionItem:
         """Returns refreshed copy of the collection
 
@@ -107,6 +109,7 @@ class CollectionItem(Item):
         """
         return super().archive()
 
+    @log_call
     def unarchive(self: CollectionItem) -> CollectionItem:
         """Method for unarchiving a collection
 

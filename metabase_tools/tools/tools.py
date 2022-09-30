@@ -3,19 +3,19 @@ MetabaseTools extends MetabaseApi with additional complex functions
 """
 from __future__ import annotations  # Included for support of |
 
-import logging
+from logging import getLogger
 from json import dumps, loads
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Optional
 
-from metabase_tools.common import log_call
 from metabase_tools.exceptions import EmptyDataReceived, ItemNotFound
 from metabase_tools.models.card_model import CardItem
+from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class MetabaseTools:
@@ -171,9 +171,10 @@ class MetabaseTools:
                         changes["creates"].append(card_result)
 
             else:  # File does not exist
-                logger.error("Skipping %s (file not found)", card["name"])
                 if stop_on_error:
+                    logger.error("Unable to process %s (file not found)", card["name"])
                     raise FileNotFoundError(f"{card_path} not found")
+                logger.warning("Skipping %s (file not found)", card["name"])
                 changes["errors"].append(card)
 
         # Loop exit before pushing changes to Metabase in case errors are encountered

@@ -3,20 +3,29 @@
 
 from __future__ import annotations
 
-import logging
+from logging import getLogger
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, ClassVar, Generic, Optional, TypeVar, cast
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    ClassVar,
+    Generic,
+    Literal,
+    Optional,
+    TypeVar,
+    cast,
+)
 
-from metabase_tools.common import log_call
 from metabase_tools.exceptions import EmptyDataReceived, InvalidParameters
 from metabase_tools.models.generic_model import Item, MissingParam
+from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
     from metabase_tools import MetabaseApi
 
 T = TypeVar("T", bound=Item)
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class Endpoint(ABC, Generic[T]):
@@ -33,7 +42,7 @@ class Endpoint(ABC, Generic[T]):
     @log_call
     def _request_list(
         self,
-        http_method: str,
+        http_verb: Literal["GET", "POST", "PUT", "DELETE"],
         endpoint: str,
         source: list[int],
     ) -> list[dict[str, Any]]:
@@ -56,7 +65,7 @@ class Endpoint(ABC, Generic[T]):
         for item in source:
             if isinstance(item, int):
                 response = self._adapter.generic_request(
-                    http_method=http_method, endpoint=endpoint.format(id=item)
+                    http_verb=http_verb, endpoint=endpoint.format(id=item)
                 )
             else:
                 raise InvalidParameters
@@ -82,7 +91,7 @@ class Endpoint(ABC, Generic[T]):
         """
         if isinstance(targets, list) and all(isinstance(t, int) for t in targets):
             results = self._request_list(
-                http_method="GET",
+                http_verb="GET",
                 endpoint=self._BASE_EP + "/{id}",
                 source=targets,
             )
