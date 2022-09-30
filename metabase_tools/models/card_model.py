@@ -66,6 +66,7 @@ class CardItem(Item):
     parameter_mappings: Optional[list[Any]]
     parameters: Optional[list[Any]]
 
+    @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
         """Sets the adapter on an object
 
@@ -74,6 +75,7 @@ class CardItem(Item):
         """
         super().set_adapter(adapter=adapter)
 
+    @log_call
     def refresh(self: CardItem) -> CardItem:
         """Returns refreshed copy of the card
 
@@ -165,6 +167,7 @@ class CardItem(Item):
         """
         return super().archive()
 
+    @log_call
     def unarchive(self: CardItem) -> CardItem:
         """Method for unarchiving a card
 

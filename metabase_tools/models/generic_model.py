@@ -35,6 +35,7 @@ class Item(BaseModel, ABC, extra="forbid"):
     id: int | str
     name: str
 
+    @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
         """Sets the adapter on an object
 
@@ -44,6 +45,7 @@ class Item(BaseModel, ABC, extra="forbid"):
         self._adapter = adapter
         self._server_version = adapter.server_version
 
+    @log_call
     def refresh(self: T) -> T:
         """Returns new copy of item from API
 
@@ -104,6 +106,7 @@ class Item(BaseModel, ABC, extra="forbid"):
                 return obj
         raise InvalidParameters("Invalid target(s)")
 
+    @log_call
     def archive(self: T) -> T:
         """Generic method for archiving an object
 
@@ -124,6 +127,7 @@ class Item(BaseModel, ABC, extra="forbid"):
                 return obj
         raise InvalidParameters("Invalid target(s)")
 
+    @log_call
     def unarchive(self: T) -> T:
         """Generic method for unarchiving an object
 

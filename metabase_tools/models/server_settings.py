@@ -2,14 +2,18 @@
 
 from __future__ import annotations
 
+from logging import getLogger
 from typing import TYPE_CHECKING, Any, Optional
 
 from pydantic import BaseModel, Field, PrivateAttr
 
 from metabase_tools.exceptions import MetabaseApiException
+from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
+
+logger = getLogger(__name__)
 
 
 def replace_hyphens(python_member_name: str) -> str:
@@ -37,6 +41,7 @@ class Setting(BaseModel):
     description: str
     default: Optional[Any]
 
+    @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
         """Sets the adapter on an object
 
@@ -45,6 +50,7 @@ class Setting(BaseModel):
         """
         self._adapter = adapter
 
+    @log_call
     def update(self, new_value: Any) -> dict[str, Any]:
         """Updates the setting to the provided value after testing basic compatibility
 
@@ -176,6 +182,7 @@ class ServerSettings(BaseModel, alias_generator=replace_hyphens, extra="ignore")
     version_info: Setting
     version_info_last_checked: Setting
 
+    @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
         """Sets the adapter on an object
 
