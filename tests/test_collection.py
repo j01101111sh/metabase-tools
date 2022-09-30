@@ -33,6 +33,7 @@ class TestModelMethodsCommonPass:
     def test_archive(self, items: list[CollectionItem]):
         target = random.choice(items)
         result = target.archive()
+        _ = target.unarchive()
         assert isinstance(result, CollectionItem)  # check item class
         assert result.archived is True  # check action result
         assert isinstance(result._adapter, MetabaseApi)  # check adapter set
