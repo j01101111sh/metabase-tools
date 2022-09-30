@@ -61,6 +61,16 @@ class TestModelMethodsCommonPass:
         with pytest.raises(RequestFailure):
             _ = api.users.get(targets=[target.id if isinstance(target.id, int) else 2])
 
+    def test_enable(self, items: list[UserItem]):
+        target = random.choice(items)
+        try:
+            _ = target.disable()
+        except:
+            pass
+        result = target.enable()
+        assert isinstance(result, UserItem)
+        assert result.is_active is True
+
 
 class TestModelMethodsCommonFail:
     def test_update_fail(self, items: list[UserItem]):
@@ -177,7 +187,7 @@ class TestEndpointMethodsCommonFail:
 
 
 class TestEndpointMethodsUniquePass:
-    def test_user_current(self, api: MetabaseApi):
+    def test_current(self, api: MetabaseApi):
         user = api.users.current()
         assert isinstance(user, UserItem)
 
@@ -187,20 +197,20 @@ class TestEndpointMethodsUniqueFail:
 
 
 class TestModelMethodsUniquePass:
-    def test_user_resend(self, items: list[UserItem]):
+    def test_resend(self, items: list[UserItem]):
         item = random.choice(items)
         result = item.resend_invite()
         assert isinstance(result, dict)
         assert result["success"] is True
 
-    def test_user_reset_password(self, items: list[UserItem]):
+    def test_reset_password(self, items: list[UserItem]):
         item = random.choice(items)
         payload = {"id": item.id, "password": PASSWORD}
         result = item.update_password(payload=payload)
         assert isinstance(result, UserItem)
 
     @pytest.mark.xfail(raises=NotImplementedError)
-    def test_user_qbnewb(self, items: list[UserItem]):
+    def test_qbnewb(self, items: list[UserItem]):
         item = random.choice(items)
         result = item.qbnewb()
         assert isinstance(result, dict)

@@ -187,7 +187,7 @@ class TestEndpointMethodsCommonFail:
 
 
 class TestEndpointMethodsUniquePass:
-    def test_get_collection_tree(self, api: MetabaseApi):
+    def test_tree(self, api: MetabaseApi):
         coll_tree = api.collections.get_tree()
         assert isinstance(coll_tree, list)
         assert all(isinstance(coll, dict) for coll in coll_tree)
@@ -197,7 +197,7 @@ class TestEndpointMethodsUniquePass:
         assert isinstance(collections, list)
         assert all(isinstance(collection, dict) for collection in collections)
 
-    def test_collection_graph(self, api: MetabaseApi):
+    def test_graph(self, api: MetabaseApi):
         graph = api.collections.graph()
         assert isinstance(graph, dict)
 
@@ -207,13 +207,13 @@ class TestEndpointMethodsUniqueFail:
 
 
 class TestModelMethodsUniquePass:
-    def test_collection_contents(self, items: list[CollectionItem]):
+    def test_contents(self, items: list[CollectionItem]):
         item = random.choice(items)
         result = item.get_contents()
         assert isinstance(result, list)
         assert all(isinstance(record, dict) for record in result)
 
-    def test_collection_contents_archived(self, items: list[CollectionItem]):
+    def test_contents_archived(self, items: list[CollectionItem]):
         item = random.choice(items)
         result = item.get_contents(archived=True)
         assert isinstance(result, list)
