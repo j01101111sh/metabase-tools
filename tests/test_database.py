@@ -55,11 +55,7 @@ class TestModelMethodsCommonPass:
             target._adapter.server_version, Version
         )  # check adapter initialized
 
-    def test_database_delete(
-        self, api: MetabaseApi, server_version: Version, items: list[DatabaseItem]
-    ):
-        target = random.choice(items)
-        target.delete()
+    def test_database_delete(self, api: MetabaseApi, server_version: Version):
         new_db = {
             "name": "Test DB",
             "engine": "h2",
@@ -72,7 +68,7 @@ class TestModelMethodsCommonPass:
                 "sample-dataset", "sample-database"
             )
         created_db = api.databases.create(**new_db)
-        assert isinstance(created_db, DatabaseItem)
+        created_db.delete()
 
 
 class TestModelMethodsCommonFail:
