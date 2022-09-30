@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Basic Usage" href="basic_usage.html" /><link rel="prev" title="Welcome to metabase-tools’s documentation!" href="index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Core - MetabaseApi - metabase-tools 0.10.0 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
+        <title>Core - MetabaseApi - metabase-tools 0.11.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">metabase-tools 0.10.0 documentation</div></a>
+      <a href="index.html"><div class="brand">metabase-tools 0.11.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">metabase-tools 0.10.0 documentation</span>
+  <span class="sidebar-brand-text">metabase-tools 0.11.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -278,7 +278,7 @@
 <p>To make custom calls to the Metabase API, you can use the <code class="docutils literal notranslate"><span class="pre">generic_request</span></code> method. In general, it’s better to use class-specific methods to call the methods you need but this can be used for unsupported endpoints while still utilizing the cached authentication of the wrapper.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="metabase_tools.MetabaseApi.generic_request">
-<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">generic_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http_method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.generic_request" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">generic_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http_verb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.generic_request" title="Permalink to this definition">#</a></dt>
 <dd><p>Method for dispatching HTTP requests</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -287,6 +287,7 @@
 <li><p><strong>endpoint</strong> (<em>str</em>) – URL endpoint</p></li>
 <li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – Endpoint parameters</p></li>
 <li><p><strong>json</strong> (<em>dict</em><em>, </em><em>optional</em>) – Data payload</p></li>
+<li><p><strong>http_verb</strong> (<em>Literal</em><em>[</em><em>'GET'</em><em>, </em><em>'POST'</em><em>, </em><em>'PUT'</em><em>, </em><em>'DELETE'</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -305,6 +306,95 @@
 </dl>
 </dd></dl>
 
+<p>For convenience, there are also methods to utilize for <code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">delete</span></code>, <code class="docutils literal notranslate"><span class="pre">post</span></code>, and <code class="docutils literal notranslate"><span class="pre">put</span></code> HTTP verbs:</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="metabase_tools.MetabaseApi.get">
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.get" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP GET request</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint</strong> (<em>str</em>) – URL endpoint</p></li>
+<li><p><strong>ep_params</strong> (<em>dict</em><em>, </em><em>optional</em>) – Endpoint parameters</p></li>
+<li><p><strong>params</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response from API</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict[str, Any]] | dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="metabase_tools.MetabaseApi.delete">
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP DELETE request</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint</strong> (<em>str</em>) – URL endpoint</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – Endpoint parameters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response from API</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict[str, Any]] | dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="metabase_tools.MetabaseApi.post">
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.post" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP POST request</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint</strong> (<em>str</em>) – URL endpoint</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – Endpoint parameters</p></li>
+<li><p><strong>json</strong> (<em>dict</em><em>, </em><em>optional</em>) – Data payload</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response from API</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict[str, Any]] | dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="metabase_tools.MetabaseApi.put">
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.put" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP PUT request</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint</strong> (<em>str</em>) – URL endpoint</p></li>
+<li><p><strong>ep_params</strong> (<em>dict</em><em>, </em><em>optional</em>) – Endpoint parameters</p></li>
+<li><p><strong>json</strong> (<em>dict</em><em>, </em><em>optional</em>) – Data payload</p></li>
+<li><p><strong>params</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response from API</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict[str, Any]] | dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="custom-session-objects">
+<h3>Custom Session objects<a class="headerlink" href="#custom-session-objects" title="Permalink to this heading">#</a></h3>
+<p>If you need to make use of a proxy or other feature supported by the requests module’s Session class, you can pass it in to the adapter on creation.</p>
 </section>
 </section>
 </section>
@@ -321,10 +411,10 @@
                 </div>
                 <div class="title">Basic Usage</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="index.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -360,7 +450,7 @@
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
@@ -377,6 +467,7 @@
 <li><a class="reference internal" href="#other-public-methods">Other Public Methods</a><ul>
 <li><a class="reference internal" href="#testing-for-successful-authentication">Testing for successful authentication</a></li>
 <li><a class="reference internal" href="#making-generic-requests">Making generic requests</a></li>
+<li><a class="reference internal" href="#custom-session-objects">Custom Session objects</a></li>
 </ul>
 </li>
 </ul>
