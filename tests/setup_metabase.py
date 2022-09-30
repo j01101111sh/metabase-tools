@@ -3,8 +3,8 @@ from json import loads
 from pathlib import Path
 from time import sleep
 
-import packaging.version
 import requests
+from packaging.version import Version
 
 from tests.helpers import (
     CREDENTIALS,
@@ -102,6 +102,12 @@ def create_users(session: requests.Session):
     for user in [dev, std, uat]:
         response = session.post(f"{HOST}/api/user", json=user)
         responses.append(check_status_code(response=response))
+    for user in range(50):
+        definition = std.copy()
+        definition["first_name"] += str(user)
+        definition["email"] = f"std{user}@DunderMifflin.com"
+        response = session.post(f"{HOST}/api/user", json=definition)
+        responses.append(check_status_code(response=response))
     return responses
 
 
@@ -182,9 +188,7 @@ def create_cards(session: requests.Session):
     return responses
 
 
-def create_databases(
-    session: requests.Session, server_version: packaging.version.Version
-):
+def create_databases(session: requests.Session, server_version: Version):
     new_db = {
         "name": "Test DB",
         "engine": "h2",
@@ -192,11 +196,16 @@ def create_databases(
             "db": "zip:/app/metabase.jar!/sample-dataset.db;USER=GUEST;PASSWORD=guest"
         },
     }
-    if server_version >= packaging.version.Version("v0.42"):
+    if server_version >= Version("v0.42"):
         new_db["details"]["db"] = new_db["details"]["db"].replace(
             "sample-dataset", "sample-database"
         )
-    return session.post(f"{HOST}/api/database", json=new_db)
+
+    results = [session.post(f"{HOST}/api/database", json=new_db)]
+    for x in range(3):
+        definition = new_db.copy()
+        definition["name"] += str(x)
+        results.append(session.post(f"{HOST}/api/database", json=definition))
 
 
 def cleanup_cache_and_logs():
@@ -223,10 +232,10 @@ def cleanup_cache_and_logs():
     pass
 
 
-def get_server_version(session: requests.Session) -> packaging.version.Version:
+def get_server_version(session: requests.Session) -> Version:
     result = session.get(f"{HOST}/api/session/properties").json()
     if isinstance(result, dict):
-        return packaging.version.Version(result["version"]["tag"])
+        return Version(result["version"]["tag"])
     raise ValueError
 
 

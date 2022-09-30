@@ -2,12 +2,12 @@
 """
 from __future__ import annotations
 
-import logging
 from datetime import datetime
+from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 from uuid import UUID
 
-import packaging.version
+from packaging.version import Version
 from pydantic import BaseModel, PrivateAttr
 from pydantic.fields import Field
 
@@ -20,7 +20,7 @@ from metabase_tools.utils.logging_utils import log_call
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class CardItem(Item):
@@ -29,7 +29,7 @@ class CardItem(Item):
     _BASE_EP: ClassVar[str] = "/card/{id}"
 
     _adapter: Optional[MetabaseApi] = PrivateAttr(None)
-    _server_version: Optional[packaging.version.Version] = PrivateAttr(None)
+    _server_version: Optional[Version] = PrivateAttr(None)
 
     description: Optional[str]
     archived: bool
@@ -197,9 +197,7 @@ class CardItem(Item):
         Returns:
             dict: Result of favoriting operation
         """
-        if self._server_version and self._server_version >= packaging.version.Version(
-            "v0.40"
-        ):
+        if self._server_version and self._server_version >= Version("v0.40"):
             raise NotImplementedError("This function was deprecated in Metabase v0.40")
         if self._adapter:
             result = self._adapter.post(endpoint=f"/card/{self.id}/favorite")
@@ -214,9 +212,7 @@ class CardItem(Item):
         Returns:
             dict: Result of unfavoriting operation
         """
-        if self._server_version and self._server_version >= packaging.version.Version(
-            "v0.40"
-        ):
+        if self._server_version and self._server_version >= Version("v0.40"):
             raise NotImplementedError("This function was deprecated in Metabase v0.40")
         if self._adapter:
             result = self._adapter.delete(endpoint=f"/card/{self.id}/favorite")

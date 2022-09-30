@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-import logging
+from logging import getLogger
 from typing import Any, ClassVar, Optional
 
 from metabase_tools.endpoints.generic_endpoint import Endpoint
@@ -11,7 +11,7 @@ from metabase_tools.models.card_model import CardItem
 from metabase_tools.models.generic_model import MissingParam
 from metabase_tools.utils.logging_utils import log_call
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class Cards(Endpoint[CardItem]):

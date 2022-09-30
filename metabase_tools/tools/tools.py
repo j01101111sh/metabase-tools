@@ -3,7 +3,7 @@ MetabaseTools extends MetabaseApi with additional complex functions
 """
 from __future__ import annotations  # Included for support of |
 
-import logging
+from logging import getLogger
 from json import dumps, loads
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Optional
@@ -15,7 +15,7 @@ from metabase_tools.utils.logging_utils import log_call
 if TYPE_CHECKING:
     from metabase_tools.metabase import MetabaseApi
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class MetabaseTools:
