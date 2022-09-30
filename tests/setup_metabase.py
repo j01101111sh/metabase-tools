@@ -3,8 +3,8 @@ from json import loads
 from pathlib import Path
 from time import sleep
 
-from packaging.version import Version
 import requests
+from packaging.version import Version
 
 from tests.helpers import (
     CREDENTIALS,
@@ -102,6 +102,12 @@ def create_users(session: requests.Session):
     for user in [dev, std, uat]:
         response = session.post(f"{HOST}/api/user", json=user)
         responses.append(check_status_code(response=response))
+    for user in range(50):
+        definition = std.copy()
+        definition["first_name"] += str(user)
+        definition["email"] = f"std{user}@DunderMifflin.com"
+        response = session.post(f"{HOST}/api/user", json=definition)
+        responses.append(check_status_code(response=response))
     return responses
 
 
@@ -194,7 +200,12 @@ def create_databases(session: requests.Session, server_version: Version):
         new_db["details"]["db"] = new_db["details"]["db"].replace(
             "sample-dataset", "sample-database"
         )
-    return session.post(f"{HOST}/api/database", json=new_db)
+
+    results = [session.post(f"{HOST}/api/database", json=new_db)]
+    for x in range(3):
+        definition = new_db.copy()
+        definition["name"] += str(x)
+        results.append(session.post(f"{HOST}/api/database", json=definition))
 
 
 def cleanup_cache_and_logs():
