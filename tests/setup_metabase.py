@@ -195,7 +195,7 @@ def create_databases(session: requests.Session, server_version: Version):
             "sample-dataset", "sample-database"
         )
 
-    results = []
+    results = [session.post(f"{HOST}/api/database", json=new_db)]
     for x in range(3):
         definition = new_db.copy()
         definition["name"] += str(x)
