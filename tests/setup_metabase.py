@@ -3,8 +3,8 @@ from json import loads
 from pathlib import Path
 from time import sleep
 
-from packaging.version import Version
 import requests
+from packaging.version import Version
 
 from tests.helpers import (
     CREDENTIALS,
@@ -194,7 +194,12 @@ def create_databases(session: requests.Session, server_version: Version):
         new_db["details"]["db"] = new_db["details"]["db"].replace(
             "sample-dataset", "sample-database"
         )
-    return session.post(f"{HOST}/api/database", json=new_db)
+
+    results = []
+    for x in range(3):
+        definition = new_db.copy()
+        definition["name"] += str(x)
+        results.append(session.post(f"{HOST}/api/database", json=definition))
 
 
 def cleanup_cache_and_logs():
