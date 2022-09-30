@@ -55,6 +55,12 @@ If you would like to cache your token for future runs to speed things up, simply
     :linenos:
     :emphasize-lines: 4-7
 
+**********************
+Custom Session objects
+**********************
+
+If you need to make use of a proxy or other feature supported by the requests module's Session class, you can pass it in to the adapter on creation using the ``session`` keyword argument.
+
 ********************
 Other Public Methods
 ********************
@@ -83,8 +89,3 @@ For convenience, there are also methods to utilize for ``get``, ``delete``, ``po
 .. autofunction:: metabase_tools.MetabaseApi.post
 
 .. autofunction:: metabase_tools.MetabaseApi.put
-
-Custom Session objects
-======================
-
-If you need to make use of a proxy or other feature supported by the requests module's Session class, you can pass it in to the adapter on creation.
