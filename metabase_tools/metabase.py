@@ -3,8 +3,8 @@ Rest adapter for the Metabase API
 """
 from __future__ import annotations
 
-from logging import getLogger
 from json import JSONDecodeError
+from logging import getLogger
 from pathlib import Path
 from typing import Any, Literal, Optional
 
@@ -46,6 +46,7 @@ class MetabaseApi:
         credentials: Optional[dict[str, str]] = None,
         cache_token: bool = False,
         token_path: Optional[Path | str] = None,
+        session: Optional[Session] = None,
     ):
         if not credentials and not token_path:
             raise AuthenticationFailure("No authentication method provided")
@@ -56,7 +57,7 @@ class MetabaseApi:
         self.metabase_url = self._validate_base_url(url=metabase_url)
 
         # Starts session to be reused by the adapter so that the auth token is cached
-        self._session = Session()
+        self._session = session or Session()
 
         # Authenticate
         self._authenticate(token_path=token_path, credentials=credentials)
