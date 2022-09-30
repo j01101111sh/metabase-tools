@@ -55,7 +55,7 @@ class TestModelMethodsCommonPass:
             target._adapter.server_version, Version
         )  # check adapter initialized
 
-    def test_database_delete(self, api: MetabaseApi, server_version: Version):
+    def test_delete(self, api: MetabaseApi, server_version: Version):
         new_db = {
             "name": "Test DB",
             "engine": "h2",
