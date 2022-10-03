@@ -85,12 +85,11 @@ log_file_format = "%(asctime)s - %(levelname)s - %(name)s:%(lineno)d\n\t%(messag
 [tool.coverage.report]
 omit = ["tests/*.py"]
 exclude_lines = [
-    "def _","except RequestException",
+    "def _","except MetabaseApiException",
     "elif response.status_code == 401:",
-    "EmptyDataReceived",
-    "RequestFailure",
+    "TypeError",
+    "AttributeError",
     "if TYPE_CHECKING:",
-    "InvalidParameters",
     "def untested"
 ]
 show_missing = true
