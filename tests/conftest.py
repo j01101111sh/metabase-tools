@@ -8,7 +8,7 @@ from string import ascii_letters
 import pytest
 
 from metabase_tools import MetabaseApi
-from tests import helpers
+from tests.setup_metabase import metabase_config
 
 _run_id = os.environ.get("GITHUB_RUN_ID", datetime.now().strftime("%y%m%dT%H%M%S"))
 _python_version = python_version().replace(".", "_")
@@ -49,17 +49,22 @@ def server_version(api: MetabaseApi):
 
 @pytest.fixture(scope="session")
 def credentials():
-    return helpers.CREDENTIALS
+    return metabase_config["credentials"]
 
 
 @pytest.fixture(scope="session")
 def host():
-    return helpers.HOST
+    return metabase_config["host"]
 
 
 @pytest.fixture(scope="session")
 def email():
-    return helpers.EMAIL
+    return metabase_config["email"]
+
+
+@pytest.fixture(scope="session")
+def password():
+    return metabase_config["password"]
 
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)

@@ -8,7 +8,18 @@ from time import sleep
 import requests
 from packaging.version import Version
 
-from tests.helpers import CREDENTIALS, EMAIL, FIRST, HOST, LAST, PASSWORD, SITE_NAME
+metabase_config = {
+    "host": "http://localhost:3000",
+    "first": "Jim",
+    "last": "Halpert",
+    "email": "jim@dundermifflin.com",
+    "password": "BAZouVa3saWgW89z",
+    "site_name": "testing-site",
+    "credentials": {
+        "username": "jim@dundermifflin.com",
+        "password": "BAZouVa3saWgW89z",
+    },
+}
 
 
 def random_string(chars) -> str:
@@ -32,7 +43,7 @@ def initial_setup():
         print(f"Attempt #{x+1}:")
         try:
             token_response = requests.get(
-                HOST + "/api/session/properties", timeout=TIMEOUT
+                metabase_config["host"] + "/api/session/properties", timeout=TIMEOUT
             )
             print("Success!")
             break
@@ -48,15 +59,15 @@ def initial_setup():
 
     setup_token = token_response.json()["setup-token"]
     response = requests.post(
-        HOST + "/api/setup",
+        metabase_config["host"] + "/api/setup",
         json={
-            "prefs": {"site_name": SITE_NAME},
+            "prefs": {"site_name": metabase_config["site_name"]},
             "user": {
-                "email": EMAIL,
-                "password": PASSWORD,
-                "first_name": FIRST,
-                "last_name": LAST,
-                "site_name": SITE_NAME,
+                "email": metabase_config["email"],
+                "password": metabase_config["password"],
+                "first_name": metabase_config["first"],
+                "last_name": metabase_config["last"],
+                "site_name": metabase_config["site_name"],
             },
             "token": setup_token,
         },
@@ -66,7 +77,9 @@ def initial_setup():
 
 def get_session() -> requests.Session:
     session = requests.Session()
-    post_request = requests.post(f"{HOST}/api/session", json=CREDENTIALS)
+    post_request = requests.post(
+        f"{metabase_config['host']}/api/session", json=metabase_config["credentials"]
+    )
     token = post_request.json()["id"]
     headers = {
         "Content-Type": "application/json",
@@ -97,13 +110,13 @@ def create_users(session: requests.Session):
     }
     responses = []
     for user in [dev, std, uat]:
-        response = session.post(f"{HOST}/api/user", json=user)
+        response = session.post(f"{metabase_config['host']}/api/user", json=user)
         responses.append(check_status_code(response=response))
     for user in range(50):
         definition = std.copy()
         definition["first_name"] += str(user)
         definition["email"] = f"std{user}@DunderMifflin.com"
-        response = session.post(f"{HOST}/api/user", json=definition)
+        response = session.post(f"{metabase_config['host']}/api/user", json=definition)
         responses.append(check_status_code(response=response))
     return responses
 
@@ -124,7 +137,7 @@ def create_collections(session: requests.Session):
     accounting = {"name": "Accounting", "color": "#FFFFFF", "parent_id": 2}
     responses = []
     for coll in [dev, uat, prod, accounting]:
-        response = session.post(f"{HOST}/api/collection", json=coll)
+        response = session.post(f"{metabase_config['host']}/api/collection", json=coll)
         responses.append(check_status_code(response=response))
     return responses
 
@@ -180,7 +193,7 @@ def create_cards(session: requests.Session):
     }
     responses = []
     for card in [accounting, test, name_error]:
-        response = session.post(f"{HOST}/api/card", json=card)
+        response = session.post(f"{metabase_config['host']}/api/card", json=card)
         responses.append(check_status_code(response=response))
     return responses
 
@@ -198,11 +211,13 @@ def create_databases(session: requests.Session, server_version: Version):
             "sample-dataset", "sample-database"
         )
 
-    results = [session.post(f"{HOST}/api/database", json=new_db)]
+    results = [session.post(f"{metabase_config['host']}/api/database", json=new_db)]
     for x in range(3):
         definition = new_db.copy()
         definition["name"] += str(x)
-        results.append(session.post(f"{HOST}/api/database", json=definition))
+        results.append(
+            session.post(f"{metabase_config['host']}/api/database", json=definition)
+        )
 
 
 def cleanup_cache_and_logs():
@@ -230,14 +245,16 @@ def cleanup_cache_and_logs():
 
 
 def get_server_version(session: requests.Session) -> Version:
-    result = session.get(f"{HOST}/api/session/properties").json()
+    result = session.get(f"{metabase_config['host']}/api/session/properties").json()
     if isinstance(result, dict):
         return Version(result["version"]["tag"])
     raise ValueError
 
 
 def set_server_settings(session: requests.Session) -> list[requests.Response]:
-    embed_result = session.put(f"{HOST}/api/setting/enable-embedding")
+    embed_result = session.put(
+        f"{metabase_config['host']}/api/setting/enable-embedding"
+    )
     return [embed_result]
 
 

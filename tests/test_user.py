@@ -8,7 +8,6 @@ from packaging.version import Version
 from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.user_model import UserItem
-from tests.helpers import PASSWORD
 
 
 @pytest.fixture(scope="function")
@@ -205,9 +204,9 @@ class TestModelMethodsUniquePass:
         assert isinstance(result, dict)
         assert result["success"] is True
 
-    def test_reset_password(self, items: list[UserItem]):
+    def test_reset_password(self, items: list[UserItem], password):
         item = random.choice(items)
-        payload = {"id": item.id, "password": PASSWORD}
+        payload = {"id": item.id, "password": password}
         result = item.update_password(payload=payload)
         assert isinstance(result, UserItem)
 
