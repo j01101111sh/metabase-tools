@@ -3,28 +3,7 @@
 
 __version__ = "0.12.0"
 
-from metabase_tools.exceptions import (
-    AuthenticationFailure,
-    EmptyDataReceived,
-    InvalidDataReceived,
-    InvalidParameters,
-    ItemInPersonalCollection,
-    ItemNotFound,
-    MetabaseApiException,
-    NoUpdateProvided,
-    RequestFailure,
-)
+from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.metabase import MetabaseApi
 
-__all__ = (
-    "AuthenticationFailure",
-    "EmptyDataReceived",
-    "InvalidDataReceived",
-    "InvalidParameters",
-    "ItemNotFound",
-    "ItemInPersonalCollection",
-    "MetabaseApiException",
-    "NoUpdateProvided",
-    "RequestFailure",
-    "MetabaseApi",
-)
+__all__ = ("MetabaseApiException", "MetabaseApi")

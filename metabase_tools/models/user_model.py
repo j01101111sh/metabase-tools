@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional
 from packaging.version import Version
 from pydantic.fields import Field, PrivateAttr
 
-from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.generic_model import Item, MissingParam
 from metabase_tools.utils.logging_utils import log_call
 
@@ -76,7 +75,8 @@ class UserItem(Item):
                 obj = self.__class__(**result)
                 obj.set_adapter(adapter=self._adapter)
                 return obj
-        raise InvalidParameters
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     @log_call
     def resend_invite(self) -> dict[str, bool]:
@@ -89,7 +89,8 @@ class UserItem(Item):
             result = self._adapter.post(endpoint=f"/user/{self.id}/send_invite")
             if isinstance(result, dict):
                 return result
-        raise InvalidParameters
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     @log_call
     def update_password(self: UserItem, payload: dict[str, Any]) -> UserItem:
@@ -109,7 +110,8 @@ class UserItem(Item):
                 obj = self.__class__(**result)
                 obj.set_adapter(adapter=self._adapter)
                 return obj
-        raise InvalidParameters
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     @log_call
     def qbnewb(self) -> dict[str, bool]:
@@ -124,7 +126,8 @@ class UserItem(Item):
             result = self._adapter.put(endpoint=f"/user/{self.id}/qbnewb")
             if isinstance(result, dict):
                 return result
-        raise InvalidParameters
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     def _make_update(self: UserItem, **kwargs: Any) -> UserItem:
         """Makes update request

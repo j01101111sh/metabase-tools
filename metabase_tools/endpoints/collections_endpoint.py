@@ -7,7 +7,6 @@ from logging import getLogger
 from typing import Any, ClassVar, Optional
 
 from metabase_tools.endpoints.generic_endpoint import Endpoint
-from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.collection_model import CollectionItem
 from metabase_tools.models.generic_model import MissingParam
 from metabase_tools.utils.logging_utils import log_call
@@ -113,7 +112,7 @@ class Collections(Endpoint[CollectionItem]):
             isinstance(record, dict) for record in response
         ):
             return response
-        raise EmptyDataReceived
+        raise TypeError(f"Expected list[dict], received {type(response)}")
 
     @staticmethod
     def _flatten_tree(parent: dict[str, Any], path: str = "/") -> list[dict[str, Any]]:
@@ -180,8 +179,7 @@ class Collections(Endpoint[CollectionItem]):
         Returns:
             dict: graph of collection
         """
-        if self._adapter:
-            result = self._adapter.get(endpoint="/collection/graph")
-            if isinstance(result, dict):
-                return result
-        raise EmptyDataReceived
+        result = self._adapter.get(endpoint="/collection/graph")
+        if isinstance(result, dict):
+            return result
+        raise TypeError(f"Expected dict, received {type(result)}")
