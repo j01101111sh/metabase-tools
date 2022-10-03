@@ -108,7 +108,7 @@ class TestUpload:
         with open(test_card_path, "r", newline="", encoding="utf-8") as file:
             test_card = file.read()
         # Create new .sql file with same contents
-        rdm_str = random_string(6, letters_only=True)
+        rdm_str = random_string(6)
         new_card_path = Path(
             f"{test_card_path} - {rdm_str}".replace(".sql", "") + ".sql"
         )
