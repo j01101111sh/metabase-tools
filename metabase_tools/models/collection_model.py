@@ -149,13 +149,13 @@ class CollectionItem(Item):
             params["model"] = model_type
 
         if self._adapter:
-            response = self._adapter.get(
+            result = self._adapter.get(
                 endpoint=f"/collection/{self.id}/items",
                 params=params,
             )
-            if isinstance(response, list) and all(
-                isinstance(record, dict) for record in response
+            if isinstance(result, list) and all(
+                isinstance(record, dict) for record in result
             ):
-                return response
-            raise TypeError(f"Expected list[dict], received {type(response)}")
+                return result
+            raise TypeError(f"Expected list[dict], received {type(result)}")
         raise AttributeError("Adapter not set on object")
