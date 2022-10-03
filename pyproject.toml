@@ -62,9 +62,9 @@ profile = 'black'
 [tool.pylint.main]
 extension-pkg-whitelist = ["pydantic"]
 disable=[
-    "useless-parent-delegation",
-    "too-many-instance-attributes",
-    "too-many-arguments"
+    "R0801", # similar lines in 2 files
+    "R0902", # too many instance attributes
+    "R0913", # too many arguments
     ]
 
 [tool.pylint.format]
