@@ -2,6 +2,8 @@ import os
 from datetime import datetime
 from pathlib import Path
 from platform import python_version
+from random import choice
+from string import ascii_letters
 
 import pytest
 
@@ -12,6 +14,11 @@ _run_id = os.environ.get("GITHUB_RUN_ID", datetime.now().strftime("%y%m%dT%H%M%S
 _python_version = python_version().replace(".", "_")
 _mb_verison = os.environ.get("MB_VERSION", "unknown").replace(".", "_")
 _result_path = Path(f"./temp/test-{_run_id}/py_{_python_version}/mb_{_mb_verison}")
+
+
+@pytest.fixture(scope="function")
+def random_string() -> object:
+    return lambda l: "".join(choice(ascii_letters) for _ in range(l))
 
 
 @pytest.fixture(scope="session")

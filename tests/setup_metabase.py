@@ -1,21 +1,18 @@
 import shutil
 from json import loads
 from pathlib import Path
+from random import choice
+from string import ascii_letters
 from time import sleep
 
 import requests
 from packaging.version import Version
 
-from tests.helpers import (
-    CREDENTIALS,
-    EMAIL,
-    FIRST,
-    HOST,
-    LAST,
-    PASSWORD,
-    SITE_NAME,
-    random_string,
-)
+from tests.helpers import CREDENTIALS, EMAIL, FIRST, HOST, LAST, PASSWORD, SITE_NAME
+
+
+def random_string(chars) -> str:
+    return "".join(choice(ascii_letters) for _ in range(chars))
 
 
 def check_status_code(response: requests.Response) -> requests.Response:

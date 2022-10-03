@@ -1,12 +1,12 @@
 from datetime import datetime
 from json import dumps, loads
 from pathlib import Path
+from types import LambdaType
 
 import pytest
 from packaging.version import Version
 
 from metabase_tools import MetabaseApi
-from tests.helpers import random_string
 
 
 class TestDownload:
@@ -19,7 +19,7 @@ class TestDownload:
 
 
 class TestUpload:
-    def test_upload_existing(self, api: MetabaseApi):
+    def test_upload_existing(self, api: MetabaseApi, random_string: LambdaType):
         mapping_path = Path("./tests/data/mapping.json")
         test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
         with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -42,7 +42,7 @@ class TestUpload:
         assert all(isinstance(result, dict) for result in results)
         assert all(result["is_success"] for result in results)
 
-    def test_upload_existing_dry(self, api: MetabaseApi):
+    def test_upload_existing_dry(self, api: MetabaseApi, random_string: LambdaType):
         mapping_path = Path("./tests/data/mapping.json")
         test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
         with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -66,7 +66,7 @@ class TestUpload:
         assert "creates" in results
         assert "errors" in results
 
-    def test_upload_existing_stop(self, api: MetabaseApi):
+    def test_upload_existing_stop(self, api: MetabaseApi, random_string: LambdaType):
         mapping_path = Path("./tests/data/mapping.json")
         test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
         with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -83,7 +83,9 @@ class TestUpload:
         with open(test_card_path, "w", newline="", encoding="utf-8") as file:
             file.write(current)
 
-    def test_upload_existing_dry_stop(self, api: MetabaseApi):
+    def test_upload_existing_dry_stop(
+        self, api: MetabaseApi, random_string: LambdaType
+    ):
         mapping_path = Path("./tests/data/mapping.json")
         test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
         with open(test_card_path, "r", newline="", encoding="utf-8") as file:
@@ -100,7 +102,9 @@ class TestUpload:
         with open(test_card_path, "w", newline="", encoding="utf-8") as file:
             file.write(current)
 
-    def test_upload_new(self, api: MetabaseApi, server_version: Version):
+    def test_upload_new(
+        self, api: MetabaseApi, server_version: Version, random_string: LambdaType
+    ):
         # Set parameters
         mapping_path = Path("./tests/data/mapping.json")
         test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")

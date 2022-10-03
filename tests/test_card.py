@@ -1,4 +1,5 @@
 import random
+from types import LambdaType
 
 import pytest
 from packaging.version import Version
@@ -10,7 +11,6 @@ from metabase_tools.models.card_model import (
     CardQueryResult,
     CardRelatedObjects,
 )
-from tests.helpers import random_string
 
 
 @pytest.fixture(scope="module")
@@ -51,7 +51,7 @@ class TestModelMethodsCommonPass:
             result._adapter.server_version, Version
         )  # check adapter initialized
 
-    def test_refresh(self, items: list[CardItem]):
+    def test_refresh(self, items: list[CardItem], random_string: LambdaType):
         target = random.choice(items)
         result = target.update(description="Updated " + random_string(5))
         target = target.refresh()
@@ -88,8 +88,8 @@ class TestModelMethodsCommonFail:
 
 
 class TestEndpointMethodsCommonPass:
-    def test_create(self, api: MetabaseApi):
-        name = "Test Card - " + random_string(6, True)
+    def test_create(self, api: MetabaseApi, random_string: LambdaType):
+        name = "Test Card - " + random_string(6)
         definition = {
             "visualization_settings": {
                 "table.pivot_column": "QUANTITY",
