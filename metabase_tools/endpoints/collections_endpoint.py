@@ -107,12 +107,12 @@ class Collections(Endpoint[CollectionItem]):
         Returns:
             list[dict]: Representation of collection tree
         """
-        response = self._adapter.get(endpoint="/collection/tree")
-        if isinstance(response, list) and all(
-            isinstance(record, dict) for record in response
+        result = self._adapter.get(endpoint="/collection/tree")
+        if isinstance(result, list) and all(
+            isinstance(record, dict) for record in result
         ):
-            return response
-        raise TypeError(f"Expected list[dict], received {type(response)}")
+            return result
+        raise TypeError(f"Expected list[dict], received {type(result)}")
 
     @staticmethod
     def _flatten_tree(parent: dict[str, Any], path: str = "/") -> list[dict[str, Any]]:
