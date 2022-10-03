@@ -1,4 +1,5 @@
 import random
+from types import LambdaType
 
 import pytest
 from packaging.version import Version
@@ -6,7 +7,6 @@ from packaging.version import Version
 from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.collection_model import CollectionItem
-from tests.helpers import random_string
 
 
 @pytest.fixture(scope="module")
@@ -51,7 +51,7 @@ class TestModelMethodsCommonPass:
             result._adapter.server_version, Version
         )  # check adapter initialized
 
-    def test_refresh(self, items: list[CollectionItem]):
+    def test_refresh(self, items: list[CollectionItem], random_string: LambdaType):
         target = random.choice(items)
         result = target.update(description="Updated " + random_string(5))
         target = target.refresh()
@@ -88,8 +88,8 @@ class TestModelMethodsCommonFail:
 
 
 class TestEndpointMethodsCommonPass:
-    def test_create(self, api: MetabaseApi):
-        name = "Test - " + random_string(6, True)
+    def test_create(self, api: MetabaseApi, random_string: LambdaType):
+        name = "Test - " + random_string(6)
         definition = {
             "name": name,
             "color": "#FFFFFF",
