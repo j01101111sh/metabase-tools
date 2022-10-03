@@ -256,13 +256,13 @@ class MetabaseApi:
         if 299 >= response.status_code >= 200:
             logger.info(log_line_post, True, response.status_code, response.reason)
             try:
-                result = response.json()
-                if isinstance(result, dict) and all(
-                    key in result for key in ["data", "total"]
+                data = response.json()
+                if isinstance(data, dict) and all(
+                    key in data for key in ["data", "total"]
                 ):
-                    result = result["data"]
-                if isinstance(result, (list, dict)):
-                    return result
+                    data = data["data"]
+                if isinstance(data, (list, dict)):
+                    return data
             except JSONDecodeError:
                 if response.status_code == 204:
                     return {"success": True}
@@ -354,9 +354,9 @@ class MetabaseApi:
         Returns:
             str: version string
         """
-        result = self.get("/session/properties")
-        if isinstance(result, dict):
-            self.server_version = Version(result["version"]["tag"])
+        properties = self.get("/session/properties")
+        if isinstance(properties, dict):
+            self.server_version = Version(properties["version"]["tag"])
             logger.info("Server version: %s", self.server_version)
         else:
             logger.error("Unable to fetch server version")

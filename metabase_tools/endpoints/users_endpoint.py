@@ -112,7 +112,7 @@ class Users(Endpoint[UserItem]):
         Returns:
             User: Current user details
         """
-        response = self._adapter.get(endpoint="/user/current")
-        if isinstance(response, dict):
-            return UserItem(**response)
-        raise TypeError(f"Expected dict but received {type(response)}")
+        result = self._adapter.get(endpoint="/user/current")
+        if isinstance(result, dict):
+            return UserItem(**result)
+        raise TypeError(f"Expected dict but received {type(result)}")

@@ -64,13 +64,13 @@ class Endpoint(ABC, Generic[T]):
 
         for item in source:
             if isinstance(item, int):
-                response = self._adapter.generic_request(
+                result = self._adapter.generic_request(
                     http_verb=http_verb, endpoint=endpoint.format(id=item)
                 )
             else:
                 raise TypeError(f"Expected list[int] but found {type(item)} in list")
-            if isinstance(response, dict):
-                results.append(response)
+            if isinstance(result, dict):
+                results.append(result)
         if len(results) > 0:
             return results
         raise TypeError("Received empty list")
@@ -102,12 +102,12 @@ class Endpoint(ABC, Generic[T]):
 
         if targets is None:
             # If no targets are provided, all objects of that type should be returned
-            response = self._adapter.get(endpoint=self._BASE_EP)
-            if isinstance(response, list):  # Validate data was returned
+            result = self._adapter.get(endpoint=self._BASE_EP)
+            if isinstance(result, list):  # Validate data was returned
                 # Unpack data into instances of the class and return
                 objs = [
                     self._STD_OBJ(**record)
-                    for record in response
+                    for record in result
                     if isinstance(record, dict)
                 ]
                 for obj in objs:
