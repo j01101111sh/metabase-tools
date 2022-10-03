@@ -10,7 +10,6 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
 from packaging.version import Version
 from pydantic import BaseModel, PrivateAttr
 
-from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
@@ -104,7 +103,8 @@ class Item(BaseModel, ABC, extra="forbid"):
                 obj = self.__class__(**result)
                 obj.set_adapter(adapter=self._adapter)
                 return obj
-        raise InvalidParameters("Invalid target(s)")
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     @log_call
     def archive(self: T) -> T:
@@ -125,7 +125,8 @@ class Item(BaseModel, ABC, extra="forbid"):
                 obj = self.__class__(**result)
                 obj.set_adapter(self._adapter)
                 return obj
-        raise InvalidParameters("Invalid target(s)")
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     @log_call
     def unarchive(self: T) -> T:
@@ -146,7 +147,8 @@ class Item(BaseModel, ABC, extra="forbid"):
                 obj = self.__class__(**result)
                 obj.set_adapter(self._adapter)
                 return obj
-        raise InvalidParameters("Invalid target(s)")
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     @log_call
     def delete(self) -> None:

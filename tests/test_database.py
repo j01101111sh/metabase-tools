@@ -3,7 +3,7 @@ import random
 import pytest
 from packaging.version import Version
 
-from metabase_tools.exceptions import InvalidParameters, RequestFailure
+from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.database_model import DatabaseItem
 from tests.helpers import random_string
@@ -74,19 +74,19 @@ class TestModelMethodsCommonPass:
 class TestModelMethodsCommonFail:
     def test_update_fail(self, items: list[DatabaseItem]):
         target = random.choice(items)
-        with pytest.raises(RequestFailure):
+        with pytest.raises(MetabaseApiException):
             _ = target.update(engine=3)  # type: ignore
 
     def test_archive_fail(self, api: MetabaseApi):
         target = api.databases.get()[0]
         target.id = -1
-        with pytest.raises(RequestFailure):
+        with pytest.raises(MetabaseApiException):
             _ = target.archive()  # type: ignore
 
     def test_unarchive_fail(self, api: MetabaseApi):
         target = api.databases.get()[0]
         target.id = -1
-        with pytest.raises(RequestFailure):
+        with pytest.raises(MetabaseApiException):
             _ = target.unarchive()  # type: ignore
 
 
@@ -182,12 +182,12 @@ class TestEndpointMethodsCommonPass:
 
 class TestEndpointMethodsCommonFail:
     def test_create_fail(self, api: MetabaseApi):
-        with pytest.raises(InvalidParameters):
+        with pytest.raises(MetabaseApiException):
             _ = api.databases.create(name="Test fail")  # type: ignore
 
     def test_get_fail(self, api: MetabaseApi):
         target = {"id": 1}
-        with pytest.raises(InvalidParameters):
+        with pytest.raises(TypeError):
             _ = api.databases.get(targets=target)  # type: ignore
 
     def test_search_fail(self, api: MetabaseApi, items: list[DatabaseItem]):

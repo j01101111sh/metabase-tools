@@ -4,7 +4,7 @@ import pytest
 from packaging.version import Version
 
 from metabase_tools import MetabaseApi
-from metabase_tools.exceptions import AuthenticationFailure
+from metabase_tools.exceptions import MetabaseApiException
 
 
 @pytest.fixture
@@ -29,7 +29,7 @@ class TestApiGeneral:
 
     def test_auth_credential_fail(self, host: str, email: str):
         bad_credentials = {"username": email, "password": "badpass"}
-        with pytest.raises(AuthenticationFailure):
+        with pytest.raises(MetabaseApiException):
             _ = MetabaseApi(
                 metabase_url=host,
                 credentials=bad_credentials,
@@ -48,7 +48,7 @@ class TestApiGeneral:
 
     def test_auth_token_fail(self, host: str):
         bad_credentials = {"token": "badtoken"}
-        with pytest.raises(AuthenticationFailure):
+        with pytest.raises(MetabaseApiException):
             api = MetabaseApi(
                 metabase_url=host,
                 credentials=bad_credentials,
@@ -65,7 +65,7 @@ class TestApiGeneral:
         assert new_api.test_for_auth()
 
     def test_auth_token_file_fail(self, host: str):
-        with pytest.raises(AuthenticationFailure):
+        with pytest.raises(MetabaseApiException):
             _ = MetabaseApi(metabase_url=host, token_path="./missing.token")
 
     def test_auth_without_protocol(self, host: str, credentials: dict):
@@ -88,7 +88,7 @@ class TestApiGeneral:
         assert api.test_for_auth()
 
     def test_fail_on_no_credentials(self, host: str):
-        with pytest.raises(AuthenticationFailure):
+        with pytest.raises(MetabaseApiException):
             _ = MetabaseApi(metabase_url=host)
 
     def test_url_ends_in_slash(self, host: str, credentials: dict):
@@ -117,7 +117,7 @@ class TestApiGeneral:
 
     def test_bad_passed_token(self, host: str, caplog):
         bad_token = {"token": "badtoken"}
-        with pytest.raises(AuthenticationFailure):
+        with pytest.raises(MetabaseApiException):
             _ = MetabaseApi(metabase_url=host, credentials=bad_token)
         assert "Failed to authenticate with token passed" in caplog.text
 

@@ -3,8 +3,8 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from abc import ABC, abstractmethod
+from logging import getLogger
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -16,7 +16,7 @@ from typing import (
     cast,
 )
 
-from metabase_tools.exceptions import EmptyDataReceived, InvalidParameters
+from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.models.generic_model import Item, MissingParam
 from metabase_tools.utils.logging_utils import log_call
 
@@ -68,12 +68,12 @@ class Endpoint(ABC, Generic[T]):
                     http_verb=http_verb, endpoint=endpoint.format(id=item)
                 )
             else:
-                raise InvalidParameters
+                raise TypeError(f"Expected list[int] but found {type(item)} in list")
             if isinstance(response, dict):
                 results.append(response)
         if len(results) > 0:
             return results
-        raise EmptyDataReceived("No data returned")
+        raise TypeError("Received empty list")
 
     @abstractmethod
     def get(self, targets: Optional[list[int]] = None) -> list[T]:
@@ -114,10 +114,10 @@ class Endpoint(ABC, Generic[T]):
                     obj.set_adapter(self._adapter)
                 return objs
         else:
-            # If something other than None, int or list[int], raise error
-            raise InvalidParameters("Invalid target(s)")
+            # If something other than None, list[int], raise error
+            raise TypeError(f"Expected list[int] or None but received {type(targets)}")
         # If response.data was empty, raise error
-        raise EmptyDataReceived("No data returned")
+        raise TypeError("Received empty list")
 
     @abstractmethod
     def _make_create(self, **kwargs: Any) -> T:
@@ -129,29 +129,26 @@ class Endpoint(ABC, Generic[T]):
         Returns:
             T: Object of the relevant type
         """
-        if self._adapter:
-            # Validate all required parameters were provided
-            missing_params = [
-                param
-                for param in self._required_params
-                if isinstance(kwargs[param], MissingParam)
-            ]
-            if len(missing_params) > 0:
-                raise InvalidParameters(
-                    f"Missing required parameters: {''.join(missing_params)}"
-                )
+        # Validate all required parameters were provided
+        missing_params = [
+            param
+            for param in self._required_params
+            if isinstance(kwargs[param], MissingParam)
+        ]
+        if len(missing_params) > 0:
+            raise MetabaseApiException(
+                f"Missing required parameters: {''.join(missing_params)}"
+            )
 
-            # Eliminate parameters that were not provided
-            details = {
-                k: v for k, v in kwargs.items() if not isinstance(v, MissingParam)
-            }
+        # Eliminate parameters that were not provided
+        details = {k: v for k, v in kwargs.items() if not isinstance(v, MissingParam)}
 
-            result = self._adapter.post(endpoint=self._BASE_EP, json=details)
-            if isinstance(result, dict):
-                obj = self._STD_OBJ(**result)
-                obj.set_adapter(adapter=self._adapter)
-                return cast(T, obj)
-        raise InvalidParameters("Invalid target(s)")
+        result = self._adapter.post(endpoint=self._BASE_EP, json=details)
+        if isinstance(result, dict):
+            obj = self._STD_OBJ(**result)
+            obj.set_adapter(adapter=self._adapter)
+            return cast(T, obj)
+        raise TypeError(f"Expected dict but received {type(result)}")
 
     @abstractmethod
     def search(

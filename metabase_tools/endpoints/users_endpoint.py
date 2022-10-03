@@ -7,7 +7,6 @@ from logging import getLogger
 from typing import Any, ClassVar, Optional
 
 from metabase_tools.endpoints.generic_endpoint import Endpoint
-from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.generic_model import MissingParam
 from metabase_tools.models.user_model import UserItem
 from metabase_tools.utils.logging_utils import log_call
@@ -116,4 +115,4 @@ class Users(Endpoint[UserItem]):
         response = self._adapter.get(endpoint="/user/current")
         if isinstance(response, dict):
             return UserItem(**response)
-        raise InvalidParameters
+        raise TypeError(f"Expected dict but received {type(response)}")

@@ -16,12 +16,7 @@ from metabase_tools.endpoints.cards_endpoint import Cards
 from metabase_tools.endpoints.collections_endpoint import Collections
 from metabase_tools.endpoints.databases_endpoint import Databases
 from metabase_tools.endpoints.users_endpoint import Users
-from metabase_tools.exceptions import (
-    AuthenticationFailure,
-    InvalidDataReceived,
-    MetabaseApiException,
-    RequestFailure,
-)
+from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.models.server_settings import ServerSettings, Setting
 from metabase_tools.tools.tools import MetabaseTools
 
@@ -49,7 +44,7 @@ class MetabaseApi:
         session: Optional[Session] = None,
     ):
         if not credentials and not token_path:
-            raise AuthenticationFailure("No authentication method provided")
+            raise MetabaseApiException("No authentication method provided")
         credentials = credentials or {}
         token_path = Path(token_path) if token_path else None
 
@@ -105,7 +100,7 @@ class MetabaseApi:
         # Raise error if still not authenticated
         if not authed:
             logger.error("Failed to authenticate")
-            raise AuthenticationFailure(
+            raise MetabaseApiException(
                 "Failed to authenticate with credentials provided"
             )
 
@@ -224,7 +219,7 @@ class MetabaseApi:
             )
         except RequestException as error_raised:
             logger.error(str(error_raised))
-            raise RequestFailure from error_raised
+            raise MetabaseApiException from error_raised
 
     def generic_request(
         self,
@@ -268,18 +263,20 @@ class MetabaseApi:
                     result = result["data"]
                 if isinstance(result, (list, dict)):
                     return result
-            except JSONDecodeError as error_raised:
+            except JSONDecodeError:
                 if response.status_code == 204:
                     return {"success": True}
                 logger.error(log_line_post, False, response.status_code, response.text)
-                raise InvalidDataReceived from error_raised
+                raise
         elif response.status_code == 401:
             logger.error(log_line_post, False, response.status_code, response.text)
-            raise AuthenticationFailure(f"{response.status_code} - {response.reason}")
+            raise MetabaseApiException(
+                f"Failed to authenticate: {response.status_code} - {response.reason}"
+            )
 
         error_line = f"{response.status_code} - {response.reason} - {response.text}"
         logger.error(log_line_post, False, response.status_code, response.text)
-        raise RequestFailure(error_line)
+        raise MetabaseApiException(error_line)
 
     def get(
         self, endpoint: str, params: Optional[dict[str, Any]] = None
