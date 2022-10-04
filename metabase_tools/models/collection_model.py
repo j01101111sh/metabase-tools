@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
 from pydantic import PrivateAttr
 
-from metabase_tools.exceptions import EmptyDataReceived
 from metabase_tools.models.generic_model import Item, MissingParam
 from metabase_tools.utils.logging_utils import log_call
 
@@ -150,12 +149,13 @@ class CollectionItem(Item):
             params["model"] = model_type
 
         if self._adapter:
-            response = self._adapter.get(
+            result = self._adapter.get(
                 endpoint=f"/collection/{self.id}/items",
                 params=params,
             )
-            if isinstance(response, list) and all(
-                isinstance(record, dict) for record in response
+            if isinstance(result, list) and all(
+                isinstance(record, dict) for record in result
             ):
-                return response
-        raise EmptyDataReceived
+                return result
+            raise TypeError(f"Expected list[dict], received {type(result)}")
+        raise AttributeError("Adapter not set on object")

@@ -11,7 +11,6 @@ from packaging.version import Version
 from pydantic import BaseModel, PrivateAttr
 from pydantic.fields import Field
 
-from metabase_tools.exceptions import InvalidParameters
 from metabase_tools.models.collection_model import CollectionItem
 from metabase_tools.models.generic_model import Item, MissingParam
 from metabase_tools.models.user_model import UserItem
@@ -191,7 +190,8 @@ class CardItem(Item):
             if isinstance(result, dict):
                 result["card_id"] = self.id
                 return CardRelatedObjects(**result)
-        raise InvalidParameters
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     @log_call
     def favorite(self: CardItem) -> CardItem:
@@ -206,7 +206,8 @@ class CardItem(Item):
             result = self._adapter.post(endpoint=f"/card/{self.id}/favorite")
             if isinstance(result, dict):
                 return self.refresh()
-        raise InvalidParameters
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     @log_call
     def unfavorite(self: CardItem) -> CardItem:
@@ -221,7 +222,8 @@ class CardItem(Item):
             result = self._adapter.delete(endpoint=f"/card/{self.id}/favorite")
             if isinstance(result, dict):
                 return self.refresh()
-        raise InvalidParameters
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     @log_call
     def share(self: CardItem) -> CardItem:
@@ -234,7 +236,8 @@ class CardItem(Item):
             result = self._adapter.post(endpoint=f"/card/{self.id}/public_link")
             if isinstance(result, dict) and "uuid" in result:
                 return self.refresh()
-        raise InvalidParameters
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     @log_call
     def unshare(self: CardItem) -> CardItem:
@@ -248,7 +251,8 @@ class CardItem(Item):
             if isinstance(result, dict) and isinstance(self.id, int):
                 card = self._adapter.cards.get([self.id])[0]
                 return card
-        raise InvalidParameters
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
     @log_call
     def query(self: CardItem) -> CardQueryResult:
@@ -261,7 +265,8 @@ class CardItem(Item):
             result = self._adapter.post(endpoint=f"/card/{self.id}/query")
             if isinstance(result, dict):
                 return CardQueryResult(**result)
-        raise InvalidParameters
+            raise TypeError(f"Expected dict, received {type(result)}")
+        raise AttributeError("Adapter not set on object")
 
 
 class CardQueryResult(BaseModel):

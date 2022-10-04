@@ -1,12 +1,13 @@
 import random
+from types import LambdaType
+from typing import Type
 
 import pytest
 from packaging.version import Version
 
-from metabase_tools.exceptions import InvalidParameters, RequestFailure
+from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.metabase import MetabaseApi
 from metabase_tools.models.user_model import UserItem
-from tests.helpers import PASSWORD, random_string
 
 
 @pytest.fixture(scope="function")
@@ -44,7 +45,7 @@ class TestModelMethodsCommonPass:
             result._adapter.server_version, Version
         )  # check adapter initialized
 
-    def test_refresh(self, items: list[UserItem]):
+    def test_refresh(self, items: list[UserItem], random_string: LambdaType):
         target = random.choice(items)
         result = target.update(first_name=random_string(5))
         target = target.refresh()
@@ -58,7 +59,7 @@ class TestModelMethodsCommonPass:
     def test_disable(self, api: MetabaseApi, items: list[UserItem]):
         target = random.choice(items)
         target.disable()
-        with pytest.raises(RequestFailure):
+        with pytest.raises(MetabaseApiException):
             _ = api.users.get(targets=[target.id if isinstance(target.id, int) else 2])
 
     def test_enable(self, items: list[UserItem]):
@@ -75,25 +76,25 @@ class TestModelMethodsCommonPass:
 class TestModelMethodsCommonFail:
     def test_update_fail(self, items: list[UserItem]):
         target = random.choice(items)
-        with pytest.raises(RequestFailure):
+        with pytest.raises(MetabaseApiException):
             _ = target.update(email="four")  # type: ignore
 
     def test_archive_fail(self, api: MetabaseApi):
         target = api.users.get()[0]
         target.id = -1
-        with pytest.raises(RequestFailure):
+        with pytest.raises(MetabaseApiException):
             _ = target.archive()  # type: ignore
 
     def test_unarchive_fail(self, api: MetabaseApi):
         target = api.users.get()[0]
         target.id = -1
-        with pytest.raises(RequestFailure):
+        with pytest.raises(MetabaseApiException):
             _ = target.unarchive()  # type: ignore
 
 
 class TestEndpointMethodsCommonPass:
-    def test_create(self, api: MetabaseApi, server_version: Version):
-        name = random_string(6, True)
+    def test_create(self, api: MetabaseApi, random_string: LambdaType):
+        name = random_string(6)
         definition = {
             "first_name": name,
             "last_name": "Test",
@@ -172,12 +173,12 @@ class TestEndpointMethodsCommonPass:
 
 class TestEndpointMethodsCommonFail:
     def test_create_fail(self, api: MetabaseApi):
-        with pytest.raises(InvalidParameters):
+        with pytest.raises(MetabaseApiException):
             _ = api.users.create(name="Test fail")  # type: ignore
 
     def test_get_fail(self, api: MetabaseApi):
         target = {"id": 1}
-        with pytest.raises(InvalidParameters):
+        with pytest.raises(TypeError):
             _ = api.users.get(targets=target)  # type: ignore
 
     def test_search_fail(self, api: MetabaseApi, items: list[UserItem]):
@@ -203,9 +204,9 @@ class TestModelMethodsUniquePass:
         assert isinstance(result, dict)
         assert result["success"] is True
 
-    def test_reset_password(self, items: list[UserItem]):
+    def test_reset_password(self, items: list[UserItem], password):
         item = random.choice(items)
-        payload = {"id": item.id, "password": PASSWORD}
+        payload = {"id": item.id, "password": password}
         result = item.update_password(payload=payload)
         assert isinstance(result, UserItem)
 

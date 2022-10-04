@@ -3,12 +3,12 @@ MetabaseTools extends MetabaseApi with additional complex functions
 """
 from __future__ import annotations  # Included for support of |
 
-from logging import getLogger
 from json import dumps, loads
+from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Optional
 
-from metabase_tools.exceptions import EmptyDataReceived, ItemNotFound
+from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.models.card_model import CardItem
 from metabase_tools.utils.logging_utils import log_call
 
@@ -148,10 +148,7 @@ class MetabaseTools:
                     card_id = self._find_card_id(
                         card_name=card["name"], collection_id=dev_coll_id
                     )
-                except (
-                    EmptyDataReceived,
-                    ItemNotFound,
-                ):  # No items in collection or not found
+                except MetabaseApiException:  # No items in collection or not found
                     logger.debug(
                         "%s not found in listed location, creating", card["name"]
                     )
@@ -253,7 +250,7 @@ class MetabaseTools:
         for item in collection_items:
             if item["name"] == card_name and isinstance(item["id"], int):
                 return item["id"]
-        raise ItemNotFound
+        raise MetabaseApiException
 
     @log_call
     def _update_existing_card(
