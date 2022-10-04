@@ -255,7 +255,18 @@ def set_server_settings(session: requests.Session) -> list[requests.Response]:
     embed_result = session.put(
         f"{metabase_config['host']}/api/setting/enable-embedding"
     )
-    return [embed_result]
+    email_result = set_email_settings(session)
+    return [embed_result, email_result]
+
+
+def set_email_settings(session: requests.Session) -> requests.Response:
+    settings = {
+        "email-from-address": metabase_config["email"],
+        "email-smtp-host": "mailhog",
+        "email-smtp-port": 1025,
+    }
+    email_result = session.put(f"{metabase_config['host']}/api/email", json=settings)
+    return email_result
 
 
 if __name__ == "__main__":
