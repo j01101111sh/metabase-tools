@@ -6,14 +6,21 @@ from random import choice
 from string import ascii_letters
 
 import pytest
+import requests
 
 from metabase_tools import MetabaseApi
 from tests.setup_metabase import metabase_config
 
 _run_id = os.environ.get("GITHUB_RUN_ID", datetime.now().strftime("%y%m%dT%H%M%S"))
 _python_version = python_version().replace(".", "_")
-_mb_verison = os.environ.get("MB_VERSION", "unknown").replace(".", "_")
-_result_path = Path(f"./temp/test-{_run_id}/py_{_python_version}/mb_{_mb_verison}")
+
+properties = requests.get("http://localhost:3000/api/session/properties").json()
+if isinstance(properties, dict):
+    _mb_version = properties["version"]["tag"].replace(".", "_")
+else:
+    _mb_version = os.environ.get("MB_VERSION", "unknown").replace(".", "_")
+
+_result_path = Path(f"./temp/test-{_run_id}/py_{_python_version}/mb_{_mb_version}")
 
 
 @pytest.fixture(scope="function")
