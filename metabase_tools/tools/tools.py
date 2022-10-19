@@ -145,9 +145,8 @@ class MetabaseTools:
                 # Check if a card with the same name exists in the listed location
                 dev_coll_id = collections_by_path[card["path"]]["id"]
                 try:
-                    card_id = self._find_card_id(
-                        card_name=card["name"], collection_id=dev_coll_id
-                    )
+                    collection = self._adapter.collections.get(targets=[dev_coll_id])[0]
+                    card_id = collection.check_for_object(card["name"])
                 except MetabaseApiException:  # No items in collection or not found
                     logger.debug(
                         "%s not found in listed location, creating", card["name"]
@@ -242,15 +241,6 @@ class MetabaseTools:
         collections = self._adapter.collections.get_flat_list()
         non_keys = [k for k in collections[0].keys() if k != key]
         return {item[key]: {nk: item[nk] for nk in non_keys} for item in collections}
-
-    @log_call
-    def _find_card_id(self, card_name: str, collection_id: int) -> int:
-        collection = self._adapter.collections.get(targets=[collection_id])[0]
-        collection_items = collection.get_contents(model_type="card", archived=False)
-        for item in collection_items:
-            if item["name"] == card_name and isinstance(item["id"], int):
-                return item["id"]
-        raise MetabaseApiException
 
     @log_call
     def _update_existing_card(
