@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
 from pydantic import PrivateAttr
 
+from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.models.generic_model import Item, MissingParam
 from metabase_tools.utils.logging_utils import log_call
 
@@ -159,3 +160,22 @@ class CollectionItem(Item):
                 return result
             raise TypeError(f"Expected list[dict], received {type(result)}")
         raise AttributeError("Adapter not set on object")
+
+    @log_call
+    def check_for_object(self, item_name: str) -> int:
+        """Checks for object in the collection and returns the id, if found
+
+        Args:
+            item_name (str): Name of the item being located
+
+        Raises:
+            MetabaseApiException: Item not found
+
+        Returns:
+            int: id of the item being located
+        """
+        collection_items = self.get_contents(model_type="card", archived=False)
+        for item in collection_items:
+            if item["name"] == item_name and isinstance(item["id"], int):
+                return item["id"]
+        raise MetabaseApiException
