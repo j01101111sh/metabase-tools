@@ -167,7 +167,6 @@ class CollectionItem(Item):
 
         Args:
             item_name (str): Name of the item being located
-            archived (bool, optional): Whether to check archived items. Defaults to False.
 
         Raises:
             MetabaseApiException: Item not found
