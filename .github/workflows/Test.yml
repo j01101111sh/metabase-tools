@@ -44,8 +44,7 @@ jobs:
       - name: Fix dependency errors
         id: dependency_errors
         run: |
-          if [ ${{ matrix.python-version }} == '3.11-dev' ]; then poetry add wrapt; fi
-          poetry install --no-interaction --with dev
+          poetry install --no-interaction --no-root --with dev
       - name: Enforce code formatting
         id: precommit
         continue-on-error: true
