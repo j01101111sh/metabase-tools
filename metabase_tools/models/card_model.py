@@ -54,6 +54,7 @@ class CardItem(Item):
     created_at: datetime
     public_uuid: Optional[UUID]
     can_write: Optional[bool]
+    is_write: Optional[bool]
     dashboard_count: Optional[int]
     is_favorite: Optional[bool] = Field(alias="favorite")
 
