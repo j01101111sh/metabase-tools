@@ -2,6 +2,7 @@
 """
 from __future__ import annotations  # Included for support of |
 
+from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
@@ -38,6 +39,7 @@ class CollectionItem(Item):
 
     authority_level: Optional[Any]
     entity_id: Optional[str]
+    created_at: Optional[datetime]
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
