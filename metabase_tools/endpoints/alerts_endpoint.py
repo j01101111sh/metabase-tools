@@ -21,10 +21,11 @@ class Alerts(Endpoint[AlertItem]):
     _STD_OBJ: ClassVar[type] = AlertItem
 
     _required_params: ClassVar[list[str]] = [
-        "visualization_settings",
-        "name",
-        "dataset_query",
-        "display",
+        "alert_condition",
+        "card",
+        "channels",
+        "alert_first_only",
+        "alert_above_goal",
     ]
 
     @log_call
