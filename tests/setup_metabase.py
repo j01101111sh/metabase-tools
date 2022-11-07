@@ -269,6 +269,78 @@ def set_email_settings(session: requests.Session) -> requests.Response:
     return email_result
 
 
+def create_alerts(session: requests.Session) -> list[requests.Response]:
+    alert_one = {
+        "alert_condition": "rows",
+        "card": {
+            "id": 1,
+            "include_csv": True,
+            "include_xls": False,
+            "dashboard_card_id": None,
+        },
+        "channels": [
+            {
+                "schedule_type": "daily",
+                "schedule_hour": 0,
+                "channel_type": "email",
+                "schedule_frame": None,
+                "recipients": [
+                    {
+                        "id": 1,
+                        "email": "jim@dundermifflin.com",
+                        "first_name": "Jim",
+                        "last_name": "Halpert",
+                        "common_name": "Jim Halpert",
+                    }
+                ],
+                "pulse_id": 1,
+                "id": 1,
+                "schedule_day": None,
+                "enabled": True,
+            }
+        ],
+        "alert_first_only": False,
+        "alert_above_goal": None,
+    }
+    alert_two = {
+        "alert_condition": "rows",
+        "card": {
+            "id": 2,
+            "include_csv": True,
+            "include_xls": False,
+            "dashboard_card_id": None,
+        },
+        "channels": [
+            {
+                "schedule_type": "daily",
+                "schedule_hour": 0,
+                "channel_type": "email",
+                "schedule_frame": None,
+                "recipients": [
+                    {
+                        "id": 1,
+                        "email": "jim@dundermifflin.com",
+                        "first_name": "Jim",
+                        "last_name": "Halpert",
+                        "common_name": "Jim Halpert",
+                    }
+                ],
+                "pulse_id": 1,
+                "id": 1,
+                "schedule_day": None,
+                "enabled": True,
+            }
+        ],
+        "alert_first_only": False,
+        "alert_above_goal": None,
+    }
+    responses = []
+    for alert in [alert_one, alert_two]:
+        response = session.post(f"{metabase_config['host']}/api/alert", json=alert)
+        responses.append(check_status_code(response=response))
+    return responses
+
+
 if __name__ == "__main__":
     cleanup_cache_and_logs()
     setup_response = initial_setup()
@@ -279,3 +351,4 @@ if __name__ == "__main__":
     coll_responses = create_collections(session)
     card_responses = create_cards(session)
     db_responses = create_databases(session, server_version)
+    alert_responses = create_alerts(session)
