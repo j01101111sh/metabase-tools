@@ -130,15 +130,18 @@ class Endpoint(ABC, Generic[T]):
             T: Object of the relevant type
         """
         # Validate all required parameters were provided
-        missing_params = [
-            param
-            for param in self._required_params
-            if isinstance(kwargs[param], MissingParam)
-        ]
-        if len(missing_params) > 0:
-            raise MetabaseApiException(
-                f"Missing required parameters: {''.join(missing_params)}"
-            )
+        try:
+            missing_params = [
+                param
+                for param in self._required_params
+                if isinstance(kwargs[param], MissingParam)
+            ]
+            if len(missing_params) > 0:
+                raise MetabaseApiException(
+                    f"Missing required parameters: {''.join(missing_params)}"
+                )
+        except KeyError as error:
+            raise MetabaseApiException from error
 
         # Eliminate parameters that were not provided
         details = {k: v for k, v in kwargs.items() if not isinstance(v, MissingParam)}
