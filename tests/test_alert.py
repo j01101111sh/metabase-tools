@@ -17,9 +17,16 @@ def items(api: MetabaseApi) -> list[AlertItem]:
 class TestModelMethodsCommonPass:
     def test_update(self, items: list[AlertItem], run_id: str):
         target = random.choice(items)
-        result = target.update(description=f"Updated {run_id}")
+        result = target.update(
+            card={
+                "id": target.card["id"],
+                "include_csv": True,
+                "include_xls": True,
+                "dashboard_card_id": None,
+            }
+        )
         assert isinstance(result, AlertItem)  # check item class
-        assert result.description == f"Updated {run_id}"  # check action result
+        assert result.card["include_csv"] and result.card["include_xls"]
         assert target.id == result.id  # check action result
         assert isinstance(result._adapter, MetabaseApi)  # check adapter set
         assert isinstance(
@@ -49,10 +56,10 @@ class TestModelMethodsCommonPass:
 
     def test_refresh(self, items: list[AlertItem], random_string: LambdaType):
         target = random.choice(items)
-        result = target.update(description="Updated " + random_string(5))
+        result = target.update(name="Updated " + random_string(5))
         target = target.refresh()
         assert isinstance(target, AlertItem)  # check item class
-        assert target.description == result.description  # check action result
+        assert target.name == result.name  # check action result
         assert isinstance(target._adapter, MetabaseApi)  # check adapter set
         assert isinstance(
             target._adapter.server_version, Version
@@ -63,7 +70,7 @@ class TestModelMethodsCommonFail:
     def test_update_fail(self, items: list[AlertItem]):
         target = random.choice(items)
         with pytest.raises(MetabaseApiException):
-            _ = target.update(visualization_settings="invalid")  # type: ignore
+            _ = target.update(card=1)  # type: ignore
 
     def test_archive_fail(self, api: MetabaseApi):
         target = api.alerts.get()[0]
@@ -85,26 +92,41 @@ class TestModelMethodsCommonFail:
 
 class TestEndpointMethodsCommonPass:
     def test_create(self, api: MetabaseApi, random_string: LambdaType):
-        name = "Test Card - " + random_string(6)
         definition = {
-            "visualization_settings": {
-                "table.pivot_column": "QUANTITY",
-                "table.cell_column": "ID",
+            "alert_condition": "rows",
+            "card": {
+                "id": 1,
+                "include_csv": True,
+                "include_xls": False,
+                "dashboard_card_id": None,
             },
-            "collection_id": 2,
-            "name": name,
-            "dataset_query": {
-                "type": "native",
-                "native": {
-                    "query": "--This card was created through the API\nSELECT ID, USER_ID, PRODUCT_ID, SUBTOTAL, TAX, TOTAL, DISCOUNT, CREATED_AT, QUANTITY\r\nFROM ORDERS\r\nLIMIT 100\n"
-                },
-                "database": 1,
-            },
-            "display": "table",
+            "channels": [
+                {
+                    "schedule_type": "daily",
+                    "schedule_hour": 0,
+                    "channel_type": "email",
+                    "schedule_frame": None,
+                    "recipients": [
+                        {
+                            "id": 1,
+                            "email": "jim@dundermifflin.com",
+                            "first_name": "Jim",
+                            "last_name": "Halpert",
+                            "common_name": "Jim Halpert",
+                        }
+                    ],
+                    "pulse_id": 1,
+                    "id": 1,
+                    "schedule_day": None,
+                    "enabled": True,
+                }
+            ],
+            "alert_first_only": False,
+            "alert_above_goal": None,
         }
         result = api.alerts.create(**definition)
         assert isinstance(result, AlertItem)  # check item class
-        assert result.name == name  # check action result
+        assert result.card["id"] == 1  # check action result
         assert isinstance(result._adapter, MetabaseApi)  # check adapter set
         assert isinstance(
             result._adapter.server_version, Version
@@ -156,7 +178,7 @@ class TestEndpointMethodsCommonPass:
         )  # check adapter initialized
 
     def test_search(self, api: MetabaseApi, items: list[AlertItem]):
-        params = [{"name": random.choice(items).name}]
+        params = [{"id": random.choice(items).id}]
         result = api.alerts.search(search_params=params, search_list=items)
         assert isinstance(result, list)  # check item class
         assert all(
@@ -183,7 +205,7 @@ class TestEndpointMethodsCommonFail:
             _ = api.alerts.get(targets=target)  # type: ignore
 
     def test_search_fail(self, api: MetabaseApi, items: list[AlertItem]):
-        params = [{"name": random.choice(items).name + "z"}]
+        params = [{"id": -1}]
         result = api.alerts.search(search_params=params, search_list=items)
         assert len(result) == 0
 
