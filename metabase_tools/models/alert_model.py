@@ -31,7 +31,7 @@ class AlertItem(Item):
     archived: bool
     collection_position: Optional[int]
     creator: UserItem
-    can_write: bool
+    can_write: Optional[bool]
     channels: list[dict[str, Any]]
     alert_condition: str
     collection_id: Optional[int]
