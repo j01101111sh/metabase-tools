@@ -10,6 +10,7 @@ from packaging.version import Version
 from pydantic import PrivateAttr
 from pydantic.fields import Field
 
+from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.models.generic_model import Item, MissingParam
 from metabase_tools.models.user_model import UserItem
 from metabase_tools.utils.logging_utils import log_call
@@ -63,7 +64,11 @@ class AlertItem(Item):
         Returns:
             AlertItem: self
         """
-        return super().refresh()
+        if self._adapter and self._adapter.server_version >= Version("v0.41"):
+            return super().refresh()
+        if self._adapter and isinstance(self.id, int):
+            return self._adapter.alerts.get(targets=[self.id])[0]
+        raise MetabaseApiException
 
     @log_call
     def delete(self: AlertItem) -> None:
