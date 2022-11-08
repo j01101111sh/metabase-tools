@@ -92,6 +92,20 @@ class AlertItem(Item):
         archived: Optional[bool | MissingParam] = MissingParam(),
         **kwargs: Any,
     ) -> AlertItem:
+        """Updates a card using the provided parameters
+
+        Args:
+            self (AlertItem): _description_
+            alert_condition (str, optional)
+            alert_first_only (bool, optional)
+            alert_above_goal (bool, optional)
+            card (dict[str, Any], optional)
+            channels (list[dict[str, Any]], optional)
+            archived (bool, optional)
+
+        Returns:
+            AlertItem: _description_
+        """
         return self._make_update(
             alert_condition=alert_condition,
             alert_first_only=alert_first_only,
