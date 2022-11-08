@@ -6,6 +6,8 @@ from __future__ import annotations
 from logging import getLogger
 from typing import Any, ClassVar, Optional
 
+from packaging.version import Version
+
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.models.alert_model import AlertItem
 from metabase_tools.models.generic_model import MissingParam
@@ -38,7 +40,11 @@ class Alerts(Endpoint[AlertItem]):
         Returns:
             list[AlertItem]
         """
-        return super().get(targets=targets)
+        if self._adapter and self._adapter.server_version >= Version("v0.41"):
+            return super().get(targets=targets)
+        if targets:
+            return [x for x in super().get() if x.id in targets]
+        return super().get()
 
     def _make_create(self, **kwargs: Any) -> AlertItem:
         """Makes create request
