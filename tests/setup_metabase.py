@@ -334,8 +334,40 @@ def create_alerts(session: requests.Session) -> list[requests.Response]:
         "alert_first_only": False,
         "alert_above_goal": None,
     }
+    alert_three = {
+        "alert_condition": "rows",
+        "card": {
+            "id": 2,
+            "include_csv": False,
+            "include_xls": True,
+            "dashboard_card_id": None,
+        },
+        "channels": [
+            {
+                "schedule_type": "daily",
+                "schedule_hour": 0,
+                "channel_type": "email",
+                "schedule_frame": None,
+                "recipients": [
+                    {
+                        "id": 1,
+                        "email": "jim@dundermifflin.com",
+                        "first_name": "Jim",
+                        "last_name": "Halpert",
+                        "common_name": "Jim Halpert",
+                    }
+                ],
+                "pulse_id": 1,
+                "id": 1,
+                "schedule_day": None,
+                "enabled": True,
+            }
+        ],
+        "alert_first_only": False,
+        "alert_above_goal": None,
+    }
     responses = []
-    for alert in [alert_one, alert_two]:
+    for alert in [alert_one, alert_two, alert_three]:
         response = session.post(f"{metabase_config['host']}/api/alert", json=alert)
         responses.append(check_status_code(response=response))
     return responses
