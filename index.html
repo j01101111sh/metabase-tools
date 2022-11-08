@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Core - MetabaseApi" href="Core.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>metabase-tools 0.11.1 documentation</title>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
+        <title>metabase-tools 0.12.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="#"><div class="brand">metabase-tools 0.11.1 documentation</div></a>
+      <a href="#"><div class="brand">metabase-tools 0.12.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
   
   
-  <span class="sidebar-brand-text">metabase-tools 0.11.1 documentation</span>
+  <span class="sidebar-brand-text">metabase-tools 0.12.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -182,7 +182,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -212,8 +213,18 @@
 <li class="toctree-l2"><a class="reference internal" href="Core.html#caching-tokens">Caching Tokens</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Core.html#custom-session-objects">Custom Session objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Core.html#other-public-methods">Other Public Methods</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="Core.html#testing-for-successful-authentication">Testing for successful authentication</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Core.html#making-generic-requests">Making generic requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Core.html#testing-for-successful-authentication">Testing for successful authentication</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Core.html#metabase_tools.MetabaseApi.test_for_auth"><code class="docutils literal notranslate"><span class="pre">test_for_auth()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Core.html#making-generic-requests">Making generic requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Core.html#metabase_tools.MetabaseApi.generic_request"><code class="docutils literal notranslate"><span class="pre">generic_request()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Core.html#metabase_tools.MetabaseApi.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Core.html#metabase_tools.MetabaseApi.delete"><code class="docutils literal notranslate"><span class="pre">delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Core.html#metabase_tools.MetabaseApi.post"><code class="docutils literal notranslate"><span class="pre">post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="Core.html#metabase_tools.MetabaseApi.put"><code class="docutils literal notranslate"><span class="pre">put()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -227,12 +238,137 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Card.html">Card</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Collection.html">Collection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Database.html">Database</a></li>
-<li class="toctree-l1"><a class="reference internal" href="User.html">User</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Card.html">Card</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem"><code class="docutils literal notranslate"><span class="pre">CardItem</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.archive"><code class="docutils literal notranslate"><span class="pre">CardItem.archive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.construct"><code class="docutils literal notranslate"><span class="pre">CardItem.construct()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.copy"><code class="docutils literal notranslate"><span class="pre">CardItem.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.delete"><code class="docutils literal notranslate"><span class="pre">CardItem.delete()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.dict"><code class="docutils literal notranslate"><span class="pre">CardItem.dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.favorite"><code class="docutils literal notranslate"><span class="pre">CardItem.favorite()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.json"><code class="docutils literal notranslate"><span class="pre">CardItem.json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.query"><code class="docutils literal notranslate"><span class="pre">CardItem.query()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.refresh"><code class="docutils literal notranslate"><span class="pre">CardItem.refresh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.related"><code class="docutils literal notranslate"><span class="pre">CardItem.related()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.set_adapter"><code class="docutils literal notranslate"><span class="pre">CardItem.set_adapter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.share"><code class="docutils literal notranslate"><span class="pre">CardItem.share()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.unarchive"><code class="docutils literal notranslate"><span class="pre">CardItem.unarchive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.unfavorite"><code class="docutils literal notranslate"><span class="pre">CardItem.unfavorite()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.unshare"><code class="docutils literal notranslate"><span class="pre">CardItem.unshare()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.update"><code class="docutils literal notranslate"><span class="pre">CardItem.update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardItem.update_forward_refs"><code class="docutils literal notranslate"><span class="pre">CardItem.update_forward_refs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardQueryResult"><code class="docutils literal notranslate"><span class="pre">CardQueryResult</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardQueryResult.construct"><code class="docutils literal notranslate"><span class="pre">CardQueryResult.construct()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardQueryResult.copy"><code class="docutils literal notranslate"><span class="pre">CardQueryResult.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardQueryResult.dict"><code class="docutils literal notranslate"><span class="pre">CardQueryResult.dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardQueryResult.json"><code class="docutils literal notranslate"><span class="pre">CardQueryResult.json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardQueryResult.update_forward_refs"><code class="docutils literal notranslate"><span class="pre">CardQueryResult.update_forward_refs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardRelatedObjects"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardRelatedObjects.construct"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects.construct()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardRelatedObjects.copy"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardRelatedObjects.dict"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects.dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardRelatedObjects.json"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects.json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.models.card_model.CardRelatedObjects.update_forward_refs"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects.update_forward_refs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Card.html#metabase_tools.endpoints.cards_endpoint.Cards"><code class="docutils literal notranslate"><span class="pre">Cards</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.endpoints.cards_endpoint.Cards.create"><code class="docutils literal notranslate"><span class="pre">Cards.create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.endpoints.cards_endpoint.Cards.embeddable"><code class="docutils literal notranslate"><span class="pre">Cards.embeddable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.endpoints.cards_endpoint.Cards.get"><code class="docutils literal notranslate"><span class="pre">Cards.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Card.html#metabase_tools.endpoints.cards_endpoint.Cards.search"><code class="docutils literal notranslate"><span class="pre">Cards.search()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Collection.html">Collection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem"><code class="docutils literal notranslate"><span class="pre">CollectionItem</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.archive"><code class="docutils literal notranslate"><span class="pre">CollectionItem.archive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.check_for_object"><code class="docutils literal notranslate"><span class="pre">CollectionItem.check_for_object()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.construct"><code class="docutils literal notranslate"><span class="pre">CollectionItem.construct()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.copy"><code class="docutils literal notranslate"><span class="pre">CollectionItem.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.delete"><code class="docutils literal notranslate"><span class="pre">CollectionItem.delete()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.dict"><code class="docutils literal notranslate"><span class="pre">CollectionItem.dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.get_contents"><code class="docutils literal notranslate"><span class="pre">CollectionItem.get_contents()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.json"><code class="docutils literal notranslate"><span class="pre">CollectionItem.json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.refresh"><code class="docutils literal notranslate"><span class="pre">CollectionItem.refresh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.set_adapter"><code class="docutils literal notranslate"><span class="pre">CollectionItem.set_adapter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.unarchive"><code class="docutils literal notranslate"><span class="pre">CollectionItem.unarchive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.update"><code class="docutils literal notranslate"><span class="pre">CollectionItem.update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem.update_forward_refs"><code class="docutils literal notranslate"><span class="pre">CollectionItem.update_forward_refs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Collection.html#metabase_tools.endpoints.collections_endpoint.Collections"><code class="docutils literal notranslate"><span class="pre">Collections</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.endpoints.collections_endpoint.Collections.create"><code class="docutils literal notranslate"><span class="pre">Collections.create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.endpoints.collections_endpoint.Collections.get"><code class="docutils literal notranslate"><span class="pre">Collections.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.endpoints.collections_endpoint.Collections.get_flat_list"><code class="docutils literal notranslate"><span class="pre">Collections.get_flat_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.endpoints.collections_endpoint.Collections.get_tree"><code class="docutils literal notranslate"><span class="pre">Collections.get_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.endpoints.collections_endpoint.Collections.graph"><code class="docutils literal notranslate"><span class="pre">Collections.graph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Collection.html#metabase_tools.endpoints.collections_endpoint.Collections.search"><code class="docutils literal notranslate"><span class="pre">Collections.search()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Database.html">Database</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem"><code class="docutils literal notranslate"><span class="pre">DatabaseItem</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem.archive"><code class="docutils literal notranslate"><span class="pre">DatabaseItem.archive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem.construct"><code class="docutils literal notranslate"><span class="pre">DatabaseItem.construct()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem.copy"><code class="docutils literal notranslate"><span class="pre">DatabaseItem.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem.delete"><code class="docutils literal notranslate"><span class="pre">DatabaseItem.delete()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem.dict"><code class="docutils literal notranslate"><span class="pre">DatabaseItem.dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem.json"><code class="docutils literal notranslate"><span class="pre">DatabaseItem.json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem.refresh"><code class="docutils literal notranslate"><span class="pre">DatabaseItem.refresh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem.set_adapter"><code class="docutils literal notranslate"><span class="pre">DatabaseItem.set_adapter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem.unarchive"><code class="docutils literal notranslate"><span class="pre">DatabaseItem.unarchive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem.update"><code class="docutils literal notranslate"><span class="pre">DatabaseItem.update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.models.database_model.DatabaseItem.update_forward_refs"><code class="docutils literal notranslate"><span class="pre">DatabaseItem.update_forward_refs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Database.html#metabase_tools.endpoints.databases_endpoint.Databases"><code class="docutils literal notranslate"><span class="pre">Databases</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.endpoints.databases_endpoint.Databases.create"><code class="docutils literal notranslate"><span class="pre">Databases.create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.endpoints.databases_endpoint.Databases.get"><code class="docutils literal notranslate"><span class="pre">Databases.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Database.html#metabase_tools.endpoints.databases_endpoint.Databases.search"><code class="docutils literal notranslate"><span class="pre">Databases.search()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="User.html">User</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem"><code class="docutils literal notranslate"><span class="pre">UserItem</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.archive"><code class="docutils literal notranslate"><span class="pre">UserItem.archive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.construct"><code class="docutils literal notranslate"><span class="pre">UserItem.construct()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.copy"><code class="docutils literal notranslate"><span class="pre">UserItem.copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.delete"><code class="docutils literal notranslate"><span class="pre">UserItem.delete()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.dict"><code class="docutils literal notranslate"><span class="pre">UserItem.dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.disable"><code class="docutils literal notranslate"><span class="pre">UserItem.disable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.enable"><code class="docutils literal notranslate"><span class="pre">UserItem.enable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.json"><code class="docutils literal notranslate"><span class="pre">UserItem.json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.qbnewb"><code class="docutils literal notranslate"><span class="pre">UserItem.qbnewb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.refresh"><code class="docutils literal notranslate"><span class="pre">UserItem.refresh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.resend_invite"><code class="docutils literal notranslate"><span class="pre">UserItem.resend_invite()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.set_adapter"><code class="docutils literal notranslate"><span class="pre">UserItem.set_adapter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.unarchive"><code class="docutils literal notranslate"><span class="pre">UserItem.unarchive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.update"><code class="docutils literal notranslate"><span class="pre">UserItem.update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.update_forward_refs"><code class="docutils literal notranslate"><span class="pre">UserItem.update_forward_refs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem.update_password"><code class="docutils literal notranslate"><span class="pre">UserItem.update_password()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="User.html#metabase_tools.endpoints.users_endpoint.Users"><code class="docutils literal notranslate"><span class="pre">Users</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.endpoints.users_endpoint.Users.create"><code class="docutils literal notranslate"><span class="pre">Users.create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.endpoints.users_endpoint.Users.current"><code class="docutils literal notranslate"><span class="pre">Users.current()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.endpoints.users_endpoint.Users.get"><code class="docutils literal notranslate"><span class="pre">Users.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="User.html#metabase_tools.endpoints.users_endpoint.Users.search"><code class="docutils literal notranslate"><span class="pre">Users.search()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Tools.html">Tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Exceptions.html">Exceptions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.MetabaseApiException"><code class="docutils literal notranslate"><span class="pre">MetabaseApiException</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
@@ -309,6 +445,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
     </body>
 </html>

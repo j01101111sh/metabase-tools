@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Tools" href="Tools.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>Exceptions - metabase-tools 0.11.1 documentation</title>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
+        <title>Exceptions - metabase-tools 0.12.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">metabase-tools 0.11.1 documentation</div></a>
+      <a href="index.html"><div class="brand">metabase-tools 0.12.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -134,7 +134,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">metabase-tools 0.11.1 documentation</span>
+  <span class="sidebar-brand-text">metabase-tools 0.12.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -182,7 +182,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -190,7 +191,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -200,57 +201,9 @@
 <span id="exceptions"></span><h1>Exceptions<a class="headerlink" href="#module-metabase_tools.exceptions" title="Permalink to this heading">#</a></h1>
 <p>Exceptions for the MetabaseApi class</p>
 <dl class="py exception">
-<dt class="sig sig-object py" id="metabase_tools.exceptions.AuthenticationFailure">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">AuthenticationFailure</span></span><a class="headerlink" href="#metabase_tools.exceptions.AuthenticationFailure" title="Permalink to this definition">#</a></dt>
-<dd><p>Error encountered while trying to authenticate with API</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="metabase_tools.exceptions.EmptyDataReceived">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">EmptyDataReceived</span></span><a class="headerlink" href="#metabase_tools.exceptions.EmptyDataReceived" title="Permalink to this definition">#</a></dt>
-<dd><p>Response received but it contained no data</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="metabase_tools.exceptions.InvalidDataReceived">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidDataReceived</span></span><a class="headerlink" href="#metabase_tools.exceptions.InvalidDataReceived" title="Permalink to this definition">#</a></dt>
-<dd><p>Data received but it could not be decoded</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="metabase_tools.exceptions.InvalidParameters">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidParameters</span></span><a class="headerlink" href="#metabase_tools.exceptions.InvalidParameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Invalid parameters supplied to API</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="metabase_tools.exceptions.ItemInPersonalCollection">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">ItemInPersonalCollection</span></span><a class="headerlink" href="#metabase_tools.exceptions.ItemInPersonalCollection" title="Permalink to this definition">#</a></dt>
-<dd><p>Requested item is in a personal collection</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="metabase_tools.exceptions.ItemNotFound">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">ItemNotFound</span></span><a class="headerlink" href="#metabase_tools.exceptions.ItemNotFound" title="Permalink to this definition">#</a></dt>
-<dd><p>Item was not found it the listed location</p>
-</dd></dl>
-
-<dl class="py exception">
 <dt class="sig sig-object py" id="metabase_tools.exceptions.MetabaseApiException">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">MetabaseApiException</span></span><a class="headerlink" href="#metabase_tools.exceptions.MetabaseApiException" title="Permalink to this definition">#</a></dt>
-<dd><p>Base exception for other exceptions included in this package</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="metabase_tools.exceptions.NoUpdateProvided">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">NoUpdateProvided</span></span><a class="headerlink" href="#metabase_tools.exceptions.NoUpdateProvided" title="Permalink to this definition">#</a></dt>
-<dd><p>An update was requested but no change was provided</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="metabase_tools.exceptions.RequestFailure">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.exceptions.</span></span><span class="sig-name descname"><span class="pre">RequestFailure</span></span><a class="headerlink" href="#metabase_tools.exceptions.RequestFailure" title="Permalink to this definition">#</a></dt>
-<dd><p>HTTP error encountered during request</p>
+<dd><p>Base exception for errors in the adapter</p>
 </dd></dl>
 
 </section>
@@ -292,8 +245,27 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Exceptions</a><ul>
+<li><a class="reference internal" href="#metabase_tools.exceptions.MetabaseApiException"><code class="docutils literal notranslate"><span class="pre">MetabaseApiException</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
@@ -303,6 +275,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
     </body>
 </html>

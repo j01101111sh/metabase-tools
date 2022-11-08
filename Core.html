@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Basic Usage" href="basic_usage.html" /><link rel="prev" title="Welcome to metabase-tools’s documentation!" href="index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>Core - MetabaseApi - metabase-tools 0.11.1 documentation</title>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
+        <title>Core - MetabaseApi - metabase-tools 0.12.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">metabase-tools 0.11.1 documentation</div></a>
+      <a href="index.html"><div class="brand">metabase-tools 0.12.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">metabase-tools 0.11.1 documentation</span>
+  <span class="sidebar-brand-text">metabase-tools 0.12.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -182,7 +182,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -296,9 +297,9 @@
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.InvalidDataReceived" title="metabase_tools.exceptions.InvalidDataReceived"><strong>InvalidDataReceived</strong></a> – Unable to decode response from API</p></li>
-<li><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.AuthenticationFailure" title="metabase_tools.exceptions.AuthenticationFailure"><strong>AuthenticationFailure</strong></a> – Auth failure received from API</p></li>
-<li><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.RequestFailure" title="metabase_tools.exceptions.RequestFailure"><strong>RequestFailure</strong></a> – Other failure during request</p></li>
+<li><p><strong>InvalidDataReceived</strong> – Unable to decode response from API</p></li>
+<li><p><strong>AuthenticationFailure</strong> – Auth failure received from API</p></li>
+<li><p><strong>RequestFailure</strong> – Other failure during request</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -466,8 +467,18 @@
 <li><a class="reference internal" href="#caching-tokens">Caching Tokens</a></li>
 <li><a class="reference internal" href="#custom-session-objects">Custom Session objects</a></li>
 <li><a class="reference internal" href="#other-public-methods">Other Public Methods</a><ul>
-<li><a class="reference internal" href="#testing-for-successful-authentication">Testing for successful authentication</a></li>
-<li><a class="reference internal" href="#making-generic-requests">Making generic requests</a></li>
+<li><a class="reference internal" href="#testing-for-successful-authentication">Testing for successful authentication</a><ul>
+<li><a class="reference internal" href="#metabase_tools.MetabaseApi.test_for_auth"><code class="docutils literal notranslate"><span class="pre">test_for_auth()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#making-generic-requests">Making generic requests</a><ul>
+<li><a class="reference internal" href="#metabase_tools.MetabaseApi.generic_request"><code class="docutils literal notranslate"><span class="pre">generic_request()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.MetabaseApi.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.MetabaseApi.delete"><code class="docutils literal notranslate"><span class="pre">delete()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.MetabaseApi.post"><code class="docutils literal notranslate"><span class="pre">post()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.MetabaseApi.put"><code class="docutils literal notranslate"><span class="pre">put()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -486,6 +497,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
     </body>
 </html>

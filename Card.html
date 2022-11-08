@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Collection" href="Collection.html" /><link rel="prev" title="Basic Usage" href="basic_usage.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>Card - metabase-tools 0.11.1 documentation</title>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
+        <title>Card - metabase-tools 0.12.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">metabase-tools 0.11.1 documentation</div></a>
+      <a href="index.html"><div class="brand">metabase-tools 0.12.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -134,7 +134,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">metabase-tools 0.11.1 documentation</span>
+  <span class="sidebar-brand-text">metabase-tools 0.12.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -182,7 +182,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -190,7 +191,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -201,13 +202,13 @@
 <p>Classes related to card endpoints</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="metabase_tools.models.card_model.CardItem">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.models.card_model.</span></span><span class="sig-name descname"><span class="pre">CardItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archived</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_embedding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creator_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updated_at</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">made_public_by_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_ttl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualization_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">created_at</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">can_write</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dashboard_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">favorite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_query_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_preview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_query_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moderation_reviews</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_mappings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardItem" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.models.card_model.</span></span><span class="sig-name descname"><span class="pre">CardItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archived</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_embedding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">creator_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updated_at</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">made_public_by_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_ttl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualization_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">created_at</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">public_uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">can_write</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_write</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dashboard_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">favorite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_query_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_preview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_query_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moderation_reviews</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_mappings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.card_model.CardItem" title="Permalink to this definition">#</a></dt>
 <dd><p>Card object class with related methods</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>int</em><em> | </em><em>str</em>) – </p></li>
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>description</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>archived</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>collection_position</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
@@ -231,6 +232,7 @@
 <li><p><strong>created_at</strong> (<em>datetime</em>) – </p></li>
 <li><p><strong>public_uuid</strong> (<em>Optional</em><em>[</em><em>UUID</em><em>]</em>) – </p></li>
 <li><p><strong>can_write</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
+<li><p><strong>is_write</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
 <li><p><strong>dashboard_count</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
 <li><p><strong>favorite</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
 <li><p><strong>average_query_time</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
@@ -250,7 +252,7 @@
 <dd><p>Method for archiving a card</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.InvalidParameters" title="metabase_tools.exceptions.InvalidParameters"><strong>InvalidParameters</strong></a> – Targets and jsons are both None</p>
+<dd class="field-odd"><p><strong>InvalidParameters</strong> – Targets and jsons are both None</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Object of the relevant type</p>
@@ -474,7 +476,7 @@ the new model: you should trust this data</p></li>
 <dd><p>Method for unarchiving a card</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.InvalidParameters" title="metabase_tools.exceptions.InvalidParameters"><strong>InvalidParameters</strong></a> – Targets and jsons are both None</p>
+<dd class="field-odd"><p><strong>InvalidParameters</strong> – Targets and jsons are both None</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Object of the relevant type</p>
@@ -864,7 +866,7 @@ the new model: you should trust this data</p></li>
 <dd><p>Fetch list of cards with embedding enabled</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="Exceptions.html#metabase_tools.exceptions.EmptyDataReceived" title="metabase_tools.exceptions.EmptyDataReceived"><strong>EmptyDataReceived</strong></a> – If no cards have embedding enabled</p>
+<dd class="field-odd"><p><strong>EmptyDataReceived</strong> – If no cards have embedding enabled</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of cards with embedding enabled</p>
@@ -961,8 +963,69 @@ the new model: you should trust this data</p></li>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Card</a><ul>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem"><code class="docutils literal notranslate"><span class="pre">CardItem</span></code></a><ul>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.archive"><code class="docutils literal notranslate"><span class="pre">CardItem.archive()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.construct"><code class="docutils literal notranslate"><span class="pre">CardItem.construct()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.copy"><code class="docutils literal notranslate"><span class="pre">CardItem.copy()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.delete"><code class="docutils literal notranslate"><span class="pre">CardItem.delete()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.dict"><code class="docutils literal notranslate"><span class="pre">CardItem.dict()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.favorite"><code class="docutils literal notranslate"><span class="pre">CardItem.favorite()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.json"><code class="docutils literal notranslate"><span class="pre">CardItem.json()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.query"><code class="docutils literal notranslate"><span class="pre">CardItem.query()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.refresh"><code class="docutils literal notranslate"><span class="pre">CardItem.refresh()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.related"><code class="docutils literal notranslate"><span class="pre">CardItem.related()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.set_adapter"><code class="docutils literal notranslate"><span class="pre">CardItem.set_adapter()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.share"><code class="docutils literal notranslate"><span class="pre">CardItem.share()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.unarchive"><code class="docutils literal notranslate"><span class="pre">CardItem.unarchive()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.unfavorite"><code class="docutils literal notranslate"><span class="pre">CardItem.unfavorite()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.unshare"><code class="docutils literal notranslate"><span class="pre">CardItem.unshare()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.update"><code class="docutils literal notranslate"><span class="pre">CardItem.update()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardItem.update_forward_refs"><code class="docutils literal notranslate"><span class="pre">CardItem.update_forward_refs()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardQueryResult"><code class="docutils literal notranslate"><span class="pre">CardQueryResult</span></code></a><ul>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardQueryResult.construct"><code class="docutils literal notranslate"><span class="pre">CardQueryResult.construct()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardQueryResult.copy"><code class="docutils literal notranslate"><span class="pre">CardQueryResult.copy()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardQueryResult.dict"><code class="docutils literal notranslate"><span class="pre">CardQueryResult.dict()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardQueryResult.json"><code class="docutils literal notranslate"><span class="pre">CardQueryResult.json()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardQueryResult.update_forward_refs"><code class="docutils literal notranslate"><span class="pre">CardQueryResult.update_forward_refs()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardRelatedObjects"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects</span></code></a><ul>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardRelatedObjects.construct"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects.construct()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardRelatedObjects.copy"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects.copy()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardRelatedObjects.dict"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects.dict()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardRelatedObjects.json"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects.json()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.models.card_model.CardRelatedObjects.update_forward_refs"><code class="docutils literal notranslate"><span class="pre">CardRelatedObjects.update_forward_refs()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#metabase_tools.endpoints.cards_endpoint.Cards"><code class="docutils literal notranslate"><span class="pre">Cards</span></code></a><ul>
+<li><a class="reference internal" href="#metabase_tools.endpoints.cards_endpoint.Cards.create"><code class="docutils literal notranslate"><span class="pre">Cards.create()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.endpoints.cards_endpoint.Cards.embeddable"><code class="docutils literal notranslate"><span class="pre">Cards.embeddable()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.endpoints.cards_endpoint.Cards.get"><code class="docutils literal notranslate"><span class="pre">Cards.get()</span></code></a></li>
+<li><a class="reference internal" href="#metabase_tools.endpoints.cards_endpoint.Cards.search"><code class="docutils literal notranslate"><span class="pre">Cards.search()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
@@ -972,6 +1035,7 @@ the new model: you should trust this data</p></li>
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
     </body>
 </html>
