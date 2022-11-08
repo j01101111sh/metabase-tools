@@ -255,7 +255,90 @@ def set_server_settings(session: requests.Session) -> list[requests.Response]:
     embed_result = session.put(
         f"{metabase_config['host']}/api/setting/enable-embedding"
     )
-    return [embed_result]
+    email_result = set_email_settings(session)
+    return [embed_result, email_result]
+
+
+def set_email_settings(session: requests.Session) -> requests.Response:
+    settings = {
+        "email-from-address": metabase_config["email"],
+        "email-smtp-host": "mailhog",
+        "email-smtp-port": 1025,
+    }
+    email_result = session.put(f"{metabase_config['host']}/api/email", json=settings)
+    return email_result
+
+
+def create_alerts(session: requests.Session) -> list[requests.Response]:
+    alert_one = {
+        "alert_condition": "rows",
+        "card": {
+            "id": 1,
+            "include_csv": True,
+            "include_xls": False,
+            "dashboard_card_id": None,
+        },
+        "channels": [
+            {
+                "schedule_type": "daily",
+                "schedule_hour": 0,
+                "channel_type": "email",
+                "schedule_frame": None,
+                "recipients": [
+                    {
+                        "id": 1,
+                        "email": "jim@dundermifflin.com",
+                        "first_name": "Jim",
+                        "last_name": "Halpert",
+                        "common_name": "Jim Halpert",
+                    }
+                ],
+                "pulse_id": 1,
+                "id": 1,
+                "schedule_day": None,
+                "enabled": True,
+            }
+        ],
+        "alert_first_only": False,
+        "alert_above_goal": None,
+    }
+    alert_two = {
+        "alert_condition": "rows",
+        "card": {
+            "id": 2,
+            "include_csv": True,
+            "include_xls": False,
+            "dashboard_card_id": None,
+        },
+        "channels": [
+            {
+                "schedule_type": "daily",
+                "schedule_hour": 0,
+                "channel_type": "email",
+                "schedule_frame": None,
+                "recipients": [
+                    {
+                        "id": 1,
+                        "email": "jim@dundermifflin.com",
+                        "first_name": "Jim",
+                        "last_name": "Halpert",
+                        "common_name": "Jim Halpert",
+                    }
+                ],
+                "pulse_id": 1,
+                "id": 1,
+                "schedule_day": None,
+                "enabled": True,
+            }
+        ],
+        "alert_first_only": False,
+        "alert_above_goal": None,
+    }
+    responses = []
+    for alert in [alert_one, alert_two]:
+        response = session.post(f"{metabase_config['host']}/api/alert", json=alert)
+        responses.append(check_status_code(response=response))
+    return responses
 
 
 if __name__ == "__main__":
@@ -268,3 +351,4 @@ if __name__ == "__main__":
     coll_responses = create_collections(session)
     card_responses = create_cards(session)
     db_responses = create_databases(session, server_version)
+    alert_responses = create_alerts(session)
