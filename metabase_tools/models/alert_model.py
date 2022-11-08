@@ -40,7 +40,7 @@ class AlertItem(Item):
     updated_at: datetime
     alert_first_only: bool
     lower_name: Optional[str] = Field(alias="lower-name")
-    entity_id: str
+    entity_id: Optional[str]
     skip_if_empty: bool
     parameters: list[dict[str, Any]]
     dashboard_id: Optional[int]
