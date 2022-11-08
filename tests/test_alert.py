@@ -215,9 +215,7 @@ class TestEndpointMethodsUniquePass:
         card_id = items[0].card["id"]
         result = api.alerts.get_by_card(targets=[card_id])
         assert isinstance(result, list)  # check item class
-        assert all(
-            isinstance(result, AlertItem) for result in result
-        )  # check item class
+        assert all(isinstance(item, AlertItem) for item in result)  # check item class
         assert all(
             isinstance(item._adapter, MetabaseApi) for item in result
         )  # check adapter set

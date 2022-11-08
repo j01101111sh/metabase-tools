@@ -48,6 +48,23 @@ class Alerts(Endpoint[AlertItem]):
             return [x for x in super().get() if x.id in targets]  # get all and filter
         return super().get()  # get all
 
+    def get_by_card(self, targets: list[int]) -> list[AlertItem]:
+        """Get all alerts for the given card IDs
+
+        Args:
+            targets (list[int]): List of card IDs
+
+        Returns:
+            list[AlertItem]: List of associated alerts
+        """
+        result = self._request_list(
+            "GET", endpoint="/alert/question/{id}", source=targets
+        )
+        alerts = [AlertItem(**x) for x in result]
+        for alert in alerts:
+            alert.set_adapter(self._adapter)
+        return alerts
+
     def _make_create(self, **kwargs: Any) -> AlertItem:
         """Makes create request
 

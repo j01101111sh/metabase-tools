@@ -71,6 +71,10 @@ class Endpoint(ABC, Generic[T]):
                 raise TypeError(f"Expected list[int] but found {type(item)} in list")
             if isinstance(result, dict):
                 results.append(result)
+            if isinstance(result, list) and all(
+                isinstance(item, dict) for item in result
+            ):
+                results.extend(result)
         if len(results) > 0:
             return results
         raise TypeError("Received empty list")
