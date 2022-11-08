@@ -40,9 +40,11 @@ class Alerts(Endpoint[AlertItem]):
         Returns:
             list[AlertItem]
         """
+        if targets and not isinstance(targets, list):
+            raise TypeError
         if self._adapter and self._adapter.server_version >= Version("v0.41"):
             return super().get(targets=targets)
-        if targets:
+        if targets and isinstance(targets, list):
             return [x for x in super().get() if x.id in targets]
         return super().get()
 
