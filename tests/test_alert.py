@@ -211,7 +211,20 @@ class TestEndpointMethodsCommonFail:
 
 
 class TestEndpointMethodsUniquePass:
-    pass
+    def test_get_by_card(self, api: MetabaseApi, items: list[AlertItem]):
+        card_id = items[0].card["id"]
+        result = api.alerts.get_by_card(targets=[card_id])
+        assert isinstance(result, list)  # check item class
+        assert all(
+            isinstance(result, AlertItem) for result in result
+        )  # check item class
+        assert all(
+            isinstance(item._adapter, MetabaseApi) for item in result
+        )  # check adapter set
+        assert all(
+            item._adapter and isinstance(item._adapter.server_version, Version)
+            for item in result
+        )  # check adapter initialized
 
 
 class TestEndpointMethodsUniqueFail:
