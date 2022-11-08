@@ -43,10 +43,10 @@ class Alerts(Endpoint[AlertItem]):
         if targets and not isinstance(targets, list):
             raise TypeError
         if self._adapter and self._adapter.server_version >= Version("v0.41"):
-            return super().get(targets=targets)
+            return super().get(targets=targets)  # standard if supported by version
         if targets and isinstance(targets, list):
-            return [x for x in super().get() if x.id in targets]
-        return super().get()
+            return [x for x in super().get() if x.id in targets]  # get all and filter
+        return super().get()  # get all
 
     def _make_create(self, **kwargs: Any) -> AlertItem:
         """Makes create request
