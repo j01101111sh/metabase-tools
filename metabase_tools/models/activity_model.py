@@ -6,7 +6,9 @@ from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, Optional
 
+from metabase_tools.models.database_model import DatabaseItem
 from metabase_tools.models.generic_model import Item
+from metabase_tools.models.user_model import UserItem
 from metabase_tools.utils.logging_utils import log_call
 
 if TYPE_CHECKING:
@@ -27,10 +29,10 @@ class ActivityItem(Item):
     custom_id: Optional[int]
     details: Optional[dict[str, Any]]
     model_id: Optional[int]
-    database: Optional[dict[str, Any]]  # TODO change to DatabaseItem
+    database: Optional[DatabaseItem]
     user_id: Optional[int]
     timestamp: datetime
-    user: Optional[dict[str, Any]]  # TODO change to UserItem
+    user: Optional[UserItem]
     model: Optional[str]
 
     @log_call
