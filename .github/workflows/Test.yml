@@ -22,10 +22,10 @@ jobs:
         id: docker
         run: |
           docker network create mbtools
-          docker pull mailhog/mailhog
-          docker run -d --name mailhog --net mbtools -p 8025:8025 -p 1025:1025 mailhog/mailhog
           docker pull metabase/metabase:${{ matrix.metabase-version }}
           docker run -d --name mbt --net mbtools -p 3000:3000 metabase/metabase:${{ matrix.metabase-version }}
+          docker pull mailhog/mailhog
+          docker run -d --name mailhog --net mbtools -p 8025:8025 -p 1025:1025 mailhog/mailhog
       - name: Install Poetry
         id: poetry
         run: |
@@ -100,7 +100,7 @@ jobs:
       - name: Determine failure or success
         id: resolve
         run: |
+          if [[ ${{ steps.pytest.outcome }} == "failure" ]]; then echo 'pytest failure'; exit 1; fi
           if [[ ${{ steps.precommit.outcome }} == "failure" ]]; then echo 'precommit failure'; exit 1; fi
           if [[ ${{ steps.pylint.outcome }} == "failure" ]]; then echo 'pylint failure'; exit 1; fi
           if [[ ${{ steps.mypy.outcome }} == "failure" ]]; then echo 'mypy failure'; exit 1; fi
-          if [[ ${{ steps.pytest.outcome }} == "failure" ]]; then echo 'pytest failure'; exit 1; fi
