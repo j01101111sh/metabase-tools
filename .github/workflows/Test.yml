@@ -100,7 +100,7 @@ jobs:
       - name: Determine failure or success
         id: resolve
         run: |
+          if [[ ${{ steps.pytest.outcome }} == "failure" ]]; then echo 'pytest failure'; exit 1; fi
           if [[ ${{ steps.precommit.outcome }} == "failure" ]]; then echo 'precommit failure'; exit 1; fi
           if [[ ${{ steps.pylint.outcome }} == "failure" ]]; then echo 'pylint failure'; exit 1; fi
           if [[ ${{ steps.mypy.outcome }} == "failure" ]]; then echo 'mypy failure'; exit 1; fi
-          if [[ ${{ steps.pytest.outcome }} == "failure" ]]; then echo 'pytest failure'; exit 1; fi
