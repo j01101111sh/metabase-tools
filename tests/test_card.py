@@ -187,7 +187,7 @@ class TestEndpointMethodsCommonFail:
             _ = api.cards.get(targets=target)  # type: ignore
 
     def test_search_fail(self, api: MetabaseApi, items: list[CardItem]):
-        params = [{"name": random.choice(items).name + "z"}]
+        params = [{"name": f"{random.choice(items).name}z"}]
         result = api.cards.search(search_params=params, search_list=items)
         assert len(result) == 0
 

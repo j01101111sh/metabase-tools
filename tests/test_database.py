@@ -193,7 +193,7 @@ class TestEndpointMethodsCommonFail:
             _ = api.databases.get(targets=target)  # type: ignore
 
     def test_search_fail(self, api: MetabaseApi, items: list[DatabaseItem]):
-        params = [{"name": random.choice(items).name + "z"}]
+        params = [{"name": f"{random.choice(items).name}z"}]
         result = api.databases.search(search_params=params, search_list=items)
         assert len(result) == 0
 
