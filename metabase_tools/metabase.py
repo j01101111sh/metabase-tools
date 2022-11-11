@@ -12,6 +12,7 @@ from packaging.version import Version
 from requests import Response, Session
 from requests.exceptions import RequestException
 
+from metabase_tools.endpoints.activity_endpoint import Activity
 from metabase_tools.endpoints.alerts_endpoint import Alerts
 from metabase_tools.endpoints.cards_endpoint import Cards
 from metabase_tools.endpoints.collections_endpoint import Collections
@@ -67,6 +68,7 @@ class MetabaseApi:
         self._set_server_version()
 
         # Create endpoints
+        self.activity = Activity(self)
         self.alerts = Alerts(self)
         self.cards = Cards(self)
         self.collections = Collections(self)
