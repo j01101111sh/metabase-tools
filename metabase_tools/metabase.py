@@ -30,6 +30,8 @@ class MetabaseApi:
 
     server_version: Version
 
+    activity: Activity
+    alerts: Alerts
     cards: Cards
     collections: Collections
     databases: Databases
