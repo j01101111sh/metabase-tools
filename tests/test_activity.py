@@ -37,6 +37,14 @@ class TestEndpointMethodsCommonPass:
             for item in result
         )  # check adapter initialized
 
+    def test_search(self, api: MetabaseApi):
+        result = api.activity.search({"database_id": 1})
+        assert isinstance(result, list)  # check item class
+        assert all(
+            isinstance(item, ActivityItem) for item in result
+        )  # check item class
+        assert len(result) >= 1  # check action result
+
 
 class TestEndpointMethodsCommonFail:
     pass
