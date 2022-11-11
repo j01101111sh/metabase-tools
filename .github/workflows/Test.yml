@@ -22,10 +22,10 @@ jobs:
         id: docker
         run: |
           docker network create mbtools
-          docker pull mailhog/mailhog
-          docker run -d --name mailhog --net mbtools -p 8025:8025 -p 1025:1025 mailhog/mailhog
           docker pull metabase/metabase:${{ matrix.metabase-version }}
           docker run -d --name mbt --net mbtools -p 3000:3000 metabase/metabase:${{ matrix.metabase-version }}
+          docker pull mailhog/mailhog
+          docker run -d --name mailhog --net mbtools -p 8025:8025 -p 1025:1025 mailhog/mailhog
       - name: Install Poetry
         id: poetry
         run: |
