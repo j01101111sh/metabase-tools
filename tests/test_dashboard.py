@@ -11,7 +11,7 @@ from metabase_tools.models.dashboard_model import DashboardItem
 
 @pytest.fixture(scope="module")
 def items(api: MetabaseApi) -> list[DashboardItem]:
-    return [item for item in api.dashboards.get() if item.id != 1]
+    return [item for item in api.dashboards.get()]
 
 
 class TestModelMethodsCommonPass:
