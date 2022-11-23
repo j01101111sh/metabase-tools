@@ -91,21 +91,9 @@ class TestModelMethodsCommonFail:
 
 
 class TestEndpointMethodsCommonPass:
-    def test_create(
-        self, api: MetabaseApi, server_version: Version, random_string: LambdaType
-    ):
+    def test_create(self, api: MetabaseApi, random_string: LambdaType):
         name = "Test - " + random_string(6)
-        definition = {
-            "name": name,
-            "engine": "h2",
-            "details": {
-                "db": "zip:/app/metabase.jar!/sample-dataset.db;USER=GUEST;PASSWORD=guest"
-            },
-        }
-        if server_version >= Version("v0.42"):
-            definition["details"]["db"] = definition["details"]["db"].replace(
-                "sample-dataset", "sample-database"
-            )
+        definition = {"name": name, "parameters": []}
         result = api.dashboards.create(**definition)
         assert isinstance(result, DashboardItem)  # check item class
         assert result.name == name  # check action result
