@@ -13,6 +13,7 @@ from requests import Response, Session
 from requests.exceptions import RequestException
 
 from metabase_tools.endpoints.activity_endpoint import Activity
+from metabase_tools.endpoints.dashboard_endpoint import Dashboards
 from metabase_tools.endpoints.alerts_endpoint import Alerts
 from metabase_tools.endpoints.cards_endpoint import Cards
 from metabase_tools.endpoints.collections_endpoint import Collections
@@ -34,6 +35,7 @@ class MetabaseApi:
     alerts: Alerts
     cards: Cards
     collections: Collections
+    dashboards: Dashboards
     databases: Databases
     settings: ServerSettings
     tools: MetabaseTools
@@ -74,6 +76,7 @@ class MetabaseApi:
         self.alerts = Alerts(self)
         self.cards = Cards(self)
         self.collections = Collections(self)
+        self.dashboards = Dashboards(self)
         self.databases = Databases(self)
         self.settings = self._fetch_settings()
         self.tools = MetabaseTools(self)
