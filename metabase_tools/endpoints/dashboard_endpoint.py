@@ -19,7 +19,7 @@ class Dashboards(Endpoint[DashboardItem]):
 
     _BASE_EP: ClassVar[str] = "/dashboard"
     _STD_OBJ: ClassVar[type] = DashboardItem
-    _required_params: ClassVar[list[str]] = ["name", "engine", "details"]
+    _required_params: ClassVar[list[str]] = ["name"]
 
     @log_call
     def get(self, targets: Optional[list[int]] = None) -> list[DashboardItem]:
@@ -48,22 +48,30 @@ class Dashboards(Endpoint[DashboardItem]):
     def create(
         self,
         name: str | MissingParam = MissingParam(),
-        engine: str | MissingParam = MissingParam(),
-        details: dict[str, Any] | MissingParam = MissingParam(),
-        is_full_sync: Optional[bool | MissingParam] = MissingParam(),
-        is_on_demand: Optional[bool | MissingParam] = MissingParam(),
-        schedules: Optional[dict[str, Any] | MissingParam] = MissingParam(),
-        auto_run_queries: Optional[bool | MissingParam] = MissingParam(),
+        description: Optional[str | MissingParam] = MissingParam(),
+        parameters: Optional[list[dict[str, Any]] | MissingParam] = MissingParam(),
+        collection_id: Optional[int | MissingParam] = MissingParam(),
+        collection_position: Optional[int | MissingParam] = MissingParam(),
         **kwargs: Any,
     ) -> DashboardItem:
+        """Creates a new dashboard
+
+        Args:
+            name (str, optional)
+            description (str, optional)
+            parameters (list[dict[str, Any]], optional)
+            collection_id (int, optional)
+            collection_position (int, optional)
+
+        Returns:
+            DashboardItem
+        """
         return super()._make_create(
             name=name,
-            engine=engine,
-            details=details,
-            is_full_sync=is_full_sync,
-            is_on_demand=is_on_demand,
-            schedules=schedules,
-            auto_run_queries=auto_run_queries,
+            description=description,
+            parameters=parameters,
+            collection_id=collection_id,
+            collection_position=collection_position,
             **kwargs,
         )
 
