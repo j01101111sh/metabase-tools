@@ -46,7 +46,7 @@ class DashboardItem(Item):
     public_uuid: Optional[str]
     points_of_interest: Optional[str]
     can_write: Optional[bool]
-    ordered_cards: Optional[list[int]]
+    ordered_cards: Optional[list[dict[str, Any]]]
     param_fields: Optional[dict[str, Any]]
     param_values: Optional[dict[str, Any]]
 
