@@ -33,7 +33,7 @@ class DashboardItem(Item):
     collection_id: Optional[int]
     show_in_getting_started: bool
     name: str
-    caveats: Optional[list[str]]
+    caveats: Optional[str]
     creator_id: int
     updated_at: datetime
     made_public_by_id: Optional[int]
@@ -78,43 +78,52 @@ class DashboardItem(Item):
     @log_call
     def update(
         self: DashboardItem,
-        engine: Optional[str | MissingParam] = MissingParam(),
-        schedules: Optional[dict[str, Any] | MissingParam] = MissingParam(),
-        refingerprint: Optional[bool | MissingParam] = MissingParam(),
+        parameters: Optional[list[dict[str, Any]] | MissingParam] = MissingParam(),
         points_of_interest: Optional[str | MissingParam] = MissingParam(),
         description: Optional[str | MissingParam] = MissingParam(),
+        archived: Optional[bool | MissingParam] = MissingParam(),
+        collection_position: Optional[int | MissingParam] = MissingParam(),
+        show_in_getting_started: Optional[bool | MissingParam] = MissingParam(),
+        enabled_embedding: Optional[bool | MissingParam] = MissingParam(),
+        collection_id: Optional[int | MissingParam] = MissingParam(),
         name: Optional[str | MissingParam] = MissingParam(),
         caveats: Optional[str | MissingParam] = MissingParam(),
-        cache_ttl: Optional[int | MissingParam] = MissingParam(),
-        details: Optional[dict[str, Any] | MissingParam] = MissingParam(),
+        embedding_params: Optional[dict[str, Any] | MissingParam] = MissingParam(),
+        position: Optional[int | MissingParam] = MissingParam(),
         **kwargs: Any,
     ) -> DashboardItem:
-        """Updates a dashboard using the provided parameters
+        """Updates an existing dashboard item
 
         Args:
             self (DashboardItem)
-            engine (str, optional)
-            schedules (dict[str, Any], optional)
-            refingerprint (bool, optional)
+            parameters (list[dict[str, Any]], optional)
             points_of_interest (str, optional)
             description (str, optional)
+            archived (bool, optional)
+            collection_position (int, optional)
+            show_in_getting_started (bool, optional)
+            enabled_embedding (bool, optional)
+            collection_id (int, optional)
             name (str, optional)
             caveats (str, optional)
-            cache_ttl (int, optional)
-            details (dict[str, Any], optional)
+            embedding_params (dict[str, Any], optional)
+            position (int, optional)
 
         Returns:
-            DashboardItem
+            DashboardItem: _description_
         """
         return self._make_update(
-            engine=engine,
-            schedules=schedules,
-            refingerprint=refingerprint,
+            parameters=parameters,
             points_of_interest=points_of_interest,
             description=description,
+            archived=archived,
+            collection_position=collection_position,
+            show_in_getting_started=show_in_getting_started,
+            enabled_embedding=enabled_embedding,
+            collection_id=collection_id,
             name=name,
             caveats=caveats,
-            cache_ttl=cache_ttl,
-            details=details,
+            embedding_params=embedding_params,
+            position=position,
             **kwargs,
         )
