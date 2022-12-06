@@ -224,7 +224,7 @@ class MetabaseApi:
         try:
             logger.info("Making HTTP request: %s:%s:%s", method, url, params)
             return self._session.request(
-                method=method, url=url, params=params, json=json
+                method=method, url=url, params=params, json=json, timeout=30
             )
         except RequestException as error_raised:
             logger.error(str(error_raised))
