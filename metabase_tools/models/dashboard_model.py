@@ -51,7 +51,7 @@ class DashboardItem(Item):
     param_values: Optional[dict[str, Any]]
     cache_ttl: Optional[int]
     entity_id: Optional[str]
-    last_edit_info: dict[str, Any] = Field(alias="last-edit-info")
+    last_edit_info: Optional[dict[str, Any]] = Field(alias="last-edit-info")
     collection_authority_level: Optional[int]
 
     @log_call
