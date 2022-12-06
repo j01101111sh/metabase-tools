@@ -26,8 +26,9 @@ class TestModelMethodsCommonPass:
             result._adapter.server_version, Version
         )  # check adapter initialized
 
-    def test_archive(self, items: list[DashboardItem]):
-        target = random.choice(items)
+    def test_archive(self, api: MetabaseApi, items: list[DashboardItem]):
+        new = {"name": "Test - Live", "parameters": []}
+        target = api.dashboards.create(**new)
         result = target.archive()
         assert isinstance(result, DashboardItem)  # check item class
         assert isinstance(result._adapter, MetabaseApi)  # check adapter set
