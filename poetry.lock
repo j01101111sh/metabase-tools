@@ -182,7 +182,7 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "filelock"
-version = "3.8.1"
+version = "3.8.2"
 description = "A platform independent file lock."
 category = "dev"
 optional = false
@@ -728,7 +728,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "virtualenv"
-version = "20.17.0"
+version = "20.17.1"
 description = "Virtual Python Environment builder"
 category = "dev"
 optional = false
@@ -889,8 +889,8 @@ exceptiongroup = [
     {file = "exceptiongroup-1.0.4.tar.gz", hash = "sha256:bd14967b79cd9bdb54d97323216f8fdf533e278df937aa2a90089e7d6e06e5ec"},
 ]
 filelock = [
-    {file = "filelock-3.8.1-py3-none-any.whl", hash = "sha256:3156639b1454b5f828255abf5710f7fc1e10dac69bde3e09e6189b29a91f2505"},
-    {file = "filelock-3.8.1.tar.gz", hash = "sha256:9255d3cd8de8fcb2a441444f7a4f1949ae826da36cd070dc3e0c883614b4bbad"},
+    {file = "filelock-3.8.2-py3-none-any.whl", hash = "sha256:8df285554452285f79c035efb0c861eb33a4bcfa5b7a137016e32e6a90f9792c"},
+    {file = "filelock-3.8.2.tar.gz", hash = "sha256:7565f628ea56bfcd8e54e42bdc55da899c85c1abfe1b5bcfd147e9188cebb3b2"},
 ]
 furo = [
     {file = "furo-2022.9.29-py3-none-any.whl", hash = "sha256:559ee17999c0f52728481dcf6b1b0cf8c9743e68c5e3a18cb45a7992747869a9"},
@@ -1221,8 +1221,8 @@ urllib3 = [
     {file = "urllib3-1.26.13.tar.gz", hash = "sha256:c083dd0dce68dbfbe1129d5271cb90f9447dea7d52097c6e0126120c521ddea8"},
 ]
 virtualenv = [
-    {file = "virtualenv-20.17.0-py3-none-any.whl", hash = "sha256:40a7e06a98728fd5769e1af6fd1a706005b4bb7e16176a272ed4292473180389"},
-    {file = "virtualenv-20.17.0.tar.gz", hash = "sha256:7d6a8d55b2f73b617f684ee40fd85740f062e1f2e379412cb1879c7136f05902"},
+    {file = "virtualenv-20.17.1-py3-none-any.whl", hash = "sha256:ce3b1684d6e1a20a3e5ed36795a97dfc6af29bc3970ca8dab93e11ac6094b3c4"},
+    {file = "virtualenv-20.17.1.tar.gz", hash = "sha256:f8b927684efc6f1cc206c9db297a570ab9ad0e51c16fa9e45487d36d1905c058"},
 ]
 wrapt = [
     {file = "wrapt-1.14.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:1b376b3f4896e7930f1f772ac4b064ac12598d1c38d04907e696cc4d794b43d3"},
