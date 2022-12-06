@@ -56,18 +56,8 @@ class TestModelMethodsCommonPass:
         )  # check adapter initialized
 
     def test_delete(self, api: MetabaseApi, server_version: Version):
-        new_db = {
-            "name": "Test DB",
-            "engine": "h2",
-            "details": {
-                "db": "zip:/app/metabase.jar!/sample-dataset.db;USER=GUEST;PASSWORD=guest"
-            },
-        }
-        if server_version >= Version("v0.42"):
-            new_db["details"]["db"] = new_db["details"]["db"].replace(
-                "sample-dataset", "sample-database"
-            )
-        created_db = api.dashboards.create(**new_db)
+        new_dashboard = {"name": "Test - Live", "parameters": []}
+        created_db = api.dashboards.create(**new_dashboard)
         created_db.delete()
 
 
@@ -75,7 +65,7 @@ class TestModelMethodsCommonFail:
     def test_update_fail(self, items: list[DashboardItem]):
         target = random.choice(items)
         with pytest.raises(MetabaseApiException):
-            _ = target.update(engine=3)  # type: ignore
+            _ = target.update(name={"name": "test"})  # type: ignore
 
     def test_archive_fail(self, api: MetabaseApi):
         target = api.dashboards.get()[0]
@@ -173,7 +163,7 @@ class TestEndpointMethodsCommonPass:
 class TestEndpointMethodsCommonFail:
     def test_create_fail(self, api: MetabaseApi):
         with pytest.raises(MetabaseApiException):
-            _ = api.dashboards.create(name="Test fail")  # type: ignore
+            _ = api.dashboards.create(description="Test fail")  # type: ignore
 
     def test_get_fail(self, api: MetabaseApi):
         target = {"id": 1}
