@@ -1,4 +1,5 @@
 import random
+from time import sleep
 from types import LambdaType
 
 import pytest
@@ -70,6 +71,7 @@ class TestModelMethodsCommonPass:
         try:  # database creation is flaky on Metabase v0.45.1 due to issues on their end
             created_db = api.databases.create(**new_db)
         except MetabaseApiException:
+            sleep(60)
             created_db = api.databases.create(**new_db)
         created_db.delete()
 
@@ -112,6 +114,7 @@ class TestEndpointMethodsCommonPass:
         try:  # database creation is flaky on Metabase v0.45.1 due to issues on their end
             result = api.databases.create(**definition)
         except MetabaseApiException:
+            sleep(60)
             result = api.databases.create(**definition)
         assert isinstance(result, DatabaseItem)  # check item class
         assert result.name == name  # check action result
