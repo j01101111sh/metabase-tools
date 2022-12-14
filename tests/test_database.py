@@ -67,7 +67,10 @@ class TestModelMethodsCommonPass:
             new_db["details"]["db"] = new_db["details"]["db"].replace(
                 "sample-dataset", "sample-database"
             )
-        created_db = api.databases.create(**new_db)
+        try:  # database creation is flaky on Metabase v0.45.1 due to issues on their end
+            created_db = api.databases.create(**new_db)
+        except MetabaseApiException:
+            created_db = api.databases.create(**new_db)
         created_db.delete()
 
 
@@ -106,7 +109,10 @@ class TestEndpointMethodsCommonPass:
             definition["details"]["db"] = definition["details"]["db"].replace(
                 "sample-dataset", "sample-database"
             )
-        result = api.databases.create(**definition)
+        try:  # database creation is flaky on Metabase v0.45.1 due to issues on their end
+            result = api.databases.create(**definition)
+        except MetabaseApiException:
+            result = api.databases.create(**definition)
         assert isinstance(result, DatabaseItem)  # check item class
         assert result.name == name  # check action result
         assert isinstance(result._adapter, MetabaseApi)  # check adapter set
