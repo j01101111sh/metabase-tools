@@ -112,7 +112,7 @@ def create_users(session: requests.Session):
     for user in [dev, std, uat]:
         response = session.post(f"{metabase_config['host']}/api/user", json=user)
         responses.append(check_status_code(response=response))
-    for user in range(50):
+    for user in range(10):
         definition = std.copy()
         definition["first_name"] += str(user)
         definition["email"] = f"std{user}@DunderMifflin.com"
