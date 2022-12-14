@@ -373,6 +373,19 @@ def create_alerts(session: requests.Session) -> list[requests.Response]:
     return responses
 
 
+def create_dashboards(session: requests.Session) -> list[requests.Response]:
+    dashboard_one = {"name": "Test - One", "parameters": []}
+    dashboard_two = {"name": "Test - Two", "parameters": []}
+    dashboard_three = {"name": "Test - Three", "parameters": []}
+    responses = []
+    for dashboard in [dashboard_one, dashboard_two, dashboard_three]:
+        response = session.post(
+            f"{metabase_config['host']}/api/dashboard", json=dashboard
+        )
+        responses.append(check_status_code(response=response))
+    return responses
+
+
 if __name__ == "__main__":
     cleanup_cache_and_logs()
     setup_response = initial_setup()
@@ -384,3 +397,4 @@ if __name__ == "__main__":
     card_responses = create_cards(session)
     db_responses = create_databases(session, server_version)
     alert_responses = create_alerts(session)
+    dashboard_responses = create_dashboards(session)

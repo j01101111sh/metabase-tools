@@ -1,5 +1,4 @@
 import random
-from time import sleep
 from types import LambdaType
 
 import pytest
@@ -7,19 +6,19 @@ from packaging.version import Version
 
 from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.metabase import MetabaseApi
-from metabase_tools.models.database_model import DatabaseItem
+from metabase_tools.models.dashboard_model import DashboardItem
 
 
 @pytest.fixture(scope="module")
-def items(api: MetabaseApi) -> list[DatabaseItem]:
-    return [item for item in api.databases.get() if item.id != 1]
+def items(api: MetabaseApi) -> list[DashboardItem]:
+    return api.dashboards.get()
 
 
 class TestModelMethodsCommonPass:
-    def test_update(self, items: list[DatabaseItem], run_id: str):
+    def test_update(self, items: list[DashboardItem], run_id: str):
         target = random.choice(items)
         result = target.update(description=f"Updated {run_id}")
-        assert isinstance(result, DatabaseItem)  # check item class
+        assert isinstance(result, DashboardItem)  # check item class
         assert result.description == f"Updated {run_id}"  # check action result
         assert target.id == result.id  # check action result
         assert isinstance(result._adapter, MetabaseApi)  # check adapter set
@@ -27,29 +26,30 @@ class TestModelMethodsCommonPass:
             result._adapter.server_version, Version
         )  # check adapter initialized
 
-    def test_archive(self, items: list[DatabaseItem]):
-        target = random.choice(items)
+    def test_archive(self, api: MetabaseApi, items: list[DashboardItem]):
+        new = {"name": "Test - Live", "parameters": []}
+        target = api.dashboards.create(**new)
         result = target.archive()
-        assert isinstance(result, DatabaseItem)  # check item class
+        assert isinstance(result, DashboardItem)  # check item class
         assert isinstance(result._adapter, MetabaseApi)  # check adapter set
         assert isinstance(
             result._adapter.server_version, Version
         )  # check adapter initialized
 
-    def test_unarchive(self, items: list[DatabaseItem]):
+    def test_unarchive(self, items: list[DashboardItem]):
         target = random.choice(items)
         result = target.unarchive()
-        assert isinstance(result, DatabaseItem)  # check item class
+        assert isinstance(result, DashboardItem)  # check item class
         assert isinstance(result._adapter, MetabaseApi)  # check adapter set
         assert isinstance(
             result._adapter.server_version, Version
         )  # check adapter initialized
 
-    def test_refresh(self, items: list[DatabaseItem], random_string: LambdaType):
+    def test_refresh(self, items: list[DashboardItem], random_string: LambdaType):
         target = random.choice(items)
         result = target.update(description="Updated " + random_string(5))
         target = target.refresh()
-        assert isinstance(target, DatabaseItem)  # check item class
+        assert isinstance(target, DashboardItem)  # check item class
         assert target.description == result.description  # check action result
         assert isinstance(target._adapter, MetabaseApi)  # check adapter set
         assert isinstance(
@@ -57,95 +57,49 @@ class TestModelMethodsCommonPass:
         )  # check adapter initialized
 
     def test_delete(self, api: MetabaseApi, server_version: Version):
-        new_db = {
-            "name": "Test DB",
-            "engine": "h2",
-            "details": {
-                "db": "zip:/app/metabase.jar!/sample-dataset.db;USER=GUEST;PASSWORD=guest"
-            },
-        }
-        if server_version >= Version("v0.42"):
-            new_db["details"]["db"] = new_db["details"]["db"].replace(
-                "sample-dataset", "sample-database"
-            )
-
-        # database creation is flaky on Metabase v0.45.1 due to issues on their end
-        for _ in range(10):
-            try:
-                created_db = api.databases.create(**new_db)
-                break
-            except MetabaseApiException as exception:
-                if server_version >= Version("v0.45"):
-                    sleep(15)
-                else:
-                    raise MetabaseApiException from exception
-        else:
-            raise MetabaseApiException
+        new_dashboard = {"name": "Test - Live", "parameters": []}
+        created_db = api.dashboards.create(**new_dashboard)
         created_db.delete()
 
 
 class TestModelMethodsCommonFail:
-    def test_update_fail(self, items: list[DatabaseItem]):
+    def test_update_fail(self, items: list[DashboardItem]):
         target = random.choice(items)
         with pytest.raises(MetabaseApiException):
-            _ = target.update(engine=3)  # type: ignore
+            _ = target.update(name={"name": "test"})  # type: ignore
 
     def test_archive_fail(self, api: MetabaseApi):
-        target = api.databases.get()[0]
+        target = api.dashboards.get()[0]
         target.id = -1
         with pytest.raises(MetabaseApiException):
             _ = target.archive()  # type: ignore
 
     def test_unarchive_fail(self, api: MetabaseApi):
-        target = api.databases.get()[0]
+        target = api.dashboards.get()[0]
         target.id = -1
         with pytest.raises(MetabaseApiException):
             _ = target.unarchive()  # type: ignore
 
 
 class TestEndpointMethodsCommonPass:
-    def test_create(
-        self, api: MetabaseApi, server_version: Version, random_string: LambdaType
-    ):
+    def test_create(self, api: MetabaseApi, random_string: LambdaType):
         name = "Test - " + random_string(6)
-        definition = {
-            "name": name,
-            "engine": "h2",
-            "details": {
-                "db": "zip:/app/metabase.jar!/sample-dataset.db;USER=GUEST;PASSWORD=guest"
-            },
-        }
-        if server_version >= Version("v0.42"):
-            definition["details"]["db"] = definition["details"]["db"].replace(
-                "sample-dataset", "sample-database"
-            )
-
-        # database creation is flaky on Metabase v0.45.1 due to issues on their end
-        for _ in range(10):
-            try:
-                result = api.databases.create(**definition)
-                break
-            except MetabaseApiException as exception:
-                if server_version >= Version("v0.45"):
-                    sleep(15)
-                else:
-                    raise MetabaseApiException from exception
-        else:
-            raise MetabaseApiException
-        assert isinstance(result, DatabaseItem)  # check item class
+        definition = {"name": name, "parameters": []}
+        result = api.dashboards.create(**definition)
+        assert isinstance(result, DashboardItem)  # check item class
         assert result.name == name  # check action result
         assert isinstance(result._adapter, MetabaseApi)  # check adapter set
         assert isinstance(
             result._adapter.server_version, Version
         )  # check adapter is initialized correctly
 
-    def test_get_one(self, api: MetabaseApi, items: list[DatabaseItem]):
+    def test_get_one(self, api: MetabaseApi, items: list[DashboardItem]):
         item_ids = [item.id for item in items if isinstance(item.id, int)]
         target = random.sample(item_ids, 1)
-        result = api.databases.get(targets=target)
+        result = api.dashboards.get(targets=target)
         assert isinstance(result, list)  # check item class
         assert all(
-            isinstance(item, DatabaseItem) for item in result
+            isinstance(item, DashboardItem) for item in result
         )  # check item class
         assert all(item.id in target for item in result)  # check action result
         assert len(result) == len(target)  # check action result
@@ -157,13 +111,13 @@ class TestEndpointMethodsCommonPass:
             for item in result
         )  # check adapter initialized
 
-    def test_get_many(self, api: MetabaseApi, items: list[DatabaseItem]):
+    def test_get_many(self, api: MetabaseApi, items: list[DashboardItem]):
         item_ids = [item.id for item in items if isinstance(item.id, int)]
         target = random.sample(item_ids, 2)
-        result = api.databases.get(targets=target)
+        result = api.dashboards.get(targets=target)
         assert isinstance(result, list)  # check item class
         assert all(
-            isinstance(item, DatabaseItem) for item in result
+            isinstance(item, DashboardItem) for item in result
         )  # check item class
         assert all(item.id in target for item in result)  # check action result
         assert len(result) == len(target)  # check action result
@@ -176,10 +130,10 @@ class TestEndpointMethodsCommonPass:
         )  # check adapter initialized
 
     def test_get_all(self, api: MetabaseApi):
-        result = api.databases.get()
+        result = api.dashboards.get()
         assert isinstance(result, list)  # check item class
         assert all(
-            isinstance(item, DatabaseItem) for item in result
+            isinstance(item, DashboardItem) for item in result
         )  # check item class
         assert len(result) >= 1  # check action result
         assert all(
@@ -190,12 +144,12 @@ class TestEndpointMethodsCommonPass:
             for item in result
         )  # check adapter initialized
 
-    def test_search(self, api: MetabaseApi, items: list[DatabaseItem]):
+    def test_search(self, api: MetabaseApi, items: list[DashboardItem]):
         params = [{"name": random.choice(items).name}]
-        result = api.databases.search(search_params=params, search_list=items)
+        result = api.dashboards.search(search_params=params, search_list=items)
         assert isinstance(result, list)  # check item class
         assert all(
-            isinstance(result, DatabaseItem) for result in result
+            isinstance(result, DashboardItem) for result in result
         )  # check item class
         assert len(result) == len(params)  # check action result
         assert all(
@@ -210,16 +164,16 @@ class TestEndpointMethodsCommonPass:
 class TestEndpointMethodsCommonFail:
     def test_create_fail(self, api: MetabaseApi):
         with pytest.raises(MetabaseApiException):
-            _ = api.databases.create(name="Test fail")  # type: ignore
+            _ = api.dashboards.create(description="Test fail")  # type: ignore
 
     def test_get_fail(self, api: MetabaseApi):
         target = {"id": 1}
         with pytest.raises(TypeError):
-            _ = api.databases.get(targets=target)  # type: ignore
+            _ = api.dashboards.get(targets=target)  # type: ignore
 
-    def test_search_fail(self, api: MetabaseApi, items: list[DatabaseItem]):
+    def test_search_fail(self, api: MetabaseApi, items: list[DashboardItem]):
         params = [{"name": f"{random.choice(items).name}z"}]
-        result = api.databases.search(search_params=params, search_list=items)
+        result = api.dashboards.search(search_params=params, search_list=items)
         assert len(result) == 0
 
 
