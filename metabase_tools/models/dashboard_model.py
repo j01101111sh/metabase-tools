@@ -6,7 +6,7 @@ from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
-from pydantic import PrivateAttr, Field
+from pydantic import Field, PrivateAttr
 
 from metabase_tools.models.generic_model import Item, MissingParam
 from metabase_tools.models.user_model import UserItem
@@ -53,6 +53,7 @@ class DashboardItem(Item):
     entity_id: Optional[str]
     last_edit_info: Optional[dict[str, Any]] = Field(alias="last-edit-info")
     collection_authority_level: Optional[int]
+    is_app_page: Optional[bool]
 
     @log_call
     def refresh(self: DashboardItem) -> DashboardItem:
