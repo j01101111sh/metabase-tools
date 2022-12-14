@@ -1,5 +1,4 @@
 import random
-from time import sleep
 from types import LambdaType
 
 import pytest
@@ -68,8 +67,6 @@ class TestModelMethodsCommonPass:
             new_db["details"]["db"] = new_db["details"]["db"].replace(
                 "sample-dataset", "sample-database"
             )
-        if server_version >= Version("v0.45.0"):
-            sleep(60)  # Fixes some unknown race condition
         created_db = api.databases.create(**new_db)
         created_db.delete()
 
@@ -109,8 +106,6 @@ class TestEndpointMethodsCommonPass:
             definition["details"]["db"] = definition["details"]["db"].replace(
                 "sample-dataset", "sample-database"
             )
-        if server_version >= Version("v0.45.0"):
-            sleep(60)  # Fixes some unknown race condition
         result = api.databases.create(**definition)
         assert isinstance(result, DatabaseItem)  # check item class
         assert result.name == name  # check action result
