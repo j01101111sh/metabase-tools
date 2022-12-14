@@ -68,9 +68,19 @@ class TestModelMethodsCommonPass:
             new_db["details"]["db"] = new_db["details"]["db"].replace(
                 "sample-dataset", "sample-database"
             )
-        if server_version >= Version("v0.45.0"):
-            sleep(60)  # Fixes some unknown race condition
-        created_db = api.databases.create(**new_db)
+
+        # database creation is flaky on Metabase v0.45.1 due to issues on their end
+        for _ in range(5):
+            try:
+                created_db = api.databases.create(**new_db)
+                break
+            except MetabaseApiException as exception:
+                if server_version >= Version("v0.45"):
+                    sleep(60)
+                else:
+                    raise MetabaseApiException from exception
+        else:
+            raise MetabaseApiException
         created_db.delete()
 
 
@@ -109,9 +119,19 @@ class TestEndpointMethodsCommonPass:
             definition["details"]["db"] = definition["details"]["db"].replace(
                 "sample-dataset", "sample-database"
             )
-        if server_version >= Version("v0.45.0"):
-            sleep(60)  # Fixes some unknown race condition
-        result = api.databases.create(**definition)
+
+        # database creation is flaky on Metabase v0.45.1 due to issues on their end
+        for _ in range(5):
+            try:
+                result = api.databases.create(**definition)
+                break
+            except MetabaseApiException as exception:
+                if server_version >= Version("v0.45"):
+                    sleep(60)
+                else:
+                    raise MetabaseApiException from exception
+        else:
+            raise MetabaseApiException
         assert isinstance(result, DatabaseItem)  # check item class
         assert result.name == name  # check action result
         assert isinstance(result._adapter, MetabaseApi)  # check adapter set
