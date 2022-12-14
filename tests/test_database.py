@@ -70,13 +70,13 @@ class TestModelMethodsCommonPass:
             )
 
         # database creation is flaky on Metabase v0.45.1 due to issues on their end
-        for _ in range(5):
+        for _ in range(10):
             try:
                 created_db = api.databases.create(**new_db)
                 break
             except MetabaseApiException as exception:
                 if server_version >= Version("v0.45"):
-                    sleep(60)
+                    sleep(15)
                 else:
                     raise MetabaseApiException from exception
         else:
@@ -121,13 +121,13 @@ class TestEndpointMethodsCommonPass:
             )
 
         # database creation is flaky on Metabase v0.45.1 due to issues on their end
-        for _ in range(5):
+        for _ in range(10):
             try:
                 result = api.databases.create(**definition)
                 break
             except MetabaseApiException as exception:
                 if server_version >= Version("v0.45"):
-                    sleep(60)
+                    sleep(15)
                 else:
                     raise MetabaseApiException from exception
         else:
