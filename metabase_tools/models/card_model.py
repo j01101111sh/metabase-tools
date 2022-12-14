@@ -294,5 +294,5 @@ class CardRelatedObjects(BaseModel):
     dashboard_mates: list[dict[str, int]] = Field(alias="dashboard-mates")
     similar_questions: list[dict[str, int]] = Field(alias="similar-questions")
     canonical_metric: Optional[str] = Field(alias="canonical-metric")
-    dashboards: list[dict[str, int]]
-    collections: list[dict[str, int]]
+    dashboards: list[dict[str, Any]]
+    collections: list[dict[str, Any]]
