@@ -18,4 +18,4 @@ services:
     depends_on:
       - metabase
       - mailhog
-    command: poetry run python setup_metabase.py
+    command: python3 setup_metabase.py
