@@ -57,9 +57,6 @@ jobs:
         id: mypy
         continue-on-error: true
         run: poetry run mypy --strict $(git ls-files './metabase_tools/*.py')
-      - name: Setup Metabase
-        id: setup
-        run: poetry run python ./tests/setup_metabase.py
       - name: Test with pytest
         id: pytest
         continue-on-error: true
