@@ -61,7 +61,7 @@ def credentials():
 
 @pytest.fixture(scope="session")
 def host():
-    return metabase_config["host"]
+    return metabase_config["host-local"]
 
 
 @pytest.fixture(scope="session")

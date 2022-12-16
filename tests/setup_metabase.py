@@ -1,5 +1,6 @@
 import shutil
 from json import loads
+from logging import getLogger
 from pathlib import Path
 from random import choice
 from string import ascii_letters
@@ -8,8 +9,11 @@ from time import sleep
 import requests
 from packaging.version import Version
 
+logger = getLogger(__name__)
+
 metabase_config = {
-    "host": "http://metabase:3000",
+    "host-docker": "http://metabase:3000",
+    "host-local": "http://localhost:3000",
     "first": "Jim",
     "last": "Halpert",
     "email": "jim@dundermifflin.com",
@@ -20,6 +24,7 @@ metabase_config = {
         "password": "BAZouVa3saWgW89z",
     },
 }
+logger.info(metabase_config)
 
 
 def random_string(chars) -> str:
@@ -43,7 +48,8 @@ def initial_setup():
         print(f"Attempt #{x+1}:")
         try:
             token_response = requests.get(
-                metabase_config["host"] + "/api/session/properties", timeout=TIMEOUT
+                metabase_config["host-docker"] + "/api/session/properties",
+                timeout=TIMEOUT,
             )
             print("Success!")
             break
@@ -59,7 +65,7 @@ def initial_setup():
 
     setup_token = token_response.json()["setup-token"]
     response = requests.post(
-        metabase_config["host"] + "/api/setup",
+        metabase_config["host-docker"] + "/api/setup",
         json={
             "prefs": {"site_name": metabase_config["site_name"]},
             "user": {
@@ -78,7 +84,8 @@ def initial_setup():
 def get_session() -> requests.Session:
     session = requests.Session()
     post_request = requests.post(
-        f"{metabase_config['host']}/api/session", json=metabase_config["credentials"]
+        f"{metabase_config['host-docker']}/api/session",
+        json=metabase_config["credentials"],
     )
     token = post_request.json()["id"]
     headers = {
@@ -110,13 +117,15 @@ def create_users(session: requests.Session):
     }
     responses = []
     for user in [dev, std, uat]:
-        response = session.post(f"{metabase_config['host']}/api/user", json=user)
+        response = session.post(f"{metabase_config['host-docker']}/api/user", json=user)
         responses.append(check_status_code(response=response))
     for user in range(10):
         definition = std.copy()
         definition["first_name"] += str(user)
         definition["email"] = f"std{user}@DunderMifflin.com"
-        response = session.post(f"{metabase_config['host']}/api/user", json=definition)
+        response = session.post(
+            f"{metabase_config['host-docker']}/api/user", json=definition
+        )
         responses.append(check_status_code(response=response))
     return responses
 
@@ -137,7 +146,9 @@ def create_collections(session: requests.Session):
     accounting = {"name": "Accounting", "color": "#FFFFFF", "parent_id": 2}
     responses = []
     for coll in [dev, uat, prod, accounting]:
-        response = session.post(f"{metabase_config['host']}/api/collection", json=coll)
+        response = session.post(
+            f"{metabase_config['host-docker']}/api/collection", json=coll
+        )
         responses.append(check_status_code(response=response))
     return responses
 
@@ -193,7 +204,7 @@ def create_cards(session: requests.Session):
     }
     responses = []
     for card in [accounting, test, name_error]:
-        response = session.post(f"{metabase_config['host']}/api/card", json=card)
+        response = session.post(f"{metabase_config['host-docker']}/api/card", json=card)
         responses.append(check_status_code(response=response))
     return responses
 
@@ -211,12 +222,16 @@ def create_databases(session: requests.Session, server_version: Version):
             "sample-dataset", "sample-database"
         )
 
-    results = [session.post(f"{metabase_config['host']}/api/database", json=new_db)]
+    results = [
+        session.post(f"{metabase_config['host-docker']}/api/database", json=new_db)
+    ]
     for x in range(3):
         definition = new_db.copy()
         definition["name"] += str(x)
         results.append(
-            session.post(f"{metabase_config['host']}/api/database", json=definition)
+            session.post(
+                f"{metabase_config['host-docker']}/api/database", json=definition
+            )
         )
 
 
@@ -245,7 +260,9 @@ def cleanup_cache_and_logs():
 
 
 def get_server_version(session: requests.Session) -> Version:
-    result = session.get(f"{metabase_config['host']}/api/session/properties").json()
+    result = session.get(
+        f"{metabase_config['host-docker']}/api/session/properties"
+    ).json()
     if isinstance(result, dict):
         return Version(result["version"]["tag"])
     raise ValueError
@@ -253,7 +270,7 @@ def get_server_version(session: requests.Session) -> Version:
 
 def set_server_settings(session: requests.Session) -> list[requests.Response]:
     embed_result = session.put(
-        f"{metabase_config['host']}/api/setting/enable-embedding"
+        f"{metabase_config['host-docker']}/api/setting/enable-embedding"
     )
     email_result = set_email_settings(session)
     return [embed_result, email_result]
@@ -265,7 +282,9 @@ def set_email_settings(session: requests.Session) -> requests.Response:
         "email-smtp-host": "mailhog",
         "email-smtp-port": 1025,
     }
-    email_result = session.put(f"{metabase_config['host']}/api/email", json=settings)
+    email_result = session.put(
+        f"{metabase_config['host-docker']}/api/email", json=settings
+    )
     return email_result
 
 
@@ -368,7 +387,9 @@ def create_alerts(session: requests.Session) -> list[requests.Response]:
     }
     responses = []
     for alert in [alert_one, alert_two, alert_three]:
-        response = session.post(f"{metabase_config['host']}/api/alert", json=alert)
+        response = session.post(
+            f"{metabase_config['host-docker']}/api/alert", json=alert
+        )
         responses.append(check_status_code(response=response))
     return responses
 
@@ -380,7 +401,7 @@ def create_dashboards(session: requests.Session) -> list[requests.Response]:
     responses = []
     for dashboard in [dashboard_one, dashboard_two, dashboard_three]:
         response = session.post(
-            f"{metabase_config['host']}/api/dashboard", json=dashboard
+            f"{metabase_config['host-docker']}/api/dashboard", json=dashboard
         )
         responses.append(check_status_code(response=response))
     return responses
@@ -398,3 +419,4 @@ if __name__ == "__main__":
     db_responses = create_databases(session, server_version)
     alert_responses = create_alerts(session)
     dashboard_responses = create_dashboards(session)
+    print("Setup completed")
