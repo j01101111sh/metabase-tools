@@ -13,6 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       MB_VERSION: ${{ matrix.metabase-version }}
+      PY_VERSION: ${{ matrix.python-version }}
       SKIP: pylint,mypy
 
     steps:
@@ -21,11 +22,7 @@ jobs:
       - name: Initialize docker containers
         id: docker
         run: |
-          docker network create mbtools
-          docker pull metabase/metabase:${{ matrix.metabase-version }}
-          docker run -d --name mbt --net mbtools -p 3000:3000 metabase/metabase:${{ matrix.metabase-version }}
-          docker pull mailhog/mailhog
-          docker run -d --name mailhog --net mbtools -p 8025:8025 -p 1025:1025 mailhog/mailhog
+          docker compose up -d
       - name: Install Poetry
         id: poetry
         run: |
