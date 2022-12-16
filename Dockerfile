@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
-
-FROM python:3.10-slim-buster
+ARG PY_VERSION=3.10.9
+FROM python:$PY_VERSION
 
 ENV PYTHONUNBUFFERED=1 \
     # prevents python creating .pyc files

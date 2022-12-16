@@ -11,7 +11,10 @@ services:
       - 1025:1025
       - 8025:8025
   mbt-setup:
-    build: .
+    build:
+      context: .
+      args:
+        - PY_VERSION=3.11.0
     depends_on:
       - metabase
       - mailhog
