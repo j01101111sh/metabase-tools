@@ -14,7 +14,7 @@ services:
     build:
       context: .
       args:
-        - PY_VERSION=3.11.0
+        - PY_VERSION=${PY_VERSION}
     depends_on:
       - metabase
       - mailhog
