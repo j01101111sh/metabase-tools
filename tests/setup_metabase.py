@@ -1,6 +1,6 @@
+import logging
 import shutil
 from json import loads
-from logging import getLogger
 from pathlib import Path
 from random import choice
 from string import ascii_letters
@@ -9,7 +9,8 @@ from time import sleep
 import requests
 from packaging.version import Version
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 metabase_config = {
     "host-docker": "http://metabase:3000",
@@ -24,7 +25,6 @@ metabase_config = {
         "password": "BAZouVa3saWgW89z",
     },
 }
-logger.info(metabase_config)
 
 
 def random_string(chars) -> str:
@@ -45,20 +45,22 @@ def initial_setup():
     WAIT_INTERVAL = 5
     token_response = None
     for x in range(MAX_ATTEMPTS + 1):
-        print(f"Attempt #{x+1}:")
+        logger.info(f"Attempt #{x+1}:")
         try:
             token_response = requests.get(
                 metabase_config["host-docker"] + "/api/session/properties",
                 timeout=TIMEOUT,
             )
-            print("Success!")
+            logger.info("Success!")
             break
         except requests.exceptions.ConnectionError:
             # Wait and try again if connection doesn't work the first time
-            print(f"ConnectionError encountered. Waiting {WAIT_INTERVAL} seconds...")
+            logger.info(
+                f"Failure: ConnectionError encountered. Waiting {WAIT_INTERVAL} seconds..."
+            )
             sleep(WAIT_INTERVAL)
         except requests.exceptions.ReadTimeout:
-            print(f"ReadTimeout encountered. Trying again...")
+            logger.info(f"Failure: ReadTimeout encountered. Trying again...")
 
     if not token_response:
         raise requests.exceptions.ConnectionError
@@ -408,15 +410,33 @@ def create_dashboards(session: requests.Session) -> list[requests.Response]:
 
 
 if __name__ == "__main__":
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)
+    formatter = logging.Formatter("%(asctime)s\t%(levelname)s\t%(lineno)d\t%(message)s")
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+    logger.info(f"Config: {metabase_config}")
+
+    logger.info("Starting cleanup.")
     cleanup_cache_and_logs()
+    logger.info("Cleanup completed. Starting initial setup.")
     setup_response = initial_setup()
+    logger.info("Initial setup completed. Getting new session.")
     session = get_session()
+    logger.info("Received new session. Getting server version")
     server_version = get_server_version(session)
+    logger.info(f"Server version received {server_version}. Setting settings.")
     server_settings = set_server_settings(session)
+    logger.info("Settings set. Creating users")
     user_responses = create_users(session)
+    logger.info("Users created. Creating collections")
     coll_responses = create_collections(session)
+    logger.info("Collections created. Creating cards.")
     card_responses = create_cards(session)
+    logger.info("Cards created. Creating databases")
     db_responses = create_databases(session, server_version)
+    logger.info("Databases created. Creating alerts.")
     alert_responses = create_alerts(session)
+    logger.info("Alerts created. Creating dashboards.")
     dashboard_responses = create_dashboards(session)
-    print("Setup completed")
+    logger.info("Setup completed")
