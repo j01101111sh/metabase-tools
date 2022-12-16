@@ -9,7 +9,7 @@ import requests
 from packaging.version import Version
 
 metabase_config = {
-    "host": "http://localhost:3000",
+    "host": "http://metabase:3000",
     "first": "Jim",
     "last": "Halpert",
     "email": "jim@dundermifflin.com",
