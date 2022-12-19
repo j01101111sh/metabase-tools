@@ -91,7 +91,7 @@ class TestModelMethodsCommonFail:
 
 
 class TestEndpointMethodsCommonPass:
-    def test_create(self, api: MetabaseApi, random_string: LambdaType):
+    def test_create(self, api: MetabaseApi):
         definition = {
             "alert_condition": "rows",
             "card": {
