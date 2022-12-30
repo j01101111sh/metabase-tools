@@ -33,10 +33,42 @@ class TestModelMethodsCommonPass:
             result._adapter.server_version, Version
         )  # check adapter initialized
 
-    def test_archive(self, items: list[AlertItem]):
-        target = random.choice(items)
-        result = target.archive()
-        _ = target.unarchive()
+    def test_archive(self, api: MetabaseApi, items: list[AlertItem]):
+        definition = {
+            "alert_condition": "rows",
+            "card": {
+                "id": 1,
+                "include_csv": True,
+                "include_xls": False,
+                "dashboard_card_id": None,
+            },
+            "channels": [
+                {
+                    "schedule_type": "daily",
+                    "schedule_hour": 0,
+                    "channel_type": "email",
+                    "schedule_frame": None,
+                    "recipients": [
+                        {
+                            "id": 1,
+                            "email": "jim@dundermifflin.com",
+                            "first_name": "Jim",
+                            "last_name": "Halpert",
+                            "common_name": "Jim Halpert",
+                        }
+                    ],
+                    "pulse_id": 1,
+                    "id": 1,
+                    "schedule_day": None,
+                    "enabled": True,
+                }
+            ],
+            "alert_first_only": False,
+            "alert_above_goal": None,
+        }
+        new_alert = api.alerts.create(**definition)
+        result = new_alert.archive()
+        _ = new_alert.unarchive()
         assert isinstance(result, AlertItem)  # check item class
         assert result.archived is True  # check action result
         assert isinstance(result._adapter, MetabaseApi)  # check adapter set
@@ -91,7 +123,7 @@ class TestModelMethodsCommonFail:
 
 
 class TestEndpointMethodsCommonPass:
-    def test_create(self, api: MetabaseApi, random_string: LambdaType):
+    def test_create(self, api: MetabaseApi):
         definition = {
             "alert_condition": "rows",
             "card": {

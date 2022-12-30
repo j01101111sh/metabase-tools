@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  metabase:
+    image: "metabase/metabase:${MB_VERSION}"
+    ports:
+      - 3000:3000
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - 1025:1025
+      - 8025:8025
+  mbt-setup:
+    build:
+      context: .
+      args:
+        - PY_VERSION=${PY_VERSION}
+    depends_on:
+      - metabase
+      - mailhog
+    command: python3 setup_metabase.py
