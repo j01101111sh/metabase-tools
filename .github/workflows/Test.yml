@@ -71,18 +71,6 @@ jobs:
         with:
           name: html-coverage
           path: htmlcov/
-      - name: Install final dependencies
-        id: dependencies_docs
-        run: poetry install --no-interaction --no-root --with docs
-      - name: Build HTML
-        id: sphinx
-        run: poetry run sphinx-build -W -a -E -b html docs/source/ docs/build/html
-      - name: Upload sphinx artifacts
-        id: sphinx_upload
-        uses: actions/upload-artifact@v3
-        with:
-          name: html-docs
-          path: docs/build/html/
       - name: Upload log artifacts
         id: log_upload
         uses: actions/upload-artifact@v3
@@ -96,3 +84,56 @@ jobs:
           if [[ ${{ steps.precommit.outcome }} == "failure" ]]; then echo 'precommit failure'; exit 1; fi
           if [[ ${{ steps.pylint.outcome }} == "failure" ]]; then echo 'pylint failure'; exit 1; fi
           if [[ ${{ steps.mypy.outcome }} == "failure" ]]; then echo 'mypy failure'; exit 1; fi
+
+  Docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        id: checkout
+      - name: Install Poetry
+        id: poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry --version
+          poetry config virtualenvs.in-project true
+          poetry config installer.parallel true
+          poetry check
+      - name: Set up Python 3.10
+        id: python_setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "poetry"
+      - name: Install dependencies
+        id: dependencies
+        continue-on-error: true
+        run: poetry install --no-interaction --with dev,docs
+      - name: Build HTML
+        id: sphinx
+        run: poetry run sphinx-build -W -a -E -b html docs/source/ docs/build/html
+      - name: Upload sphinx artifacts
+        id: sphinx_upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-docs
+          path: docs/build/html/
+
+  Analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: python
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
