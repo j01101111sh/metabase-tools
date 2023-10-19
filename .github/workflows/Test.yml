@@ -3,6 +3,7 @@ on: [pull_request]
 
 jobs:
   Style:
+    name: "Check formatting"
     strategy:
       fail-fast: false
       matrix:
@@ -10,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PY_VERSION: ${{ matrix.python-version }}
-      SKIP: pylint,mypy
     steps:
       - uses: actions/checkout@v3
         id: checkout
@@ -28,22 +28,14 @@ jobs:
           cache: "poetry"
       - name: Install dependencies
         id: dependencies
-        continue-on-error: true
         run: poetry install --no-interaction --with dev
       - name: Enforce code formatting
         id: precommit
-        continue-on-error: true
         run: poetry run pre-commit run --all-files
-      - name: Enforce code style
-        id: pylint
-        continue-on-error: true
-        run: poetry run pylint $(git ls-files './metabase_tools/*.py')
-      - name: Enforce type hinting
-        id: mypy
-        continue-on-error: true
-        run: poetry run mypy --strict $(git ls-files './metabase_tools/*.py')
-      
-  test:
+
+  Test:
+    name: "Test Suite"
+    needs: [Style]
     strategy:
       fail-fast: false
       matrix:
@@ -54,7 +46,6 @@ jobs:
     env:
       MB_VERSION: ${{ matrix.metabase-version }}
       PY_VERSION: ${{ matrix.python-version }}
-      SKIP: pylint,mypy
     steps:
       - uses: actions/checkout@v3
         id: checkout
@@ -80,18 +71,6 @@ jobs:
       - name: Fix dependency errors
         id: dependency_errors
         run: poetry install --no-interaction --no-root --with dev
-      - name: Enforce code formatting
-        id: precommit
-        continue-on-error: true
-        run: poetry run pre-commit run --all-files
-      - name: Enforce code style
-        id: pylint
-        continue-on-error: true
-        run: poetry run pylint $(git ls-files './metabase_tools/*.py')
-      - name: Enforce type hinting
-        id: mypy
-        continue-on-error: true
-        run: poetry run mypy --strict $(git ls-files './metabase_tools/*.py')
       - name: Test with pytest
         id: pytest
         continue-on-error: true
@@ -118,11 +97,10 @@ jobs:
         id: resolve
         run: |
           if [[ ${{ steps.pytest.outcome }} == "failure" ]]; then echo 'pytest failure'; exit 1; fi
-          if [[ ${{ steps.precommit.outcome }} == "failure" ]]; then echo 'precommit failure'; exit 1; fi
-          if [[ ${{ steps.pylint.outcome }} == "failure" ]]; then echo 'pylint failure'; exit 1; fi
-          if [[ ${{ steps.mypy.outcome }} == "failure" ]]; then echo 'mypy failure'; exit 1; fi
 
   Docs:
+    name: "Build Docs"
+    needs: [Style]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -133,16 +111,15 @@ jobs:
           pipx install poetry
           poetry config virtualenvs.in-project true
           poetry config installer.parallel true
-      - name: Set up Python 3.10
+      - name: Set up Python 3.11
         id: python_setup
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
           cache: "poetry"
       - name: Install dependencies
         id: dependencies
-        continue-on-error: true
-        run: poetry install --no-interaction --with dev,docs
+        run: poetry install --no-interaction --with docs
       - name: Build HTML
         id: sphinx
         run: poetry run sphinx-build -W -a -E -b html docs/source/ docs/build/html
@@ -154,6 +131,7 @@ jobs:
           path: docs/build/html/
 
   Analyze:
+    needs: [ Style ]
     runs-on: ubuntu-latest
     permissions:
       actions: read
