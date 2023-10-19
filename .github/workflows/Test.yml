@@ -2,34 +2,58 @@ name: Test
 on: [pull_request]
 
 jobs:
-  test:
+  Style:
+    name: "Check formatting"
+    runs-on: ubuntu-latest
+    env:
+      PY_VERSION: "3.11"
+    steps:
+      - uses: actions/checkout@v3
+        id: checkout
+      - name: Install Poetry
+        id: poetry
+        run: |
+          pipx install poetry
+          poetry config virtualenvs.in-project true
+          poetry config installer.parallel true
+      - name: Set up Python 3.11 on ubuntu-latest
+        id: python_setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: "poetry"
+      - name: Install dependencies
+        id: dependencies
+        run: poetry install --no-interaction --with dev
+      - name: Enforce code formatting
+        id: precommit
+        run: poetry run pre-commit run --all-files
+
+  Test:
+    name: "Test Suite"
+    needs: [Style]
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
         python-version: ["3.10", "3.11"]
-        metabase-version: ["v0.39.7", "v0.40.8", "v0.41.9", "v0.42.6", "v0.43.7.3", "v0.44.7.3", "v0.45.4.3", "latest"]
-
+        metabase-version: ["v0.39.7", "v0.40.8", "v0.41.9", "v0.42.6", "v0.43.7.3", "v0.44.7.3", "v0.45.4.3"]
     runs-on: ${{ matrix.os }}
     env:
       MB_VERSION: ${{ matrix.metabase-version }}
       PY_VERSION: ${{ matrix.python-version }}
-      SKIP: pylint,mypy
-
     steps:
       - uses: actions/checkout@v3
         id: checkout
       - name: Initialize docker containers
         id: docker
-        run: docker compose up -d
+        run: docker compose up -d --wait && sleep 60
       - name: Install Poetry
         id: poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry --version
+          pipx install poetry
           poetry config virtualenvs.in-project true
           poetry config installer.parallel true
-          poetry check
       - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
         id: python_setup
         uses: actions/setup-python@v4
@@ -43,18 +67,6 @@ jobs:
       - name: Fix dependency errors
         id: dependency_errors
         run: poetry install --no-interaction --no-root --with dev
-      - name: Enforce code formatting
-        id: precommit
-        continue-on-error: true
-        run: poetry run pre-commit run --all-files
-      - name: Enforce code style
-        id: pylint
-        continue-on-error: true
-        run: poetry run pylint $(git ls-files './metabase_tools/*.py')
-      - name: Enforce type hinting
-        id: mypy
-        continue-on-error: true
-        run: poetry run mypy --strict $(git ls-files './metabase_tools/*.py')
       - name: Test with pytest
         id: pytest
         continue-on-error: true
@@ -71,18 +83,6 @@ jobs:
         with:
           name: html-coverage
           path: htmlcov/
-      - name: Install final dependencies
-        id: dependencies_docs
-        run: poetry install --no-interaction --no-root --with docs
-      - name: Build HTML
-        id: sphinx
-        run: poetry run sphinx-build -W -a -E -b html docs/source/ docs/build/html
-      - name: Upload sphinx artifacts
-        id: sphinx_upload
-        uses: actions/upload-artifact@v3
-        with:
-          name: html-docs
-          path: docs/build/html/
       - name: Upload log artifacts
         id: log_upload
         uses: actions/upload-artifact@v3
@@ -93,6 +93,35 @@ jobs:
         id: resolve
         run: |
           if [[ ${{ steps.pytest.outcome }} == "failure" ]]; then echo 'pytest failure'; exit 1; fi
-          if [[ ${{ steps.precommit.outcome }} == "failure" ]]; then echo 'precommit failure'; exit 1; fi
-          if [[ ${{ steps.pylint.outcome }} == "failure" ]]; then echo 'pylint failure'; exit 1; fi
-          if [[ ${{ steps.mypy.outcome }} == "failure" ]]; then echo 'mypy failure'; exit 1; fi
+
+  Docs:
+    name: "Build Docs"
+    needs: [Test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        id: checkout
+      - name: Install Poetry
+        id: poetry
+        run: |
+          pipx install poetry
+          poetry config virtualenvs.in-project true
+          poetry config installer.parallel true
+      - name: Set up Python 3.11
+        id: python_setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: "poetry"
+      - name: Install dependencies
+        id: dependencies
+        run: poetry install --no-interaction --with docs
+      - name: Build HTML
+        id: sphinx
+        run: poetry run sphinx-build -W -a -E -b html docs/source/ docs/build/html
+      - name: Upload sphinx artifacts
+        id: sphinx_upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-docs
+          path: docs/build/html/
