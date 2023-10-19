@@ -4,13 +4,9 @@ on: [pull_request]
 jobs:
   Style:
     name: "Check formatting"
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.10", "3.11"]
     runs-on: ubuntu-latest
     env:
-      PY_VERSION: ${{ matrix.python-version }}
+      PY_VERSION: "3.11"
     steps:
       - uses: actions/checkout@v3
         id: checkout
@@ -20,11 +16,11 @@ jobs:
           pipx install poetry
           poetry config virtualenvs.in-project true
           poetry config installer.parallel true
-      - name: Set up Python ${{ matrix.python-version }} on ubuntu-latest
+      - name: Set up Python 3.11 on ubuntu-latest
         id: python_setup
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11"
           cache: "poetry"
       - name: Install dependencies
         id: dependencies
@@ -100,7 +96,7 @@ jobs:
 
   Docs:
     name: "Build Docs"
-    needs: [Style]
+    needs: [Test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
