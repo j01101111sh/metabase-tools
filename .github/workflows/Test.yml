@@ -17,11 +17,9 @@ jobs:
       - name: Install Poetry
         id: poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry --version
+          pipx install poetry
           poetry config virtualenvs.in-project true
           poetry config installer.parallel true
-          poetry check
       - name: Set up Python ${{ matrix.python-version }} on ubuntu-latest
         id: python_setup
         uses: actions/setup-python@v4
@@ -66,11 +64,9 @@ jobs:
       - name: Install Poetry
         id: poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry --version
+          pipx install poetry
           poetry config virtualenvs.in-project true
           poetry config installer.parallel true
-          poetry check
       - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
         id: python_setup
         uses: actions/setup-python@v4
@@ -134,11 +130,9 @@ jobs:
       - name: Install Poetry
         id: poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry --version
+          pipx install poetry
           poetry config virtualenvs.in-project true
           poetry config installer.parallel true
-          poetry check
       - name: Set up Python 3.10
         id: python_setup
         uses: actions/setup-python@v4
