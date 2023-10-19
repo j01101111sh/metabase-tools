@@ -51,7 +51,7 @@ jobs:
         id: checkout
       - name: Initialize docker containers
         id: docker
-        run: docker compose up -d
+        run: docker compose up -d --wait
       - name: Install Poetry
         id: poetry
         run: |
