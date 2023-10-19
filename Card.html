@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Collection" href="Collection.html" /><link rel="prev" title="Basic Usage" href="basic_usage.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>Card - metabase-tools 0.14.0 documentation</title>
+    <!-- Generated with Sphinx 6.2.1 and Furo 2023.09.10 -->
+        <title>Card - metabase-tools 0.15.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=369552022d0b975c8e74270ce6eabe0fb7978f24" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">metabase-tools 0.14.0 documentation</div></a>
+      <a href="index.html"><div class="brand">metabase-tools 0.15.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">metabase-tools 0.14.0 documentation</span>
+  <span class="sidebar-brand-text">metabase-tools 0.15.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -208,40 +208,40 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> (<em>int</em><em> | </em><em>str</em>) – </p></li>
-<li><p><strong>name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>description</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>name</strong> (<em>str</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>description</strong> (<em>str</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>archived</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>collection_position</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
-<li><p><strong>table_id</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
-<li><p><strong>result_metadata</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>collection_position</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>table_id</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>result_metadata</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>] </em><em>| </em><em>None</em>) – </p></li>
 <li><p><strong>creator</strong> (<a class="reference internal" href="User.html#metabase_tools.models.user_model.UserItem" title="metabase_tools.models.user_model.UserItem"><em>UserItem</em></a>) – </p></li>
-<li><p><strong>database_id</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>database_id</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>enable_embedding</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>collection_id</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
-<li><p><strong>query_type</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>collection_id</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>query_type</strong> (<em>str</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>creator_id</strong> (<em>int</em>) – </p></li>
 <li><p><strong>updated_at</strong> (<em>datetime</em>) – </p></li>
-<li><p><strong>made_public_by_id</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
-<li><p><strong>embedding_params</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>cache_ttl</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>made_public_by_id</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>embedding_params</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – </p></li>
+<li><p><strong>cache_ttl</strong> (<em>str</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>dataset_query</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – </p></li>
 <li><p><strong>display</strong> (<em>str</em>) – </p></li>
 <li><p><strong>visualization_settings</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – </p></li>
-<li><p><strong>collection</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem" title="metabase_tools.models.collection_model.CollectionItem"><em>CollectionItem</em></a><em>]</em>) – </p></li>
-<li><p><strong>dataset</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>collection</strong> (<a class="reference internal" href="Collection.html#metabase_tools.models.collection_model.CollectionItem" title="metabase_tools.models.collection_model.CollectionItem"><em>CollectionItem</em></a><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>dataset</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>created_at</strong> (<em>datetime</em>) – </p></li>
-<li><p><strong>public_uuid</strong> (<em>Optional</em><em>[</em><em>UUID</em><em>]</em>) – </p></li>
-<li><p><strong>can_write</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
-<li><p><strong>is_write</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
-<li><p><strong>dashboard_count</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
-<li><p><strong>favorite</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
-<li><p><strong>average_query_time</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
-<li><p><strong>collection_preview</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
-<li><p><strong>entity_id</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>last_query_start</strong> (<em>Optional</em><em>[</em><em>datetime</em><em>]</em>) – </p></li>
-<li><p><strong>moderation_reviews</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>parameter_mappings</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>parameters</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>public_uuid</strong> (<em>UUID</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>can_write</strong> (<em>bool</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>is_write</strong> (<em>bool</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>dashboard_count</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>favorite</strong> (<em>bool</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>average_query_time</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>collection_preview</strong> (<em>bool</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>entity_id</strong> (<em>str</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>last_query_start</strong> (<em>datetime</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>moderation_reviews</strong> (<em>list</em><em>[</em><em>Any</em><em>] </em><em>| </em><em>None</em>) – </p></li>
+<li><p><strong>parameter_mappings</strong> (<em>list</em><em>[</em><em>Any</em><em>] </em><em>| </em><em>None</em>) – </p></li>
+<li><p><strong>parameters</strong> (<em>list</em><em>[</em><em>Any</em><em>] </em><em>| </em><em>None</em>) – </p></li>
 <li><p><strong>extra_data</strong> (<em>Any</em>) – </p></li>
 </ul>
 </dd>
@@ -275,7 +275,7 @@ Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>_fields_set</strong> (<em>Optional</em><em>[</em><em>SetStr</em><em>]</em>) – </p></li>
+<li><p><strong>_fields_set</strong> (<em>SetStr</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>values</strong> (<em>Any</em>) – </p></li>
 </ul>
 </dd>
@@ -292,9 +292,9 @@ Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – fields to include in new model</p></li>
-<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – fields to exclude from new model, as with values this takes precedence over include</p></li>
-<li><p><strong>update</strong> (<em>Optional</em><em>[</em><em>DictStrAny</em><em>]</em>) – values to change/add in the new model. Note: the data is not validated before creating
+<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – fields to include in new model</p></li>
+<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – fields to exclude from new model, as with values this takes precedence over include</p></li>
+<li><p><strong>update</strong> (<em>DictStrAny</em><em> | </em><em>None</em>) – values to change/add in the new model. Note: the data is not validated before creating
 the new model: you should trust this data</p></li>
 <li><p><strong>deep</strong> (<em>bool</em>) – set to <cite>True</cite> to make a deep copy of the model</p></li>
 <li><p><strong>self</strong> (<em>Model</em>) – </p></li>
@@ -330,10 +330,10 @@ the new model: you should trust this data</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>by_alias</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>skip_defaults</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
+<li><p><strong>skip_defaults</strong> (<em>bool</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>exclude_unset</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_defaults</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_none</strong> (<em>bool</em>) – </p></li>
@@ -370,14 +370,14 @@ the new model: you should trust this data</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>by_alias</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>skip_defaults</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
+<li><p><strong>skip_defaults</strong> (<em>bool</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>exclude_unset</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_defaults</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_none</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>encoder</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>encoder</strong> (<em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – </p></li>
 <li><p><strong>models_as_dict</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>dumps_kwargs</strong> (<em>Any</em>) – </p></li>
 </ul>
@@ -583,7 +583,7 @@ the new model: you should trust this data</p></li>
 <li><p><strong>database_id</strong> (<em>int</em>) – </p></li>
 <li><p><strong>started_at</strong> (<em>datetime</em>) – </p></li>
 <li><p><strong>json_query</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – </p></li>
-<li><p><strong>average_execution_time</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>average_execution_time</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>status</strong> (<em>str</em>) – </p></li>
 <li><p><strong>context</strong> (<em>str</em>) – </p></li>
 <li><p><strong>row_count</strong> (<em>int</em>) – </p></li>
@@ -600,7 +600,7 @@ Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>_fields_set</strong> (<em>Optional</em><em>[</em><em>SetStr</em><em>]</em>) – </p></li>
+<li><p><strong>_fields_set</strong> (<em>SetStr</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>values</strong> (<em>Any</em>) – </p></li>
 </ul>
 </dd>
@@ -617,9 +617,9 @@ Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – fields to include in new model</p></li>
-<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – fields to exclude from new model, as with values this takes precedence over include</p></li>
-<li><p><strong>update</strong> (<em>Optional</em><em>[</em><em>DictStrAny</em><em>]</em>) – values to change/add in the new model. Note: the data is not validated before creating
+<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – fields to include in new model</p></li>
+<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – fields to exclude from new model, as with values this takes precedence over include</p></li>
+<li><p><strong>update</strong> (<em>DictStrAny</em><em> | </em><em>None</em>) – values to change/add in the new model. Note: the data is not validated before creating
 the new model: you should trust this data</p></li>
 <li><p><strong>deep</strong> (<em>bool</em>) – set to <cite>True</cite> to make a deep copy of the model</p></li>
 <li><p><strong>self</strong> (<em>Model</em>) – </p></li>
@@ -641,10 +641,10 @@ the new model: you should trust this data</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>by_alias</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>skip_defaults</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
+<li><p><strong>skip_defaults</strong> (<em>bool</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>exclude_unset</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_defaults</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_none</strong> (<em>bool</em>) – </p></li>
@@ -664,14 +664,14 @@ the new model: you should trust this data</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>by_alias</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>skip_defaults</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
+<li><p><strong>skip_defaults</strong> (<em>bool</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>exclude_unset</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_defaults</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_none</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>encoder</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>encoder</strong> (<em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – </p></li>
 <li><p><strong>models_as_dict</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>dumps_kwargs</strong> (<em>Any</em>) – </p></li>
 </ul>
@@ -706,7 +706,7 @@ the new model: you should trust this data</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>card_id</strong> (<em>int</em>) – </p></li>
-<li><p><strong>table</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>table</strong> (<em>str</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>metrics</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em>) – </p></li>
 <li><p><strong>segments</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em>) – </p></li>
 <li><p><strong>dashboards</strong> (<em>list</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – </p></li>
@@ -724,7 +724,7 @@ Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>_fields_set</strong> (<em>Optional</em><em>[</em><em>SetStr</em><em>]</em>) – </p></li>
+<li><p><strong>_fields_set</strong> (<em>SetStr</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>values</strong> (<em>Any</em>) – </p></li>
 </ul>
 </dd>
@@ -741,9 +741,9 @@ Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – fields to include in new model</p></li>
-<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – fields to exclude from new model, as with values this takes precedence over include</p></li>
-<li><p><strong>update</strong> (<em>Optional</em><em>[</em><em>DictStrAny</em><em>]</em>) – values to change/add in the new model. Note: the data is not validated before creating
+<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – fields to include in new model</p></li>
+<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – fields to exclude from new model, as with values this takes precedence over include</p></li>
+<li><p><strong>update</strong> (<em>DictStrAny</em><em> | </em><em>None</em>) – values to change/add in the new model. Note: the data is not validated before creating
 the new model: you should trust this data</p></li>
 <li><p><strong>deep</strong> (<em>bool</em>) – set to <cite>True</cite> to make a deep copy of the model</p></li>
 <li><p><strong>self</strong> (<em>Model</em>) – </p></li>
@@ -765,10 +765,10 @@ the new model: you should trust this data</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>by_alias</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>skip_defaults</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
+<li><p><strong>skip_defaults</strong> (<em>bool</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>exclude_unset</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_defaults</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_none</strong> (<em>bool</em>) – </p></li>
@@ -788,14 +788,14 @@ the new model: you should trust this data</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>exclude</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>AbstractSetIntStr</em><em>, </em><em>MappingIntStrAny</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
+<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>by_alias</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>skip_defaults</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – </p></li>
+<li><p><strong>skip_defaults</strong> (<em>bool</em><em> | </em><em>None</em>) – </p></li>
 <li><p><strong>exclude_unset</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_defaults</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>exclude_none</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>encoder</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>encoder</strong> (<em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>) – </p></li>
 <li><p><strong>models_as_dict</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>dumps_kwargs</strong> (<em>Any</em>) – </p></li>
 </ul>
@@ -1029,9 +1029,6 @@ the new model: you should trust this data</p></li>
     </aside>
   </div>
 </div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
