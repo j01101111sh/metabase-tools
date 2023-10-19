@@ -14,7 +14,9 @@ from tests.setup_metabase import metabase_config
 _run_id = os.environ.get("GITHUB_RUN_ID", datetime.now().strftime("%y%m%dT%H%M%S"))
 _python_version = python_version().replace(".", "_")
 
-properties = requests.get("http://localhost:3000/api/session/properties").json()
+properties = requests.get(
+    "http://localhost:3000/api/session/properties", timeout=60
+).json()
 if isinstance(properties, dict):
     _mb_version = properties["version"]["tag"].replace(".", "_")
 else:
