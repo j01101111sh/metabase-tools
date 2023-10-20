@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.models.activity_model import ActivityItem
@@ -44,7 +44,7 @@ class Activity:
     def search(
         self,
         search_params: dict[str, Any],
-        search_list: Optional[list[ActivityItem]] = None,
+        search_list: list[ActivityItem] | None = None,
     ) -> list[ActivityItem]:
         """Method to search a list of objects meeting a set of parameters
 

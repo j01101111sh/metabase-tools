@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 from packaging.version import Version
 
@@ -31,7 +31,7 @@ class Alerts(Endpoint[AlertItem]):
     ]
 
     @log_call
-    def get(self, targets: Optional[list[int]] = None) -> list[AlertItem]:
+    def get(self, targets: list[int] | None = None) -> list[AlertItem]:
         """Fetch list of alerts
 
         Args:
@@ -83,11 +83,11 @@ class Alerts(Endpoint[AlertItem]):
         name: str | MissingParam = MissingParam(),
         dataset_query: dict[str, Any] | MissingParam = MissingParam(),
         display: str | MissingParam = MissingParam(),
-        description: Optional[str | MissingParam] = MissingParam(),
-        collection_position: Optional[int | MissingParam] = MissingParam(),
-        result_metadata: Optional[list[dict[str, Any]] | MissingParam] = MissingParam(),
-        metadata_checksum: Optional[str | MissingParam] = MissingParam(),
-        collection_id: Optional[int | MissingParam] = MissingParam(),
+        description: str | MissingParam | None = MissingParam(),
+        collection_position: int | MissingParam | None = MissingParam(),
+        result_metadata: list[dict[str, Any]] | MissingParam | None = MissingParam(),
+        metadata_checksum: str | MissingParam | None = MissingParam(),
+        collection_id: int | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> AlertItem:
         """Creates a new alert
@@ -123,7 +123,7 @@ class Alerts(Endpoint[AlertItem]):
     def search(
         self,
         search_params: list[dict[str, Any]],
-        search_list: Optional[list[AlertItem]] = None,
+        search_list: list[AlertItem] | None = None,
     ) -> list[AlertItem]:
         """Method to search a list of alerts meeting a list of parameters
 

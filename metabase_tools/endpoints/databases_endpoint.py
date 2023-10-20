@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.models.database_model import DatabaseItem
@@ -22,7 +22,7 @@ class Databases(Endpoint[DatabaseItem]):
     _required_params: ClassVar[list[str]] = ["name", "engine", "details"]
 
     @log_call
-    def get(self, targets: Optional[list[int]] = None) -> list[DatabaseItem]:
+    def get(self, targets: list[int] | None = None) -> list[DatabaseItem]:
         """Fetch list of databases
 
         Args:
@@ -50,10 +50,10 @@ class Databases(Endpoint[DatabaseItem]):
         name: str | MissingParam = MissingParam(),
         engine: str | MissingParam = MissingParam(),
         details: dict[str, Any] | MissingParam = MissingParam(),
-        is_full_sync: Optional[bool | MissingParam] = MissingParam(),
-        is_on_demand: Optional[bool | MissingParam] = MissingParam(),
-        schedules: Optional[dict[str, Any] | MissingParam] = MissingParam(),
-        auto_run_queries: Optional[bool | MissingParam] = MissingParam(),
+        is_full_sync: bool | MissingParam | None = MissingParam(),
+        is_on_demand: bool | MissingParam | None = MissingParam(),
+        schedules: dict[str, Any] | MissingParam | None = MissingParam(),
+        auto_run_queries: bool | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> DatabaseItem:
         """Create a new database
@@ -85,7 +85,7 @@ class Databases(Endpoint[DatabaseItem]):
     def search(
         self,
         search_params: list[dict[str, Any]],
-        search_list: Optional[list[DatabaseItem]] = None,
+        search_list: list[DatabaseItem] | None = None,
     ) -> list[DatabaseItem]:
         """Method to search a list of databases meeting a list of parameters
 
