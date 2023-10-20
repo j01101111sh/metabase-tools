@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Card" href="Card.html" /><link rel="prev" title="Core - MetabaseApi" href="Core.html" />
 
-    <!-- Generated with Sphinx 6.2.1 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Basic Usage - metabase-tools 0.15.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=369552022d0b975c8e74270ce6eabe0fb7978f24" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -198,9 +198,9 @@
         </div>
         <article role="main">
           <section id="basic-usage">
-<h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this heading">#</a></h1>
+<h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h1>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>To use metabase-tools, first install it using pip or poetry:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>metabase-tools
 </pre></div>
@@ -211,14 +211,14 @@
 </div>
 </section>
 <section id="general-use">
-<h2>General Use<a class="headerlink" href="#general-use" title="Permalink to this heading">#</a></h2>
+<h2>General Use<a class="headerlink" href="#general-use" title="Link to this heading">#</a></h2>
 <p>The most basic use of the wrapper is to call a Metabase API endpoint so you do not need to manage authentication yourself.</p>
 <p>There are two kinds of endpoints currently supported:
 - Endpoints that either create new objects or deal with groups (i.e. lists) of existing objects (e.g. getting a list)
 - Endpoints acting on an existing object (e.g. updates)</p>
 <p>These two kinds of endpoints are handled separately in the wrapper to make calling their methods more convenient. For details on available methods, you will need to see the relevant page for each object type.</p>
 <section id="type-1-new-or-grouped-object-methods">
-<h3>Type 1 - New or grouped object methods<a class="headerlink" href="#type-1-new-or-grouped-object-methods" title="Permalink to this heading">#</a></h3>
+<h3>Type 1 - New or grouped object methods<a class="headerlink" href="#type-1-new-or-grouped-object-methods" title="Link to this heading">#</a></h3>
 <p>The following methods are supported for all current objects:
 - create
 - get
@@ -244,7 +244,7 @@
 </div>
 </section>
 <section id="type-2-single-existing-object-methods">
-<h3>Type 2 - Single, existing object methods<a class="headerlink" href="#type-2-single-existing-object-methods" title="Permalink to this heading">#</a></h3>
+<h3>Type 2 - Single, existing object methods<a class="headerlink" href="#type-2-single-existing-object-methods" title="Link to this heading">#</a></h3>
 <p>If a method acts on a single, existing object, you need to get an instance of that object first and call the method from that object, as seen here:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metabase_tools</span>
 
@@ -346,9 +346,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script src="_static/documentation_options.js?v=ef97403f"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

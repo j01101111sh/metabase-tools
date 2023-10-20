@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tools" href="Tools.html" /><link rel="prev" title="Database" href="Database.html" />
 
-    <!-- Generated with Sphinx 6.2.1 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>User - metabase-tools 0.15.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=369552022d0b975c8e74270ce6eabe0fb7978f24" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -198,11 +198,11 @@
         </div>
         <article role="main">
           <section id="module-metabase_tools.models.user_model">
-<span id="user"></span><h1>User<a class="headerlink" href="#module-metabase_tools.models.user_model" title="Permalink to this heading">#</a></h1>
+<span id="user"></span><h1>User<a class="headerlink" href="#module-metabase_tools.models.user_model" title="Link to this heading">#</a></h1>
 <p>Classes related to user endpoints</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.models.user_model.</span></span><span class="sig-name descname"><span class="pre">UserItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">common_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updated_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_qbnewb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ldap_auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">google_auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">login_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">personal_collection_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_invited_second_user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_group_memberships</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_login</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_question_and_dashboard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_installer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sso_source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.models.user_model.</span></span><span class="sig-name descname"><span class="pre">UserItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">common_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_joined</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_login</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updated_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_qbnewb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ldap_auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">google_auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_active</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">login_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">personal_collection_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_invited_second_user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_group_memberships</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_login</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_question_and_dashboard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_installer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sso_source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem" title="Link to this definition">#</a></dt>
 <dd><p>User object class with related methods</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -235,7 +235,7 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.archive">
-<span class="sig-name descname"><span class="pre">archive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.archive" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">archive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.archive" title="Link to this definition">#</a></dt>
 <dd><p>Generic method for archiving an object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
@@ -255,7 +255,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.construct">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fields_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.construct" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fields_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.construct" title="Link to this definition">#</a></dt>
 <dd><p>Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.
 Default values are respected, but no other validation is performed.
 Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all passed values</p>
@@ -274,7 +274,7 @@ Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all 
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.copy" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.copy" title="Link to this definition">#</a></dt>
 <dd><p>Duplicate a model, optionally choose which fields to include, exclude and change.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -298,7 +298,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.delete" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.delete" title="Link to this definition">#</a></dt>
 <dd><p>Method to delete an object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
@@ -312,7 +312,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.dict">
-<span class="sig-name descname"><span class="pre">dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.dict" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.dict" title="Link to this definition">#</a></dt>
 <dd><p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -334,7 +334,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.disable">
-<span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.disable" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.disable" title="Link to this definition">#</a></dt>
 <dd><p>Disables user</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -345,7 +345,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.enable">
-<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.enable" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.enable" title="Link to this definition">#</a></dt>
 <dd><p>Enable user</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -359,7 +359,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.json">
-<span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">models_as_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.json" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">models_as_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.json" title="Link to this definition">#</a></dt>
 <dd><p>Generate a JSON representation of the model, <cite>include</cite> and <cite>exclude</cite> arguments as per <cite>dict()</cite>.</p>
 <p><cite>encoder</cite> is an optional function to supply as <cite>default</cite> to json.dumps(), other arguments as per <cite>json.dumps()</cite>.</p>
 <dl class="field-list simple">
@@ -385,7 +385,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.qbnewb">
-<span class="sig-name descname"><span class="pre">qbnewb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.qbnewb" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">qbnewb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.qbnewb" title="Link to this definition">#</a></dt>
 <dd><p>Indicate that a user has been informed about Query Builder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -399,7 +399,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.refresh">
-<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.refresh" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.refresh" title="Link to this definition">#</a></dt>
 <dd><p>Returns refreshed copy of the user</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -416,7 +416,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.resend_invite">
-<span class="sig-name descname"><span class="pre">resend_invite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.resend_invite" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">resend_invite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.resend_invite" title="Link to this definition">#</a></dt>
 <dd><p>Resent user invites</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -430,7 +430,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.set_adapter">
-<span class="sig-name descname"><span class="pre">set_adapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.set_adapter" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">set_adapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.set_adapter" title="Link to this definition">#</a></dt>
 <dd><p>Sets the adapter on an object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -444,7 +444,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.unarchive">
-<span class="sig-name descname"><span class="pre">unarchive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.unarchive" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">unarchive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.unarchive" title="Link to this definition">#</a></dt>
 <dd><p>Generic method for unarchiving an object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
@@ -464,7 +464,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_group_manager</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_group_memberships</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">login_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.update" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_group_manager</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_group_memberships</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_superuser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">login_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.update" title="Link to this definition">#</a></dt>
 <dd><p>Updates a user using the provided parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -492,7 +492,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.update_forward_refs">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_forward_refs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">localns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.update_forward_refs" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_forward_refs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">localns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.update_forward_refs" title="Link to this definition">#</a></dt>
 <dd><p>Try to update ForwardRefs on fields based on this Model, globalns and localns.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -506,7 +506,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.models.user_model.UserItem.update_password">
-<span class="sig-name descname"><span class="pre">update_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.update_password" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">update_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.models.user_model.UserItem.update_password" title="Link to this definition">#</a></dt>
 <dd><p>Updates passwords for users</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -526,10 +526,10 @@ the new model: you should trust this data</p></li>
 
 </dd></dl>
 
-<span class="target" id="module-metabase_tools.endpoints.users_endpoint"></span><p>Classes related to card endpoints</p>
+<p id="module-metabase_tools.endpoints.users_endpoint">Classes related to card endpoints</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="metabase_tools.endpoints.users_endpoint.Users">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.endpoints.users_endpoint.</span></span><span class="sig-name descname"><span class="pre">Users</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.users_endpoint.Users" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metabase_tools.endpoints.users_endpoint.</span></span><span class="sig-name descname"><span class="pre">Users</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adapter</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.users_endpoint.Users" title="Link to this definition">#</a></dt>
 <dd><p>Card related endpoint methods</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -538,7 +538,7 @@ the new model: you should trust this data</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.endpoints.users_endpoint.Users.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">login_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.users_endpoint.Users.create" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">login_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MissingParam()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.users_endpoint.Users.create" title="Link to this definition">#</a></dt>
 <dd><p>_summary_</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -563,7 +563,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.endpoints.users_endpoint.Users.current">
-<span class="sig-name descname"><span class="pre">current</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.users_endpoint.Users.current" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">current</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.users_endpoint.Users.current" title="Link to this definition">#</a></dt>
 <dd><p>Current user details</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
@@ -580,7 +580,7 @@ the new model: you should trust this data</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.endpoints.users_endpoint.Users.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.users_endpoint.Users.get" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.users_endpoint.Users.get" title="Link to this definition">#</a></dt>
 <dd><p>Fetch list of users</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -590,14 +590,14 @@ the new model: you should trust this data</p></li>
 <dd class="field-even"><p>list[UserItem]</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.user_model.UserItem" title="metabase_tools.models.user_model.UserItem">metabase_tools.models.user_model.UserItem</a>]</p>
+<dd class="field-odd"><p>list[<a class="reference internal" href="#metabase_tools.models.user_model.UserItem" title="metabase_tools.models.user_model.UserItem"><em>UserItem</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metabase_tools.endpoints.users_endpoint.Users.search">
-<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.users_endpoint.Users.search" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.endpoints.users_endpoint.Users.search" title="Link to this definition">#</a></dt>
 <dd><p>Method to search a list of users meeting a list of parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -712,9 +712,9 @@ the new model: you should trust this data</p></li>
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script src="_static/documentation_options.js?v=ef97403f"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Basic Usage" href="basic_usage.html" /><link rel="prev" title="Welcome to metabase-tools’s documentation!" href="index.html" />
 
-    <!-- Generated with Sphinx 6.2.1 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Core - MetabaseApi - metabase-tools 0.15.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=369552022d0b975c8e74270ce6eabe0fb7978f24" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -198,13 +198,13 @@
         </div>
         <article role="main">
           <section id="core-metabaseapi">
-<h1>Core - MetabaseApi<a class="headerlink" href="#core-metabaseapi" title="Permalink to this heading">#</a></h1>
+<h1>Core - MetabaseApi<a class="headerlink" href="#core-metabaseapi" title="Link to this heading">#</a></h1>
 <p>The MetabaseApi class is the core component of the API wrapper and you’ll need to get it started before you do anything else.</p>
 <section id="authentication">
-<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">#</a></h2>
+<h2>Authentication<a class="headerlink" href="#authentication" title="Link to this heading">#</a></h2>
 <p>There are 3 authentication options currently supported:</p>
 <section id="option-1-username-and-password-dictionary-recommended">
-<h3>Option 1 - Username and password dictionary (recommended)<a class="headerlink" href="#option-1-username-and-password-dictionary-recommended" title="Permalink to this heading">#</a></h3>
+<h3>Option 1 - Username and password dictionary (recommended)<a class="headerlink" href="#option-1-username-and-password-dictionary-recommended" title="Link to this heading">#</a></h3>
 <p>This option involves passing a username and password in a dictionary to authenticate.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">metabase_tools</span>
 <span class="linenos">2</span>
@@ -215,7 +215,7 @@
 </div>
 </section>
 <section id="option-2-token-file">
-<h3>Option 2 - Token file<a class="headerlink" href="#option-2-token-file" title="Permalink to this heading">#</a></h3>
+<h3>Option 2 - Token file<a class="headerlink" href="#option-2-token-file" title="Link to this heading">#</a></h3>
 <p>This option is best when you’ve previously authenticated with username and password and wish to reuse the same token. You can pass the path as a string or a pathlib.Path object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">metabase_tools</span>
 <span class="linenos">2</span>
@@ -230,7 +230,7 @@
 </div>
 </section>
 <section id="option-3-token-dictionary">
-<h3>Option 3 - Token dictionary<a class="headerlink" href="#option-3-token-dictionary" title="Permalink to this heading">#</a></h3>
+<h3>Option 3 - Token dictionary<a class="headerlink" href="#option-3-token-dictionary" title="Link to this heading">#</a></h3>
 <p>This option involves getting the token string from your Metabase cookie so is much more involved than the other two.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">metabase_tools</span>
 <span class="linenos">2</span>
@@ -242,7 +242,7 @@
 </section>
 </section>
 <section id="caching-tokens">
-<h2>Caching Tokens<a class="headerlink" href="#caching-tokens" title="Permalink to this heading">#</a></h2>
+<h2>Caching Tokens<a class="headerlink" href="#caching-tokens" title="Link to this heading">#</a></h2>
 <p>If you would like to cache your token for future runs to speed things up, simply set <code class="docutils literal notranslate"><span class="pre">cache_token</span></code> option to <code class="docutils literal notranslate"><span class="pre">True</span></code>. This option works regardless of which authentication method was used. The token will be saved to <code class="docutils literal notranslate"><span class="pre">token_path</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">metabase_tools</span>
 <span class="linenos">2</span>
@@ -255,17 +255,17 @@
 </div>
 </section>
 <section id="custom-session-objects">
-<h2>Custom Session objects<a class="headerlink" href="#custom-session-objects" title="Permalink to this heading">#</a></h2>
+<h2>Custom Session objects<a class="headerlink" href="#custom-session-objects" title="Link to this heading">#</a></h2>
 <p>If you need to make use of a proxy or other feature supported by the requests module’s Session class, you can pass it in to the adapter on creation using the <code class="docutils literal notranslate"><span class="pre">session</span></code> keyword argument.</p>
 </section>
 <section id="other-public-methods">
-<h2>Other Public Methods<a class="headerlink" href="#other-public-methods" title="Permalink to this heading">#</a></h2>
+<h2>Other Public Methods<a class="headerlink" href="#other-public-methods" title="Link to this heading">#</a></h2>
 <section id="testing-for-successful-authentication">
-<h3>Testing for successful authentication<a class="headerlink" href="#testing-for-successful-authentication" title="Permalink to this heading">#</a></h3>
+<h3>Testing for successful authentication<a class="headerlink" href="#testing-for-successful-authentication" title="Link to this heading">#</a></h3>
 <p>Authentication will be tested during initialization but if you would like to test after that, you can call the <code class="docutils literal notranslate"><span class="pre">test_for_auth</span></code> method. This will make a test call to the Metabase API and return <code class="docutils literal notranslate"><span class="pre">True</span></code> if it completed without issue or <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="metabase_tools.MetabaseApi.test_for_auth">
-<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">test_for_auth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.test_for_auth" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">test_for_auth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.test_for_auth" title="Link to this definition">#</a></dt>
 <dd><p>Validates successful authentication by attempting to retrieve data about             the current user</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -279,11 +279,11 @@
 
 </section>
 <section id="making-generic-requests">
-<h3>Making generic requests<a class="headerlink" href="#making-generic-requests" title="Permalink to this heading">#</a></h3>
+<h3>Making generic requests<a class="headerlink" href="#making-generic-requests" title="Link to this heading">#</a></h3>
 <p>To make custom calls to the Metabase API, you can use the <code class="docutils literal notranslate"><span class="pre">generic_request</span></code> method. In general, it’s better to use class-specific methods to call the methods you need but this can be used for unsupported endpoints while still utilizing the cached authentication of the wrapper.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="metabase_tools.MetabaseApi.generic_request">
-<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">generic_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http_verb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.generic_request" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">generic_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http_verb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.generic_request" title="Link to this definition">#</a></dt>
 <dd><p>Method for dispatching HTTP requests</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -314,7 +314,7 @@
 <p>For convenience, there are also methods to utilize for <code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">delete</span></code>, <code class="docutils literal notranslate"><span class="pre">post</span></code>, and <code class="docutils literal notranslate"><span class="pre">put</span></code> HTTP verbs:</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="metabase_tools.MetabaseApi.get">
-<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.get" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.get" title="Link to this definition">#</a></dt>
 <dd><p>HTTP GET request</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -335,7 +335,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="metabase_tools.MetabaseApi.delete">
-<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.delete" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.delete" title="Link to this definition">#</a></dt>
 <dd><p>HTTP DELETE request</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -355,7 +355,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="metabase_tools.MetabaseApi.post">
-<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.post" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.post" title="Link to this definition">#</a></dt>
 <dd><p>HTTP POST request</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -376,7 +376,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="metabase_tools.MetabaseApi.put">
-<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.put" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">metabase_tools.MetabaseApi.</span></span><span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metabase_tools.MetabaseApi.put" title="Link to this definition">#</a></dt>
 <dd><p>HTTP PUT request</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -490,9 +490,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script src="_static/documentation_options.js?v=ef97403f"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>
