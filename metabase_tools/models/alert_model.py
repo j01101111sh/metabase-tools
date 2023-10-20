@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from packaging.version import Version
 from pydantic import PrivateAttr
@@ -26,27 +26,27 @@ class AlertItem(Item):
 
     _BASE_EP: ClassVar[str] = "/alert/{id}"
 
-    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
-    _server_version: Optional[Version] = PrivateAttr(None)
+    _adapter: MetabaseApi | None = PrivateAttr(None)
+    _server_version: Version | None = PrivateAttr(None)
 
     archived: bool
-    collection_position: Optional[int]
+    collection_position: int | None
     creator: UserItem
-    can_write: Optional[bool]
+    can_write: bool | None
     channels: list[dict[str, Any]]
     alert_condition: str
-    collection_id: Optional[int]
+    collection_id: int | None
     creator_id: int
     card: dict[str, Any]
     updated_at: datetime
     alert_first_only: bool
-    lower_name: Optional[str] = Field(alias="lower-name")
-    entity_id: Optional[str]
+    lower_name: str | None = Field(alias="lower-name")
+    entity_id: str | None
     skip_if_empty: bool
     parameters: list[dict[str, Any]]
-    dashboard_id: Optional[int]
+    dashboard_id: int | None
     created_at: datetime
-    alert_above_goal: Optional[bool]
+    alert_above_goal: bool | None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
@@ -89,12 +89,12 @@ class AlertItem(Item):
     @log_call
     def update(
         self: AlertItem,
-        alert_condition: Optional[str | MissingParam] = MissingParam(),
-        alert_first_only: Optional[bool | MissingParam] = MissingParam(),
-        alert_above_goal: Optional[bool | MissingParam] = MissingParam(),
-        card: Optional[dict[str, Any] | MissingParam] = MissingParam(),
-        channels: Optional[list[dict[str, Any]] | MissingParam] = MissingParam(),
-        archived: Optional[bool | MissingParam] = MissingParam(),
+        alert_condition: str | MissingParam | None = MissingParam(),
+        alert_first_only: bool | MissingParam | None = MissingParam(),
+        alert_above_goal: bool | MissingParam | None = MissingParam(),
+        card: dict[str, Any] | MissingParam | None = MissingParam(),
+        channels: list[dict[str, Any]] | MissingParam | None = MissingParam(),
+        archived: bool | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> AlertItem:
         """Updates a card using the provided parameters

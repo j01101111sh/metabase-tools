@@ -22,7 +22,7 @@ class TestUpload:
     def test_upload_existing(self, api: MetabaseApi, random_string: LambdaType):
         mapping_path = Path("./tests/data/mapping.json")
         test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
-        with open(test_card_path, "r", newline="", encoding="utf-8") as file:
+        with open(test_card_path, newline="", encoding="utf-8") as file:
             current = file.read()
         with open(test_card_path, "a", newline="", encoding="utf-8") as file:
             file.write("\n-- " + random_string(6))
@@ -45,7 +45,7 @@ class TestUpload:
     def test_upload_existing_dry(self, api: MetabaseApi, random_string: LambdaType):
         mapping_path = Path("./tests/data/mapping.json")
         test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
-        with open(test_card_path, "r", newline="", encoding="utf-8") as file:
+        with open(test_card_path, newline="", encoding="utf-8") as file:
             current = file.read()
         with open(test_card_path, "a", newline="", encoding="utf-8") as file:
             file.write("\n-- " + random_string(6))
@@ -69,7 +69,7 @@ class TestUpload:
     def test_upload_existing_stop(self, api: MetabaseApi, random_string: LambdaType):
         mapping_path = Path("./tests/data/mapping.json")
         test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
-        with open(test_card_path, "r", newline="", encoding="utf-8") as file:
+        with open(test_card_path, newline="", encoding="utf-8") as file:
             current = file.read()
         with open(test_card_path, "a", newline="", encoding="utf-8") as file:
             file.write("\n-- " + random_string(6))
@@ -88,7 +88,7 @@ class TestUpload:
     ):
         mapping_path = Path("./tests/data/mapping.json")
         test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
-        with open(test_card_path, "r", newline="", encoding="utf-8") as file:
+        with open(test_card_path, newline="", encoding="utf-8") as file:
             current = file.read()
         with open(test_card_path, "a", newline="", encoding="utf-8") as file:
             file.write("\n-- " + random_string(6))
@@ -109,7 +109,7 @@ class TestUpload:
         mapping_path = Path("./tests/data/mapping.json")
         test_card_path = Path("./tests/data/Development/Accounting/Test Card.sql")
         # Read contents of test card
-        with open(test_card_path, "r", newline="", encoding="utf-8") as file:
+        with open(test_card_path, newline="", encoding="utf-8") as file:
             test_card = file.read()
         # Create new .sql file with same contents
         rdm_str = random_string(6)
@@ -119,7 +119,7 @@ class TestUpload:
         with open(new_card_path, "w", encoding="utf-8") as file:
             file.write(test_card)
         # Update mapping file with new file
-        with open(mapping_path, "r", encoding="utf-8") as file:
+        with open(mapping_path, encoding="utf-8") as file:
             o_map: list = loads(file.read())
         n_map = o_map.copy()
         new_card_map = {

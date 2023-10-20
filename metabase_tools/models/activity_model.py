@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from metabase_tools.models.database_model import DatabaseItem
 from metabase_tools.models.generic_model import Item
@@ -21,19 +21,19 @@ class ActivityItem(Item):
     """Activity object class with related methods"""
 
     id: int
-    table_id: Optional[int]
-    table: Optional[str]
-    database_id: Optional[int]
-    model_exists: Optional[bool]
-    topic: Optional[str]
-    custom_id: Optional[int]
-    details: Optional[dict[str, Any]]
-    model_id: Optional[int]
-    database: Optional[DatabaseItem]
-    user_id: Optional[int]
+    table_id: int | None
+    table: str | None
+    database_id: int | None
+    model_exists: bool | None
+    topic: str | None
+    custom_id: int | None
+    details: dict[str, Any] | None
+    model_id: int | None
+    database: DatabaseItem | None
+    user_id: int | None
     timestamp: datetime
-    user: Optional[UserItem]
-    model: Optional[str]
+    user: UserItem | None
+    model: str | None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:

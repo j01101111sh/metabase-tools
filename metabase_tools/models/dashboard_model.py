@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from pydantic import Field, PrivateAttr
 
@@ -23,37 +23,37 @@ class DashboardItem(Item):
 
     _BASE_EP: ClassVar[str] = "/dashboard/{id}"
 
-    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
+    _adapter: MetabaseApi | None = PrivateAttr(None)
 
-    description: Optional[str]
+    description: str | None
     archived: bool
-    collection_position: Optional[int]
-    creator: Optional[UserItem]
+    collection_position: int | None
+    creator: UserItem | None
     enable_embedding: bool
-    collection_id: Optional[int]
+    collection_id: int | None
     show_in_getting_started: bool
     name: str
-    caveats: Optional[str]
+    caveats: str | None
     creator_id: int
     updated_at: datetime
-    made_public_by_id: Optional[int]
-    embedding_params: Optional[dict[str, Any]]
+    made_public_by_id: int | None
+    embedding_params: dict[str, Any] | None
     id: int
-    position: Optional[int]
+    position: int | None
     parameters: list[dict[str, Any]]
-    favorite: Optional[bool]
+    favorite: bool | None
     created_at: datetime
-    public_uuid: Optional[str]
-    points_of_interest: Optional[str]
-    can_write: Optional[bool]
-    ordered_cards: Optional[list[dict[str, Any]]]
-    param_fields: Optional[dict[str, Any]]
-    param_values: Optional[dict[str, Any]]
-    cache_ttl: Optional[int]
-    entity_id: Optional[str]
-    last_edit_info: Optional[dict[str, Any]] = Field(alias="last-edit-info")
-    collection_authority_level: Optional[int]
-    is_app_page: Optional[bool]
+    public_uuid: str | None
+    points_of_interest: str | None
+    can_write: bool | None
+    ordered_cards: list[dict[str, Any]] | None
+    param_fields: dict[str, Any] | None
+    param_values: dict[str, Any] | None
+    cache_ttl: int | None
+    entity_id: str | None
+    last_edit_info: dict[str, Any] | None = Field(alias="last-edit-info")
+    collection_authority_level: int | None
+    is_app_page: bool | None
 
     @log_call
     def refresh(self: DashboardItem) -> DashboardItem:
@@ -83,18 +83,18 @@ class DashboardItem(Item):
     @log_call
     def update(
         self: DashboardItem,
-        parameters: Optional[list[dict[str, Any]] | MissingParam] = MissingParam(),
-        points_of_interest: Optional[str | MissingParam] = MissingParam(),
-        description: Optional[str | MissingParam] = MissingParam(),
-        archived: Optional[bool | MissingParam] = MissingParam(),
-        collection_position: Optional[int | MissingParam] = MissingParam(),
-        show_in_getting_started: Optional[bool | MissingParam] = MissingParam(),
-        enabled_embedding: Optional[bool | MissingParam] = MissingParam(),
-        collection_id: Optional[int | MissingParam] = MissingParam(),
-        name: Optional[str | MissingParam] = MissingParam(),
-        caveats: Optional[str | MissingParam] = MissingParam(),
-        embedding_params: Optional[dict[str, Any] | MissingParam] = MissingParam(),
-        position: Optional[int | MissingParam] = MissingParam(),
+        parameters: list[dict[str, Any]] | MissingParam | None = MissingParam(),
+        points_of_interest: str | MissingParam | None = MissingParam(),
+        description: str | MissingParam | None = MissingParam(),
+        archived: bool | MissingParam | None = MissingParam(),
+        collection_position: int | MissingParam | None = MissingParam(),
+        show_in_getting_started: bool | MissingParam | None = MissingParam(),
+        enabled_embedding: bool | MissingParam | None = MissingParam(),
+        collection_id: int | MissingParam | None = MissingParam(),
+        name: str | MissingParam | None = MissingParam(),
+        caveats: str | MissingParam | None = MissingParam(),
+        embedding_params: dict[str, Any] | MissingParam | None = MissingParam(),
+        position: int | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> DashboardItem:
         """Updates an existing dashboard item

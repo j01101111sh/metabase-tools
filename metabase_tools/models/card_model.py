@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, ClassVar
 from uuid import UUID
 
 from packaging.version import Version
@@ -27,44 +27,44 @@ class CardItem(Item):
 
     _BASE_EP: ClassVar[str] = "/card/{id}"
 
-    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
-    _server_version: Optional[Version] = PrivateAttr(None)
+    _adapter: MetabaseApi | None = PrivateAttr(None)
+    _server_version: Version | None = PrivateAttr(None)
 
-    description: Optional[str]
+    description: str | None
     archived: bool
-    collection_position: Optional[int]
-    table_id: Optional[int]
-    result_metadata: Optional[list[dict[str, Any]]]
+    collection_position: int | None
+    table_id: int | None
+    result_metadata: list[dict[str, Any]] | None
     creator: UserItem
-    database_id: Optional[int]
+    database_id: int | None
     enable_embedding: bool
-    collection_id: Optional[int]
-    query_type: Optional[str]
+    collection_id: int | None
+    query_type: str | None
     creator_id: int
     updated_at: datetime
-    made_public_by_id: Optional[int]
-    embedding_params: Optional[dict[str, Any]]
-    cache_ttl: Optional[str]
+    made_public_by_id: int | None
+    embedding_params: dict[str, Any] | None
+    cache_ttl: str | None
     dataset_query: dict[str, Any]
     display: str
-    last_edit_info: Optional[dict[str, Any]] = Field(alias="last-edit-info")
+    last_edit_info: dict[str, Any] | None = Field(alias="last-edit-info")
     visualization_settings: dict[str, Any]
-    collection: Optional[CollectionItem]
-    dataset: Optional[int]
+    collection: CollectionItem | None
+    dataset: int | None
     created_at: datetime
-    public_uuid: Optional[UUID]
-    can_write: Optional[bool]
-    is_write: Optional[bool]
-    dashboard_count: Optional[int]
-    is_favorite: Optional[bool] = Field(alias="favorite")
+    public_uuid: UUID | None
+    can_write: bool | None
+    is_write: bool | None
+    dashboard_count: int | None
+    is_favorite: bool | None = Field(alias="favorite")
 
-    average_query_time: Optional[int]
-    collection_preview: Optional[bool]
-    entity_id: Optional[str]
-    last_query_start: Optional[datetime]
-    moderation_reviews: Optional[list[Any]]
-    parameter_mappings: Optional[list[Any]]
-    parameters: Optional[list[Any]]
+    average_query_time: int | None
+    collection_preview: bool | None
+    entity_id: str | None
+    last_query_start: datetime | None
+    moderation_reviews: list[Any] | None
+    parameter_mappings: list[Any] | None
+    parameters: list[Any] | None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
@@ -103,20 +103,18 @@ class CardItem(Item):
     @log_call
     def update(
         self: CardItem,
-        visualization_settings: Optional[
-            dict[str, str] | MissingParam
-        ] = MissingParam(),
-        description: Optional[str | MissingParam] = MissingParam(),
-        archived: Optional[bool | MissingParam] = MissingParam(),
-        collection_position: Optional[int | MissingParam] = MissingParam(),
-        result_metadata: Optional[list[dict[str, str]] | MissingParam] = MissingParam(),
-        metadata_checksum: Optional[str | MissingParam] = MissingParam(),
-        enable_embedding: Optional[bool | MissingParam] = MissingParam(),
-        collection_id: Optional[int | MissingParam] = MissingParam(),
-        name: Optional[str | MissingParam] = MissingParam(),
-        embedding_params: Optional[dict[str, str] | MissingParam] = MissingParam(),
-        dataset_query: Optional[dict[str, Any] | MissingParam] = MissingParam(),
-        display: Optional[str | MissingParam] = MissingParam(),
+        visualization_settings: None | (dict[str, str] | MissingParam) = MissingParam(),
+        description: str | MissingParam | None = MissingParam(),
+        archived: bool | MissingParam | None = MissingParam(),
+        collection_position: int | MissingParam | None = MissingParam(),
+        result_metadata: list[dict[str, str]] | MissingParam | None = MissingParam(),
+        metadata_checksum: str | MissingParam | None = MissingParam(),
+        enable_embedding: bool | MissingParam | None = MissingParam(),
+        collection_id: int | MissingParam | None = MissingParam(),
+        name: str | MissingParam | None = MissingParam(),
+        embedding_params: dict[str, str] | MissingParam | None = MissingParam(),
+        dataset_query: dict[str, Any] | MissingParam | None = MissingParam(),
+        display: str | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> CardItem:
         """Updates a card using the provided parameters
@@ -277,7 +275,7 @@ class CardQueryResult(BaseModel):
     database_id: int
     started_at: datetime
     json_query: dict[str, Any]
-    average_execution_time: Optional[int]
+    average_execution_time: int | None
     status: str
     context: str
     row_count: int
@@ -288,11 +286,11 @@ class CardRelatedObjects(BaseModel):
     """Objects related to the specified card"""
 
     card_id: int
-    table: Optional[str]
+    table: str | None
     metrics: list[dict[str, int]]
     segments: list[dict[str, int]]
     dashboard_mates: list[dict[str, int]] = Field(alias="dashboard-mates")
     similar_questions: list[dict[str, int]] = Field(alias="similar-questions")
-    canonical_metric: Optional[str] = Field(alias="canonical-metric")
+    canonical_metric: str | None = Field(alias="canonical-metric")
     dashboards: list[dict[str, Any]]
     collections: list[dict[str, Any]]

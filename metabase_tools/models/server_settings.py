@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, Field, PrivateAttr
 
@@ -32,14 +32,14 @@ def replace_hyphens(python_member_name: str) -> str:
 class Setting(BaseModel):
     """Individual setting on the server"""
 
-    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
+    _adapter: MetabaseApi | None = PrivateAttr(None)
 
     key: str
-    value: Optional[Any]
+    value: Any | None
     is_env_setting: bool
     env_name: str
     description: str
-    default: Optional[Any]
+    default: Any | None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
@@ -128,13 +128,13 @@ class ServerSettings(BaseModel, alias_generator=replace_hyphens, extra="ignore")
     enable_whitelabeling: Setting = Field(..., alias="enable-whitelabeling?")
     enable_xrays: Setting
     engines: Setting
-    field_filter_operators_enabled: Optional[Setting] = Field(
+    field_filter_operators_enabled: Setting | None = Field(
         alias="field-filter-operators-enabled?"
     )
     ga_code: Setting
     google_auth_auto_create_accounts_domain: Setting
     google_auth_client_id: Setting
-    has_sample_dataset: Optional[Setting] = Field(alias="has-sample-dataset?")
+    has_sample_dataset: Setting | None = Field(alias="has-sample-dataset?")
     hide_embed_branding: Setting = Field(..., alias="hide-embed-branding?")
     humanization_strategy: Setting
     landing_page: Setting
@@ -154,16 +154,16 @@ class ServerSettings(BaseModel, alias_generator=replace_hyphens, extra="ignore")
     ldap_user_base: Setting
     ldap_user_filter: Setting
     map_tile_server_url: Setting
-    metabot_enabled: Optional[Setting]
+    metabot_enabled: Setting | None
     password_complexity: Setting
     premium_embedding_token: Setting
-    premium_features: Optional[Setting]
+    premium_features: Setting | None
     query_caching_max_kb: Setting
     query_caching_max_ttl: Setting
     query_caching_min_ttl: Setting
     query_caching_ttl_ratio: Setting
     redirect_all_requests_to_https: Setting
-    redshift_fetch_size: Optional[Setting]
+    redshift_fetch_size: Setting | None
     report_timezone: Setting
     report_timezone_short: Setting
     search_typeahead_enabled: Setting

@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.models.card_model import CardItem
@@ -28,7 +28,7 @@ class Cards(Endpoint[CardItem]):
     ]
 
     @log_call
-    def get(self, targets: Optional[list[int]] = None) -> list[CardItem]:
+    def get(self, targets: list[int] | None = None) -> list[CardItem]:
         """Fetch list of cards
 
         Args:
@@ -57,11 +57,11 @@ class Cards(Endpoint[CardItem]):
         name: str | MissingParam = MissingParam(),
         dataset_query: dict[str, Any] | MissingParam = MissingParam(),
         display: str | MissingParam = MissingParam(),
-        description: Optional[str | MissingParam] = MissingParam(),
-        collection_position: Optional[int | MissingParam] = MissingParam(),
-        result_metadata: Optional[list[dict[str, Any]] | MissingParam] = MissingParam(),
-        metadata_checksum: Optional[str | MissingParam] = MissingParam(),
-        collection_id: Optional[int | MissingParam] = MissingParam(),
+        description: str | MissingParam | None = MissingParam(),
+        collection_position: int | MissingParam | None = MissingParam(),
+        result_metadata: list[dict[str, Any]] | MissingParam | None = MissingParam(),
+        metadata_checksum: str | MissingParam | None = MissingParam(),
+        collection_id: int | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> CardItem:
         """Creates a new card
@@ -97,7 +97,7 @@ class Cards(Endpoint[CardItem]):
     def search(
         self,
         search_params: list[dict[str, Any]],
-        search_list: Optional[list[CardItem]] = None,
+        search_list: list[CardItem] | None = None,
     ) -> list[CardItem]:
         """Method to search a list of cards meeting a list of parameters
 
