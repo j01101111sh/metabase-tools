@@ -16,7 +16,7 @@ def token(host, credentials, result_path, run_id):
         cache_token=True,
         token_path=token_path,
     )
-    with open(token_path, "r", encoding="utf-8") as file:
+    with open(token_path, encoding="utf-8") as file:
         return {"token": file.read()}
 
 
@@ -82,7 +82,7 @@ class TestApiGeneral:
             cache_token=True,
             token_path=token_path,
         )
-        with open(token_path, "r", encoding="utf-8") as file:
+        with open(token_path, encoding="utf-8") as file:
             cached_token = {"token": file.read()}
         assert cached_token == token
         assert api.test_for_auth()

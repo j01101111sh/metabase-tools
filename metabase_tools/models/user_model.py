@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from packaging.version import Version
 from pydantic.fields import Field, PrivateAttr
@@ -23,30 +23,30 @@ class UserItem(Item):
 
     _BASE_EP: ClassVar[str] = "/user/{id}"
 
-    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
+    _adapter: MetabaseApi | None = PrivateAttr(None)
 
     name: str = Field(alias="common_name")
     email: str
     first_name: str
     last_name: str
     date_joined: datetime
-    last_login: Optional[datetime]
-    updated_at: Optional[datetime]
+    last_login: datetime | None
+    updated_at: datetime | None
     is_qbnewb: bool
     is_superuser: bool
-    ldap_auth: Optional[bool]
-    google_auth: Optional[bool]
-    is_active: Optional[bool]
-    locale: Optional[str]
-    group_ids: Optional[list[int]]
-    login_attributes: Optional[list[dict[str, Any]]]
-    personal_collection_id: Optional[int]
-    has_invited_second_user: Optional[bool]
-    user_group_memberships: Optional[list[dict[str, int]]]
-    first_login: Optional[datetime]
-    has_question_and_dashboard: Optional[bool]
-    is_installer: Optional[bool]
-    sso_source: Optional[str]
+    ldap_auth: bool | None
+    google_auth: bool | None
+    is_active: bool | None
+    locale: str | None
+    group_ids: list[int] | None
+    login_attributes: list[dict[str, Any]] | None
+    personal_collection_id: int | None
+    has_invited_second_user: bool | None
+    user_group_memberships: list[dict[str, int]] | None
+    first_login: datetime | None
+    has_question_and_dashboard: bool | None
+    is_installer: bool | None
+    sso_source: str | None
 
     @log_call
     def refresh(self: UserItem) -> UserItem:
@@ -143,14 +143,14 @@ class UserItem(Item):
     @log_call
     def update(
         self: UserItem,
-        email: Optional[str | MissingParam] = MissingParam(),
-        first_name: Optional[str | MissingParam] = MissingParam(),
-        is_group_manager: Optional[bool | MissingParam] = MissingParam(),
-        locale: Optional[str | MissingParam] = MissingParam(),
-        user_group_memberships: Optional[list[int] | MissingParam] = MissingParam(),
-        is_superuser: Optional[bool | MissingParam] = MissingParam(),
-        login_attributes: Optional[str | MissingParam] = MissingParam(),
-        last_name: Optional[str | MissingParam] = MissingParam(),
+        email: str | MissingParam | None = MissingParam(),
+        first_name: str | MissingParam | None = MissingParam(),
+        is_group_manager: bool | MissingParam | None = MissingParam(),
+        locale: str | MissingParam | None = MissingParam(),
+        user_group_memberships: list[int] | MissingParam | None = MissingParam(),
+        is_superuser: bool | MissingParam | None = MissingParam(),
+        login_attributes: str | MissingParam | None = MissingParam(),
+        last_name: str | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> UserItem:
         """Updates a user using the provided parameters

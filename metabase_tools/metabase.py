@@ -6,17 +6,17 @@ from __future__ import annotations
 from json import JSONDecodeError
 from logging import getLogger
 from pathlib import Path
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from packaging.version import Version
 from requests import Response, Session
 from requests.exceptions import RequestException
 
 from metabase_tools.endpoints.activity_endpoint import Activity
-from metabase_tools.endpoints.dashboard_endpoint import Dashboards
 from metabase_tools.endpoints.alerts_endpoint import Alerts
 from metabase_tools.endpoints.cards_endpoint import Cards
 from metabase_tools.endpoints.collections_endpoint import Collections
+from metabase_tools.endpoints.dashboard_endpoint import Dashboards
 from metabase_tools.endpoints.databases_endpoint import Databases
 from metabase_tools.endpoints.users_endpoint import Users
 from metabase_tools.exceptions import MetabaseApiException
@@ -44,10 +44,10 @@ class MetabaseApi:
     def __init__(
         self,
         metabase_url: str,
-        credentials: Optional[dict[str, str]] = None,
+        credentials: dict[str, str] | None = None,
         cache_token: bool = False,
-        token_path: Optional[Path | str] = None,
-        session: Optional[Session] = None,
+        token_path: Path | str | None = None,
+        session: Session | None = None,
     ):
         if not credentials and not token_path:
             raise MetabaseApiException("No authentication method provided")
@@ -92,7 +92,7 @@ class MetabaseApi:
         return f"{url}/api"
 
     def _authenticate(
-        self, token_path: Optional[Path], credentials: dict[str, str]
+        self, token_path: Path | None, credentials: dict[str, str]
     ) -> None:
         authed = False
         # Try cached token first
@@ -126,7 +126,7 @@ class MetabaseApi:
             token_path.unlink()
 
     def _auth_with_cached_token(self, token_path: Path) -> bool:
-        with open(token_path, "r", encoding="utf-8") as file:
+        with open(token_path, encoding="utf-8") as file:
             token = file.read()
         logger.info("Attempting authentication with token file")
         self._add_token_to_header(token=token)
@@ -204,8 +204,8 @@ class MetabaseApi:
         self,
         method: str,
         url: str,
-        params: Optional[dict[str, Any]] = None,
-        json: Optional[dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
+        json: dict[str, Any] | None = None,
     ) -> Response:
         """Perform an HTTP request, catching and re-raising any exceptions
 
@@ -234,8 +234,8 @@ class MetabaseApi:
         self,
         http_verb: Literal["GET", "POST", "PUT", "DELETE"],
         endpoint: str,
-        params: Optional[dict[str, Any]] = None,
-        json: Optional[dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
+        json: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]] | dict[str, Any]:
         """Method for dispatching HTTP requests
 
@@ -288,7 +288,7 @@ class MetabaseApi:
         raise MetabaseApiException(error_line)
 
     def get(
-        self, endpoint: str, params: Optional[dict[str, Any]] = None
+        self, endpoint: str, params: dict[str, Any] | None = None
     ) -> list[dict[str, Any]] | dict[str, Any]:
         """HTTP GET request
 
@@ -304,8 +304,8 @@ class MetabaseApi:
     def post(
         self,
         endpoint: str,
-        params: Optional[dict[str, Any]] = None,
-        json: Optional[dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
+        json: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]] | dict[str, Any]:
         """HTTP POST request
 
@@ -322,7 +322,7 @@ class MetabaseApi:
         )
 
     def delete(
-        self, endpoint: str, params: Optional[dict[str, Any]] = None
+        self, endpoint: str, params: dict[str, Any] | None = None
     ) -> list[dict[str, Any]] | dict[str, Any]:
         """HTTP DELETE request
 
@@ -340,8 +340,8 @@ class MetabaseApi:
     def put(
         self,
         endpoint: str,
-        params: Optional[dict[str, Any]] = None,
-        json: Optional[dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
+        json: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]] | dict[str, Any]:
         """HTTP PUT request
 
