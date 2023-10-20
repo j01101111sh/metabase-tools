@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from pydantic import Field, PrivateAttr
 
@@ -22,32 +22,32 @@ class DatabaseItem(Item):
 
     _BASE_EP: ClassVar[str] = "/database/{id}"
 
-    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
+    _adapter: MetabaseApi | None = PrivateAttr(None)
 
-    description: Optional[str]
+    description: str | None
     features: list[str]
     cache_field_values_schedule: str
-    timezone: Optional[str]
+    timezone: str | None
     auto_run_queries: bool
     metadata_sync_schedule: str
-    caveats: Optional[str]
+    caveats: str | None
     is_full_sync: bool
     updated_at: datetime
-    native_permissions: Optional[str]
+    native_permissions: str | None
     details: dict[str, Any]
     is_sample: bool
     is_on_demand: bool
-    options: Optional[str]
+    options: str | None
     engine: str
-    refingerprint: Optional[str]
+    refingerprint: str | None
     created_at: datetime
-    points_of_interest: Optional[str]
-    schedules: Optional[dict[str, Any]]
-    cache_ttl: Optional[int]
-    creator_id: Optional[int]
-    initial_sync_status: Optional[str]
-    settings: Optional[Any]
-    can_manage: Optional[bool] = Field(alias="can-manage")
+    points_of_interest: str | None
+    schedules: dict[str, Any] | None
+    cache_ttl: int | None
+    creator_id: int | None
+    initial_sync_status: str | None
+    settings: Any | None
+    can_manage: bool | None = Field(alias="can-manage")
 
     @log_call
     def refresh(self: DatabaseItem) -> DatabaseItem:
@@ -77,15 +77,15 @@ class DatabaseItem(Item):
     @log_call
     def update(
         self: DatabaseItem,
-        engine: Optional[str | MissingParam] = MissingParam(),
-        schedules: Optional[dict[str, Any] | MissingParam] = MissingParam(),
-        refingerprint: Optional[bool | MissingParam] = MissingParam(),
-        points_of_interest: Optional[str | MissingParam] = MissingParam(),
-        description: Optional[str | MissingParam] = MissingParam(),
-        name: Optional[str | MissingParam] = MissingParam(),
-        caveats: Optional[str | MissingParam] = MissingParam(),
-        cache_ttl: Optional[int | MissingParam] = MissingParam(),
-        details: Optional[dict[str, Any] | MissingParam] = MissingParam(),
+        engine: str | MissingParam | None = MissingParam(),
+        schedules: dict[str, Any] | MissingParam | None = MissingParam(),
+        refingerprint: bool | MissingParam | None = MissingParam(),
+        points_of_interest: str | MissingParam | None = MissingParam(),
+        description: str | MissingParam | None = MissingParam(),
+        name: str | MissingParam | None = MissingParam(),
+        caveats: str | MissingParam | None = MissingParam(),
+        cache_ttl: int | MissingParam | None = MissingParam(),
+        details: dict[str, Any] | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> DatabaseItem:
         """Updates a database using the provided parameters

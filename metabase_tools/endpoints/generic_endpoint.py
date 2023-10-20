@@ -5,16 +5,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from logging import getLogger
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    ClassVar,
-    Generic,
-    Literal,
-    Optional,
-    TypeVar,
-    cast,
-)
+from typing import TYPE_CHECKING, Any, ClassVar, Generic, Literal, TypeVar, cast
 
 from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.models.generic_model import Item, MissingParam
@@ -80,7 +71,7 @@ class Endpoint(ABC, Generic[T]):
         raise TypeError("Received empty list")
 
     @abstractmethod
-    def get(self, targets: Optional[list[int]] = None) -> list[T]:
+    def get(self, targets: list[int] | None = None) -> list[T]:
         """Generic method for returning an object or list of objects
 
         Args:
@@ -161,7 +152,7 @@ class Endpoint(ABC, Generic[T]):
     def search(
         self,
         search_params: list[dict[str, Any]],
-        search_list: Optional[list[T]] = None,
+        search_list: list[T] | None = None,
     ) -> list[T]:
         """Method to search a list of objects meeting a list of parameters
 

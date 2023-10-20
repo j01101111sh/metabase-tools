@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.models.collection_model import CollectionItem
@@ -22,7 +22,7 @@ class Collections(Endpoint[CollectionItem]):
     _required_params: ClassVar[list[str]] = ["name", "color"]
 
     @log_call
-    def get(self, targets: Optional[list[int]] = None) -> list[CollectionItem]:
+    def get(self, targets: list[int] | None = None) -> list[CollectionItem]:
         """Fetch list of collections
 
         Args:
@@ -49,9 +49,9 @@ class Collections(Endpoint[CollectionItem]):
         self,
         name: str | MissingParam = MissingParam(),
         color: str | MissingParam = MissingParam(),
-        description: Optional[str | MissingParam] = MissingParam(),
-        parent_id: Optional[int | MissingParam] = MissingParam(),
-        namespace: Optional[str | MissingParam] = MissingParam(),
+        description: str | MissingParam | None = MissingParam(),
+        parent_id: int | MissingParam | None = MissingParam(),
+        namespace: str | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> CollectionItem:
         """Creates a new collection
@@ -79,7 +79,7 @@ class Collections(Endpoint[CollectionItem]):
     def search(
         self,
         search_params: list[dict[str, Any]],
-        search_list: Optional[list[CollectionItem]] = None,
+        search_list: list[CollectionItem] | None = None,
     ) -> list[CollectionItem]:
         """Method to search a list of cards meeting a list of parameters
 

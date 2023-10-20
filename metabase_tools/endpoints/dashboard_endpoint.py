@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.models.dashboard_model import DashboardItem
@@ -22,7 +22,7 @@ class Dashboards(Endpoint[DashboardItem]):
     _required_params: ClassVar[list[str]] = ["name"]
 
     @log_call
-    def get(self, targets: Optional[list[int]] = None) -> list[DashboardItem]:
+    def get(self, targets: list[int] | None = None) -> list[DashboardItem]:
         """Fetch list of dashboards
 
         Args:
@@ -48,10 +48,10 @@ class Dashboards(Endpoint[DashboardItem]):
     def create(
         self,
         name: str | MissingParam = MissingParam(),
-        description: Optional[str | MissingParam] = MissingParam(),
-        parameters: Optional[list[dict[str, Any]] | MissingParam] = MissingParam(),
-        collection_id: Optional[int | MissingParam] = MissingParam(),
-        collection_position: Optional[int | MissingParam] = MissingParam(),
+        description: str | MissingParam | None = MissingParam(),
+        parameters: list[dict[str, Any]] | MissingParam | None = MissingParam(),
+        collection_id: int | MissingParam | None = MissingParam(),
+        collection_position: int | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> DashboardItem:
         """Creates a new dashboard
@@ -79,7 +79,7 @@ class Dashboards(Endpoint[DashboardItem]):
     def search(
         self,
         search_params: list[dict[str, Any]],
-        search_list: Optional[list[DashboardItem]] = None,
+        search_list: list[DashboardItem] | None = None,
     ) -> list[DashboardItem]:
         """Method to search a list of dashboards meeting a list of parameters
 

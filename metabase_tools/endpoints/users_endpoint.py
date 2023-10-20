@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar
 
 from metabase_tools.endpoints.generic_endpoint import Endpoint
 from metabase_tools.models.generic_model import MissingParam
@@ -27,7 +27,7 @@ class Users(Endpoint[UserItem]):
     ]
 
     @log_call
-    def get(self, targets: Optional[list[int]] = None) -> list[UserItem]:
+    def get(self, targets: list[int] | None = None) -> list[UserItem]:
         """Fetch list of users
 
         Args:
@@ -56,8 +56,8 @@ class Users(Endpoint[UserItem]):
         last_name: str | MissingParam = MissingParam(),
         email: str | MissingParam = MissingParam(),
         password: str | MissingParam = MissingParam(),
-        group_ids: Optional[list[int] | MissingParam] = MissingParam(),
-        login_attributes: Optional[str | MissingParam] = MissingParam(),
+        group_ids: list[int] | MissingParam | None = MissingParam(),
+        login_attributes: str | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> UserItem:
         """_summary_
@@ -87,7 +87,7 @@ class Users(Endpoint[UserItem]):
     def search(
         self,
         search_params: list[dict[str, Any]],
-        search_list: Optional[list[UserItem]] = None,
+        search_list: list[UserItem] | None = None,
     ) -> list[UserItem]:
         """Method to search a list of users meeting a list of parameters
 

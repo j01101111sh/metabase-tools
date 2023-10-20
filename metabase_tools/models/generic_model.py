@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from abc import ABC
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
+from typing import TYPE_CHECKING, Any, ClassVar, TypeVar
 
 from packaging.version import Version
 from pydantic import BaseModel, PrivateAttr
@@ -28,11 +28,11 @@ class Item(BaseModel, ABC, extra="forbid"):
 
     _BASE_EP: ClassVar[str]
 
-    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
-    _server_version: Optional[Version] = PrivateAttr(None)
+    _adapter: MetabaseApi | None = PrivateAttr(None)
+    _server_version: Version | None = PrivateAttr(None)
 
     id: int | str
-    name: Optional[str]
+    name: str | None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:

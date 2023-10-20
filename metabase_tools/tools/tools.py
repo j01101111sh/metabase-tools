@@ -6,7 +6,7 @@ from __future__ import annotations  # Included for support of |
 from json import dumps, loads
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from metabase_tools.exceptions import MetabaseApiException
 from metabase_tools.models.card_model import CardItem
@@ -29,7 +29,7 @@ class MetabaseTools:
     @log_call
     def download_native_queries(
         self,
-        save_file: Optional[Path | str] = None,
+        save_file: Path | str | None = None,
         root_folder: Path | str = ".",
         file_extension: str = "sql",
     ) -> Path:
@@ -127,7 +127,7 @@ class MetabaseTools:
         """
         # Open mapping configuration file
         mapping_path = Path(mapping_path or "./mapping.json")
-        with open(mapping_path, "r", newline="", encoding="utf-8") as file:
+        with open(mapping_path, newline="", encoding="utf-8") as file:
             cards = loads(file.read())
 
         # Iterate through mapping file
@@ -249,7 +249,7 @@ class MetabaseTools:
         card_path: Path | str,
     ) -> dict[str, Any]:
         prod_card = self._adapter.cards.get(targets=[card_id])[0]
-        with open(card_path, "r", newline="", encoding="utf-8") as file:
+        with open(card_path, newline="", encoding="utf-8") as file:
             dev_code = file.read()
         if dev_code != prod_card.dataset_query["native"]["query"]:
             dev_query = prod_card.dataset_query.copy()
@@ -262,7 +262,7 @@ class MetabaseTools:
     def _create_new_card(
         self, card: dict[str, Any], card_path: Path, dev_coll_id: int
     ) -> dict[str, Any]:
-        with open(card_path, "r", newline="", encoding="utf-8") as file:
+        with open(card_path, newline="", encoding="utf-8") as file:
             dev_query = file.read()
         db_id = [
             database.id

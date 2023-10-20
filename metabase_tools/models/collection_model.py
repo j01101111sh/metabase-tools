@@ -4,7 +4,7 @@ from __future__ import annotations  # Included for support of |
 
 from datetime import datetime
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from pydantic import PrivateAttr
 
@@ -23,23 +23,23 @@ class CollectionItem(Item):
 
     _BASE_EP: ClassVar[str] = "/collection/{id}"
 
-    _adapter: Optional[MetabaseApi] = PrivateAttr(None)
+    _adapter: MetabaseApi | None = PrivateAttr(None)
 
-    description: Optional[str]
-    archived: Optional[bool]
-    slug: Optional[str]
-    color: Optional[str]
-    personal_owner_id: Optional[int]
-    location: Optional[str]
-    namespace: Optional[int]
-    effective_location: Optional[str]
-    effective_ancestors: Optional[list[dict[str, Any]]]
-    can_write: Optional[bool]
-    parent_id: Optional[int]
+    description: str | None
+    archived: bool | None
+    slug: str | None
+    color: str | None
+    personal_owner_id: int | None
+    location: str | None
+    namespace: int | None
+    effective_location: str | None
+    effective_ancestors: list[dict[str, Any]] | None
+    can_write: bool | None
+    parent_id: int | None
 
-    authority_level: Optional[Any]
-    entity_id: Optional[str]
-    created_at: Optional[datetime]
+    authority_level: Any | None
+    entity_id: str | None
+    created_at: datetime | None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
@@ -73,11 +73,11 @@ class CollectionItem(Item):
     @log_call
     def update(
         self: CollectionItem,
-        name: Optional[str | MissingParam] = MissingParam(),
-        color: Optional[str | MissingParam] = MissingParam(),
-        description: Optional[str | MissingParam] = MissingParam(),
-        archived: Optional[bool | MissingParam] = MissingParam(),
-        parent_id: Optional[int | MissingParam] = MissingParam(),
+        name: str | MissingParam | None = MissingParam(),
+        color: str | MissingParam | None = MissingParam(),
+        description: str | MissingParam | None = MissingParam(),
+        archived: bool | MissingParam | None = MissingParam(),
+        parent_id: int | MissingParam | None = MissingParam(),
         **kwargs: Any,
     ) -> CollectionItem:
         """Updates a collection using the provided parameters
@@ -128,7 +128,7 @@ class CollectionItem(Item):
     @log_call
     def get_contents(
         self,
-        model_type: Optional[str] = None,
+        model_type: str | None = None,
         archived: bool = False,
     ) -> list[dict[str, Any]]:
         """Get the contents of the provided collection
