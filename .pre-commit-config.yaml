@@ -33,6 +33,11 @@ repos:
       - id: rst-backticks
       - id: rst-directive-colons
       - id: rst-inline-touching-normal
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        files: 'metabase_tools\/\S*.py'
   - repo: local
     hooks:
       - id: black
