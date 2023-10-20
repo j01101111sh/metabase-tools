@@ -3,7 +3,8 @@
 
 from functools import wraps
 from logging import Logger, getLogger
-from typing import Any, Callable, TypeVar, cast
+from typing import Any, TypeVar, cast
+from collections.abc import Callable
 
 F = TypeVar("F", bound=Callable[..., Any])
 
