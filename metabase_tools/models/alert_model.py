@@ -30,23 +30,23 @@ class AlertItem(Item):
     _server_version: Version | None = PrivateAttr(None)
 
     archived: bool
-    collection_position: int | None
+    collection_position: int | None = None
     creator: UserItem
-    can_write: bool | None
+    can_write: bool | None = None
     channels: list[dict[str, Any]]
     alert_condition: str
-    collection_id: int | None
+    collection_id: int | None = None
     creator_id: int
     card: dict[str, Any]
     updated_at: datetime
     alert_first_only: bool
-    lower_name: str | None = Field(alias="lower-name")
-    entity_id: str | None
+    lower_name: str | None = Field(None, alias="lower-name")
+    entity_id: str | None = None
     skip_if_empty: bool
     parameters: list[dict[str, Any]]
-    dashboard_id: int | None
+    dashboard_id: int | None = None
     created_at: datetime
-    alert_above_goal: bool | None
+    alert_above_goal: bool | None = None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:

@@ -25,21 +25,21 @@ class CollectionItem(Item):
 
     _adapter: MetabaseApi | None = PrivateAttr(None)
 
-    description: str | None
-    archived: bool | None
-    slug: str | None
-    color: str | None
-    personal_owner_id: int | None
-    location: str | None
-    namespace: int | None
-    effective_location: str | None
-    effective_ancestors: list[dict[str, Any]] | None
-    can_write: bool | None
-    parent_id: int | None
+    description: str | None = None
+    archived: bool | None = None
+    slug: str | None = None
+    color: str | None = None
+    personal_owner_id: int | None = None
+    location: str | None = None
+    namespace: int | None = None
+    effective_location: str | None = None
+    effective_ancestors: list[dict[str, Any]] | None = None
+    can_write: bool | None = None
+    parent_id: int | None = None
 
-    authority_level: Any | None
-    entity_id: str | None
-    created_at: datetime | None
+    authority_level: Any | None = None
+    entity_id: str | None = None
+    created_at: datetime | None = None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:

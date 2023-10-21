@@ -24,30 +24,30 @@ class DatabaseItem(Item):
 
     _adapter: MetabaseApi | None = PrivateAttr(None)
 
-    description: str | None
+    description: str | None = None
     features: list[str]
     cache_field_values_schedule: str
-    timezone: str | None
+    timezone: str | None = None
     auto_run_queries: bool
     metadata_sync_schedule: str
-    caveats: str | None
+    caveats: str | None = None
     is_full_sync: bool
     updated_at: datetime
-    native_permissions: str | None
+    native_permissions: str | None = None
     details: dict[str, Any]
     is_sample: bool
     is_on_demand: bool
-    options: str | None
+    options: str | None = None
     engine: str
-    refingerprint: str | None
+    refingerprint: str | None = None
     created_at: datetime
-    points_of_interest: str | None
-    schedules: dict[str, Any] | None
-    cache_ttl: int | None
-    creator_id: int | None
-    initial_sync_status: str | None
-    settings: Any | None
-    can_manage: bool | None = Field(alias="can-manage")
+    points_of_interest: str | None = None
+    schedules: dict[str, Any] | None = None
+    cache_ttl: int | None = None
+    creator_id: int | None = None
+    initial_sync_status: str | None = None
+    settings: Any | None = None
+    can_manage: bool | None = Field(None, alias="can-manage")
 
     @log_call
     def refresh(self: DatabaseItem) -> DatabaseItem:

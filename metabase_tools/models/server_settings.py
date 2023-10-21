@@ -35,11 +35,11 @@ class Setting(BaseModel):
     _adapter: MetabaseApi | None = PrivateAttr(None)
 
     key: str
-    value: Any | None
+    value: Any | None = None
     is_env_setting: bool
     env_name: str
     description: str
-    default: Any | None
+    default: Any | None = None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
@@ -129,12 +129,12 @@ class ServerSettings(BaseModel, alias_generator=replace_hyphens, extra="ignore")
     enable_xrays: Setting
     engines: Setting
     field_filter_operators_enabled: Setting | None = Field(
-        alias="field-filter-operators-enabled?"
+        None, alias="field-filter-operators-enabled?"
     )
     ga_code: Setting
     google_auth_auto_create_accounts_domain: Setting
     google_auth_client_id: Setting
-    has_sample_dataset: Setting | None = Field(alias="has-sample-dataset?")
+    has_sample_dataset: Setting | None = Field(None, alias="has-sample-dataset?")
     hide_embed_branding: Setting = Field(..., alias="hide-embed-branding?")
     humanization_strategy: Setting
     landing_page: Setting
@@ -154,16 +154,16 @@ class ServerSettings(BaseModel, alias_generator=replace_hyphens, extra="ignore")
     ldap_user_base: Setting
     ldap_user_filter: Setting
     map_tile_server_url: Setting
-    metabot_enabled: Setting | None
+    metabot_enabled: Setting | None = None
     password_complexity: Setting
     premium_embedding_token: Setting
-    premium_features: Setting | None
+    premium_features: Setting | None = None
     query_caching_max_kb: Setting
     query_caching_max_ttl: Setting
     query_caching_min_ttl: Setting
     query_caching_ttl_ratio: Setting
     redirect_all_requests_to_https: Setting
-    redshift_fetch_size: Setting | None
+    redshift_fetch_size: Setting | None = None
     report_timezone: Setting
     report_timezone_short: Setting
     search_typeahead_enabled: Setting

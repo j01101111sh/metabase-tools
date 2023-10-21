@@ -25,35 +25,35 @@ class DashboardItem(Item):
 
     _adapter: MetabaseApi | None = PrivateAttr(None)
 
-    description: str | None
+    description: str | None = None
     archived: bool
-    collection_position: int | None
-    creator: UserItem | None
+    collection_position: int | None = None
+    creator: UserItem | None = None
     enable_embedding: bool
-    collection_id: int | None
+    collection_id: int | None = None
     show_in_getting_started: bool
     name: str
-    caveats: str | None
+    caveats: str | None = None
     creator_id: int
     updated_at: datetime
-    made_public_by_id: int | None
-    embedding_params: dict[str, Any] | None
+    made_public_by_id: int | None = None
+    embedding_params: dict[str, Any] | None = None
     id: int
-    position: int | None
+    position: int | None = None
     parameters: list[dict[str, Any]]
-    favorite: bool | None
+    favorite: bool | None = None
     created_at: datetime
-    public_uuid: str | None
-    points_of_interest: str | None
-    can_write: bool | None
-    ordered_cards: list[dict[str, Any]] | None
-    param_fields: dict[str, Any] | None
-    param_values: dict[str, Any] | None
-    cache_ttl: int | None
-    entity_id: str | None
-    last_edit_info: dict[str, Any] | None = Field(alias="last-edit-info")
-    collection_authority_level: int | None
-    is_app_page: bool | None
+    public_uuid: str | None = None
+    points_of_interest: str | None = None
+    can_write: bool | None = None
+    ordered_cards: list[dict[str, Any]] | None = None
+    param_fields: dict[str, Any] | None = None
+    param_values: dict[str, Any] | None = None
+    cache_ttl: int | None = None
+    entity_id: str | None = None
+    last_edit_info: dict[str, Any] | None = Field(None, alias="last-edit-info")
+    collection_authority_level: int | None = None
+    is_app_page: bool | None = None
 
     @log_call
     def refresh(self: DashboardItem) -> DashboardItem:

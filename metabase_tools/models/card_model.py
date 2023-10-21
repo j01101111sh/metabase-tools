@@ -30,41 +30,41 @@ class CardItem(Item):
     _adapter: MetabaseApi | None = PrivateAttr(None)
     _server_version: Version | None = PrivateAttr(None)
 
-    description: str | None
+    description: str | None = None
     archived: bool
-    collection_position: int | None
-    table_id: int | None
-    result_metadata: list[dict[str, Any]] | None
+    collection_position: int | None = None
+    table_id: int | None = None
+    result_metadata: list[dict[str, Any]] | None = None
     creator: UserItem
-    database_id: int | None
+    database_id: int | None = None
     enable_embedding: bool
-    collection_id: int | None
-    query_type: str | None
+    collection_id: int | None = None
+    query_type: str | None = None
     creator_id: int
     updated_at: datetime
-    made_public_by_id: int | None
-    embedding_params: dict[str, Any] | None
-    cache_ttl: str | None
+    made_public_by_id: int | None = None
+    embedding_params: dict[str, Any] | None = None
+    cache_ttl: str | None = None
     dataset_query: dict[str, Any]
     display: str
-    last_edit_info: dict[str, Any] | None = Field(alias="last-edit-info")
+    last_edit_info: dict[str, Any] | None = Field(None, alias="last-edit-info")
     visualization_settings: dict[str, Any]
-    collection: CollectionItem | None
-    dataset: int | None
+    collection: CollectionItem | None = None
+    dataset: int | None = None
     created_at: datetime
-    public_uuid: UUID | None
-    can_write: bool | None
-    is_write: bool | None
-    dashboard_count: int | None
-    is_favorite: bool | None = Field(alias="favorite")
+    public_uuid: UUID | None = None
+    can_write: bool | None = None
+    is_write: bool | None = None
+    dashboard_count: int | None = None
+    is_favorite: bool | None = Field(None, alias="favorite")
 
-    average_query_time: int | None
-    collection_preview: bool | None
-    entity_id: str | None
-    last_query_start: datetime | None
-    moderation_reviews: list[Any] | None
-    parameter_mappings: list[Any] | None
-    parameters: list[Any] | None
+    average_query_time: int | None = None
+    collection_preview: bool | None = None
+    entity_id: str | None = None
+    last_query_start: datetime | None = None
+    moderation_reviews: list[Any] | None = None
+    parameter_mappings: list[Any] | None = None
+    parameters: list[Any] | None = None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
@@ -275,7 +275,7 @@ class CardQueryResult(BaseModel):
     database_id: int
     started_at: datetime
     json_query: dict[str, Any]
-    average_execution_time: int | None
+    average_execution_time: int | None = None
     status: str
     context: str
     row_count: int
@@ -286,11 +286,11 @@ class CardRelatedObjects(BaseModel):
     """Objects related to the specified card"""
 
     card_id: int
-    table: str | None
+    table: str | None = None
     metrics: list[dict[str, int]]
     segments: list[dict[str, int]]
     dashboard_mates: list[dict[str, int]] = Field(alias="dashboard-mates")
     similar_questions: list[dict[str, int]] = Field(alias="similar-questions")
-    canonical_metric: str | None = Field(alias="canonical-metric")
+    canonical_metric: str | None = Field(None, alias="canonical-metric")
     dashboards: list[dict[str, Any]]
     collections: list[dict[str, Any]]

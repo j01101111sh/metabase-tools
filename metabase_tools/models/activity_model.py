@@ -21,19 +21,19 @@ class ActivityItem(Item):
     """Activity object class with related methods"""
 
     id: int
-    table_id: int | None
-    table: str | None
-    database_id: int | None
-    model_exists: bool | None
-    topic: str | None
-    custom_id: int | None
-    details: dict[str, Any] | None
-    model_id: int | None
-    database: DatabaseItem | None
-    user_id: int | None
+    table_id: int | None = None
+    table: str | None = None
+    database_id: int | None = None
+    model_exists: bool | None = None
+    topic: str | None = None
+    custom_id: int | None = None
+    details: dict[str, Any] | None = None
+    model_id: int | None = None
+    database: DatabaseItem | None = None
+    user_id: int | None = None
     timestamp: datetime
-    user: UserItem | None
-    model: str | None
+    user: UserItem | None = None
+    model: str | None = None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:

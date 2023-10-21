@@ -30,23 +30,23 @@ class UserItem(Item):
     first_name: str
     last_name: str
     date_joined: datetime
-    last_login: datetime | None
-    updated_at: datetime | None
+    last_login: datetime | None = None
+    updated_at: datetime | None = None
     is_qbnewb: bool
     is_superuser: bool
-    ldap_auth: bool | None
-    google_auth: bool | None
-    is_active: bool | None
-    locale: str | None
-    group_ids: list[int] | None
-    login_attributes: list[dict[str, Any]] | None
-    personal_collection_id: int | None
-    has_invited_second_user: bool | None
-    user_group_memberships: list[dict[str, int]] | None
-    first_login: datetime | None
-    has_question_and_dashboard: bool | None
-    is_installer: bool | None
-    sso_source: str | None
+    ldap_auth: bool | None = None
+    google_auth: bool | None = None
+    is_active: bool | None = None
+    locale: str | None = None
+    group_ids: list[int] | None = None
+    login_attributes: list[dict[str, Any]] | None = None
+    personal_collection_id: int | None = None
+    has_invited_second_user: bool | None = None
+    user_group_memberships: list[dict[str, int]] | None = None
+    first_login: datetime | None = None
+    has_question_and_dashboard: bool | None = None
+    is_installer: bool | None = None
+    sso_source: str | None = None
 
     @log_call
     def refresh(self: UserItem) -> UserItem:

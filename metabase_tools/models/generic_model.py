@@ -32,7 +32,7 @@ class Item(BaseModel, ABC, extra="forbid"):
     _server_version: Version | None = PrivateAttr(None)
 
     id: int | str
-    name: str | None
+    name: str | None = None
 
     @log_call
     def set_adapter(self, adapter: MetabaseApi) -> None:
