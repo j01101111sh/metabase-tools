@@ -40,6 +40,11 @@ repos:
         files: 'metabase_tools\/\S*.py'
   - repo: local
     hooks:
+      - id: isort
+        name: isort
+        entry: poetry run isort .
+        language: system
+        types: [python]
       - id: black
         name: black
         entry: poetry run black
