@@ -1,10 +1,9 @@
 {
   "image": "mcr.microsoft.com/devcontainers/python:0-3.11",
   "features": {
+    "ghcr.io/devcontainers-contrib/features/poetry:2": {}
   },
   "postCreateCommand": [
-    "pipx install poetry",
-    "pipx ensurepath",
     "poetry config virtualenvs.in-project true",
     "poetry config installer.parallel true",
     "poetry install --with dev,docs",
