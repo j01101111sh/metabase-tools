@@ -29,7 +29,7 @@ repos:
         name: bandit
         entry: poetry run bandit
         language: system
-        type: [python]
+        types: [python]
         files: 'metabase_tools\/\S*.py'
       - id: pyupgrade
         name: pyupgrade
@@ -54,18 +54,13 @@ repos:
         types: [python]
       - id: pylint
         name: pylint
-        entry: poetry run pylint
+        entry: poetry run pylint -rn -sn
         language: system
         files: 'metabase_tools\/\S*.py'
         types: [python]
-        args: [
-            "-rn", # Only display messages
-            "-sn", # Don't display the score
-          ]
       - id: mypy
         name: mypy
-        entry: poetry run mypy
+        entry: poetry run mypy --strict
         language: system
         files: 'metabase_tools\/\S*.py'
         types: [python]
-        args: ["--strict"]
