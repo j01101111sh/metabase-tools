@@ -1,3 +1,5 @@
+default_stages: [ pre-commit, post-checkout ]
+default_install_hook_types: [ pre-commit, post-checkout ]
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0
@@ -64,3 +66,10 @@ repos:
         language: system
         files: 'metabase_tools\/\S*.py'
         types: [python]
+      - id: poetry-sync
+        name: poetry-sync
+        entry: poetry install --sync
+        language: system
+        always_run: true
+        stages:
+          - post-checkout
