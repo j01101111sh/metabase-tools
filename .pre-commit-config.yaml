@@ -4,27 +4,42 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0
     hooks:
+      # file type specific checks
       - id: check-yaml
       - id: check-json
       - id: pretty-format-json
-        args: ["--autofix", "--no-sort-keys"]
+        args: [ "--autofix", "--no-sort-keys" ]
       - id: check-toml
+      - id: check-executables-have-shebangs
+      # general files
       - id: end-of-file-fixer
         exclude: 'docs\/source\/examples\/metabase_token'
       - id: trailing-whitespace
       - id: check-case-conflict
       - id: detect-private-key
+      - id: check-added-large-files
+        args: [ "--maxkb=2048" ]
+      # python checks
       - id: name-tests-test
-        args: ["--pytest-test-first"]
+        args: [ "--pytest-test-first" ]
         exclude: 'tests\/(helpers|setup_metabase).py'
+      - id: check-docstring-first
+      - id: debug-statements
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.9.0
     hooks:
+      # python checks
       - id: python-no-eval
       - id: python-no-log-warn
+      # rst checks
       - id: rst-backticks
       - id: rst-directive-colons
       - id: rst-inline-touching-normal
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.37.0
+    hooks:
+      - id: markdownlint-fix
+        args: [ "--disable", "MD033" ]
   - repo: local
     hooks:
       - id: bandit
@@ -68,7 +83,7 @@ repos:
         types: [python]
       - id: poetry-sync
         name: poetry-sync
-        entry: poetry install --sync
+        entry: poetry install --sync --with dev,docs
         language: system
         always_run: true
         stages:
