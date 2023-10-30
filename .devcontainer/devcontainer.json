@@ -15,7 +15,14 @@
         "ms-python.black-formatter",
         "ms-python.mypy-type-checker",
         "ms-python.isort"
-      ]
+      ],
+      "settings": {
+        "pylint.importStrategy": "fromEnvironment",
+        "pylint.path": [
+          ".venv/bin/pylint"
+        ],
+        "python.defaultInterpreterPath": ".venv/bin/python"
+      }
     }
   }
 }
