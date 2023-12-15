@@ -4,5 +4,44 @@
     "ghcr.io/devcontainers-contrib/features/poetry:2": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
-  "postCreateCommand": "./.devcontainer/postCreateCommands.sh"
+  "postCreateCommand": "./.devcontainer/postCreateCommands.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.flake8",
+        "ms-python.pylint",
+        "ms-python.black-formatter",
+        "ms-python.mypy-type-checker",
+        "ms-python.isort"
+      ],
+      "settings": {
+        "pylint.importStrategy": "fromEnvironment",
+        "pylint.path": [
+          ".venv/bin/pylint"
+        ],
+        "python.defaultInterpreterPath": ".venv/bin/python",
+        "black-formatter.path": [
+          ".venv/bin/black"
+        ],
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "black-formatter.importStrategy": "fromEnvironment",
+        "editor.formatOnSave": true,
+        "flake8.importStrategy": "fromEnvironment",
+        "flake8.path": [
+          ".venv/bin/flake8"
+        ],
+        "isort.check": false,
+        "isort.importStrategy": "fromEnvironment",
+        "isort.path": [
+          ".venv/bin/isort"
+        ],
+        "mypy-type-checker.importStrategy": "fromEnvironment",
+        "mypy-type-checker.path": [
+          ".venv/bin/mypy"
+        ]
+      }
+    }
+  }
 }
