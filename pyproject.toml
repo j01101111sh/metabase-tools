@@ -52,7 +52,7 @@ optional = true
 
 [tool.poetry.group.docs.dependencies]
 Sphinx = ">=5.1.1,<8.0.0"
-furo = "^2023.3.27"
+furo = ">=2023.3.27,<2025.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
