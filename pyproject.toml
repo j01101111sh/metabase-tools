@@ -39,7 +39,7 @@ optional = true
 pytest = ">=7.1.2,<9.0.0"
 pytest-cov = ">=3,<5"
 pylint = ">=2.14.5,<4.0.0"
-black = ">=22.6,<24.0"
+black = ">=22.6,<25.0"
 isort = "^5.10.1"
 mypy = ">=0.971,<1.9"
 pre-commit = ">=2.20,<4.0"
