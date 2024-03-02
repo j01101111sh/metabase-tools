@@ -79,13 +79,13 @@ jobs:
           ./codecov -t ${CODECOV_TOKEN}
       - name: Upload HTML coverage report
         id: coverage_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: html-coverage
           path: htmlcov/
       - name: Upload log artifacts
         id: log_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: logs
           path: temp/
@@ -121,7 +121,7 @@ jobs:
         run: poetry run sphinx-build -W -a -E -b html docs/source/ docs/build/html
       - name: Upload sphinx artifacts
         id: sphinx_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: html-docs
           path: docs/build/html/
