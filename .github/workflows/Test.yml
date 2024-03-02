@@ -8,7 +8,7 @@ jobs:
     env:
       PY_VERSION: "3.11"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         id: checkout
       - name: Install Poetry
         id: poetry
@@ -43,7 +43,7 @@ jobs:
       MB_VERSION: ${{ matrix.metabase-version }}
       PY_VERSION: ${{ matrix.python-version }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         id: checkout
       - name: Initialize docker containers
         id: docker
@@ -99,7 +99,7 @@ jobs:
     needs: [Test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         id: checkout
       - name: Install Poetry
         id: poetry
