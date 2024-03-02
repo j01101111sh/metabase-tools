@@ -37,7 +37,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/build/html
       - name: Build and publish to pypi
-        uses: JRubics/poetry-publish@v1.12
+        uses: JRubics/poetry-publish@v2.0
         with:
           pypi_token: ${{ secrets.PYPI_KEY }}
           ignore_dev_requirements: "yes"
