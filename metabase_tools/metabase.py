@@ -1,6 +1,7 @@
 """
 Rest adapter for the Metabase API
 """
+
 from __future__ import annotations
 
 from json import JSONDecodeError

@@ -1,6 +1,7 @@
 """
 MetabaseTools extends MetabaseApi with additional complex functions
 """
+
 from __future__ import annotations  # Included for support of |
 
 from json import dumps, loads
