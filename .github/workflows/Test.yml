@@ -8,7 +8,7 @@ jobs:
     env:
       PY_VERSION: "3.11"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         id: checkout
       - name: Install Poetry
         id: poetry
@@ -18,7 +18,7 @@ jobs:
           poetry config installer.parallel true
       - name: Set up Python 3.11 on ubuntu-latest
         id: python_setup
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "poetry"
@@ -43,7 +43,7 @@ jobs:
       MB_VERSION: ${{ matrix.metabase-version }}
       PY_VERSION: ${{ matrix.python-version }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         id: checkout
       - name: Initialize docker containers
         id: docker
@@ -56,7 +56,7 @@ jobs:
           poetry config installer.parallel true
       - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
         id: python_setup
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: "poetry"
@@ -79,13 +79,13 @@ jobs:
           ./codecov -t ${CODECOV_TOKEN}
       - name: Upload HTML coverage report
         id: coverage_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: html-coverage
           path: htmlcov/
       - name: Upload log artifacts
         id: log_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: logs
           path: temp/
@@ -99,7 +99,7 @@ jobs:
     needs: [Test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         id: checkout
       - name: Install Poetry
         id: poetry
@@ -109,7 +109,7 @@ jobs:
           poetry config installer.parallel true
       - name: Set up Python 3.11
         id: python_setup
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "poetry"
@@ -121,7 +121,7 @@ jobs:
         run: poetry run sphinx-build -W -a -E -b html docs/source/ docs/build/html
       - name: Upload sphinx artifacts
         id: sphinx_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: html-docs
           path: docs/build/html/
